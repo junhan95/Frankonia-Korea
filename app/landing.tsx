@@ -1,6 +1,7 @@
 import { localeRoute, type Lang } from "./site-config";
 import SiteHeader, { type HeaderCopy } from "./site-header";
 import SiteFooter, { type FooterCopy } from "./site-footer";
+import StructuredData from "./structured-data";
 
 /* All copy lives here, keyed by locale — the KO / EN pages render from the
    same tree. Chamber category order is fixed by the site map:
@@ -205,6 +206,28 @@ export default function Landing({ lang }: { lang: Lang }) {
   const cs = localeRoute(lang, "/cybershield");
   return (
     <>
+      {/* Standards below are the ones the chamber and equipment cards name
+          further down this page — the markup restates them, it does not add
+          claims. */}
+      <StructuredData
+        lang={lang}
+        page="landing"
+        description={t.heroP}
+        productLines={[
+          {
+            id: "anechoic-chambers",
+            name: "Frankonia Anechoic Chambers",
+            description: t.c1p,
+            standards: ["ECE R10", "CISPR 25", "ISO 11452", "MIL-STD-461"],
+          },
+          {
+            id: "emc-test-systems",
+            name: "Frankonia EMC Test Systems",
+            description: t.c2p,
+            standards: ["CISPR 16-1-1"],
+          },
+        ]}
+      />
       <SiteHeader lang={lang} t={t} />
 
       <main id="main">

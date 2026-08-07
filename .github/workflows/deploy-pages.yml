@@ -28,14 +28,15 @@ jobs:
 
       - run: npm ci
 
+      - run: npm run lint
+
+      # Base path and origin come from scripts/staging-env.mjs, the same values
+      # the rendered-HTML test asserts against.
       - name: Build static export
-        env:
-          STATIC_EXPORT: "1"
-          # Pages serves this repo from /Frankonia-Korea, so assets and links
-          # need that prefix baked in at build time.
-          NEXT_PUBLIC_BASE_PATH: /Frankonia-Korea
-          NEXT_PUBLIC_SITE_ORIGIN: https://junhan95.github.io
-        run: npx next build
+        run: npm run build:static
+
+      - name: Check the rendered HTML
+        run: node --test tests/rendered-html.test.mjs
 
       - name: Disable Jekyll processing
         run: touch out/.nojekyll

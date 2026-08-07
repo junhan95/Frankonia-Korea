@@ -2,6 +2,7 @@ import { cyberShieldUrl, localeRoute, type Lang } from "./site-config";
 import SiteHeader from "./site-header";
 import SiteFooter from "./site-footer";
 import { headerCopy } from "./landing";
+import StructuredData from "./structured-data";
 
 /* Internal CyberShield page. The product site (frankonia-cybershield.com)
    sends X-Frame-Options: SAMEORIGIN, so it cannot be iframed here — instead
@@ -83,6 +84,7 @@ export default function CyberShieldPage({ lang }: { lang: Lang }) {
   const home = localeRoute(lang);
   return (
     <>
+      <StructuredData lang={lang} page="cybershield" description={t.p} />
       <SiteHeader lang={lang} t={headerCopy(lang)} />
 
       <main id="main">

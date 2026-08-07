@@ -1,5 +1,6 @@
 import PageShell from "./page-shell";
-import type { CompanySection } from "./company-sections";
+import StructuredData from "./structured-data";
+import { sectionMeta, type CompanySection } from "./company-sections";
 import type { Lang } from "./site-config";
 
 const contactEmail = "info@frankonia-korea.com";
@@ -235,6 +236,20 @@ export default function CompanyPage({
   lang: Lang;
   section: CompanySection;
 }) {
+  return (
+    <>
+      <StructuredData
+        lang={lang}
+        page="company"
+        section={section}
+        description={sectionMeta[lang][section].description}
+      />
+      <CompanyBody lang={lang} section={section} />
+    </>
+  );
+}
+
+function CompanyBody({ lang, section }: { lang: Lang; section: CompanySection }) {
   const t = copy[lang];
 
   if (section === "philosophy") {

@@ -76,10 +76,20 @@ that GitHub Pages needs baked in at build time:
 npm run build:static
 ```
 
-Output lands in `out/`.
+Output lands in `out/`. The build variables live in
+[`scripts/staging-env.mjs`](scripts/staging-env.mjs) and are applied from Node, so the
+command behaves the same on Windows as on Linux.
 
-> **On Windows, run that from PowerShell rather than Git Bash.** Git Bash rewrites
-> `/Frankonia-Korea` into a Windows path and the build fails with an invalid `basePath`.
+```bash
+npm run lint
+npm test
+```
+
+`npm test` runs the static export and then asserts against the HTML it produced —
+that every page carries the staging `noindex`, that `<html lang>` matches the route,
+that canonical/hreflang/`og:image` are right, that the sitemap matches the pages on
+disk, and that no internal link points at a file the export does not contain. Every
+one of those checks exists because that exact thing broke once.
 
 ## Layout
 
@@ -92,10 +102,20 @@ app/
   cybershield-content.tsx
   site-header.tsx    # sticky nav + mobile drawer (the only client component)
   site-footer.tsx
+  company-sections.ts   # slug order, nav labels, meta descriptions — one source
+  company-content.tsx   # the five Company pages
+  page-shell.tsx        # chrome for every page that is not the landing page
+  structured-data.tsx   # JSON-LD: Organization, WebSite, WebPage, Product
   site-config.ts     # base path, locale table, asset/route/localeRoute helpers
   site-metadata.ts   # title, description, robots, hreflang, OG — every page
   sitemap.ts robots.ts
   globals.css        # design tokens + all styles
+deploy/
+  deploy.py          # build + upload to www.frankonia-korea.com in one step
+  upload.py          # SFTP push of out/, with a stale-file prune
+  htaccess           # canonical host, security headers, cache policy
+scripts/             # staging build variables, shared with the tests
+tests/               # assertions against the rendered HTML
 docs/
   Frankonia-Korea-웹사이트-리뉴얼-기획서.docx   # 리뉴얼 기획서 v2
   FRANKONIA-WEB-PLAN.md                        # 라우팅·페이지·컴포넌트 상세 기획
@@ -106,14 +126,31 @@ mockup/
 
 ## Roadmap
 
-`docs/FRANKONIA-WEB-PLAN.md`의 8주 마일스톤을 따른다. 현재 단계는 **랜딩 페이지 이식
-완료** — 다음은 Chambers 개요·카테고리 6페이지와 Test Systems 3페이지 (템플릿 재사용),
-Company / Contact(폼) / Career, 그리고 모델 상세 페이지 순.
+`docs/FRANKONIA-WEB-PLAN.md`의 8주 마일스톤을 따른다. **랜딩 · CyberShield · Company
+5개 페이지 완료** — 다음은 Chambers 개요·카테고리 6페이지와 Test Systems 3페이지
+(`page-shell.tsx` 재사용), Contact(폼), 그리고 모델 상세 페이지 순.
 
 ## Deployment
 
-Pushing to `main` triggers [`deploy-pages.yml`](.github/workflows/deploy-pages.yml), which
-runs the static export and publishes `out/` to GitHub Pages. There is no manual step.
+세 단계다: 로컬 확인 → GitHub Pages 스테이징 → 정식 도메인.
+
+**Staging.** `main`에 푸시하면 [`deploy-pages.yml`](.github/workflows/deploy-pages.yml)이
+lint → 정적 빌드 → 렌더된 HTML 테스트를 거쳐 `out/`을 GitHub Pages에 배포한다. 테스트가
+깨지면 배포되지 않는다. 수동 단계는 없다.
+
+**Production.** `.env.example`을 `.env`로 복사해 SFTP 자격증명을 채운 뒤:
+
+```bash
+pip install paramiko
+python deploy/deploy.py
+```
+
+빌드( base path 없음, `NEXT_PUBLIC_INDEXABLE=1` )와 업로드를 한 번에 수행하며, 빌드가
+실패하면 업로드하지 않는다. 업로드는 스테이징용 빌드가 섞여 들어가는 것을 막고
+(`/Frankonia-Korea/_next/` 또는 `noindex`가 보이면 중단), 사이트 파일을 먼저 올린 뒤
+[`deploy/htaccess`](deploy/htaccess)를 마지막에 올린다 — 정규 호스트 301, CSP · HSTS ·
+`X-Content-Type-Options` 등 보안 헤더, 자산별 캐시 정책이 여기 들어 있다. GitHub Pages는
+헤더를 설정할 수 없으므로 이 파일은 정식 도메인에서만 효력이 있다.
 
 ## Notes
 
