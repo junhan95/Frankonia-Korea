@@ -36,6 +36,8 @@ Frankonia Korea 리뉴얼 사이트의 소스와 기획 문서를 담은 레포�
 로케일 키로 정리되어 있어 KO / EN 페이지가 하나의 트리에서 렌더된다
 ([CyberShield](https://github.com/junhan95/CyberShield) 레포와 같은 패턴).
 독일어는 개발 속도를 위해 제외했고, `copy`에 `de` 키를 다시 추가하면 복구된다.
+로케일별 `<html lang>`을 서버 HTML에 그대로 담기 위해 `(ko)` / `(en)` 라우트 그룹이
+각자의 루트 레이아웃을 갖는다 — 그룹은 URL에 나타나지 않으므로 경로는 `/`, `/en/` 그대로다.
 
 **Design tokens, measured not guessed.** 색·타이포·간격·버튼 규격은 frankonia-cybershield.com을
 실측해 문서화한 [`docs/FRANKONIA-DESIGN-REFERENCE.md`](docs/FRANKONIA-DESIGN-REFERENCE.md)의
@@ -83,12 +85,17 @@ Output lands in `out/`.
 
 ```
 app/
+  (ko)/              # /  ·  /cybershield/        <html lang="ko">
+  (en)/en/           # /en/  ·  /en/cybershield/  <html lang="en">
+  root-shell.tsx     # the <html>/<body> shell both root layouts render
   landing.tsx        # the whole landing page, and all copy keyed by locale
-  site-config.ts     # base path, locale table, asset/route helpers
-  site-metadata.ts   # per-locale title, description, hreflang, Open Graph
+  cybershield-content.tsx
+  site-header.tsx    # sticky nav + mobile drawer (the only client component)
+  site-footer.tsx
+  site-config.ts     # base path, locale table, asset/route/localeRoute helpers
+  site-metadata.ts   # title, description, robots, hreflang, OG — every page
+  sitemap.ts robots.ts
   globals.css        # design tokens + all styles
-  page.tsx           # /        (한국어)
-  en/                # /en/
 docs/
   Frankonia-Korea-웹사이트-리뉴얼-기획서.docx   # 리뉴얼 기획서 v2
   FRANKONIA-WEB-PLAN.md                        # 라우팅·페이지·컴포넌트 상세 기획

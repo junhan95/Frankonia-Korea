@@ -13,6 +13,13 @@ const copy = {
       company: ["경영이념", "연혁", "채용", "발간자료", "행사·전시"],
       contact: ["견적·기술 문의", "카탈로그 다운로드"],
     },
+    a11y: {
+      skip: "본문 바로가기",
+      primaryNav: "주 메뉴",
+      mobileNav: "모바일 메뉴",
+      menuOpen: "메뉴 열기",
+      menuClose: "메뉴 닫기",
+    },
     heroTag: "GERMAN ENGINEERING · KOREAN PARTNERSHIP",
     heroH1a: "EMC 시험의 모든 것,",
     heroH1b: "Frankonia Korea",
@@ -81,6 +88,13 @@ const copy = {
     navSubs: {
       company: ["Philosophy", "History", "Career", "Publications", "Events"],
       contact: ["Quote & Technical Support", "Catalog Downloads"],
+    },
+    a11y: {
+      skip: "Skip to content",
+      primaryNav: "Primary navigation",
+      mobileNav: "Mobile navigation",
+      menuOpen: "Open menu",
+      menuClose: "Close menu",
     },
     heroTag: "GERMAN ENGINEERING · KOREAN PARTNERSHIP",
     heroH1a: "Everything for EMC testing,",
