@@ -1,7 +1,3 @@
-"use client";
-
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 import {
   chamberIndustries,
   chamberIndustryMeta,
@@ -20,6 +16,8 @@ import {
 } from "./chamber-sections";
 import { companyNavSections, sectionMeta, sectionPath } from "./company-sections";
 import { industryLabel } from "./industries";
+import LangSwitch from "./lang-switch";
+import NavDrawer from "./nav-drawer";
 import {
   modelsByProduct,
   testCategories,
@@ -37,43 +35,21 @@ import {
   testStandardsPath,
   testSystemsPath,
 } from "./test-system-sections";
-import { asset, langPath, languages, localeRoute, type Lang } from "./site-config";
+import { asset, localeRoute, type Lang } from "./site-config";
 
 /**
- * Shared sticky header. The only client component on the site: the mobile
- * drawer needs state, and below 960px the desktop nav is hidden, so without it
- * the whole GNB simply disappeared on phones.
+ * Shared sticky header. A server component: the route tables and label sets
+ * below are large — both locales of every chamber and test-system caption —
+ * and none of it is needed after the HTML exists. The two pieces that do need
+ * the browser are separate files and import none of this: NavDrawer holds the
+ * open/closed state, LangSwitch needs to know the current path.
  *
  * `home` anchors resolve against the locale's landing page so the nav works
  * from any route. Dropdown targets map 1:1 to the routes planned in
- * docs/FRANKONIA-WEB-PLAN.md (§2) once those pages exist.
+ * docs/FRANKONIA-WEB-PLAN.md (§2).
  */
 export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
-  const [menuOpen, setMenuOpen] = useState(false);
   const home = localeRoute(lang);
-  const close = () => setMenuOpen(false);
-
-  // Switching language keeps the reader on the page they are reading —
-  // /cybershield/ ↔ /en/cybershield/ — instead of dropping them back on the
-  // home page. `usePathname` already has the base path stripped off, and the
-  // English locale is the only one carrying a prefix, so taking that off
-  // leaves the path both locales share.
-  const enPrefix = langPath("en");
-  const pathname = usePathname();
-  const shared = pathname.startsWith(`${enPrefix}/`) || pathname === enPrefix
-    ? pathname.slice(enPrefix.length)
-    : pathname;
-  // localeRoute puts the trailing slash back; carrying it here would double it.
-  const samePage = shared.replace(/\/$/, "");
-
-  useEffect(() => {
-    if (!menuOpen) return;
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setMenuOpen(false);
-    };
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  }, [menuOpen]);
 
   const company = companyNavSections.map(
     (s) => ({ label: sectionMeta[lang][s].label, href: localeRoute(lang, sectionPath(s)) }),
@@ -192,111 +168,83 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
   return (
     <header>
       <a className="skip-link" href="#main">{t.a11y.skip}</a>
-      <div className="wrap nav">
-        {/* The official stacked lockup, on its own. Raw <img> does not get
-            Next's basePath rewriting, so the src goes through asset(). The alt
-            is the site name rather than the artwork's wording, because this is
-            the link home. */}
-        <a className="brand" href={home}>
-          {/* next/image cannot optimise an SVG, and the static export runs with
-              images.unoptimized anyway — it would emit this same tag with more
-              machinery around it. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className="brand-logo"
-            src={asset("/frankonia-logo.svg")}
-            width={1898}
-            height={1029}
-            alt="Frankonia"
-          />
-        </a>
+      <NavDrawer
+        labels={{ open: t.a11y.menuOpen, close: t.a11y.menuClose, nav: t.a11y.mobileNav }}
+        bar={
+          <>
+            {/* The official stacked lockup, on its own. Raw <img> does not get
+                Next's basePath rewriting, so the src goes through asset(). The
+                alt is the site name rather than the artwork's wording, because
+                this is the link home. */}
+            <a className="brand" href={home}>
+              {/* next/image cannot optimise an SVG, and the static export runs
+                  with images.unoptimized anyway — it would emit this same tag
+                  with more machinery around it. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="brand-logo"
+                src={asset("/frankonia-logo.svg")}
+                width={1898}
+                height={1029}
+                alt="Frankonia"
+              />
+            </a>
 
-        <nav className="menu" aria-label={t.a11y.primaryNav}>
-          {sections.map((section) => (
-            <div className="mi" key={section.label}>
-              <a href={section.href}>
-                {section.label}
-                {hasMenu(section) && <span className="caret" aria-hidden="true">▼</span>}
-              </a>
-              {hasMenu(section) && (
-                <div className="dropdown">
-                  {section.groups ? (
-                    <div className="dd-panel dd-panel--mega">
-                      <div className="dd-cols">
-                        {section.groups.map((group) => (
-                          <div className="dd-col" key={group.title}>
-                            <h6>{group.title}</h6>
-                            {group.links.map((link) => (
-                              <a key={link.label} href={link.href}>
-                                {link.label}
-                                {link.note && <span className="dd-note">{link.note}</span>}
-                              </a>
+            <nav className="menu" aria-label={t.a11y.primaryNav}>
+              {sections.map((section) => (
+                <div className="mi" key={section.label}>
+                  <a href={section.href}>
+                    {section.label}
+                    {hasMenu(section) && <span className="caret" aria-hidden="true">▼</span>}
+                  </a>
+                  {hasMenu(section) && (
+                    <div className="dropdown">
+                      {section.groups ? (
+                        <div className="dd-panel dd-panel--mega">
+                          <div className="dd-cols">
+                            {section.groups.map((group) => (
+                              <div className="dd-col" key={group.title}>
+                                <h6>{group.title}</h6>
+                                {group.links.map((link) => (
+                                  <a key={link.label} href={link.href}>
+                                    {link.label}
+                                    {link.note && <span className="dd-note">{link.note}</span>}
+                                  </a>
+                                ))}
+                              </div>
                             ))}
                           </div>
-                        ))}
-                      </div>
-                      {section.utils && (
-                        <div className="dd-utils">
-                          {section.utils.map((link) => (
+                          {section.utils && (
+                            <div className="dd-utils">
+                              {section.utils.map((link) => (
+                                <a key={link.label} href={link.href}>{link.label}</a>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="dd-panel">
+                          {section.items!.map((link) => (
                             <a key={link.label} href={link.href}>{link.label}</a>
                           ))}
                         </div>
                       )}
                     </div>
-                  ) : (
-                    <div className="dd-panel">
-                      {section.items!.map((link) => (
-                        <a key={link.label} href={link.href}>{link.label}</a>
-                      ))}
-                    </div>
                   )}
                 </div>
-              )}
-            </div>
-          ))}
-        </nav>
+              ))}
+            </nav>
 
-        <div className="lang">
-          {languages.map(([code, label]) => (
-            <a
-              key={code}
-              href={localeRoute(code, samePage)}
-              className={code === lang ? "on" : undefined}
-              aria-current={code === lang ? "true" : undefined}
-            >
-              {label}
-            </a>
-          ))}
-        </div>
+            <LangSwitch lang={lang} />
 
-        <a className="cta-top" href={`${home}#contact`}>{t.nav.cta}</a>
-
-        <button
-          type="button"
-          className="burger"
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-          aria-label={menuOpen ? t.a11y.menuClose : t.a11y.menuOpen}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          <span className={menuOpen ? "burger-bars open" : "burger-bars"} aria-hidden="true">
-            <i /><i /><i />
-          </span>
-        </button>
-      </div>
-
-      {/* Kept mounted so the panel can transition, hidden from assistive tech
-          and from tab order while closed. */}
-      <nav
-        id="mobile-menu"
-        className={menuOpen ? "mobile-menu open" : "mobile-menu"}
-        aria-label={t.a11y.mobileNav}
-        hidden={!menuOpen}
+            <a className="cta-top" href={`${home}#contact`}>{t.nav.cta}</a>
+          </>
+        }
       >
         <div className="wrap">
           {sections.map((section) => (
             <div className="mm-group" key={section.label}>
-              <a className="mm-top" href={section.href} onClick={close}>{section.label}</a>
+              <a className="mm-top" href={section.href}>{section.label}</a>
               {/* Chambers alone carries fifteen links. Flat, they turn the
                   drawer into a scroll; <details> folds them by group with no
                   state of our own and no loss of keyboard access. */}
@@ -305,7 +253,7 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
                   <summary>{group.title}</summary>
                   <div className="mm-subs">
                     {group.links.map((link) => (
-                      <a key={link.label} href={link.href} onClick={close}>{link.label}</a>
+                      <a key={link.label} href={link.href}>{link.label}</a>
                     ))}
                   </div>
                 </details>
@@ -313,22 +261,22 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
               {section.items && (
                 <div className="mm-subs">
                   {section.items.map((link) => (
-                    <a key={link.label} href={link.href} onClick={close}>{link.label}</a>
+                    <a key={link.label} href={link.href}>{link.label}</a>
                   ))}
                 </div>
               )}
               {section.utils && (
                 <div className="mm-subs mm-utils">
                   {section.utils.map((link) => (
-                    <a key={link.label} href={link.href} onClick={close}>{link.label}</a>
+                    <a key={link.label} href={link.href}>{link.label}</a>
                   ))}
                 </div>
               )}
             </div>
           ))}
-          <a className="btn btn-red mm-cta" href={`${home}#contact`} onClick={close}>{t.nav.cta}</a>
+          <a className="btn btn-red mm-cta" href={`${home}#contact`}>{t.nav.cta}</a>
         </div>
-      </nav>
+      </NavDrawer>
     </header>
   );
 }
