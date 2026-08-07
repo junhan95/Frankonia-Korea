@@ -10,7 +10,7 @@ const copy = {
     tagline: "EMC SOLUTIONS",
     nav: { company: "회사소개", chamber: "챔버", equip: "EMC 시험장비", cyber: "CyberShield", contact: "문의", career: "채용", cta: "견적 문의" },
     navSubs: {
-      company: ["인사말", "회사소개·연혁", "Frankonia Group", "오시는 길"],
+      company: ["경영이념", "연혁", "채용", "발간자료", "행사·전시"],
       contact: ["견적·기술 문의", "카탈로그 다운로드"],
     },
     heroTag: "GERMAN ENGINEERING · KOREAN PARTNERSHIP",
@@ -79,7 +79,7 @@ const copy = {
     tagline: "EMC SOLUTIONS",
     nav: { company: "Company", chamber: "Anechoic Chambers", equip: "EMC Test Systems", cyber: "CyberShield", contact: "Contact", career: "Career", cta: "Get a Quote" },
     navSubs: {
-      company: ["CEO Message", "About & History", "Frankonia Group", "Location"],
+      company: ["Philosophy", "History", "Career", "Publications", "Events"],
       contact: ["Quote & Technical Support", "Catalog Downloads"],
     },
     heroTag: "GERMAN ENGINEERING · KOREAN PARTNERSHIP",
@@ -148,7 +148,7 @@ const copy = {
     tagline: "EMV-LÖSUNGEN",
     nav: { company: "Unternehmen", chamber: "Absorberkammern", equip: "EMV-Prüfsysteme", cyber: "CyberShield", contact: "Kontakt", career: "Karriere", cta: "Angebot anfragen" },
     navSubs: {
-      company: ["Grußwort", "Über uns & Geschichte", "Frankonia Group", "Anfahrt"],
+      company: ["Philosophie", "Geschichte", "Karriere", "Publikationen", "Veranstaltungen"],
       contact: ["Angebot & Support", "Katalog-Downloads"],
     },
     heroTag: "DEUTSCHE TECHNIK · KOREANISCHE PARTNERSCHAFT",
