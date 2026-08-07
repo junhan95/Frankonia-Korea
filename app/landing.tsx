@@ -1,4 +1,6 @@
-import { cyberShieldUrl, langPath, languages, route, type Lang } from "./site-config";
+import { langPath, route, type Lang } from "./site-config";
+import SiteHeader from "./site-header";
+import SiteFooter from "./site-footer";
 
 /* All copy lives here, keyed by locale — the EN / DE / KO pages render from
    the same tree. Chamber category order is fixed by the site map:
@@ -32,8 +34,8 @@ const copy = {
     c2list: ["EMI-Receiver (9kHz–6GHz)", "Antennas (9kHz–40GHz)", "Accessories · Amplifiers · GTEM"],
     ext: "외부 링크",
     c3p: "전자파 보안·차폐 솔루션 CyberShield. 상세 정보는 CyberShield 전용 페이지에서 확인하실 수 있습니다.",
-    c3list: ["보안 차폐 솔루션", "전용 사이트 연결"],
-    c3go: "CyberShield 바로가기 ↗",
+    c3list: ["보안 차폐 솔루션", "전용 페이지에서 상세 보기"],
+    c3go: "CyberShield 자세히 보기 →",
     more: "자세히 보기 →",
     chH: "챔버 라인업",
     chP: "적용 분야에 맞는 최적의 챔버를 제안합니다.",
@@ -101,8 +103,8 @@ const copy = {
     c2list: ["EMI-Receiver (9kHz–6GHz)", "Antennas (9kHz–40GHz)", "Accessories · Amplifiers · GTEM"],
     ext: "External link",
     c3p: "CyberShield — electromagnetic security & shielding solutions. Full details are available on the dedicated CyberShield site.",
-    c3list: ["Security shielding solutions", "Dedicated site"],
-    c3go: "Visit CyberShield ↗",
+    c3list: ["Security shielding solutions", "Dedicated page on this site"],
+    c3go: "Explore CyberShield →",
     more: "Learn more →",
     chH: "Chamber Line-up",
     chP: "The right chamber for every application field.",
@@ -170,8 +172,8 @@ const copy = {
     c2list: ["EMI-Receiver (9kHz–6GHz)", "Antennen (9kHz–40GHz)", "Zubehör · Verstärker · GTEM"],
     ext: "Externer Link",
     c3p: "CyberShield — Lösungen für elektromagnetische Sicherheit und Schirmung. Details auf der eigenen CyberShield-Website.",
-    c3list: ["Sicherheits-Schirmungslösungen", "Eigene Website"],
-    c3go: "Zu CyberShield ↗",
+    c3list: ["Sicherheits-Schirmungslösungen", "Eigene Seite auf dieser Website"],
+    c3go: "CyberShield entdecken →",
     more: "Mehr erfahren →",
     chH: "Kammer-Programm",
     chP: "Die passende Kammer für jeden Anwendungsbereich.",
@@ -243,68 +245,15 @@ const equipIcons = [
   <svg key="accessories" viewBox="0 0 24 24" fill="none"><rect x="3" y="10" width="8" height="8" rx="1.5" stroke="#fff" strokeWidth="1.7" /><rect x="13" y="6" width="8" height="12" rx="1.5" stroke="#fff" strokeWidth="1.7" /><path d="M6 14h2m7-4h2m-2 4h4" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" /></svg>,
 ];
 
+/** Header slice of the copy object, shared with other pages (e.g. /cybershield). */
+export const headerCopy = (lang: Lang) => copy[lang];
+
 export default function Landing({ lang }: { lang: Lang }) {
   const t = copy[lang];
+  const cs = route(lang === "ko" ? "/cybershield" : `${langPath(lang)}/cybershield`);
   return (
     <>
-      <header>
-        <div className="wrap nav">
-          <a className="logo" href="#top">
-            FRANKONIA<span className="fk">KOREA</span> <small>{t.tagline}</small>
-          </a>
-          {/* Dropdown targets are landing anchors for now; they map 1:1 to the
-              routes planned in docs/FRANKONIA-WEB-PLAN.md (§2) once those pages exist. */}
-          <nav className="menu">
-            <div className="mi">
-              <a href="#company">{t.nav.company} <span className="caret">▼</span></a>
-              <div className="dropdown"><div className="dd-panel">
-                {t.navSubs.company.map((label) => (
-                  <a key={label} href="#company">{label}</a>
-                ))}
-              </div></div>
-            </div>
-            <div className="mi">
-              <a href="#chambers">{t.nav.chamber} <span className="caret">▼</span></a>
-              <div className="dropdown"><div className="dd-panel">
-                {/* Fixed category order — do not reorder (site map rule) */}
-                {chamberCards.map((c) => (
-                  <a key={c.name} href="#chambers">{c.name}</a>
-                ))}
-              </div></div>
-            </div>
-            <div className="mi">
-              <a href="#equipment">{t.nav.equip} <span className="caret">▼</span></a>
-              <div className="dropdown"><div className="dd-panel">
-                {equipCards.map((c) => (
-                  <a key={c.name} href="#equipment">{c.name}</a>
-                ))}
-              </div></div>
-            </div>
-            <div className="mi">
-              <a href={cyberShieldUrl} target="_blank" rel="noopener">{t.nav.cyber} <span className="dd-ext">↗</span></a>
-            </div>
-            <div className="mi">
-              <a href="#contact">{t.nav.contact} <span className="caret">▼</span></a>
-              <div className="dropdown"><div className="dd-panel">
-                {t.navSubs.contact.map((label) => (
-                  <a key={label} href="#contact">{label}</a>
-                ))}
-              </div></div>
-            </div>
-            <div className="mi">
-              <a href="#career">{t.nav.career}</a>
-            </div>
-          </nav>
-          <div className="lang">
-            {languages.map(([code, label]) => (
-              <a key={code} href={route(langPath(code))} className={code === lang ? "on" : undefined}>
-                {label}
-              </a>
-            ))}
-          </div>
-          <a className="cta-top" href="#contact">{t.nav.cta}</a>
-        </div>
-      </header>
+      <SiteHeader lang={lang} t={t} />
 
       <div className="hero" id="top">
         <div className="wrap hero-in">
@@ -366,10 +315,10 @@ export default function Landing({ lang }: { lang: Lang }) {
                 <svg viewBox="0 0 64 64" fill="none"><path d="M32 8l20 8v14c0 12-8.5 21-20 26C20.5 51 12 42 12 30V16l20-8z" stroke="#fff" strokeWidth="2.5" /><path d="M23 31l6 6 12-12" stroke="#e60000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </div>
               <div className="body">
-                <h3>CyberShield <span className="ext">{t.ext}</span></h3>
+                <h3>CyberShield</h3>
                 <p>{t.c3p}</p>
                 <ul>{t.c3list.map((li) => <li key={li}>{li}</li>)}</ul>
-                <a className="go" href={cyberShieldUrl} target="_blank" rel="noopener">{t.c3go}</a>
+                <a className="go" href={cs}>{t.c3go}</a>
               </div>
             </div>
           </div>
@@ -449,36 +398,7 @@ export default function Landing({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      <footer id="career">
-        <div className="wrap">
-          <div className="foot">
-            <div>
-              <h5>FRANKONIA KOREA</h5>
-              <p className="foot-desc">{t.ftDesc}</p>
-              <p className="foot-addr">{t.ftAddr}</p>
-            </div>
-            <div>
-              <h5>{t.ftSol}</h5>
-              <ul>
-                <li><a href="#chambers">{t.ftL1}</a></li>
-                <li><a href="#equipment">{t.ftL2}</a></li>
-                <li><a href={cyberShieldUrl} target="_blank" rel="noopener">CyberShield</a></li>
-              </ul>
-            </div>
-            <div>
-              <h5>{t.ftLink}</h5>
-              <ul>
-                <li><a href="https://frankonia-solutions.com/" target="_blank" rel="noopener">{t.ftHq}</a></li>
-                <li><a href="#">{t.ftPriv}</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="copy">
-            <span>© 2026 Frankonia Korea. All rights reserved.</span>
-            <span>www.frankonia-korea.com</span>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter lang={lang} t={t} />
     </>
   );
 }

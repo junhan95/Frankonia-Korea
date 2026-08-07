@@ -119,6 +119,24 @@ section { padding: 110px 0; }
 .lc p { font-size: 13.5px; color: var(--sub); }
 .lc .models { margin-top: 12px; font-size: 12px; color: #8494a8; letter-spacing: .3px; }
 
+/* Numbered columns (design ref §4.2-2) */
+.num-col { border-top: .8px solid var(--line); padding-top: 18px; }
+.num-col .num { color: var(--red); font-size: 12px; font-weight: 800; letter-spacing: .5px; }
+.num-col h4 { font-size: 20px; font-weight: 700; margin: 10px 0 8px; }
+.num-col p { font-size: 14.5px; color: var(--sub); }
+
+/* Hairline list (design ref §4.2-5) */
+.hairline-list { max-width: 860px; margin: 0 auto; }
+.hl-row { display: flex; align-items: baseline; gap: 16px; padding: 14px 4px; border-bottom: .8px solid var(--line); }
+.hl-row .hl-idx { color: var(--mute); font-size: 12px; font-weight: 600; min-width: 22px; }
+.hl-row b { font-size: 15.5px; font-weight: 700; white-space: nowrap; }
+.hl-row .hl-desc { color: var(--sub); font-size: 14px; margin-left: auto; text-align: right; }
+.cs-note { text-align: center; color: var(--sub); font-size: 13.5px; margin-top: 28px; }
+@media (max-width: 600px) {
+  .hl-row { flex-wrap: wrap; }
+  .hl-row .hl-desc { margin-left: 38px; text-align: left; flex-basis: 100%; }
+}
+
 /* Trust */
 .trust { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; align-items: center; }
 .trust .kicker { color: var(--red); font-size: 13px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
