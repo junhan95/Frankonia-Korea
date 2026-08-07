@@ -136,6 +136,25 @@ test("the share card is absolute and carries the base path", () => {
   assert.match(pages[0].html, /name="twitter:card" content="summary_large_image"/);
 });
 
+test("the brand lockup is in the export and carries the base path", async () => {
+  // A raw <img> does not get Next's basePath rewriting, so the logo is the one
+  // asset that can silently 404 on GitHub Pages while every link still works.
+  for (const { route, html } of pages) {
+    assert.ok(
+      html.includes(`src="${BASE}/frankonia-logo.svg"`),
+      `${route}: logo missing, or not prefixed with the base path`,
+    );
+  }
+  assert.ok(await exists(path.join(OUT, "frankonia-logo.svg")));
+});
+
+test("the favicon set is declared and shipped", async () => {
+  for (const file of ["favicon.svg", "favicon.ico", "apple-touch-icon.png"]) {
+    assert.ok(pages[0].html.includes(`${BASE}/${file}`), `${file} is not declared`);
+    assert.ok(await exists(path.join(OUT, file)), `${file} is not in the export`);
+  }
+});
+
 test("the structured data parses and names the organisation", () => {
   for (const { route, html } of pages) {
     const match = html.match(

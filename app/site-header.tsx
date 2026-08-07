@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { companySections, sectionMeta, sectionPath } from "./company-sections";
-import { cyberShieldUrl, languages, localeRoute, type Lang } from "./site-config";
+import { asset, cyberShieldUrl, languages, localeRoute, type Lang } from "./site-config";
 
 /** Fixed category order — do not reorder (site map rule). */
 const chamberCategories = ["Automotive", "Military", "Commercial", "Powertrain", "RVC", "Others"];
@@ -59,8 +59,23 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     <header>
       <a className="skip-link" href="#main">{t.a11y.skip}</a>
       <div className="wrap nav">
-        <a className="logo" href={home}>
-          FRANKONIA<span className="fk">KOREA</span> <small>{t.tagline}</small>
+        {/* The official stacked lockup (red knot over the FRANKONIA wordmark),
+            then a hairline and the region — the same construction the group
+            uses for its product marks. Raw <img> does not get Next's basePath
+            rewriting, so the src goes through asset(). */}
+        <a className="brand" href={home}>
+          {/* next/image cannot optimise an SVG, and the static export runs with
+              images.unoptimized anyway — it would emit this same tag with more
+              machinery around it. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="brand-logo"
+            src={asset("/frankonia-logo.svg")}
+            width={1898}
+            height={1029}
+            alt="Frankonia"
+          />
+          <span className="brand-region">KOREA</span>
         </a>
 
         <nav className="menu" aria-label={t.a11y.primaryNav}>
@@ -153,7 +168,6 @@ type NavSection = {
 };
 
 export type HeaderCopy = {
-  tagline: string;
   nav: { company: string; chamber: string; equip: string; cyber: string; contact: string; career: string; cta: string };
   /** Company's submenu comes from company-sections.ts, not from here. */
   navSubs: { contact: { quote: string; catalog: string } };

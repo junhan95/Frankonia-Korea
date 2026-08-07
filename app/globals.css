@@ -40,9 +40,17 @@ h1, h2, h3, h4, p { word-break: keep-all; }
 /* ===== Header ===== */
 header { position: sticky; top: 0; z-index: 100; background: rgba(37, 40, 43, .97); backdrop-filter: blur(6px); border-bottom: 1px solid rgba(255, 255, 255, .08); }
 .nav { display: flex; align-items: center; gap: 18px; height: 68px; }
-.logo { display: flex; align-items: baseline; gap: 8px; color: #fff; font-weight: 800; font-size: 20px; letter-spacing: .5px; }
-.logo .fk { color: var(--red); }
-.logo small { font-weight: 400; font-size: 11px; color: #9db1c7; letter-spacing: 2px; }
+/* Brand lockup. The artwork is the group's stacked logo — red knot over the
+   FRANKONIA wordmark — so the only red in the header comes from the mark
+   itself; KOREA stays white rather than introducing a second, slightly
+   different red (#e60000 next to the logo's #d91920). */
+.brand { display: inline-flex; align-items: center; gap: 13px; flex: none; }
+.brand-logo { display: block; width: auto; height: 40px; }
+.brand-region {
+  display: flex; align-items: center; height: 32px;
+  padding-left: 13px; border-left: 1px solid rgba(255, 255, 255, .22);
+  color: #fff; font-size: 15px; font-weight: 700; letter-spacing: 2.5px;
+}
 nav.menu { display: flex; gap: 18px; margin-left: auto; }
 nav.menu a { color: #d7dde4; font-size: 13.5px; font-weight: 500; padding: 6px 2px; border-bottom: 2px solid transparent; transition: .2s; white-space: nowrap; }
 nav.menu a:hover { color: #fff; border-color: var(--red); }
@@ -255,7 +263,9 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
   .mobile-menu.open { display: block; }
   .nav { gap: 12px; }
   .cta-top { display: none; }
-  .logo small { display: none; }
+  .brand { gap: 10px; }
+  .brand-logo { height: 34px; }
+  .brand-region { height: 26px; padding-left: 10px; font-size: 13px; letter-spacing: 2px; }
   .sol-grid, .line-grid, .line-grid.three { grid-template-columns: 1fr 1fr; }
   .trust { grid-template-columns: 1fr; }
   .foot { grid-template-columns: 1fr 1fr; }

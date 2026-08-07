@@ -68,7 +68,15 @@ function build(lang: Lang, path: string, title: string, description: string): Me
   return {
     title,
     description,
-    icons: { icon: [{ url: asset("/favicon.svg"), type: "image/svg+xml" }] },
+    // The Frankonia knot. SVG first for browsers that take it, .ico for the
+    // ones that still do not (Safari, older Edge).
+    icons: {
+      icon: [
+        { url: asset("/favicon.svg"), type: "image/svg+xml" },
+        { url: asset("/favicon.ico"), sizes: "32x32 48x48" },
+      ],
+      apple: asset("/apple-touch-icon.png"),
+    },
     // Held back until the site moves to www.frankonia-korea.com — indexing the
     // GitHub Pages staging URL would park ranking signals on a personal
     // subdomain. A project page cannot serve a robots.txt crawlers will read
