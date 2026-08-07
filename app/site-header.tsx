@@ -42,7 +42,7 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     { label: t.nav.chamber, href: `${home}#chambers`, items: chamberCategories.map((c) => [c, `${home}#chambers`] as const) },
     { label: t.nav.equip, href: `${home}#equipment`, items: equipmentCategories.map((c) => [c, `${home}#equipment`] as const) },
     // Hands over to the CyberShield product site in the same window.
-    { label: t.nav.cyber, href: cyberShieldUrl(lang), items: [] as (readonly [string, string])[], external: true },
+    { label: t.nav.cyber, href: cyberShieldUrl(lang), items: [] as (readonly [string, string])[] },
     {
       label: t.nav.contact,
       href: `${home}#contact`,
@@ -59,10 +59,10 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     <header>
       <a className="skip-link" href="#main">{t.a11y.skip}</a>
       <div className="wrap nav">
-        {/* The official stacked lockup (red knot over the FRANKONIA wordmark),
-            then a hairline and the region — the same construction the group
-            uses for its product marks. Raw <img> does not get Next's basePath
-            rewriting, so the src goes through asset(). */}
+        {/* The official stacked lockup, on its own. Raw <img> does not get
+            Next's basePath rewriting, so the src goes through asset(). The alt
+            is the site name rather than the artwork's wording, because this is
+            the link home. */}
         <a className="brand" href={home}>
           {/* next/image cannot optimise an SVG, and the static export runs with
               images.unoptimized anyway — it would emit this same tag with more
@@ -73,17 +73,15 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
             src={asset("/frankonia-logo.svg")}
             width={1898}
             height={1029}
-            alt="Frankonia"
+            alt="Frankonia Korea"
           />
-          <span className="brand-region">KOREA</span>
         </a>
 
         <nav className="menu" aria-label={t.a11y.primaryNav}>
-          {sections.map(({ label, href, items, external }) => (
+          {sections.map(({ label, href, items }) => (
             <div className="mi" key={label}>
               <a href={href}>
                 {label}
-                {external && <span className="ext-glyph" aria-hidden="true">↗</span>}
                 {items.length > 0 && <span className="caret" aria-hidden="true">▼</span>}
               </a>
               {items.length > 0 && (
@@ -137,12 +135,9 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
         hidden={!menuOpen}
       >
         <div className="wrap">
-          {sections.map(({ label, href, items, external }) => (
+          {sections.map(({ label, href, items }) => (
             <div className="mm-group" key={label}>
-              <a className="mm-top" href={href} onClick={close}>
-                {label}
-                {external && <span className="ext-glyph" aria-hidden="true">↗</span>}
-              </a>
+              <a className="mm-top" href={href} onClick={close}>{label}</a>
               {items.length > 0 && (
                 <div className="mm-subs">
                   {items.map(([itemLabel, itemHref]) => (
@@ -163,8 +158,6 @@ type NavSection = {
   label: string;
   href: string;
   items: readonly (readonly [string, string])[];
-  /** Leaves the site — gets the ↗ glyph so the handover is not a surprise. */
-  external?: boolean;
 };
 
 export type HeaderCopy = {
