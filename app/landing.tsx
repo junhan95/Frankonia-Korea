@@ -7,6 +7,10 @@ const copy = {
   ko: {
     tagline: "EMC SOLUTIONS",
     nav: { company: "회사소개", chamber: "챔버", equip: "EMC 시험장비", cyber: "CyberShield", contact: "문의", career: "채용", cta: "견적 문의" },
+    navSubs: {
+      company: ["인사말", "회사소개·연혁", "Frankonia Group", "오시는 길"],
+      contact: ["견적·기술 문의", "카탈로그 다운로드"],
+    },
     heroTag: "GERMAN ENGINEERING · KOREAN PARTNERSHIP",
     heroH1a: "EMC 시험의 모든 것,",
     heroH1b: "Frankonia Korea",
@@ -72,6 +76,10 @@ const copy = {
   en: {
     tagline: "EMC SOLUTIONS",
     nav: { company: "Company", chamber: "Anechoic Chambers", equip: "EMC Test Systems", cyber: "CyberShield", contact: "Contact", career: "Career", cta: "Get a Quote" },
+    navSubs: {
+      company: ["CEO Message", "About & History", "Frankonia Group", "Location"],
+      contact: ["Quote & Technical Support", "Catalog Downloads"],
+    },
     heroTag: "GERMAN ENGINEERING · KOREAN PARTNERSHIP",
     heroH1a: "Everything for EMC testing,",
     heroH1b: "Frankonia Korea",
@@ -137,6 +145,10 @@ const copy = {
   de: {
     tagline: "EMV-LÖSUNGEN",
     nav: { company: "Unternehmen", chamber: "Absorberkammern", equip: "EMV-Prüfsysteme", cyber: "CyberShield", contact: "Kontakt", career: "Karriere", cta: "Angebot anfragen" },
+    navSubs: {
+      company: ["Grußwort", "Über uns & Geschichte", "Frankonia Group", "Anfahrt"],
+      contact: ["Angebot & Support", "Katalog-Downloads"],
+    },
     heroTag: "DEUTSCHE TECHNIK · KOREANISCHE PARTNERSCHAFT",
     heroH1a: "Alles für die EMV-Prüfung,",
     heroH1b: "Frankonia Korea",
@@ -240,13 +252,48 @@ export default function Landing({ lang }: { lang: Lang }) {
           <a className="logo" href="#top">
             FRANKONIA<span className="fk">KOREA</span> <small>{t.tagline}</small>
           </a>
+          {/* Dropdown targets are landing anchors for now; they map 1:1 to the
+              routes planned in docs/FRANKONIA-WEB-PLAN.md (§2) once those pages exist. */}
           <nav className="menu">
-            <a href="#company">{t.nav.company}</a>
-            <a href="#chambers">{t.nav.chamber}</a>
-            <a href="#equipment">{t.nav.equip}</a>
-            <a href={cyberShieldUrl} target="_blank" rel="noopener">{t.nav.cyber}</a>
-            <a href="#contact">{t.nav.contact}</a>
-            <a href="#career">{t.nav.career}</a>
+            <div className="mi">
+              <a href="#company">{t.nav.company} <span className="caret">▼</span></a>
+              <div className="dropdown"><div className="dd-panel">
+                {t.navSubs.company.map((label) => (
+                  <a key={label} href="#company">{label}</a>
+                ))}
+              </div></div>
+            </div>
+            <div className="mi">
+              <a href="#chambers">{t.nav.chamber} <span className="caret">▼</span></a>
+              <div className="dropdown"><div className="dd-panel">
+                {/* Fixed category order — do not reorder (site map rule) */}
+                {chamberCards.map((c) => (
+                  <a key={c.name} href="#chambers">{c.name}</a>
+                ))}
+              </div></div>
+            </div>
+            <div className="mi">
+              <a href="#equipment">{t.nav.equip} <span className="caret">▼</span></a>
+              <div className="dropdown"><div className="dd-panel">
+                {equipCards.map((c) => (
+                  <a key={c.name} href="#equipment">{c.name}</a>
+                ))}
+              </div></div>
+            </div>
+            <div className="mi">
+              <a href={cyberShieldUrl} target="_blank" rel="noopener">{t.nav.cyber} <span className="dd-ext">↗</span></a>
+            </div>
+            <div className="mi">
+              <a href="#contact">{t.nav.contact} <span className="caret">▼</span></a>
+              <div className="dropdown"><div className="dd-panel">
+                {t.navSubs.contact.map((label) => (
+                  <a key={label} href="#contact">{label}</a>
+                ))}
+              </div></div>
+            </div>
+            <div className="mi">
+              <a href="#career">{t.nav.career}</a>
+            </div>
           </nav>
           <div className="lang">
             {languages.map(([code, label]) => (

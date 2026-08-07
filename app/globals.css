@@ -43,6 +43,18 @@ header { position: sticky; top: 0; z-index: 100; background: rgba(37, 40, 43, .9
 nav.menu { display: flex; gap: 18px; margin-left: auto; }
 nav.menu a { color: #d7dde4; font-size: 13.5px; font-weight: 500; padding: 6px 2px; border-bottom: 2px solid transparent; transition: .2s; white-space: nowrap; }
 nav.menu a:hover { color: #fff; border-color: var(--red); }
+
+/* Dropdown submenus */
+nav.menu .mi { position: relative; display: flex; align-items: center; }
+nav.menu .mi > a { display: inline-flex; align-items: center; gap: 5px; }
+.caret { font-size: 8px; opacity: .55; transform: translateY(1px); transition: .2s; }
+.mi:hover .caret { opacity: 1; transform: translateY(1px) rotate(180deg); }
+.dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); padding-top: 16px; display: none; z-index: 120; }
+.mi:hover .dropdown, .mi:focus-within .dropdown { display: block; }
+.dd-panel { background: var(--ink); border: .8px solid rgba(255, 255, 255, .14); border-radius: var(--radius); min-width: 216px; padding: 8px 0; box-shadow: 0 18px 36px rgba(0, 0, 0, .35); }
+.dd-panel a { display: block; padding: 9px 18px; color: #c9c9c9; font-size: 13.5px; font-weight: 400; border-bottom: 0; border-left: 2px solid transparent; }
+.dd-panel a:hover { color: #fff; border-left-color: var(--red); background: rgba(255, 255, 255, .05); border-bottom: 0; }
+.dd-panel .dd-ext { color: #9a9a9a; font-size: 11px; margin-left: 6px; }
 .lang { display: flex; gap: 2px; background: rgba(255, 255, 255, .08); border-radius: 6px; padding: 3px; }
 .lang a { color: #9db1c7; font-size: 12.5px; font-weight: 700; padding: 5px 10px; border-radius: 4px; transition: .15s; }
 .lang a.on { background: var(--red); color: #fff; }
