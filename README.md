@@ -32,14 +32,21 @@ GitHub Pages(스테이징)에서 서빙되며 검토가 끝나면 정식 도메�
 여섯 개 GNB — Company · Anechoic Chambers · EMC Test Systems · CyberShield ·
 Contact · Career. 로케일당 42페이지, 합계 84페이지.
 
-| Branch | Pages | 무엇이 있는가 |
-|---|---|---|
-| Landing | 1 | 히어로, 세 개 제품 축 요약, 레퍼런스, 컨택 밴드 |
-| Company | 5 | Philosophy · History · Publications · Events · Career |
-| Anechoic Chambers | 15 | 개요 + 산업 5 + 챔버 형태 6 + 기술 4 (FrankoSorb · 차폐 게이트 · 자동화 · 서비스) + References |
-| EMC Test Systems | 17 | 개요 + 산업 5 + 시험 종류 4 + 제품군 6 + 규격 인덱스 |
-| CyberShield | 1 | 제품 페이지 전문을 이 사이트의 헤더·푸터 안에서 렌더 |
-| Downloads | 1 | 카탈로그·포토북·인증서 허브 (파일 준비 중) |
+| Branch | Pages | 무엇이 있는가 | 상태 |
+|---|---|---|---|
+| Landing | 1 | 히어로, 세 개 제품 축 요약, 레퍼런스, 컨택 밴드 | 완성 |
+| Company | 5 | Philosophy · History · Publications · Events · Career | 완성 |
+| Anechoic Chambers | 15 | 개요 + 산업 5 + 챔버 형태 6 + 기술 4 (FrankoSorb · 차폐 게이트 · 자동화 · 서비스) + References | 골격 |
+| EMC Test Systems | 17 | 개요 + 산업 5 + 시험 종류 4 + 제품군 6 + 규격 인덱스 | 골격 |
+| CyberShield | 1 | 제품 페이지 전문을 이 사이트의 헤더·푸터 안에서 렌더 | 완성 |
+| Downloads | 1 | 카탈로그·포토북·인증서 허브 | 골격 |
+
+**"골격"이 뜻하는 것.** 라우트 · 분류 축 · 메타데이터 · 브레드크럼 · 모델 목록은
+실제 데이터다 — 챔버 27종과 시험 시스템 36개 제품은 이름과 한 줄 설명까지, 24개
+규격은 산업군별로 묶여 각자의 산업 페이지로 이어진다. 없는 것은 **그 위에 올라갈
+본문·사양표·사진**이고, 해당 페이지들은 "콘텐츠 준비 중입니다" 밴드와 자료 요청
+링크를 달아 그 사실을 읽는 사람에게 그대로 말한다. 본사 원본을 정리하는 대로 이
+밴드가 있는 자리를 채우면 된다.
 
 ## Highlights
 
@@ -187,8 +194,10 @@ python deploy/deploy.py
   `next/font`로 자체 호스팅하면 이 문제와 `htaccess`의 CSP 예외가 함께 사라진다.
 - **SFTP 업로드가 호스트 키를 검증하지 않는다.** `deploy/upload.py`가 접속 대상을
   확인하지 않으므로, 중간자가 프로덕션 문서 루트에 파일을 밀어 넣을 수 있다.
-- **Downloads에 파일이 없다.** 내비게이션 세 곳이 이 페이지를 가리키는데 페이지는
-  "준비 중"이라고만 말한다.
+- **Chambers · Test Systems 32페이지의 본문이 비어 있다.** 위 표의 "골격" — 분류와
+  모델 목록은 서 있고 사양·설명·사진이 아직 없다. `docs/source/`에 Company를 정리한
+  것과 같은 방식으로 본사 원본을 페이지별로 옮기는 작업이 남았다.
+- **Downloads에 파일이 없다.** 내비게이션 세 곳이 이 페이지를 가리킨다.
 - **Contact가 페이지가 아니라 앵커다.** 기획서 §3.7의 견적·기술 문의 폼은 아직 없고,
   랜딩의 `#contact` 밴드에서 `mailto:`로 연결된다.
 - **모델 상세 페이지가 없다.** 27 + 36개 모델은 인덱스에 이름과 사양 요약까지만
