@@ -95,3 +95,18 @@ Chambers / EMC Test Systems 섹션을 만들 때 쓸 자료다.
 - 직링크 PDF 예: `/wp-content/uploads/2019/09/amplifiers_web.pdf` (앰프 종합 카탈로그),
   `/wp-content/uploads/2017/10/2008_Antennas_web.pdf` (안테나 종합 카탈로그),
   `/wp-content/uploads/2017/10/GTEM.pdf` (GTEM 셀)
+
+## 7. ⚠️ 미해결 — 네브바가 이 페이지를 카탈로그로 안내한다
+
+`app/site-header.tsx`의 Contact 그룹에 **"카탈로그 다운로드 / Catalog Downloads"**
+항목이 있고, 그 링크가 이 페이지를 가리킨다(`sectionPath("publications")`).
+그 항목은 이 페이지가 카탈로그 안내였을 때 만들어진 것이라 지금은 **이름과
+목적지가 어긋난다.** 논문 목록을 열어 주면서 카탈로그를 약속하고 있다.
+
+해결안 세 가지 — 어느 것도 이번 작업 범위에서 단독으로 정할 수 없어 남겨 둔다.
+
+1. 목적지를 본사 Download Area로 바꾼다. 다만 위 목록처럼 **두 곳**이라 항목
+   하나로는 한쪽만 고르게 된다.
+2. 항목을 둘로 나눈다 (챔버 / 시험 시스템).
+3. Anechoic Chambers·EMC Test Systems 서브페이지를 만들 때 각 섹션 안으로
+   옮긴다 — 본사 사이트의 구조가 이쪽이다. **가장 원본에 가깝다.**
