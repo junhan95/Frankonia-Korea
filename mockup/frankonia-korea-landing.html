@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frankonia Korea — EMC Total Solution Partner</title>
+<style>
+  /* Design tokens: FRANKONIA-DESIGN-REFERENCE.md (frankonia-cybershield.com 실측) */
+  :root{
+    --navy:#25282b; --navy2:#25282b; --steel:#3a3e42;
+    --red:#e60000; --red-d:#bd0000;
+    --ink:#25282b; --sub:#7e7e7e; --line:#d9d9d9; --mute:#bebebe;
+    --bg:#ffffff; --bg2:#f2f2f2;
+    --pill:60px; --radius:6px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:Inter,'Noto Sans KR','Helvetica Neue',Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+  img{max-width:100%}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* ===== Header ===== */
+  header{position:sticky;top:0;z-index:100;background:rgba(37,40,43,.97);backdrop-filter:blur(6px);border-bottom:1px solid rgba(255,255,255,.08)}
+  .nav{display:flex;align-items:center;gap:18px;height:68px}
+  .logo{display:flex;align-items:baseline;gap:8px;color:#fff;font-weight:800;font-size:20px;letter-spacing:.5px}
+  .logo .fk{color:var(--red)}
+  .logo small{font-weight:400;font-size:11px;color:#9db1c7;letter-spacing:2px}
+  nav.menu{display:flex;gap:18px;margin-left:auto}
+  nav.menu a{color:#d7dde4;font-size:13.5px;font-weight:500;padding:6px 2px;border-bottom:2px solid transparent;transition:.2s;white-space:nowrap}
+  nav.menu a:hover{color:#fff;border-color:var(--red)}
+  .lang{display:flex;gap:2px;background:rgba(255,255,255,.08);border-radius:6px;padding:3px}
+  .lang button{border:0;background:transparent;color:#9db1c7;font-size:12.5px;font-weight:700;padding:5px 10px;border-radius:4px;cursor:pointer;transition:.15s}
+  .lang button.on{background:var(--red);color:#fff}
+  .cta-top{background:var(--red);color:#fff;font-size:14px;font-weight:400;padding:10px 22px;border-radius:var(--pill);transition:.2s;white-space:nowrap}
+  .cta-top:hover{background:var(--red-d)}
+
+  /* ===== Hero ===== */
+  .hero{position:relative;background:var(--navy);color:#fff;overflow:hidden}
+  .hero-in{position:relative;padding:110px 0 120px;max-width:820px}
+  .hero .tag{display:inline-block;color:var(--red);font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:22px}
+  .hero h1{font-size:52px;line-height:1.12;font-weight:800;text-transform:uppercase;letter-spacing:-.5px;margin-bottom:22px;word-break:keep-all}
+  h1,h2,h3,h4,p{word-break:keep-all}
+  .hero h1 em{font-style:normal;color:var(--red)}
+  .hero p{font-size:17px;color:#c9c9c9;margin-bottom:36px;max-width:620px}
+  .btns{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:13px 30px;border-radius:var(--pill);font-size:16px;font-weight:400;transition:.2s}
+  .btn-red{background:var(--red);color:#fff}
+  .btn-red:hover{background:var(--red-d)}
+  .btn-ghost{border:.8px solid rgba(255,255,255,.45);color:#fff}
+  .btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+  .hero-stats{position:relative;display:flex;gap:0;border-top:1px solid rgba(255,255,255,.12)}
+  .hero-stats .st{flex:1;padding:22px 10px;text-align:center;border-right:1px solid rgba(255,255,255,.08)}
+  .hero-stats .st:last-child{border-right:0}
+  .hero-stats b{display:block;font-size:26px;color:#fff}
+  .hero-stats span{font-size:12.5px;color:#9a9a9a;letter-spacing:.5px}
+
+  /* ===== Sections ===== */
+  section{padding:110px 0}
+  .sec-head{text-align:center;max-width:680px;margin:0 auto 56px}
+  .sec-head .kicker{display:inline-block;color:var(--red);font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+  .sec-head h2{font-size:40px;font-weight:300;line-height:1.1;margin-bottom:14px}
+  .sec-head p{color:var(--sub);font-size:15.5px}
+
+  /* 3 solution cards */
+  .sol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .sol{position:relative;border:.8px solid var(--mute);border-radius:var(--radius);overflow:hidden;background:#fff;transition:.25s;display:flex;flex-direction:column}
+  .sol:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(37,40,43,.10)}
+  .sol .thumb{height:170px;display:flex;align-items:center;justify-content:center;position:relative}
+  .sol .thumb svg{width:76px;height:76px}
+  .t1{background:#25282b}
+  .t2{background:#3a3e42}
+  .t3{background:linear-gradient(135deg,#25282b,#bd0000)}
+  .sol .body{padding:26px 26px 28px;flex:1;display:flex;flex-direction:column}
+  .sol h3{font-size:20px;font-weight:800;margin-bottom:10px}
+  .sol p{font-size:14px;color:var(--sub);margin-bottom:18px;flex:1}
+  .sol ul{list-style:none;margin-bottom:22px}
+  .sol li{font-size:13.5px;padding:6px 0 6px 22px;border-bottom:1px dashed var(--line);position:relative;color:#33415a}
+  .sol li::before{content:"›";position:absolute;left:6px;color:var(--red);font-weight:800}
+  .sol .go{align-self:flex-start;font-size:14px;font-weight:700;color:var(--red)}
+  .sol .go:hover{text-decoration:underline}
+  .ext{display:inline-block;font-size:10.5px;background:var(--bg2);border:1px solid var(--line);color:var(--sub);border-radius:4px;padding:1px 7px;margin-left:8px;vertical-align:2px}
+
+  /* lineup cards */
+  .alt{background:var(--bg2)}
+  .line-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+  .line-grid.three{grid-template-columns:repeat(3,1fr)}
+  .lc{background:#fff;border:.8px solid var(--mute);border-radius:var(--radius);padding:28px 24px;transition:.2s}
+  .lc:hover{box-shadow:0 10px 24px rgba(37,40,43,.09);transform:translateY(-3px)}
+  .lc .ic{width:46px;height:46px;border-radius:8px;background:var(--navy);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+  .lc .ic svg{width:24px;height:24px}
+  .lc h4{font-size:16.5px;font-weight:800;margin-bottom:8px}
+  .lc p{font-size:13.5px;color:var(--sub)}
+  .lc .models{margin-top:12px;font-size:12px;color:#8494a8;letter-spacing:.3px}
+
+  /* trust */
+  .trust{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
+  .trust h2{font-size:36px;font-weight:300;line-height:1.15;margin-bottom:16px}
+  .trust h2 em{font-style:normal;color:var(--red)}
+  .trust p{color:var(--sub);font-size:15px;margin-bottom:14px}
+  .badges{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .bd{background:#fff;border:.8px solid var(--mute);border-radius:var(--radius);padding:22px}
+  .bd b{display:block;font-size:24px;color:var(--navy)}
+  .bd span{font-size:13px;color:var(--sub)}
+
+  /* contact band */
+  .band{background:var(--red);color:#fff;text-align:center;padding:100px 24px}
+  .band h2{font-size:40px;font-weight:300;margin-bottom:12px}
+  .band p{color:rgba(255,255,255,.85);margin-bottom:30px;font-size:15.5px}
+  .band .btn-red{background:#fff;color:var(--red)}
+  .band .btn-red:hover{background:#f2f2f2}
+
+  /* footer */
+  footer{background:var(--navy);color:#9a9a9a;padding:52px 0 40px;font-size:13.5px}
+  .foot{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:34px}
+  footer h5{color:#fff;font-size:14px;margin-bottom:14px;letter-spacing:.5px}
+  footer li{list-style:none;padding:4px 0}
+  footer a:hover{color:#fff}
+  .copy{border-top:.8px solid rgba(255,255,255,.12);padding-top:22px;font-size:12.5px;color:#7e7e7e;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+  @media(max-width:960px){
+    nav.menu{display:none}
+    .sol-grid,.line-grid,.line-grid.three{grid-template-columns:1fr 1fr}
+    .trust{grid-template-columns:1fr}
+    .hero h1{font-size:34px}
+  }
+  @media(max-width:600px){
+    .sol-grid,.line-grid,.line-grid.three{grid-template-columns:1fr}
+    .foot{grid-template-columns:1fr}
+    .hero-stats{flex-wrap:wrap}
+    .hero-stats .st{flex:1 1 50%}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#top">FRANKONIA<span class="fk">KOREA</span> <small data-i18n="tagline">EMC SOLUTIONS</small></a>
+    <nav class="menu">
+      <a href="#company" data-i18n="nav_company">Company</a>
+      <a href="#chambers" data-i18n="nav_chamber">Anechoic Chambers</a>
+      <a href="#equipment" data-i18n="nav_equip">EMC Test Systems</a>
+      <a href="https://www.frankonia-cybershield.com/" target="_blank" rel="noopener" data-i18n="nav_cyber">CyberShield</a>
+      <a href="#contact" data-i18n="nav_contact">Contact</a>
+      <a href="#career" data-i18n="nav_career">Career</a>
+    </nav>
+    <div class="lang">
+      <button class="on" onclick="setLang('ko',this)">KO</button>
+      <button onclick="setLang('en',this)">EN</button>
+      <button onclick="setLang('de',this)">DE</button>
+    </div>
+    <a class="cta-top" href="#contact" data-i18n="nav_cta">견적 문의</a>
+  </div>
+</header>
+
+<div class="hero" id="top">
+  <div class="wrap hero-in">
+    <span class="tag" data-i18n="hero_tag">GERMAN ENGINEERING · KOREAN PARTNERSHIP</span>
+    <h1 data-i18n-html="hero_h1">EMC 시험의 모든 것,<br><em>Frankonia Korea</em>가 함께합니다</h1>
+    <p data-i18n="hero_p">독일 Frankonia의 EMC 챔버와 시험 시스템을 한국 시장에 공급하는 공식 파트너로서, 컨설팅부터 구축·사후지원까지 토탈 솔루션을 제공합니다.</p>
+    <div class="btns">
+      <a class="btn btn-red" href="#solutions" data-i18n="hero_b1">솔루션 보기</a>
+      <a class="btn btn-ghost" href="#contact" data-i18n="hero_b2">견적·기술 상담</a>
+    </div>
+  </div>
+  <div class="wrap hero-stats">
+    <div class="st"><b>1987</b><span data-i18n="st1">Frankonia 설립</span></div>
+    <div class="st"><b>80+</b><span data-i18n="st2">공급 국가</span></div>
+    <div class="st"><b>35+</b><span data-i18n="st3">챔버 라인업</span></div>
+    <div class="st"><b>3</b><span data-i18n="st4">핵심 솔루션 영역</span></div>
+  </div>
+</div>
+
+<section id="solutions">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker" data-i18n="sol_k">OUR SOLUTIONS</span>
+      <h2 data-i18n="sol_h">3대 핵심 솔루션</h2>
+      <p data-i18n="sol_p">EMC 챔버, 시험장비, 그리고 CyberShield까지 — 시험 환경 구축에 필요한 모든 것을 제공합니다.</p>
+    </div>
+    <div class="sol-grid">
+      <div class="sol">
+        <div class="thumb t1">
+          <svg viewBox="0 0 64 64" fill="none"><rect x="8" y="14" width="48" height="36" rx="3" stroke="#fff" stroke-width="2.5"/><path d="M14 20l6 6M24 20l6 6M34 20l6 6M44 20l6 6M14 30l6 6M24 30l6 6M34 30l6 6M44 30l6 6" stroke="#e60000" stroke-width="2"/><rect x="26" y="42" width="12" height="8" fill="#fff" opacity=".8"/></svg>
+        </div>
+        <div class="body">
+          <h3 data-i18n="c1_h">챔버 <span style="color:var(--sub);font-weight:500;font-size:14px">Chambers</span></h3>
+          <p data-i18n="c1_p">Frankosorb® 흡수체 기반의 모듈형 EMC 챔버. 사전 인증부터 완전 인증까지 표준·맞춤 설계를 모두 지원합니다.</p>
+          <ul>
+            <li data-i18n="c1_l1">Automotive</li>
+            <li data-i18n="c1_l2">Military</li>
+            <li data-i18n="c1_l3">Commercial</li>
+            <li data-i18n="c1_l4">Powertrain</li>
+            <li data-i18n="c1_l5">RVC (Reverberation Chamber)</li>
+            <li data-i18n="c1_l6">Others</li>
+          </ul>
+          <a class="go" href="#chambers" data-i18n="more">자세히 보기 →</a>
+        </div>
+      </div>
+      <div class="sol">
+        <div class="thumb t2">
+          <svg viewBox="0 0 64 64" fill="none"><rect x="10" y="26" width="34" height="24" rx="3" stroke="#fff" stroke-width="2.5"/><path d="M15 33h10M15 39h14M15 45h8" stroke="#e60000" stroke-width="2"/><circle cx="37" cy="42" r="4" stroke="#fff" stroke-width="2"/><path d="M46 34l8-8m0 0v7m0-7h-7" stroke="#fff" stroke-width="2.5"/><path d="M48 18c3 0 6 1.5 6 1.5" stroke="#e60000" stroke-width="2"/></svg>
+        </div>
+        <div class="body">
+          <h3 data-i18n="c2_h">EMC 시험장비 <span style="color:var(--sub);font-weight:500;font-size:14px">Test Equipment</span></h3>
+          <p data-i18n="c2_p">FFT 기반 EMI 리시버부터 광대역 안테나, 각종 액세서리까지 국제 규격에 부합하는 측정 장비 일체를 공급합니다.</p>
+          <ul>
+            <li data-i18n="c2_l1">EMI-Receiver (9kHz–6GHz)</li>
+            <li data-i18n="c2_l2">Antennas (9kHz–40GHz)</li>
+            <li data-i18n="c2_l3">Accessories · Amplifiers · GTEM</li>
+          </ul>
+          <a class="go" href="#equipment" data-i18n="more2">자세히 보기 →</a>
+        </div>
+      </div>
+      <div class="sol" id="cybershield">
+        <div class="thumb t3">
+          <svg viewBox="0 0 64 64" fill="none"><path d="M32 8l20 8v14c0 12-8.5 21-20 26C20.5 51 12 42 12 30V16l20-8z" stroke="#fff" stroke-width="2.5"/><path d="M23 31l6 6 12-12" stroke="#e60000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="body">
+          <h3>CyberShield <span class="ext" data-i18n="ext">외부 링크</span></h3>
+          <p data-i18n="c3_p">전자파 보안·차폐 솔루션 CyberShield. 상세 정보는 CyberShield 전용 페이지에서 확인하실 수 있습니다.</p>
+          <ul>
+            <li data-i18n="c3_l1">보안 차폐 솔루션</li>
+            <li data-i18n="c3_l2">전용 사이트 연결 (기존 링크 활용)</li>
+          </ul>
+          <a class="go" href="https://www.frankonia-cybershield.com/" target="_blank" rel="noopener" data-i18n="c3_go">CyberShield 바로가기 ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="chambers">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">CHAMBERS</span>
+      <h2 data-i18n="ch_h">챔버 라인업</h2>
+      <p data-i18n="ch_p">적용 분야에 맞는 최적의 챔버를 제안합니다.</p>
+    </div>
+    <div class="line-grid three">
+      <div class="lc">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M3 15l2.5-6h9L19 15M3 15h18M5 15v3m14-3v3M8 12h6" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+        <h4>Automotive</h4>
+        <p data-i18n="ch1">차량·전장부품 EMC 시험용 챔버 (ECE R10, CISPR 25, ISO 11452)</p>
+        <div class="models">ACTC · UCC · AVTC · SAC-10V</div>
+      </div>
+      <div class="lc">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l8 3.5V12c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6.5L12 3z" stroke="#fff" stroke-width="1.7"/><path d="M12 8v5m0 3v.5" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+        <h4>Military</h4>
+        <p data-i18n="ch2">MIL-STD-461 대응 군수·방산 EMC 시험 챔버</p>
+        <div class="models">MIL-STD Chamber · Advanced · MIL CHC</div>
+      </div>
+      <div class="lc">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="2" stroke="#fff" stroke-width="1.7"/><path d="M8 20V10h8v10M10 7h4" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+        <h4>Commercial</h4>
+        <p data-i18n="ch3">일반 산업·전자기기용 표준 EMC 챔버</p>
+        <div class="models">SAC 시리즈 · FAC 시리즈 · CHC · Shielded Room</div>
+      </div>
+      <div class="lc">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#fff" stroke-width="1.7"/><path d="M12 8v4l3 2M12 4V2m0 20v-2M4 12H2m20 0h-2" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+        <h4>Powertrain</h4>
+        <p data-i18n="ch5">전기차·파워트레인 전용 EMC 시험 챔버 솔루션</p>
+        <div class="models">EDTC-SA · EDTC-AX · EDTC-BB</div>
+      </div>
+      <div class="lc">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12c2-4 4-6 8-6s6 2 8 6c-2 4-4 6-8 6s-6-2-8-6z" stroke="#fff" stroke-width="1.7"/><path d="M9 12a3 3 0 106 0 3 3 0 00-6 0z" stroke="#fff" stroke-width="1.7"/></svg></div>
+        <h4>RVC</h4>
+        <p data-i18n="ch4">잔향실(Reverberation Chamber) — 고효율 방사 내성 시험</p>
+        <div class="models">Reverberation Chamber</div>
+      </div>
+      <div class="lc">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke="#fff" stroke-width="1.7"/><rect x="13" y="3" width="8" height="8" rx="1.5" stroke="#fff" stroke-width="1.7"/><rect x="3" y="13" width="8" height="8" rx="1.5" stroke="#fff" stroke-width="1.7"/><path d="M17 14v6m-3-3h6" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+        <h4>Others</h4>
+        <p data-i18n="ch6">특수 목적·맞춤형 챔버 및 기타 솔루션</p>
+        <div class="models">CTC · Reverberation Tent</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="equipment">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">TEST EQUIPMENT</span>
+      <h2 data-i18n="eq_h">EMC 시험장비</h2>
+      <p data-i18n="eq_p">국제 규격(IEC · CISPR · ISO · MIL-STD)에 부합하는 측정 장비 라인업</p>
+    </div>
+    <div class="line-grid three">
+      <div class="lc">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="11" rx="2" stroke="#fff" stroke-width="1.7"/><path d="M6 12h6m-6 3h4" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/><circle cx="17" cy="13.5" r="2" stroke="#fff" stroke-width="1.5"/><path d="M12 8V5m0 0L9 3m3 2l3-2" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h4>EMI-Receiver</h4>
+        <p data-i18n="eq1">FFT 기반 고속 EMI 측정 리시버. CISPR 16-1-1 완전 부합, 9kHz~6GHz 대역.</p>
+        <div class="models">ERX-6 · ERC-6</div>
+      </div>
+      <div class="lc">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21V9m0 0L5 3m7 6l7-6M7.5 5.2L12 9l4.5-3.8" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 21h8" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+        <h4>Antennas</h4>
+        <p data-i18n="eq2">방사 시험용 광대역 안테나 시스템. 9kHz~40GHz 전 대역 커버.</p>
+        <div class="models" data-i18n="eq2m">바이코니컬 · 로그페리오딕 · 혼 안테나</div>
+      </div>
+      <div class="lc">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="10" width="8" height="8" rx="1.5" stroke="#fff" stroke-width="1.7"/><rect x="13" y="6" width="8" height="12" rx="1.5" stroke="#fff" stroke-width="1.7"/><path d="M6 14h2m7-4h2m-2 4h4" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+        <h4>Accessories</h4>
+        <p data-i18n="eq3">RF 파워앰프(최대 12kW), GTEM 셀, E-field 센서, RF 파워미터 등 주변 장비 일체.</p>
+        <div class="models">Amplifier · GTEM · Sensor · Meter</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="company">
+  <div class="wrap trust">
+    <div>
+      <span class="kicker" style="color:var(--red);font-size:13px;font-weight:800;letter-spacing:2.5px">WHY FRANKONIA KOREA</span>
+      <h2 data-i18n-html="tr_h">독일 본사의 기술력,<br><em>한국 파트너</em>의 밀착 지원</h2>
+      <p data-i18n="tr_p1">Frankonia는 1987년 설립 이후 전 세계 80여 개국에 EMC 챔버와 시험 시스템을 공급해 온 독일의 EMC 전문 기업입니다.</p>
+      <p data-i18n="tr_p2">Frankonia Korea는 국내 고객에게 컨설팅, 설계, 구축, 교정·유지보수까지 전 과정을 한국어로 지원하며, 본사 엔지니어링 팀과의 직접 협업으로 프로젝트를 수행합니다.</p>
+    </div>
+    <div class="badges">
+      <div class="bd"><b>Since 1987</b><span data-i18n="bd1">독일 Frankonia 설립</span></div>
+      <div class="bd"><b>80+</b><span data-i18n="bd2">공급 국가</span></div>
+      <div class="bd"><b data-i18n="bd3b">공식 파트너</b><span data-i18n="bd3">Frankonia Group 한국 파트너</span></div>
+      <div class="bd"><b data-i18n="bd4b">토탈 지원</b><span data-i18n="bd4">컨설팅–구축–사후관리</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="band" id="contact">
+  <h2 data-i18n="ct_h">견적 및 기술 상담</h2>
+  <p data-i18n="ct_p">프로젝트 요구사항을 알려주시면 최적의 솔루션을 제안해 드립니다.</p>
+  <div class="btns" style="justify-content:center">
+    <a class="btn btn-red" href="mailto:info@frankonia-korea.com" data-i18n="ct_b1">이메일 문의</a>
+    <a class="btn btn-ghost" href="tel:+8200000000" data-i18n="ct_b2">전화 상담</a>
+  </div>
+</div>
+
+<footer id="career">
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <h5>FRANKONIA KOREA</h5>
+        <p data-i18n="ft_desc" style="max-width:340px">독일 Frankonia의 EMC 챔버 및 시험 시스템 한국 공식 파트너</p>
+        <p style="margin-top:12px" data-i18n="ft_addr">주소 · 사업자등록번호 · 대표자명 (추후 기입)</p>
+      </div>
+      <div>
+        <h5 data-i18n="ft_sol">솔루션</h5>
+        <ul>
+          <li><a href="#chambers" data-i18n="ft_l1">챔버</a></li>
+          <li><a href="#equipment" data-i18n="ft_l2">EMC 시험장비</a></li>
+          <li><a href="https://www.frankonia-cybershield.com/" target="_blank" rel="noopener">CyberShield</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 data-i18n="ft_link">링크</h5>
+        <ul>
+          <li><a href="https://frankonia-solutions.com/" target="_blank" rel="noopener">Frankonia Group (독일 본사)</a></li>
+          <li><a href="#" data-i18n="ft_priv">개인정보처리방침</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copy">
+      <span>© 2026 Frankonia Korea. All rights reserved.</span>
+      <span>www.frankonia-korea.com</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const I18N = {
+  ko: {
+    tagline:"EMC SOLUTIONS",
+    nav_company:"회사소개", nav_chamber:"챔버", nav_equip:"EMC 시험장비", nav_cyber:"CyberShield", nav_contact:"문의", nav_career:"채용", nav_cta:"견적 문의",
+    hero_tag:"GERMAN ENGINEERING · KOREAN PARTNERSHIP",
+    hero_h1:"EMC 시험의 모든 것,<br><em>Frankonia Korea</em>가 함께합니다",
+    hero_p:"독일 Frankonia의 EMC 챔버와 시험 시스템을 한국 시장에 공급하는 공식 파트너로서, 컨설팅부터 구축·사후지원까지 토탈 솔루션을 제공합니다.",
+    hero_b1:"솔루션 보기", hero_b2:"견적·기술 상담",
+    st1:"Frankonia 설립", st2:"공급 국가", st3:"챔버 라인업", st4:"핵심 솔루션 영역",
+    sol_k:"OUR SOLUTIONS", sol_h:"3대 핵심 솔루션",
+    sol_p:"EMC 챔버, 시험장비, 그리고 CyberShield까지 — 시험 환경 구축에 필요한 모든 것을 제공합니다.",
+    c1_h:"챔버", c1_p:"Frankosorb® 흡수체 기반의 모듈형 EMC 챔버. 사전 인증부터 완전 인증까지 표준·맞춤 설계를 모두 지원합니다.",
+    c1_l1:"Automotive", c1_l2:"Military", c1_l3:"Commercial", c1_l4:"Powertrain", c1_l5:"RVC (Reverberation Chamber)", c1_l6:"Others",
+    more:"자세히 보기 →", more2:"자세히 보기 →",
+    c2_h:"EMC 시험장비", c2_p:"FFT 기반 EMI 리시버부터 광대역 안테나, 각종 액세서리까지 국제 규격에 부합하는 측정 장비 일체를 공급합니다.",
+    c2_l1:"EMI-Receiver (9kHz–6GHz)", c2_l2:"Antennas (9kHz–40GHz)", c2_l3:"Accessories · Amplifiers · GTEM",
+    ext:"외부 링크",
+    c3_p:"전자파 보안·차폐 솔루션 CyberShield. 상세 정보는 CyberShield 전용 페이지에서 확인하실 수 있습니다.",
+    c3_l1:"보안 차폐 솔루션", c3_l2:"전용 사이트 연결 (기존 링크 활용)", c3_go:"CyberShield 바로가기 ↗",
+    ch_h:"챔버 라인업", ch_p:"적용 분야에 맞는 최적의 챔버를 제안합니다.",
+    ch1:"차량·전장부품 EMC 시험용 챔버 (ECE R10, CISPR 25, ISO 11452)",
+    ch2:"MIL-STD-461 대응 군수·방산 EMC 시험 챔버",
+    ch3:"일반 산업·전자기기용 표준 EMC 챔버",
+    ch4:"잔향실(Reverberation Chamber) — 고효율 방사 내성 시험",
+    ch5:"전기차·파워트레인 전용 EMC 시험 챔버 솔루션",
+    ch6:"특수 목적·맞춤형 챔버 및 기타 솔루션",
+    eq_h:"EMC 시험장비", eq_p:"국제 규격(IEC · CISPR · ISO · MIL-STD)에 부합하는 측정 장비 라인업",
+    eq1:"FFT 기반 고속 EMI 측정 리시버. CISPR 16-1-1 완전 부합, 9kHz~6GHz 대역.",
+    eq2:"방사 시험용 광대역 안테나 시스템. 9kHz~40GHz 전 대역 커버.",
+    eq2m:"바이코니컬 · 로그페리오딕 · 혼 안테나",
+    eq3:"RF 파워앰프(최대 12kW), GTEM 셀, E-field 센서, RF 파워미터 등 주변 장비 일체.",
+    tr_h:"독일 본사의 기술력,<br><em>한국 파트너</em>의 밀착 지원",
+    tr_p1:"Frankonia는 1987년 설립 이후 전 세계 80여 개국에 EMC 챔버와 시험 시스템을 공급해 온 독일의 EMC 전문 기업입니다.",
+    tr_p2:"Frankonia Korea는 국내 고객에게 컨설팅, 설계, 구축, 교정·유지보수까지 전 과정을 한국어로 지원하며, 본사 엔지니어링 팀과의 직접 협업으로 프로젝트를 수행합니다.",
+    bd1:"독일 Frankonia 설립", bd2:"공급 국가", bd3b:"공식 파트너", bd3:"Frankonia Group 한국 파트너", bd4b:"토탈 지원", bd4:"컨설팅–구축–사후관리",
+    ct_h:"견적 및 기술 상담", ct_p:"프로젝트 요구사항을 알려주시면 최적의 솔루션을 제안해 드립니다.",
+    ct_b1:"이메일 문의", ct_b2:"전화 상담",
+    ft_desc:"독일 Frankonia의 EMC 챔버 및 시험 시스템 한국 공식 파트너",
+    ft_addr:"주소 · 사업자등록번호 · 대표자명 (추후 기입)",
+    ft_sol:"솔루션", ft_l1:"챔버", ft_l2:"EMC 시험장비", ft_link:"링크", ft_priv:"개인정보처리방침"
+  },
+  en: {
+    tagline:"EMC SOLUTIONS",
+    nav_company:"Company", nav_chamber:"Anechoic Chambers", nav_equip:"EMC Test Systems", nav_cyber:"CyberShield", nav_contact:"Contact", nav_career:"Career", nav_cta:"Get a Quote",
+    hero_tag:"GERMAN ENGINEERING · KOREAN PARTNERSHIP",
+    hero_h1:"Everything for EMC Testing,<br>with <em>Frankonia Korea</em>",
+    hero_p:"As the official Korean partner of Frankonia Germany, we deliver EMC chambers and test systems with total support — from consulting to installation and after-sales service.",
+    hero_b1:"Explore Solutions", hero_b2:"Request a Quote",
+    st1:"Frankonia founded", st2:"Countries supplied", st3:"Chamber models", st4:"Core solution areas",
+    sol_k:"OUR SOLUTIONS", sol_h:"Three Core Solutions",
+    sol_p:"EMC chambers, test equipment, and CyberShield — everything you need to build your test environment.",
+    c1_h:"Chambers", c1_p:"Modular EMC chambers built on Frankosorb® absorber technology. From pre-compliance to full compliance, standardized or fully customized.",
+    c1_l1:"Automotive", c1_l2:"Military", c1_l3:"Commercial", c1_l4:"Powertrain", c1_l5:"RVC (Reverberation Chamber)", c1_l6:"Others",
+    more:"Learn more →", more2:"Learn more →",
+    c2_h:"EMC Test Systems", c2_p:"From FFT-based EMI receivers to broadband antennas and accessories — complete measurement equipment compliant with international standards.",
+    c2_l1:"EMI-Receiver (9kHz–6GHz)", c2_l2:"Antennas (9kHz–40GHz)", c2_l3:"Accessories · Amplifiers · GTEM",
+    ext:"External link",
+    c3_p:"CyberShield — electromagnetic security & shielding solutions. Full details are available on the dedicated CyberShield site.",
+    c3_l1:"Security shielding solutions", c3_l2:"Dedicated site (existing link)", c3_go:"Visit CyberShield ↗",
+    ch_h:"Chamber Line-up", ch_p:"The right chamber for every application field.",
+    ch1:"Chambers for vehicle & component EMC testing (ECE R10, CISPR 25, ISO 11452)",
+    ch2:"Defense-grade EMC chambers for MIL-STD-461",
+    ch3:"Standard EMC chambers for industrial & consumer electronics",
+    ch4:"Reverberation chambers for high-efficiency radiated immunity testing",
+    ch5:"Dedicated EMC chambers for e-mobility & powertrain testing",
+    ch6:"Special-purpose and customized chamber solutions",
+    eq_h:"EMC Test Systems", eq_p:"Measurement equipment compliant with IEC · CISPR · ISO · MIL-STD",
+    eq1:"FFT-based high-speed EMI receivers. Fully CISPR 16-1-1 compliant, 9kHz–6GHz.",
+    eq2:"Broadband antenna systems for radiated testing, covering 9kHz–40GHz.",
+    eq2m:"Biconical · Log-periodic · Horn antennas",
+    eq3:"RF power amplifiers (up to 12kW), GTEM cells, E-field sensors, RF power meters and more.",
+    tr_h:"German Engineering,<br>Supported by Your <em>Korean Partner</em>",
+    tr_p1:"Since 1987, Frankonia has supplied EMC chambers and test systems to more than 80 countries worldwide.",
+    tr_p2:"Frankonia Korea supports domestic customers through the entire project life cycle — consulting, design, installation, calibration and maintenance — in direct collaboration with the engineering team in Germany.",
+    bd1:"Frankonia founded in Germany", bd2:"Countries supplied", bd3b:"Official Partner", bd3:"Korean partner of Frankonia Group", bd4b:"Total Support", bd4:"Consulting – Installation – After-sales",
+    ct_h:"Quotation & Technical Consulting", ct_p:"Tell us your project requirements and we will propose the optimal solution.",
+    ct_b1:"Email Us", ct_b2:"Call Us",
+    ft_desc:"Official Korean partner for Frankonia EMC chambers and test systems",
+    ft_addr:"Address · Business Reg. No. · CEO (to be added)",
+    ft_sol:"Solutions", ft_l1:"Chambers", ft_l2:"EMC Test Equipment", ft_link:"Links", ft_priv:"Privacy Policy"
+  },
+  de: {
+    tagline:"EMV-LÖSUNGEN",
+    nav_company:"Unternehmen", nav_chamber:"Absorberkammern", nav_equip:"EMV-Prüfsysteme", nav_cyber:"CyberShield", nav_contact:"Kontakt", nav_career:"Karriere", nav_cta:"Angebot anfragen",
+    hero_tag:"DEUTSCHE TECHNIK · KOREANISCHE PARTNERSCHAFT",
+    hero_h1:"Alles für die EMV-Prüfung,<br>mit <em>Frankonia Korea</em>",
+    hero_p:"Als offizieller koreanischer Partner von Frankonia liefern wir EMV-Kammern und Prüfsysteme mit umfassender Betreuung — von der Beratung über die Installation bis zum After-Sales-Service.",
+    hero_b1:"Lösungen entdecken", hero_b2:"Angebot anfragen",
+    st1:"Gründung Frankonia", st2:"Belieferte Länder", st3:"Kammermodelle", st4:"Kernlösungsbereiche",
+    sol_k:"UNSERE LÖSUNGEN", sol_h:"Drei Kernlösungen",
+    sol_p:"EMV-Kammern, Messtechnik und CyberShield — alles für den Aufbau Ihrer Prüfumgebung.",
+    c1_h:"Kammern", c1_p:"Modulare EMV-Kammern mit Frankosorb®-Absorbertechnologie. Von Pre-Compliance bis Full-Compliance, standardisiert oder maßgeschneidert.",
+    c1_l1:"Automotive", c1_l2:"Military", c1_l3:"Commercial", c1_l4:"Powertrain", c1_l5:"RVC (Modenverwirbelungskammer)", c1_l6:"Others",
+    more:"Mehr erfahren →", more2:"Mehr erfahren →",
+    c2_h:"EMV-Prüfsysteme", c2_p:"Von FFT-basierten EMI-Messempfängern bis zu Breitbandantennen und Zubehör — komplette Messtechnik nach internationalen Normen.",
+    c2_l1:"EMI-Receiver (9kHz–6GHz)", c2_l2:"Antennen (9kHz–40GHz)", c2_l3:"Zubehör · Verstärker · GTEM",
+    ext:"Externer Link",
+    c3_p:"CyberShield — Lösungen für elektromagnetische Sicherheit und Schirmung. Details auf der eigenen CyberShield-Website.",
+    c3_l1:"Sicherheits-Schirmungslösungen", c3_l2:"Eigene Website (bestehender Link)", c3_go:"Zu CyberShield ↗",
+    ch_h:"Kammer-Programm", ch_p:"Die passende Kammer für jeden Anwendungsbereich.",
+    ch1:"Kammern für Fahrzeug- und Komponentenprüfung (ECE R10, CISPR 25, ISO 11452)",
+    ch2:"EMV-Kammern für Verteidigung nach MIL-STD-461",
+    ch3:"Standard-EMV-Kammern für Industrie- und Konsumelektronik",
+    ch4:"Modenverwirbelungskammern für effiziente Störfestigkeitsprüfungen",
+    ch5:"EMV-Prüfkammern für E-Mobilität und Antriebsstrang",
+    ch6:"Sonder- und kundenspezifische Kammerlösungen",
+    eq_h:"EMV-Prüfsysteme", eq_p:"Messtechnik nach IEC · CISPR · ISO · MIL-STD",
+    eq1:"FFT-basierte EMI-Messempfänger. Vollständig CISPR 16-1-1-konform, 9kHz–6GHz.",
+    eq2:"Breitband-Antennensysteme für Störaussendungs- und Störfestigkeitsprüfungen, 9kHz–40GHz.",
+    eq2m:"Bikonisch · Logarithmisch-periodisch · Hornantennen",
+    eq3:"HF-Leistungsverstärker (bis 12kW), GTEM-Zellen, E-Feld-Sensoren, HF-Leistungsmesser u.v.m.",
+    tr_h:"Deutsche Technik,<br>betreut vom <em>koreanischen Partner</em>",
+    tr_p1:"Seit 1987 liefert Frankonia EMV-Kammern und Prüfsysteme in mehr als 80 Länder weltweit.",
+    tr_p2:"Frankonia Korea begleitet Kunden über den gesamten Projektzyklus — Beratung, Planung, Installation, Kalibrierung und Wartung — in direkter Zusammenarbeit mit dem Engineering-Team in Deutschland.",
+    bd1:"Gründung von Frankonia", bd2:"Belieferte Länder", bd3b:"Offizieller Partner", bd3:"Koreanischer Partner der Frankonia Group", bd4b:"Rundum-Betreuung", bd4:"Beratung – Installation – Service",
+    ct_h:"Angebot & technische Beratung", ct_p:"Nennen Sie uns Ihre Anforderungen — wir schlagen die optimale Lösung vor.",
+    ct_b1:"E-Mail senden", ct_b2:"Anrufen",
+    ft_desc:"Offizieller koreanischer Partner für Frankonia EMV-Kammern und Prüfsysteme",
+    ft_addr:"Adresse · Handelsregister-Nr. · Geschäftsführer (wird ergänzt)",
+    ft_sol:"Lösungen", ft_l1:"Kammern", ft_l2:"EMV-Messtechnik", ft_link:"Links", ft_priv:"Datenschutz"
+  }
+};
+
+function setLang(lang, btn){
+  const dict = I18N[lang];
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.getAttribute('data-i18n');
+    if(dict[k] !== undefined) el.textContent = dict[k];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+    const k = el.getAttribute('data-i18n-html');
+    if(dict[k] !== undefined) el.innerHTML = dict[k];
+  });
+  // special: keep sub-labels on solution card titles
+  const c1 = document.querySelector('#solutions .sol:nth-child(1) h3');
+  const c2 = document.querySelector('#solutions .sol:nth-child(2) h3');
+  if(lang==='ko'){ c1.innerHTML = '챔버 <span style="color:var(--sub);font-weight:500;font-size:14px">Chambers</span>'; c2.innerHTML = 'EMC 시험장비 <span style="color:var(--sub);font-weight:500;font-size:14px">Test Equipment</span>'; }
+  else { c1.textContent = dict.c1_h; c2.textContent = dict.c2_h; }
+  if(btn){ document.querySelectorAll('.lang button').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); }
+}
+document.addEventListener('DOMContentLoaded', ()=> setLang('ko'));
+</script>
+</body>
+</html>
