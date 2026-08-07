@@ -1,6 +1,6 @@
-import { langPath, route, type Lang } from "./site-config";
-import SiteHeader from "./site-header";
-import SiteFooter from "./site-footer";
+import { localeRoute, type Lang } from "./site-config";
+import SiteHeader, { type HeaderCopy } from "./site-header";
+import SiteFooter, { type FooterCopy } from "./site-footer";
 
 /* All copy lives here, keyed by locale — the KO / EN pages render from the
    same tree. Chamber category order is fixed by the site map:
@@ -176,16 +176,18 @@ const equipIcons = [
   <svg key="accessories" viewBox="0 0 24 24" fill="none"><rect x="3" y="10" width="8" height="8" rx="1.5" stroke="#fff" strokeWidth="1.7" /><rect x="13" y="6" width="8" height="12" rx="1.5" stroke="#fff" strokeWidth="1.7" /><path d="M6 14h2m7-4h2m-2 4h4" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" /></svg>,
 ];
 
-/** Header slice of the copy object, shared with other pages (e.g. /cybershield). */
-export const headerCopy = (lang: Lang) => copy[lang];
+/** Header and footer slice of the copy object, shared with other pages
+ *  (e.g. /cybershield) so the chrome reads the same strings as the landing. */
+export const headerCopy = (lang: Lang): HeaderCopy & FooterCopy => copy[lang];
 
 export default function Landing({ lang }: { lang: Lang }) {
   const t = copy[lang];
-  const cs = route(lang === "ko" ? "/cybershield" : `${langPath(lang)}/cybershield`);
+  const cs = localeRoute(lang, "/cybershield");
   return (
     <>
       <SiteHeader lang={lang} t={t} />
 
+      <main id="main">
       <div className="hero" id="top">
         <div className="wrap hero-in">
           <span className="tag">{t.heroTag}</span>
@@ -328,6 +330,7 @@ export default function Landing({ lang }: { lang: Lang }) {
           <a className="btn btn-ghost" href="tel:+8200000000">{t.ctB2}</a>
         </div>
       </div>
+      </main>
 
       <SiteFooter lang={lang} t={t} />
     </>

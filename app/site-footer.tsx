@@ -1,9 +1,9 @@
-import { langPath, route, type Lang } from "./site-config";
+import { localeRoute, type Lang } from "./site-config";
 
 /** Shared dark footer. Anchors resolve against the locale's landing page. */
 export default function SiteFooter({ lang, t }: { lang: Lang; t: FooterCopy }) {
-  const home = route(langPath(lang));
-  const cs = route(lang === "ko" ? "/cybershield" : `${langPath(lang)}/cybershield`);
+  const home = localeRoute(lang);
+  const cs = localeRoute(lang, "/cybershield");
   return (
     <footer id="career">
       <div className="wrap">

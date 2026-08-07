@@ -1,4 +1,4 @@
-import { cyberShieldUrl, langPath, route, type Lang } from "./site-config";
+import { cyberShieldUrl, localeRoute, type Lang } from "./site-config";
 import SiteHeader from "./site-header";
 import SiteFooter from "./site-footer";
 import { headerCopy } from "./landing";
@@ -80,11 +80,12 @@ const csExternal = (lang: Lang) =>
 
 export default function CyberShieldPage({ lang }: { lang: Lang }) {
   const t = csCopy[lang];
-  const home = route(langPath(lang));
+  const home = localeRoute(lang);
   return (
     <>
       <SiteHeader lang={lang} t={headerCopy(lang)} />
 
+      <main id="main">
       <div className="hero" id="top">
         <div className="wrap hero-in">
           <span className="tag">{t.eyebrow}</span>
@@ -154,8 +155,9 @@ export default function CyberShieldPage({ lang }: { lang: Lang }) {
           <a className="btn btn-ghost" href={`${home}#contact`}>{t.ctB2}</a>
         </div>
       </div>
+      </main>
 
-      <SiteFooter lang={lang} t={headerCopy(lang) as unknown as import("./site-footer").FooterCopy} />
+      <SiteFooter lang={lang} t={headerCopy(lang)} />
     </>
   );
 }

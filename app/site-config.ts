@@ -39,3 +39,20 @@ export const route = (path: string) => {
   const withBase = `${basePath}${path}`;
   return withBase.endsWith("/") ? withBase : `${withBase}/`;
 };
+
+/**
+ * Locale-prefixed internal route. Korean is served from the root, so it takes
+ * no prefix — every caller that needs a per-locale link goes through here
+ * rather than repeating that exception.
+ *
+ *   localeRoute("ko")                 → "/"
+ *   localeRoute("en", "/cybershield") → "/en/cybershield/"
+ */
+export const localeRoute = (lang: Lang, path = "") => {
+  const prefix = langPath(lang);
+  return route(prefix === "/" ? path || "/" : `${prefix}${path}`);
+};
+
+/** Absolute form of `localeRoute`, for canonical / hreflang / sitemap URLs. */
+export const localeUrl = (lang: Lang, path = "") =>
+  `${siteOrigin}${localeRoute(lang, path)}`;

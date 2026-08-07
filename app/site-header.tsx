@@ -1,11 +1,11 @@
-import { langPath, languages, route, type Lang } from "./site-config";
+import { languages, localeRoute, type Lang } from "./site-config";
 
 /** Shared sticky header. `home` anchors resolve against the locale's landing
  *  page so the nav works from any route. Dropdown targets map 1:1 to the
  *  routes planned in docs/FRANKONIA-WEB-PLAN.md (§2) once those pages exist. */
 export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
-  const home = route(langPath(lang));
-  const cs = route(lang === "ko" ? "/cybershield" : `/${lang}/cybershield`);
+  const home = localeRoute(lang);
+  const cs = localeRoute(lang, "/cybershield");
   return (
     <header>
       <div className="wrap nav">
@@ -56,7 +56,7 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
         </nav>
         <div className="lang">
           {languages.map(([code, label]) => (
-            <a key={code} href={route(langPath(code))} className={code === lang ? "on" : undefined}>
+            <a key={code} href={localeRoute(code)} className={code === lang ? "on" : undefined}>
               {label}
             </a>
           ))}
