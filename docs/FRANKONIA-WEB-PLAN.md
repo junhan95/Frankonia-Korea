@@ -61,7 +61,7 @@ app/
     └── not-found.tsx
 ```
 
-- **CyberShield는 내부 페이지 없음** — GNB·카드·푸터에서 `https://www.frankonia-cybershield.com/` 직결. **새 창이 아니라 현재 창**에서 이동하고(리뉴얼 요구사항), 로케일을 맞춰 KO는 `/ko/`로 보낸다. 항목에는 ↗ 글리프를 붙여 외부 이동임을 명시한다.
+- **CyberShield는 사이트 내부 페이지(`/cybershield`)로 제공** — 제품 사이트가 `X-Frame-Options: SAMEORIGIN` · `frame-ancestors 'self'`를 보내고 CORS 헤더가 없어 iframe·fetch 모두 불가능하므로, 프랑코니아 코리아 네브바를 유지한 채 콘텐츠만 자체 렌더한다. 전체 사양·룸 구성기는 해당 페이지 내 CTA로 `https://www.frankonia-cybershield.com/`에 연결(**현재 창**, KO는 `/ko/`).
 - **챔버 카테고리 순서는 모든 노출 지점(GNB 드롭다운, 개요 필터 탭, 랜딩 카드, 푸터)에서 Automotive → Military → Commercial → Powertrain → RVC → Others 고정.** 데이터 파일에 `order` 필드로 강제한다.
 
 ### URL 규칙

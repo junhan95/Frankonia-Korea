@@ -1,4 +1,4 @@
-import { cyberShieldUrl, type Lang } from "./site-config";
+import { localeRoute, type Lang } from "./site-config";
 import SiteHeader, { type HeaderCopy } from "./site-header";
 import SiteFooter, { type FooterCopy } from "./site-footer";
 import StructuredData from "./structured-data";
@@ -38,10 +38,9 @@ const copy = {
     c2sub: "EMC Test Systems",
     c2p: "FFT 기반 EMI 리시버부터 광대역 안테나, 각종 액세서리까지 국제 규격에 부합하는 측정 장비 일체를 공급합니다.",
     c2list: ["EMI-Receiver (9kHz–6GHz)", "Antennas (9kHz–40GHz)", "Accessories · Amplifiers · GTEM"],
-    ext: "외부 링크",
-    c3p: "전자파 보안·차폐 솔루션 CyberShield. 상세 사양과 룸 구성은 CyberShield 공식 사이트에서 확인하실 수 있습니다.",
+    c3p: "전자파 보안·차폐 솔루션 CyberShield. 사이트 안에서 개요를 보고, 전체 사양은 제품 사이트로 이어집니다.",
     c3list: ["보안 차폐 솔루션", "데이터센터 전자기 보안 경계"],
-    c3go: "CyberShield 사이트 바로가기 ↗",
+    c3go: "CyberShield 자세히 보기 →",
     more: "자세히 보기 →",
     chH: "챔버 라인업",
     chP: "적용 분야에 맞는 최적의 챔버를 제안합니다.",
@@ -114,10 +113,9 @@ const copy = {
     c2sub: "EMC Test Systems",
     c2p: "From FFT-based EMI receivers to broadband antennas and accessories — complete measurement equipment compliant with international standards.",
     c2list: ["EMI-Receiver (9kHz–6GHz)", "Antennas (9kHz–40GHz)", "Accessories · Amplifiers · GTEM"],
-    ext: "External link",
-    c3p: "CyberShield — electromagnetic security & shielding solutions. Full specifications and the room configurator are on the CyberShield site.",
+    c3p: "CyberShield — electromagnetic security & shielding solutions. Read the overview here; the full specifications continue on the product site.",
     c3list: ["Security shielding solutions", "Electromagnetic boundary for data centres"],
-    c3go: "Go to the CyberShield site ↗",
+    c3go: "Explore CyberShield →",
     more: "Learn more →",
     chH: "Chamber Line-up",
     chP: "The right chamber for every application field.",
@@ -201,7 +199,7 @@ export const headerCopy = (lang: Lang): HeaderCopy & FooterCopy & BandCopy =>
 
 export default function Landing({ lang }: { lang: Lang }) {
   const t = copy[lang];
-  const cs = cyberShieldUrl(lang);
+  const cs = localeRoute(lang, "/cybershield");
   return (
     <>
       {/* Standards below are the ones the chamber and equipment cards name
@@ -289,7 +287,7 @@ export default function Landing({ lang }: { lang: Lang }) {
                 <svg viewBox="0 0 64 64" fill="none"><path d="M32 8l20 8v14c0 12-8.5 21-20 26C20.5 51 12 42 12 30V16l20-8z" stroke="#fff" strokeWidth="2.5" /><path d="M23 31l6 6 12-12" stroke="#e60000" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </div>
               <div className="body">
-                <h3>CyberShield <span className="ext">{t.ext}</span></h3>
+                <h3>CyberShield</h3>
                 <p>{t.c3p}</p>
                 <ul>{t.c3list.map((li) => <li key={li}>{li}</li>)}</ul>
                 <a className="go" href={cs}>{t.c3go}</a>

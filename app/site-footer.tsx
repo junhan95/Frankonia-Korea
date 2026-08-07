@@ -1,5 +1,5 @@
 import { companySections, sectionMeta, sectionPath } from "./company-sections";
-import { cyberShieldUrl, localeRoute, type Lang } from "./site-config";
+import { localeRoute, type Lang } from "./site-config";
 
 /** Shared dark footer. Anchors resolve against the locale's landing page. */
 export default function SiteFooter({ lang, t }: { lang: Lang; t: FooterCopy }) {
@@ -28,7 +28,7 @@ export default function SiteFooter({ lang, t }: { lang: Lang; t: FooterCopy }) {
             <ul>
               <li><a href={`${home}#chambers`}>{t.ftL1}</a></li>
               <li><a href={`${home}#equipment`}>{t.ftL2}</a></li>
-              <li><a href={cyberShieldUrl(lang)}>CyberShield <span className="ext-glyph" aria-hidden="true">↗</span></a></li>
+              <li><a href={localeRoute(lang, "/cybershield")}>CyberShield</a></li>
             </ul>
           </div>
           <div>

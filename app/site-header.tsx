@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { companySections, sectionMeta, sectionPath } from "./company-sections";
-import { asset, cyberShieldUrl, languages, localeRoute, type Lang } from "./site-config";
+import { asset, languages, localeRoute, type Lang } from "./site-config";
 
 /** Fixed category order — do not reorder (site map rule). */
 const chamberCategories = ["Automotive", "Military", "Commercial", "Powertrain", "RVC", "Others"];
@@ -41,8 +41,9 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     { label: t.nav.company, href: company[0][1], items: company },
     { label: t.nav.chamber, href: `${home}#chambers`, items: chamberCategories.map((c) => [c, `${home}#chambers`] as const) },
     { label: t.nav.equip, href: `${home}#equipment`, items: equipmentCategories.map((c) => [c, `${home}#equipment`] as const) },
-    // Hands over to the CyberShield product site in the same window.
-    { label: t.nav.cyber, href: cyberShieldUrl(lang), items: [] as (readonly [string, string])[] },
+    // Internal page: the product site cannot be framed, so the CyberShield
+    // content is rendered inside this chrome instead. See cybershield-content.
+    { label: t.nav.cyber, href: localeRoute(lang, "/cybershield"), items: [] as (readonly [string, string])[] },
     {
       label: t.nav.contact,
       href: `${home}#contact`,

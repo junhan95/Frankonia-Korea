@@ -63,7 +63,6 @@ nav.menu .mi > a { display: inline-flex; align-items: center; gap: 5px; }
 .dd-panel { background: var(--ink); border: .8px solid rgba(255, 255, 255, .14); border-radius: var(--radius); min-width: 216px; padding: 8px 0; box-shadow: 0 18px 36px rgba(0, 0, 0, .35); }
 .dd-panel a { display: block; padding: 9px 18px; color: #c9c9c9; font-size: 13.5px; font-weight: 400; border-bottom: 0; border-left: 2px solid transparent; }
 .dd-panel a:hover { color: #fff; border-left-color: var(--red); background: rgba(255, 255, 255, .05); border-bottom: 0; }
-.dd-panel .dd-ext { color: #9a9a9a; font-size: 11px; margin-left: 6px; }
 .lang { display: flex; gap: 2px; background: rgba(255, 255, 255, .08); border-radius: 6px; padding: 3px; }
 .lang a { color: #9db1c7; font-size: 12.5px; font-weight: 700; padding: 5px 10px; border-radius: 4px; transition: .15s; }
 .lang a.on { background: var(--red); color: #fff; }
@@ -157,10 +156,6 @@ section { padding: 110px 0; }
 .sol li::before { content: "›"; position: absolute; left: 6px; color: var(--red); font-weight: 800; }
 .sol .go { align-self: flex-start; font-size: 14px; font-weight: 700; color: var(--red); }
 .sol .go:hover { text-decoration: underline; }
-/* CyberShield lives on its own site. Both markers say so before the click —
-   the handover is same-window, so without them it reads as a dead end. */
-.ext { display: inline-block; font-size: 10.5px; font-weight: 500; background: var(--bg2); border: 1px solid var(--line); color: var(--body-dark); border-radius: 4px; padding: 1px 7px; margin-left: 8px; vertical-align: 2px; }
-.ext-glyph { font-size: 10px; opacity: .75; margin-left: 4px; vertical-align: 1px; }
 
 /* Lineup cards */
 .alt { background: var(--bg2); }

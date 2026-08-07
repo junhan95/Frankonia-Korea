@@ -48,10 +48,12 @@ ExtraBold 대문자 헤드라인 + Light 섹션 제목의 굵기 대비.
 Commercial → Powertrain → RVC → Others)는 사이트맵에서 순서가 고정되어 있고,
 카드 배열이 그 순서를 그대로 렌더한다.
 
-**CyberShield hands over.** CyberShield는 자체 제품 사이트가 있어 내부 페이지를 두지 않는다.
-GNB·카드·푸터 세 진입점 모두 [frankonia-cybershield.com](https://www.frankonia-cybershield.com/)으로
-**현재 창에서** 이동하며(리뉴얼 요구사항), 로케일에 맞춰 KO는 `/ko/`로 연결된다.
-항목에는 ↗ 글리프를 붙여 사이트를 떠난다는 것을 클릭 전에 알린다.
+**CyberShield keeps the chrome.** 제품 사이트는 `X-Frame-Options: SAMEORIGIN`과
+`frame-ancestors 'self'`를 보내고 CORS 헤더가 없어, 다른 오리진에서 iframe도
+fetch도 불가능하다. 그래서 CyberShield 콘텐츠를 `app/cybershield-content.tsx`에
+직접 렌더한다 — 같은 헤더·푸터·디자인 토큰을 그대로 쓰고, 전체 사양과 룸
+구성기만 [frankonia-cybershield.com](https://www.frankonia-cybershield.com/)으로
+이어진다(현재 창, 로케일 매칭—KO는 `/ko/`).
 
 ## Stack
 
@@ -97,10 +99,11 @@ one of those checks exists because that exact thing broke once.
 
 ```
 app/
-  (ko)/              # /  ·  /company/*   <html lang="ko">
-  (en)/en/           # /en/  ·  /en/company/*   <html lang="en">
+  (ko)/              # /  ·  /cybershield/  ·  /company/*   <html lang="ko">
+  (en)/en/           # /en/ · /en/cybershield/ · /en/company/*   <html lang="en">
   root-shell.tsx     # the <html>/<body> shell both root layouts render
   landing.tsx        # the whole landing page, and all copy keyed by locale
+  cybershield-content.tsx  # CyberShield, rendered inside this site's chrome
   site-header.tsx    # sticky nav + mobile drawer (the only client component)
   site-footer.tsx
   company-sections.ts   # slug order, nav labels, meta descriptions — one source
@@ -127,7 +130,7 @@ mockup/
 
 ## Roadmap
 
-`docs/FRANKONIA-WEB-PLAN.md`의 8주 마일스톤을 따른다. **랜딩 · Company 5개 페이지 완료** — 다음은 Chambers 개요·카테고리 6페이지와 Test Systems 3페이지
+`docs/FRANKONIA-WEB-PLAN.md`의 8주 마일스톤을 따른다. **랜딩 · CyberShield · Company 5개 페이지 완료** — 다음은 Chambers 개요·카테고리 6페이지와 Test Systems 3페이지
 (`page-shell.tsx` 재사용), Contact(폼), 그리고 모델 상세 페이지 순.
 
 ## Deployment

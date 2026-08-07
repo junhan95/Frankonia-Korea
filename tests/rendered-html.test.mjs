@@ -56,32 +56,47 @@ test("the export contains the pages the site map defines", () => {
       "/company/history/",
       "/company/philosophy/",
       "/company/publications/",
+      "/cybershield/",
       "/en/",
       "/en/company/career/",
       "/en/company/events/",
       "/en/company/history/",
       "/en/company/philosophy/",
       "/en/company/publications/",
+      "/en/cybershield/",
     ],
   );
 });
 
-test("CyberShield hands over to the product site, in the same window", () => {
-  const expected = { ko: "https://www.frankonia-cybershield.com/ko/", en: "https://www.frankonia-cybershield.com/" };
-
+test("CyberShield stays inside this site's chrome", () => {
+  // The product site answers X-Frame-Options: SAMEORIGIN and sends no CORS
+  // header, so it cannot be embedded. The nav therefore points at the internal
+  // page, which carries the same header and footer as every other route.
   for (const { route, html } of pages) {
+    const internal = localeOf(route) === "en" ? `${BASE}/en/cybershield/` : `${BASE}/cybershield/`;
     assert.ok(
-      html.includes(`href="${expected[localeOf(route)]}"`),
-      `${route} does not link to the CyberShield site`,
+      html.includes(`<a href="${internal}">CyberShield`),
+      `${route}: the navigation does not point at the internal CyberShield page`,
     );
-    assert.ok(!html.includes("/cybershield/index.html"), `${route} still links to the retired page`);
   }
 
-  // Same window: the renewal brief asked for it explicitly, and a stray
-  // target="_blank" here would be invisible in review.
-  const links = [...pages[0].html.matchAll(/<a[^>]*frankonia-cybershield\.com[^>]*>/g)].map((m) => m[0]);
-  assert.ok(links.length > 0);
-  for (const link of links) assert.ok(!link.includes("target="), `opens in a new tab: ${link}`);
+  for (const { route, html } of pages.filter((p) => p.route.endsWith("/cybershield/"))) {
+    const product =
+      localeOf(route) === "en"
+        ? "https://www.frankonia-cybershield.com/"
+        : "https://www.frankonia-cybershield.com/ko/";
+    assert.ok(html.includes(`href="${product}"`), `${route}: no link out to the product site`);
+    assert.ok(html.includes('<header>'), `${route}: rendered without the site header`);
+    assert.ok(html.includes('<footer>'), `${route}: rendered without the site footer`);
+  }
+
+  // Same window throughout: the renewal brief asked for it explicitly, and a
+  // stray target="_blank" would be invisible in review.
+  for (const { route, html } of pages) {
+    for (const [link] of html.matchAll(/<a[^>]*frankonia-cybershield\.com[^>]*>/g)) {
+      assert.ok(!link.includes("target="), `${route} opens the product site in a new tab: ${link}`);
+    }
+  }
 });
 
 test("every page is held out of the index on the staging URL", () => {

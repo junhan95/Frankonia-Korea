@@ -22,6 +22,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: path === "/" ? 1 : 0.9,
       alternates: alternates(""),
     })),
+    ...languages.map(([code]) => ({
+      url: localeUrl(code, "/cybershield"),
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+      alternates: alternates("/cybershield"),
+    })),
     ...companySections.flatMap((section) =>
       languages.map(([code]) => ({
         url: localeUrl(code, sectionPath(section)),
