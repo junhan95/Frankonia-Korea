@@ -39,6 +39,10 @@ yarn-error.log*
 __pycache__/
 *.py[cod]
 
+# The production host's public key. Not a secret, but it names the deployment
+# target, and this repository is public.
+/deploy/known_hosts
+
 # vercel
 .vercel
 

@@ -56,7 +56,12 @@ def run(cmd: list[str], **kwargs) -> int:
 def main() -> int:
     load_dotenv(os.path.join(ROOT, ".env"))
 
-    if require(["SFTP_HOST", "SFTP_USER", "SFTP_PASS"]):
+    if require(["SFTP_HOST", "SFTP_USER"]):
+        return 1
+    # upload.py checks this too, but the build takes a minute and there is no
+    # reason to spend it on a run that cannot upload at the end.
+    if not os.environ.get("SFTP_PASS") and not os.environ.get("SFTP_KEY"):
+        print("no credential: set SFTP_KEY (preferred) or SFTP_PASS in .env")
         return 1
 
     os.environ["STATIC_EXPORT"] = "1"

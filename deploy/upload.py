@@ -13,10 +13,19 @@ For a one-shot build + upload, use `deploy/deploy.py` instead.
 
 Requires paramiko (`pip install paramiko`).
 
+The far end is verified before anything is sent: its host key has to match
+`deploy/known_hosts`, the user's `~/.ssh/known_hosts`, or the fingerprint in
+SFTP_HOST_FINGERPRINT. An unrecognised key aborts the upload. Record it once
+with `ssh-keyscan -p 22 <host> >> deploy/known_hosts`, and check the
+fingerprint against what the hosting provider publishes rather than against
+the connection you are trying to verify.
+
 The site content goes up first and .htaccess last, so the document root is
 never left pointing at a half-uploaded tree.
 """
 
+import base64
+import hashlib
 import os
 import posixpath
 import stat
@@ -28,6 +37,7 @@ import paramiko
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOCAL = os.path.join(ROOT, "out")
 HTACCESS = os.path.join(ROOT, "deploy", "htaccess")
+KNOWN_HOSTS = os.path.join(ROOT, "deploy", "known_hosts")
 
 
 def load_dotenv(path: str) -> None:
@@ -50,6 +60,68 @@ load_dotenv(os.path.join(ROOT, ".env"))
 REMOTE = os.environ.get("SFTP_REMOTE", "/public_html")
 
 
+def fingerprint(key: paramiko.PKey) -> str:
+    """The SHA256 fingerprint in the form OpenSSH prints it."""
+    digest = hashlib.sha256(key.asbytes()).digest()
+    return "SHA256:" + base64.b64encode(digest).decode().rstrip("=")
+
+
+class PinnedHostKey(paramiko.MissingHostKeyPolicy):
+    """Accept an unknown host only if its key matches a fingerprint we were
+    told to expect. This is for CI and fresh machines, where there is no
+    known_hosts file to check against but the fingerprint can be handed over
+    as a secret."""
+
+    def __init__(self, expected: str) -> None:
+        self.expected = expected.strip()
+
+    def missing_host_key(self, client, hostname, key) -> None:
+        seen = fingerprint(key)
+        if seen != self.expected:
+            raise paramiko.SSHException(
+                f"host key for {hostname} is {seen}, "
+                f"but SFTP_HOST_FINGERPRINT says {self.expected} — "
+                "refusing to upload"
+            )
+
+
+def connect(host: str, port: int, user: str) -> paramiko.SSHClient:
+    """Open a verified SSH session.
+
+    Without this the client would take whatever key the far end offers, which
+    means anyone able to answer for the hostname can collect the password and
+    then serve their own files from the document root. Trust comes from one of
+    two places, in order: `deploy/known_hosts` or the user's own
+    `~/.ssh/known_hosts`, else a fingerprint pinned in SFTP_HOST_FINGERPRINT.
+    If neither is available the connection is refused rather than trusted.
+    """
+    client = paramiko.SSHClient()
+    client.load_system_host_keys()
+    if os.path.isfile(KNOWN_HOSTS):
+        client.load_host_keys(KNOWN_HOSTS)
+
+    pin = os.environ.get("SFTP_HOST_FINGERPRINT")
+    client.set_missing_host_key_policy(
+        PinnedHostKey(pin) if pin else paramiko.RejectPolicy()
+    )
+
+    key_file = os.environ.get("SFTP_KEY")
+    client.connect(
+        hostname=host,
+        port=port,
+        username=user,
+        # A key is preferred: it is not replayable and never sits in .env as
+        # plaintext. Password auth stays for hosts that allow nothing else.
+        key_filename=key_file or None,
+        passphrase=os.environ.get("SFTP_KEY_PASS") or None,
+        password=os.environ.get("SFTP_PASS") or None,
+        allow_agent=bool(key_file),
+        look_for_keys=bool(key_file),
+        timeout=30,
+    )
+    return client
+
+
 def main() -> int:
     if not os.path.isdir(LOCAL):
         print(f"no build output at {LOCAL} — run the production build first")
@@ -70,19 +142,47 @@ def main() -> int:
             print("rebuild with NEXT_PUBLIC_INDEXABLE=1, then rerun")
             return 1
 
-    missing = [k for k in ("SFTP_HOST", "SFTP_USER", "SFTP_PASS") if not os.environ.get(k)]
+    missing = [k for k in ("SFTP_HOST", "SFTP_USER") if not os.environ.get(k)]
     if missing:
         print(f"missing environment variable(s): {', '.join(missing)}")
         print("fill them into .env (see .env.example) and rerun")
         return 1
+    if not os.environ.get("SFTP_PASS") and not os.environ.get("SFTP_KEY"):
+        print("no credential: set SFTP_KEY (preferred) or SFTP_PASS in .env")
+        return 1
+
     host = os.environ["SFTP_HOST"]
     user = os.environ["SFTP_USER"]
-    password = os.environ["SFTP_PASS"]
+    port = int(os.environ.get("SFTP_PORT", "22"))
 
-    transport = paramiko.Transport((host, 22))
-    transport.connect(username=user, password=password)
-    sftp = paramiko.SFTPClient.from_transport(transport)
+    try:
+        client = connect(host, port, user)
+    except paramiko.BadHostKeyException as exc:
+        print(f"the host key for {host} has CHANGED.")
+        print(f"  expected {fingerprint(exc.expected_key)}")
+        print(f"  got      {fingerprint(exc.key)}")
+        print("this is either a server rebuild or someone in the middle.")
+        print("confirm with the host before removing the old entry — do not just delete it.")
+        return 1
+    except paramiko.AuthenticationException as exc:
+        # Caught ahead of SSHException, which it subclasses: the host key was
+        # fine here, and sending the reader off to run ssh-keyscan would be
+        # advice for a problem they do not have.
+        print(f"{host} accepted the connection but refused the credential: {exc}")
+        print("check SFTP_USER, and SFTP_KEY / SFTP_PASS in .env")
+        return 1
+    except paramiko.SSHException as exc:
+        print(f"refusing to connect to {host}: {exc}")
+        print("")
+        print("if this is the first upload from this machine, record the host key:")
+        print(f"    ssh-keyscan -p {port} {host} >> deploy/known_hosts")
+        print("then check the fingerprint against what the hosting provider states —")
+        print("reading it off the connection you are trying to verify proves nothing.")
+        return 1
+
+    sftp = client.open_sftp()
     sftp.get_channel().settimeout(120)
+    print(f"connected to {host} — host key verified")
 
     stamp = time.strftime("%Y%m%d-%H%M%S")
     backup = f"{REMOTE}/.htaccess.bak-{stamp}"
@@ -154,7 +254,7 @@ def main() -> int:
 
     print("deployment complete")
 
-    transport.close()
+    client.close()
     return 0
 
 
