@@ -96,7 +96,7 @@ header { position: sticky; top: 0; z-index: 100; background: var(--ink); border-
    untouched — and space-between spreads the spare 195px across the five gaps
    for Korean (24px → 63px). Auto margins centre whatever is left over; below
    1240px the bar folds into the drawer rather than compressing further. */
-nav.menu { display: flex; gap: 24px; margin: 0 auto; min-width: 677px; justify-content: space-between; }
+nav.menu { position: relative; display: flex; gap: 24px; margin: 0 auto; min-width: 677px; justify-content: space-between; }
 /* The reference's nav labels (`.cs .nav-desktop a`): 15px, weight 400, and the
    underline is a primary rule that wipes in from the left rather than a border
    that appears all at once. */
@@ -117,6 +117,34 @@ nav.menu .mi > a { display: inline-flex; align-items: center; gap: 5px; }
 .dd-panel { background: var(--ink); border: 1px solid rgba(255, 255, 255, .3); border-radius: var(--radius); min-width: 216px; padding: 8px 0; }
 .dd-panel a { display: block; padding: 9px 18px; color: #c9c9c9; font-size: 13.5px; font-weight: 400; border-bottom: 0; border-left: 2px solid transparent; }
 .dd-panel a:hover { color: #fff; border-left-color: var(--red); background: rgba(255, 255, 255, .05); border-bottom: 0; }
+
+/* Mega panel — Chambers only. Fifteen links in one 216px column would not be
+   scannable, so they are grouped into three titled columns of four to six.
+   The panel keeps the single-column panel's ink fill, hairline and hover rule;
+   only the width and the internal grid are new. It stays centred under its own
+   menu item (`.dropdown` does that) rather than aligning to the header, which
+   would mean restructuring the bar for one menu. */
+/* A 760px panel cannot be centred under its own item without hanging off one
+   edge of the window: Chambers sits too far left, Test Systems too far right.
+   Dropping the item out of the positioning flow hands the panel to nav.menu,
+   which is itself centred in the bar — so both mega panels centre on the menu
+   and neither can overflow. The single-column panels keep centring on their
+   own item, which is right for their width. */
+/* Selector matches `nav.menu .mi` above so it can override its position. */
+nav.menu .mi:has(.dd-panel--mega) { position: static; }
+.dd-panel--mega { width: 760px; max-width: calc(100vw - 48px); padding: 20px 0 0; }
+.dd-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 10px; padding: 0 20px 16px; }
+/* Same voice as the `.kicker` above every section heading on the site. */
+.dd-col h6 { color: var(--primary); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 0 10px 8px; }
+.dd-panel--mega a { padding: 7px 10px; line-height: 1.35; }
+.dd-note { display: block; color: #8a8a8a; font-size: 11.5px; margin-top: 2px; }
+.dd-panel--mega a:hover .dd-note { color: #b0b0b0; }
+/* Utility row: whole-branch links (all models, references, downloads) that
+   belong to no single column. */
+.dd-utils { display: flex; flex-wrap: wrap; gap: 4px 24px; border-top: 1px solid rgba(255, 255, 255, .18); background: rgba(255, 255, 255, .04); padding: 6px 22px 8px; border-radius: 0 0 var(--radius) var(--radius); }
+.dd-utils a { padding: 7px 0; font-size: 13px; border-left: 0; }
+.dd-utils a:hover { border-left: 0; background: none; text-decoration: underline; }
+
 .lang { display: flex; gap: 2px; background: rgba(255, 255, 255, .08); border-radius: 6px; padding: 3px; }
 .lang a { color: #9db1c7; font-size: 12.5px; font-weight: 700; padding: 5px 10px; border-radius: 4px; transition: .15s; }
 .lang a.on { background: var(--red); color: #fff; }
@@ -151,6 +179,15 @@ nav.menu .mi > a { display: inline-flex; align-items: center; gap: 5px; }
 .mm-top { display: block; color: #fff; font-size: 16px; font-weight: 700; padding: 14px 2px 8px; }
 .mm-subs { display: flex; flex-wrap: wrap; gap: 6px 18px; padding-bottom: 6px; }
 .mm-subs a { color: #c9c9c9; font-size: 14px; padding: 6px 2px; }
+/* Grouped submenu, collapsed by default — see the note in site-header. Native
+   <details> so it works before hydration and answers the keyboard on its own. */
+.mm-fold { border-top: 1px solid rgba(255, 255, 255, .08); }
+.mm-fold summary { list-style: none; cursor: pointer; color: var(--primary); font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 11px 2px; display: flex; align-items: center; justify-content: space-between; }
+.mm-fold summary::-webkit-details-marker { display: none; }
+.mm-fold summary::after { content: "+"; color: #fff; font-size: 15px; font-weight: 400; opacity: .6; }
+.mm-fold[open] summary::after { content: "−"; }
+.mm-utils { border-top: 1px solid rgba(255, 255, 255, .08); padding-top: 8px; margin-top: 2px; }
+.mm-utils a { font-size: 13px; color: #9a9a9a; }
 .mm-cta { display: inline-block; margin-top: 22px; }
 
 /* ===== Hero ===== */

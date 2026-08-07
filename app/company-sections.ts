@@ -16,6 +16,14 @@ export const companySections = [
 
 export type CompanySection = (typeof companySections)[number];
 
+/**
+ * The subset the Company dropdown lists. Career keeps its own top-level GNB
+ * item pointing at the same page, so repeating it here only gave the reader
+ * two links to one place.
+ */
+export const companyNavSections: readonly CompanySection[] =
+  companySections.filter((s) => s !== "career");
+
 export const isCompanySection = (value: string): value is CompanySection =>
   (companySections as readonly string[]).includes(value);
 

@@ -1,4 +1,6 @@
+import { chambersPath } from "./chamber-sections";
 import { companySections, sectionMeta, sectionPath } from "./company-sections";
+import { testSystemsPath } from "./test-system-sections";
 import { localeRoute, type Lang } from "./site-config";
 
 /** Shared dark footer. Anchors resolve against the locale's landing page. */
@@ -26,8 +28,10 @@ export default function SiteFooter({ lang, t }: { lang: Lang; t: FooterCopy }) {
           <div>
             <h5>{t.ftSol}</h5>
             <ul>
-              <li><a href={`${home}#chambers`}>{t.ftL1}</a></li>
-              <li><a href={`${home}#equipment`}>{t.ftL2}</a></li>
+              {/* The chamber branch has its own overview now; the landing's
+                  #chambers band is a summary of it, not the destination. */}
+              <li><a href={localeRoute(lang, chambersPath)}>{t.ftL1}</a></li>
+              <li><a href={localeRoute(lang, testSystemsPath)}>{t.ftL2}</a></li>
               <li><a href={localeRoute(lang, "/cybershield")}>CyberShield</a></li>
             </ul>
           </div>
