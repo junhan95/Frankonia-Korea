@@ -36,10 +36,22 @@ OUT = Path(ARGS[2]) if len(ARGS) > 2 else ROOT / "app/cybershield/cybershield.cs
 
 src = SRC.read_text(encoding="utf-8")
 
-# Both @import lines go: globals.css already pulls Inter and Noto Sans KR at
-# the weights this needs, and the Tailwind layers arrive from the compiled file.
+# Both @import lines go: this site loads Inter and Noto Sans KR itself from
+# app/fonts.ts, and the Tailwind layers arrive from the compiled file.
 # (Matched to end of line, not to the first `;` — the font URL is full of them.)
 src = re.sub(r"^@import[^\n]*\n\s*", "", src, flags=re.M)
+
+# The product site names the two families directly, because it fetches them
+# from Google. This one self-hosts them and reaches them through the variables
+# root-shell.tsx sets, so the stack is rewritten on the way in — otherwise this
+# file would go back to the literal names every time it is regenerated, and the
+# ported page would quietly fall back to Arial while the rest of the site did
+# not. The literal names stay on the end as the fallback they already were.
+src = re.sub(
+    r'font-family:\s*Inter,\s*"Noto Sans KR",',
+    'font-family: var(--font-inter), var(--font-noto-kr), Inter, "Noto Sans KR",',
+    src,
+)
 
 # `.hero` is the one class name the two stylesheets share. Scoping alone would
 # not settle it: this site's `.hero p` and `.hero h1` rules would still reach

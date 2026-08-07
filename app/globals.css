@@ -1,4 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap");
+/* The typefaces are self-hosted and loaded from app/fonts.ts — see the note
+   there for why they are no longer fetched from fonts.googleapis.com. The two
+   variables below are set on <html> by root-shell.tsx; the literal names stay
+   in the fallback chain so the stack still reads correctly if a variable is
+   ever missing. */
 
 /* Design tokens. The reference surface is the CyberShield page
    (/en/cybershield → app/cybershield/cybershield.css); this file mirrors it so
@@ -51,7 +55,7 @@ html { scroll-behavior: smooth; }
    reference's own sticky offset (`.cs .cutaway-view { top: 96px }`). */
 #main, .hero[id], section[id], .band[id] { scroll-margin-top: 96px; }
 body {
-  font-family: Inter, "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-inter), var(--font-noto-kr), Inter, "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
   color: var(--ink);
   background: var(--bg);
   line-height: 1.5;

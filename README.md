@@ -63,6 +63,13 @@ HTML에 그대로 담기 위해 `(ko)` / `(en)` 라우트 그룹이 각자의 �
 갖는다 — 그룹은 URL에 나타나지 않으므로 경로는 `/`, `/en/` 그대로다. 독일어는
 개발 속도를 위해 제외했고, `copy`에 `de` 키를 다시 추가하면 복구된다.
 
+**Nothing is fetched off this origin.** Inter와 Noto Sans KR은 빌드 시점에 받아
+export에 함께 실린다([`app/fonts.ts`](app/fonts.ts)). 방문자 IP가 Google로 가지
+않으므로 독일에서 운영하는 사이트가 감수할 이유가 없는 GDPR 논쟁이 사라지고,
+`@import`가 만들던 왕복 한 번도 없어진다. 두 폰트 모두 가변 폰트라 유니코드 범위당
+파일 하나가 300~800 굵기를 전부 담당하며, 브라우저는 그 페이지에 실제로 쓰인 범위만
+받는다 — 랜딩 267KB, CyberShield 340KB.
+
 **Design tokens, measured not guessed.** 색·타이포·간격·버튼 규격은
 [`docs/FRANKONIA-DESIGN-REFERENCE.md`](docs/FRANKONIA-DESIGN-REFERENCE.md)에
 실측해 기록한 토큰을 그대로 쓴다 — 브랜드 레드 `#E60000`, 잉크 `#25282B`,
@@ -169,12 +176,24 @@ mockup/
 lint → 정적 빌드 → 렌더된 HTML 테스트를 거쳐 `out/`을 GitHub Pages에 배포한다. 테스트가
 깨지면 배포되지 않는다. 수동 단계는 없다.
 
-**Production.** `.env.example`을 `.env`로 복사해 SFTP 자격증명을 채운 뒤:
+**Production.** `.env.example`을 `.env`로 복사해 SFTP 자격증명을 채우고, 접속할
+서버의 호스트 키를 한 번 기록한 뒤:
+
+```bash
+ssh-keyscan -p 22 <SFTP_HOST> >> deploy/known_hosts
+```
 
 ```bash
 pip install paramiko
 python deploy/deploy.py
 ```
+
+업로드는 **호스트 키가 확인되지 않으면 아무것도 보내지 않고 중단한다** — 기록된 키와
+다르면 서버 재구축인지 중간자인지 확인하기 전에는 진행하지 않는다. `known_hosts`를
+둘 수 없는 환경(CI)에서는 `SFTP_HOST_FINGERPRINT`에 지문을 고정하면 된다. 어느
+쪽이든 지문은 호스팅 사업자가 공표한 값과 대조해야 한다 — 검증하려는 그 연결에서
+읽어낸 값은 아무것도 증명하지 못한다. 자격증명은 키(`SFTP_KEY`)를 권장하고,
+비밀번호(`SFTP_PASS`)는 그것만 허용하는 호스트를 위해 남겨 두었다.
 
 빌드(base path 없음, `NEXT_PUBLIC_INDEXABLE=1`)와 업로드를 한 번에 수행하며, 빌드가
 실패하면 업로드하지 않는다. 업로드는 스테이징용 빌드가 섞여 들어가는 것을 막고
@@ -189,11 +208,9 @@ python deploy/deploy.py
 
 - **법적 고지 페이지가 없다.** 독일 법인이 운영하는 사이트에는 Impressum(TMG §5)과
   개인정보처리방침이 필요하다. 현재 두 페이지 모두 없다.
-- **웹폰트가 Google 서버에서 로드된다.** `globals.css`의 `@import`가 방문자 IP를
-  Google로 보낸다 — 독일 판례상 동의 없는 임베드는 GDPR 위반으로 다뤄진 적이 있다.
-  `next/font`로 자체 호스팅하면 이 문제와 `htaccess`의 CSP 예외가 함께 사라진다.
-- **SFTP 업로드가 호스트 키를 검증하지 않는다.** `deploy/upload.py`가 접속 대상을
-  확인하지 않으므로, 중간자가 프로덕션 문서 루트에 파일을 밀어 넣을 수 있다.
+- **HSTS `includeSubDomains`가 2년으로 걸려 있다.** [`deploy/htaccess`](deploy/htaccess).
+  HTTP로만 서비스되는 서브도메인이 하나라도 있으면 배포 즉시 끊기고, 브라우저에
+  캐시되므로 되돌릴 수 없다. 정식 도메인 배포 전 서브도메인을 전수 확인해야 한다.
 - **Chambers · Test Systems 32페이지의 본문이 비어 있다.** 위 표의 "골격" — 분류와
   모델 목록은 서 있고 사양·설명·사진이 아직 없다. `docs/source/`에 Company를 정리한
   것과 같은 방식으로 본사 원본을 페이지별로 옮기는 작업이 남았다.

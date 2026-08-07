@@ -1,4 +1,5 @@
 import "./globals.css";
+import { fontVariables } from "./fonts";
 import type { Lang } from "./site-config";
 
 /**
@@ -13,7 +14,9 @@ export default function RootShell({
   children,
 }: Readonly<{ lang: Lang; children: React.ReactNode }>) {
   return (
-    <html lang={lang}>
+    // The font variables are declared on <html> rather than <body> so the
+    // stylesheet can reach them from :root, where the rest of the tokens live.
+    <html lang={lang} className={fontVariables}>
       <body>{children}</body>
     </html>
   );

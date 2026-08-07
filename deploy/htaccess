@@ -24,9 +24,14 @@ ErrorDocument 404 /404.html
   Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()"
-  # The site is static: scripts and styles are first-party, fonts come from
-  # Google. frame-ancestors repeats X-Frame-Options for modern browsers.
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; form-action 'self' mailto:; frame-ancestors 'self'; base-uri 'self'; object-src 'none'"
+  # The site is static and now entirely first-party: the typefaces are built
+  # into the export (app/fonts.ts), so the Google exceptions this policy used
+  # to carry for style-src and font-src are gone and nothing here reaches off
+  # the origin. 'unsafe-inline' stays for the framework's own bootstrap script
+  # and for next/font's @font-face block, neither of which can carry a nonce
+  # in a static export. frame-ancestors repeats X-Frame-Options for modern
+  # browsers.
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self'; form-action 'self' mailto:; frame-ancestors 'self'; base-uri 'self'; object-src 'none'"
 </IfModule>
 
 <IfModule mod_deflate.c>

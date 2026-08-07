@@ -50,7 +50,7 @@
   margin: 0;
   background: var(--canvas);
   color: var(--ink);
-  font-family: Inter, "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-inter), var(--font-noto-kr), Inter, "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 .cs button, .cs input, .cs select, .cs textarea{ font: inherit; }
