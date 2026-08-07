@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { companySections, sectionMeta, sectionPath } from "./company-sections";
 import { languages, localeRoute, type Lang } from "./site-config";
 
 /** Fixed category order — do not reorder (site map rule). */
@@ -31,13 +32,27 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [menuOpen]);
 
+  const company = companySections.map(
+    (s) => [sectionMeta[lang][s].label, localeRoute(lang, sectionPath(s))] as const,
+  );
+
   const sections = [
-    { label: t.nav.company, href: `${home}#company`, items: t.navSubs.company.map((l) => [l, `${home}#company`] as const) },
+    // The parent leads to the first child: Company has no overview page of
+    // its own, and a dead parent link is worse than a predictable one.
+    { label: t.nav.company, href: company[0][1], items: company },
     { label: t.nav.chamber, href: `${home}#chambers`, items: chamberCategories.map((c) => [c, `${home}#chambers`] as const) },
     { label: t.nav.equip, href: `${home}#equipment`, items: equipmentCategories.map((c) => [c, `${home}#equipment`] as const) },
     { label: t.nav.cyber, href: cs, items: [] as (readonly [string, string])[] },
-    { label: t.nav.contact, href: `${home}#contact`, items: t.navSubs.contact.map((l) => [l, `${home}#contact`] as const) },
-    { label: t.nav.career, href: `${home}#career`, items: [] as (readonly [string, string])[] },
+    {
+      label: t.nav.contact,
+      href: `${home}#contact`,
+      items: [
+        [t.navSubs.contact.quote, `${home}#contact`],
+        // Catalogues live on the Publications page now, not on the landing.
+        [t.navSubs.contact.catalog, localeRoute(lang, sectionPath("publications"))],
+      ] as const,
+    },
+    { label: t.nav.career, href: localeRoute(lang, sectionPath("career")), items: [] as (readonly [string, string])[] },
   ];
 
   return (
@@ -128,6 +143,7 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
 export type HeaderCopy = {
   tagline: string;
   nav: { company: string; chamber: string; equip: string; cyber: string; contact: string; career: string; cta: string };
-  navSubs: { company: readonly string[]; contact: readonly string[] };
+  /** Company's submenu comes from company-sections.ts, not from here. */
+  navSubs: { contact: { quote: string; catalog: string } };
   a11y: { skip: string; primaryNav: string; mobileNav: string; menuOpen: string; menuClose: string };
 };

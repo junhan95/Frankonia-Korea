@@ -10,8 +10,7 @@ const copy = {
     tagline: "EMC SOLUTIONS",
     nav: { company: "회사소개", chamber: "챔버", equip: "EMC 시험장비", cyber: "CyberShield", contact: "문의", career: "채용", cta: "견적 문의" },
     navSubs: {
-      company: ["경영이념", "연혁", "채용", "발간자료", "행사·전시"],
-      contact: ["견적·기술 문의", "카탈로그 다운로드"],
+      contact: { quote: "견적·기술 문의", catalog: "카탈로그 다운로드" },
     },
     a11y: {
       skip: "본문 바로가기",
@@ -75,19 +74,20 @@ const copy = {
     ctB2: "전화 상담",
     ftDesc: "독일 Frankonia의 EMC 챔버 및 시험 시스템 한국 공식 파트너",
     ftAddr: "주소 · 사업자등록번호 · 대표자명 (추후 기입)",
+    ftCompany: "회사소개",
     ftSol: "솔루션",
     ftL1: "챔버",
     ftL2: "EMC 시험장비",
     ftLink: "링크",
     ftHq: "Frankonia Group (독일 본사)",
+    ftContact: "견적·기술 문의",
     ftPriv: "개인정보처리방침",
   },
   en: {
     tagline: "EMC SOLUTIONS",
     nav: { company: "Company", chamber: "Anechoic Chambers", equip: "EMC Test Systems", cyber: "CyberShield", contact: "Contact", career: "Career", cta: "Get a Quote" },
     navSubs: {
-      company: ["Philosophy", "History", "Career", "Publications", "Events"],
-      contact: ["Quote & Technical Support", "Catalog Downloads"],
+      contact: { quote: "Quote & Technical Support", catalog: "Catalog Downloads" },
     },
     a11y: {
       skip: "Skip to content",
@@ -151,11 +151,13 @@ const copy = {
     ctB2: "Call Us",
     ftDesc: "Official Korean partner for Frankonia EMC chambers and test systems",
     ftAddr: "Address · Business Reg. No. · CEO (to be added)",
+    ftCompany: "Company",
     ftSol: "Solutions",
     ftL1: "Chambers",
     ftL2: "EMC Test Systems",
     ftLink: "Links",
     ftHq: "Frankonia Group (Headquarters)",
+    ftContact: "Quote & Technical Support",
     ftPriv: "Privacy Policy",
   },
 } as const;
@@ -190,9 +192,13 @@ const equipIcons = [
   <svg key="accessories" viewBox="0 0 24 24" fill="none"><rect x="3" y="10" width="8" height="8" rx="1.5" stroke="#fff" strokeWidth="1.7" /><rect x="13" y="6" width="8" height="12" rx="1.5" stroke="#fff" strokeWidth="1.7" /><path d="M6 14h2m7-4h2m-2 4h4" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" /></svg>,
 ];
 
-/** Header and footer slice of the copy object, shared with other pages
- *  (e.g. /cybershield) so the chrome reads the same strings as the landing. */
-export const headerCopy = (lang: Lang): HeaderCopy & FooterCopy => copy[lang];
+/** Strings the contact band needs, wherever it is reused. */
+export type BandCopy = { ctH: string; ctP: string; ctB1: string; ctB2: string; heroB1: string };
+
+/** The chrome slice of the copy object, shared with every other page, so the
+ *  header, footer and contact band read the same strings as the landing. */
+export const headerCopy = (lang: Lang): HeaderCopy & FooterCopy & BandCopy =>
+  copy[lang];
 
 export default function Landing({ lang }: { lang: Lang }) {
   const t = copy[lang];
@@ -312,7 +318,7 @@ export default function Landing({ lang }: { lang: Lang }) {
         </div>
       </section>
 
-      <section className="alt" id="company">
+      <section className="alt" id="why">
         <div className="wrap trust">
           <div>
             <span className="kicker">{t.trK}</span>

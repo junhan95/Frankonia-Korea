@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import {
+  sectionMeta,
+  sectionPath,
+  type CompanySection,
+} from "./company-sections";
+import {
   asset,
   isIndexable,
   languages,
@@ -59,7 +64,17 @@ const ogImage = `${siteOrigin}${asset("/og.png")}?v=1`;
 
 export function pageMetadata(lang: Lang, page: PageKey = "landing"): Metadata {
   const { title, description } = content[page][lang];
-  const path = paths[page];
+  return build(lang, paths[page], title, description);
+}
+
+/** Company sections are one dynamic route, so their copy comes from
+ *  company-sections.ts rather than the table above. */
+export function companyMetadata(lang: Lang, section: CompanySection): Metadata {
+  const { label, description } = sectionMeta[lang][section];
+  return build(lang, sectionPath(section), `${label} — Frankonia Korea`, description);
+}
+
+function build(lang: Lang, path: string, title: string, description: string): Metadata {
   const canonical = localeUrl(lang, path);
 
   return {

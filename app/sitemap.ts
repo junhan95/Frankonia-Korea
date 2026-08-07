@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { companySections, sectionPath } from "./company-sections";
 import { languages, localeUrl } from "./site-config";
 
 export const dynamic = "force-static";
@@ -28,5 +29,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
       alternates: alternates("/cybershield"),
     })),
+    ...companySections.flatMap((section) =>
+      languages.map(([code]) => ({
+        url: localeUrl(code, sectionPath(section)),
+        lastModified,
+        changeFrequency: "yearly" as const,
+        priority: 0.5,
+        alternates: alternates(sectionPath(section)),
+      })),
+    ),
   ];
 }
