@@ -61,7 +61,7 @@ app/
     └── not-found.tsx
 ```
 
-- **CyberShield는 내부 페이지 없음** — GNB·카드·푸터에서 `https://www.frankonia-cybershield.com/` 새 창(`target="_blank" rel="noopener"`) 직결.
+- **CyberShield는 내부 페이지 없음** — GNB·카드·푸터에서 `https://www.frankonia-cybershield.com/` 직결. **새 창이 아니라 현재 창**에서 이동하고(리뉴얼 요구사항), 로케일을 맞춰 KO는 `/ko/`로 보낸다. 항목에는 ↗ 글리프를 붙여 외부 이동임을 명시한다.
 - **챔버 카테고리 순서는 모든 노출 지점(GNB 드롭다운, 개요 필터 탭, 랜딩 카드, 푸터)에서 Automotive → Military → Commercial → Powertrain → RVC → Others 고정.** 데이터 파일에 `order` 필드로 강제한다.
 
 ### URL 규칙

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { companySections, sectionMeta, sectionPath } from "./company-sections";
-import { languages, localeRoute, type Lang } from "./site-config";
+import { cyberShieldUrl, languages, localeRoute, type Lang } from "./site-config";
 
 /** Fixed category order — do not reorder (site map rule). */
 const chamberCategories = ["Automotive", "Military", "Commercial", "Powertrain", "RVC", "Others"];
@@ -20,7 +20,6 @@ const equipmentCategories = ["EMI-Receiver", "Antennas", "Accessories"];
 export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const home = localeRoute(lang);
-  const cs = localeRoute(lang, "/cybershield");
   const close = () => setMenuOpen(false);
 
   useEffect(() => {
@@ -36,13 +35,14 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     (s) => [sectionMeta[lang][s].label, localeRoute(lang, sectionPath(s))] as const,
   );
 
-  const sections = [
+  const sections: NavSection[] = [
     // The parent leads to the first child: Company has no overview page of
     // its own, and a dead parent link is worse than a predictable one.
     { label: t.nav.company, href: company[0][1], items: company },
     { label: t.nav.chamber, href: `${home}#chambers`, items: chamberCategories.map((c) => [c, `${home}#chambers`] as const) },
     { label: t.nav.equip, href: `${home}#equipment`, items: equipmentCategories.map((c) => [c, `${home}#equipment`] as const) },
-    { label: t.nav.cyber, href: cs, items: [] as (readonly [string, string])[] },
+    // Hands over to the CyberShield product site in the same window.
+    { label: t.nav.cyber, href: cyberShieldUrl(lang), items: [] as (readonly [string, string])[], external: true },
     {
       label: t.nav.contact,
       href: `${home}#contact`,
@@ -64,10 +64,11 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
         </a>
 
         <nav className="menu" aria-label={t.a11y.primaryNav}>
-          {sections.map(({ label, href, items }) => (
+          {sections.map(({ label, href, items, external }) => (
             <div className="mi" key={label}>
               <a href={href}>
                 {label}
+                {external && <span className="ext-glyph" aria-hidden="true">↗</span>}
                 {items.length > 0 && <span className="caret" aria-hidden="true">▼</span>}
               </a>
               {items.length > 0 && (
@@ -121,9 +122,12 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
         hidden={!menuOpen}
       >
         <div className="wrap">
-          {sections.map(({ label, href, items }) => (
+          {sections.map(({ label, href, items, external }) => (
             <div className="mm-group" key={label}>
-              <a className="mm-top" href={href} onClick={close}>{label}</a>
+              <a className="mm-top" href={href} onClick={close}>
+                {label}
+                {external && <span className="ext-glyph" aria-hidden="true">↗</span>}
+              </a>
               {items.length > 0 && (
                 <div className="mm-subs">
                   {items.map(([itemLabel, itemHref]) => (
@@ -139,6 +143,14 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     </header>
   );
 }
+
+type NavSection = {
+  label: string;
+  href: string;
+  items: readonly (readonly [string, string])[];
+  /** Leaves the site — gets the ↗ glyph so the handover is not a surprise. */
+  external?: boolean;
+};
 
 export type HeaderCopy = {
   tagline: string;

@@ -56,16 +56,32 @@ test("the export contains the pages the site map defines", () => {
       "/company/history/",
       "/company/philosophy/",
       "/company/publications/",
-      "/cybershield/",
       "/en/",
       "/en/company/career/",
       "/en/company/events/",
       "/en/company/history/",
       "/en/company/philosophy/",
       "/en/company/publications/",
-      "/en/cybershield/",
     ],
   );
+});
+
+test("CyberShield hands over to the product site, in the same window", () => {
+  const expected = { ko: "https://www.frankonia-cybershield.com/ko/", en: "https://www.frankonia-cybershield.com/" };
+
+  for (const { route, html } of pages) {
+    assert.ok(
+      html.includes(`href="${expected[localeOf(route)]}"`),
+      `${route} does not link to the CyberShield site`,
+    );
+    assert.ok(!html.includes("/cybershield/index.html"), `${route} still links to the retired page`);
+  }
+
+  // Same window: the renewal brief asked for it explicitly, and a stray
+  // target="_blank" here would be invisible in review.
+  const links = [...pages[0].html.matchAll(/<a[^>]*frankonia-cybershield\.com[^>]*>/g)].map((m) => m[0]);
+  assert.ok(links.length > 0);
+  for (const link of links) assert.ok(!link.includes("target="), `opens in a new tab: ${link}`);
 });
 
 test("every page is held out of the index on the staging URL", () => {

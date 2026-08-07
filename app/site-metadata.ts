@@ -14,14 +14,14 @@ import {
 } from "./site-config";
 
 /** Every route that carries its own title. Add a key here, not a bespoke
- *  `metadata` export on the page — that is how /cybershield ended up
- *  indexable on the staging URL while the landing pages were held back. */
-export type PageKey = "landing" | "cybershield";
+ *  `metadata` export on the page — a page that declares its own metadata
+ *  object silently opts out of the robots policy below, which is how the old
+ *  /cybershield route stayed indexable on the staging URL. */
+export type PageKey = "landing";
 
 /** Path of a page relative to its locale root. */
 const paths: Record<PageKey, string> = {
   landing: "",
-  cybershield: "/cybershield",
 };
 
 const content: Record<PageKey, Record<Lang, { title: string; description: string }>> = {
@@ -35,18 +35,6 @@ const content: Record<PageKey, Record<Lang, { title: string; description: string
       title: "Frankonia Korea — EMC Chambers, Test Systems & CyberShield",
       description:
         "Official Korean partner of Frankonia Germany for EMC anechoic chambers and test systems — consulting, installation and after-sales support.",
-    },
-  },
-  cybershield: {
-    ko: {
-      title: "CyberShield — Frankonia Korea",
-      description:
-        "미션 크리티컬 데이터 인프라를 위한 측정 가능한 전자기 보안 경계. 10kHz~40GHz 최대 120dB, EN 50147-1 · IEEE 299 현장 검증.",
-    },
-    en: {
-      title: "CyberShield — Frankonia Korea",
-      description:
-        "A measurable electromagnetic security boundary for mission-critical data infrastructure. Up to 120 dB from 10 kHz to 40 GHz, verified on site to EN 50147-1 and IEEE 299.",
     },
   },
 };

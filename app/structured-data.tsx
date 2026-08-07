@@ -36,7 +36,7 @@ const organisation = {
   image: `${siteOrigin}${asset("/og.png")}`,
   parentOrganization: { "@id": groupId },
   areaServed: { "@type": "Country", name: "South Korea" },
-  knowsLanguage: ["ko", "en", "de"],
+  knowsLanguage: ["ko", "en"],
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "sales",
@@ -73,18 +73,12 @@ type Props = {
   description: string;
 } & (
   | { page: "landing"; productLines: readonly ProductInput[] }
-  | { page: "cybershield" }
   | { page: "company"; section: CompanySection }
 );
 
 export default function StructuredData(props: Props) {
   const { lang, description } = props;
-  const path =
-    props.page === "landing"
-      ? ""
-      : props.page === "cybershield"
-        ? "/cybershield"
-        : sectionPath(props.section);
+  const path = props.page === "landing" ? "" : sectionPath(props.section);
   const pageUrl = localeUrl(lang, path);
 
   const graph: Record<string, unknown>[] = [
@@ -112,29 +106,6 @@ export default function StructuredData(props: Props) {
 
   if (props.page === "landing") {
     graph.push(...products(props.productLines));
-  }
-
-  if (props.page === "cybershield") {
-    graph.push({
-      "@type": "Product",
-      "@id": `${homeUrl}#cybershield`,
-      name: "Frankonia CyberShield",
-      description,
-      brand: { "@id": groupId },
-      manufacturer: { "@id": groupId },
-      category: "RF shielded enclosures for data centres",
-      hasMeasurement: {
-        "@type": "QuantitativeValue",
-        name: "Shielding attenuation, 10 kHz to 40 GHz",
-        value: 120,
-        unitText: "dB",
-      },
-      additionalProperty: ["EN 50147-1", "IEEE 299"].map((value) => ({
-        "@type": "PropertyValue",
-        name: "Standard",
-        value,
-      })),
-    });
   }
 
   if (props.page === "company") {

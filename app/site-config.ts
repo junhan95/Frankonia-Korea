@@ -28,8 +28,18 @@ export const siteOrigin =
  */
 export const isIndexable = process.env.NEXT_PUBLIC_INDEXABLE === "1";
 
-/** External link to the CyberShield product site (opens in a new tab). */
-export const cyberShieldUrl = "https://www.frankonia-cybershield.com/";
+/**
+ * CyberShield lives on its own product site, so every entry point here —
+ * navigation, landing card, footer — hands the visitor straight over to it,
+ * in the same window rather than a new tab (renewal brief: "새 창에서 열리는
+ * 것이 아닌 현재 창에서").
+ *
+ * That site serves English from the root and Korean from /ko/; it has no /en/.
+ */
+export const cyberShieldUrl = (lang: Lang) =>
+  lang === "en"
+    ? "https://www.frankonia-cybershield.com/"
+    : `https://www.frankonia-cybershield.com/${lang}/`;
 
 /** Prefix a file in `public/` (e.g. `/images/hero.jpg`). */
 export const asset = (path: string) => `${basePath}${path}`;
