@@ -73,11 +73,26 @@ export function pageMetadata(lang: Lang, page: PageKey = "landing"): Metadata {
   return build(lang, paths[page], title, description);
 }
 
+/**
+ * For routes whose title and description live beside their own route table
+ * rather than in `content` above — the company sections and the whole chamber
+ * branch. Everything still goes through `build`, so the robots policy and the
+ * hreflang set stay in one place.
+ */
+export function routeMetadata(
+  lang: Lang,
+  path: string,
+  label: string,
+  description: string,
+): Metadata {
+  return build(lang, path, `${label} — Frankonia`, description);
+}
+
 /** Company sections are one dynamic route, so their copy comes from
  *  company-sections.ts rather than the table above. */
 export function companyMetadata(lang: Lang, section: CompanySection): Metadata {
   const { label, description } = sectionMeta[lang][section];
-  return build(lang, sectionPath(section), `${label} — Frankonia`, description);
+  return routeMetadata(lang, sectionPath(section), label, description);
 }
 
 function build(lang: Lang, path: string, title: string, description: string): Metadata {

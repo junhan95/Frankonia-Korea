@@ -75,6 +75,12 @@ export type ProductInput = {
   standards: readonly string[];
 };
 
+/** A page that states its own path and breadcrumb trail rather than having
+ *  them derived here — the chamber branch nests two levels and would otherwise
+ *  need its route table duplicated in this file. `trail` excludes the site
+ *  root, which is prepended below. */
+export type TrailStep = { name: string; path: string };
+
 type Props = {
   lang: Lang;
   description: string;
@@ -82,6 +88,7 @@ type Props = {
   | { page: "landing"; productLines: readonly ProductInput[] }
   | { page: "cybershield" }
   | { page: "company"; section: CompanySection }
+  | { page: "path"; path: string; trail: readonly TrailStep[] }
 );
 
 export default function StructuredData(props: Props) {
@@ -91,7 +98,9 @@ export default function StructuredData(props: Props) {
       ? ""
       : props.page === "cybershield"
         ? "/cybershield"
-        : sectionPath(props.section);
+        : props.page === "path"
+          ? props.path
+          : sectionPath(props.section);
   const pageUrl = localeUrl(lang, path);
 
   const graph: Record<string, unknown>[] = [
@@ -150,6 +159,22 @@ export default function StructuredData(props: Props) {
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Frankonia", item: localeUrl(lang) },
         { "@type": "ListItem", position: 2, name: sectionMeta[lang][props.section].label, item: pageUrl },
+      ],
+    });
+  }
+
+  if (props.page === "path") {
+    graph.push({
+      "@type": "BreadcrumbList",
+      "@id": `${pageUrl}#breadcrumb`,
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Frankonia", item: localeUrl(lang) },
+        ...props.trail.map((step, i) => ({
+          "@type": "ListItem",
+          position: i + 2,
+          name: step.name,
+          item: localeUrl(lang, step.path),
+        })),
       ],
     });
   }
