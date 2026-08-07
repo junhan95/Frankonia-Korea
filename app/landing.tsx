@@ -2,8 +2,8 @@ import { langPath, route, type Lang } from "./site-config";
 import SiteHeader from "./site-header";
 import SiteFooter from "./site-footer";
 
-/* All copy lives here, keyed by locale — the EN / DE / KO pages render from
-   the same tree. Chamber category order is fixed by the site map:
+/* All copy lives here, keyed by locale — the KO / EN pages render from the
+   same tree. Chamber category order is fixed by the site map:
    Automotive → Military → Commercial → Powertrain → RVC → Others. */
 const copy = {
   ko: {
@@ -143,75 +143,6 @@ const copy = {
     ftLink: "Links",
     ftHq: "Frankonia Group (Headquarters)",
     ftPriv: "Privacy Policy",
-  },
-  de: {
-    tagline: "EMV-LÖSUNGEN",
-    nav: { company: "Unternehmen", chamber: "Absorberkammern", equip: "EMV-Prüfsysteme", cyber: "CyberShield", contact: "Kontakt", career: "Karriere", cta: "Angebot anfragen" },
-    navSubs: {
-      company: ["Philosophie", "Geschichte", "Karriere", "Publikationen", "Veranstaltungen"],
-      contact: ["Angebot & Support", "Katalog-Downloads"],
-    },
-    heroTag: "DEUTSCHE TECHNIK · KOREANISCHE PARTNERSCHAFT",
-    heroH1a: "Alles für die EMV-Prüfung,",
-    heroH1b: "Frankonia Korea",
-    heroH1c: " an Ihrer Seite",
-    heroP: "Als offizieller koreanischer Partner von Frankonia liefern wir EMV-Kammern und Prüfsysteme mit umfassender Betreuung — von der Beratung über die Installation bis zum After-Sales-Service.",
-    heroB1: "Lösungen entdecken",
-    heroB2: "Angebot anfragen",
-    stats: [["1987", "Gründung Frankonia"], ["80+", "Belieferte Länder"], ["35+", "Kammermodelle"], ["3", "Kernlösungsbereiche"]],
-    solK: "UNSERE LÖSUNGEN",
-    solH: "Drei Kernlösungen",
-    solP: "EMV-Kammern, Prüfsysteme und CyberShield — alles für den Aufbau Ihrer Prüfumgebung.",
-    c1h: "Kammern",
-    c1sub: "Absorberkammern",
-    c1p: "Modulare EMV-Kammern mit Frankosorb®-Absorbertechnologie. Von Pre-Compliance bis Full-Compliance, standardisiert oder maßgeschneidert.",
-    c1list: ["Automotive", "Military", "Commercial", "Powertrain", "RVC (Modenverwirbelungskammer)", "Others"],
-    c2h: "Prüfsysteme",
-    c2sub: "EMV-Prüfsysteme",
-    c2p: "Von FFT-basierten EMI-Messempfängern bis zu Breitbandantennen und Zubehör — komplette Messtechnik nach internationalen Normen.",
-    c2list: ["EMI-Receiver (9kHz–6GHz)", "Antennen (9kHz–40GHz)", "Zubehör · Verstärker · GTEM"],
-    ext: "Externer Link",
-    c3p: "CyberShield — Lösungen für elektromagnetische Sicherheit und Schirmung. Details auf der eigenen CyberShield-Website.",
-    c3list: ["Sicherheits-Schirmungslösungen", "Eigene Seite auf dieser Website"],
-    c3go: "CyberShield entdecken →",
-    more: "Mehr erfahren →",
-    chH: "Kammer-Programm",
-    chP: "Die passende Kammer für jeden Anwendungsbereich.",
-    chambers: [
-      "Kammern für Fahrzeug- und Komponentenprüfung (ECE R10, CISPR 25, ISO 11452)",
-      "EMV-Kammern für Verteidigung nach MIL-STD-461",
-      "Standard-EMV-Kammern für Industrie- und Konsumelektronik",
-      "EMV-Prüfkammern für E-Mobilität und Antriebsstrang",
-      "Modenverwirbelungskammern für effiziente Störfestigkeitsprüfungen",
-      "Sonder- und kundenspezifische Kammerlösungen",
-    ],
-    eqH: "EMV-Prüfsysteme",
-    eqP: "Messtechnik nach IEC · CISPR · ISO · MIL-STD",
-    eq: [
-      "FFT-basierte EMI-Messempfänger. Vollständig CISPR 16-1-1-konform, 9kHz–6GHz.",
-      "Breitband-Antennensysteme für Störaussendungs- und Störfestigkeitsprüfungen, 9kHz–40GHz.",
-      "HF-Leistungsverstärker (bis 12kW), GTEM-Zellen, E-Feld-Sensoren, HF-Leistungsmesser u.v.m.",
-    ],
-    eq2models: "Bikonisch · Logarithmisch-periodisch · Hornantennen",
-    trK: "WHY FRANKONIA KOREA",
-    trH1: "Deutsche Technik,",
-    trH2: "Ihr koreanischer Partner",
-    trH3: " vor Ort",
-    trP1: "Seit 1987 liefert Frankonia EMV-Kammern und Prüfsysteme in mehr als 80 Länder weltweit.",
-    trP2: "Frankonia Korea begleitet Kunden über den gesamten Projektzyklus — Beratung, Planung, Installation, Kalibrierung und Wartung — in direkter Zusammenarbeit mit dem Engineering-Team in Deutschland.",
-    badges: [["Since 1987", "Gründung von Frankonia"], ["80+", "Belieferte Länder"], ["Offizieller Partner", "Koreanischer Partner der Frankonia Group"], ["Rundum-Betreuung", "Beratung – Installation – Service"]],
-    ctH: "Angebot & technische Beratung",
-    ctP: "Nennen Sie uns Ihre Anforderungen — wir schlagen die optimale Lösung vor.",
-    ctB1: "E-Mail senden",
-    ctB2: "Anrufen",
-    ftDesc: "Offizieller koreanischer Partner für Frankonia EMV-Kammern und Prüfsysteme",
-    ftAddr: "Adresse · Handelsregister-Nr. · Geschäftsführer (wird ergänzt)",
-    ftSol: "Lösungen",
-    ftL1: "Kammern",
-    ftL2: "EMV-Prüfsysteme",
-    ftLink: "Links",
-    ftHq: "Frankonia Group (Zentrale)",
-    ftPriv: "Datenschutz",
   },
 } as const;
 

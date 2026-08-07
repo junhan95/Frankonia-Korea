@@ -71,40 +71,10 @@ const csCopy = {
     ctB2: "Get a Quote",
     note: "Full specifications, standards and the interactive room configurator are available on the dedicated CyberShield site.",
   },
-  de: {
-    eyebrow: "CYBERSHIELD — PHYSISCHE & ELEKTROMAGNETISCHE SICHERHEIT",
-    h1a: "Das KI-Rechenzentrum schützen.",
-    h1b: "Das Signal einschließen",
-    p: "CyberShield schafft eine messbare elektromagnetische Sicherheitsgrenze um missionskritische Dateninfrastruktur — als ein komplettes System geplant, integriert und verifiziert.",
-    b1: "Zur vollständigen Website ↗",
-    b2: "Angebot anfragen",
-    stats: [["120dB", "Schirmdämpfung bis (10kHz–40GHz)"], ["EN 50147-1", "Vor Ort nach IEEE 299 verifiziert"], ["Schweißfrei", "Verschraubte Modulmontage"], ["1987", "Frankonia Schirmungs-Erbe"]],
-    envK: "WHO CYBERSHIELD IS BUILT FOR",
-    envH: "Drei Umgebungen, in denen die Grenze halten muss",
-    envs: [
-      ["01", "Hyperscale-Cloud & KI-Zentren", "KI-Compute-Cluster und Quantenhardware, geschirmt gegen HF-Manipulation und elektromagnetische Bedrohungen hoher Leistung."],
-      ["02", "Colocation & Enterprise-Rechenzentren", "Ein zertifizierter geschirmter Tresor als messbare Premium-Sicherheitsstufe unter strengen Governance-Anforderungen."],
-      ["03", "Verteidigung, Behörden & Finanzwesen", "Souveräne Cloud- und Hochfrequenzhandels-Infrastruktur — Sicherheit durch Messung, nicht durch Annahme."],
-    ],
-    lineK: "ONE CONTINUOUS BARRIER",
-    lineH: "Sechs Produktlinien, eine durchgehende Grenze",
-    lines: [
-      ["CyberShield Structure", "PAN-Schirmmodule aus 2,0 mm verzinktem Stahl"],
-      ["CyberShield Access", "HF-geschirmte Türen und Fenster"],
-      ["CyberShield Connectivity", "Netz- und Datenleitungsfilter"],
-      ["CyberShield Air & Waveguides", "Waben-Lüftungshohlleiter"],
-      ["CyberShield Validation", "Messung & Zertifizierung vor Ort (EN 50147-1 / IEEE 299)"],
-      ["CyberShield Lifecycle", "Wartungs- und Revalidierungsservices"],
-    ],
-    ctH: "Ihr CyberShield-Projekt besprechen",
-    ctP: "Nennen Sie uns Größe und Sicherheitsanforderungen Ihrer Anlage — wir schlagen gemeinsam mit dem Engineering-Team eine Konfiguration vor.",
-    ctB1: "Zur vollständigen Website ↗",
-    ctB2: "Angebot anfragen",
-    note: "Vollständige Spezifikationen, Normen und der interaktive Raumkonfigurator stehen auf der eigenen CyberShield-Website bereit.",
-  },
 } as const;
 
-/** Locale-matched URL on the external CyberShield site (it hosts /ko and /de). */
+/** Locale-matched URL on the external CyberShield site (English at the root,
+ *  Korean under /ko/). */
 const csExternal = (lang: Lang) =>
   lang === "en" ? cyberShieldUrl : `${cyberShieldUrl}${lang}/`;
 

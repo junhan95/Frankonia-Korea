@@ -6,14 +6,14 @@
 
 [www.frankonia-korea.com](https://www.frankonia-korea.com) 리뉴얼 프로젝트 —
 챔버(Anechoic Chambers), EMC 시험 시스템, CyberShield 세 개의 축으로
-한국·글로벌 고객을 위한 3개 언어(한국어·English·Deutsch) 사이트를 구축한다.
+한국·글로벌 고객을 위한 2개 언어(한국어·English) 사이트를 구축한다.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.2-000000?logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-19.2-149ECA?logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)
 ![Static export](https://img.shields.io/badge/output-static%20export-2ea44f)
 
-### [한국어](https://junhan95.github.io/Frankonia-Korea/) · [English](https://junhan95.github.io/Frankonia-Korea/en/) · [Deutsch](https://junhan95.github.io/Frankonia-Korea/de/)
+### [한국어](https://junhan95.github.io/Frankonia-Korea/) · [English](https://junhan95.github.io/Frankonia-Korea/en/)
 
 </div>
 
@@ -29,13 +29,13 @@ Frankonia Korea 리뉴얼 사이트의 소스와 기획 문서를 담은 레포�
 |---|---|---|
 | [`/`](https://junhan95.github.io/Frankonia-Korea/) | 한국어 | Landing |
 | [`/en/`](https://junhan95.github.io/Frankonia-Korea/en/) | English | Landing |
-| [`/de/`](https://junhan95.github.io/Frankonia-Korea/de/) | Deutsch | Landing |
 
 ## Highlights
 
-**Trilingual from one component.** 모든 문구는 `app/landing.tsx`의 `copy` 객체에
-로케일 키로 정리되어 있어 KO / EN / DE 페이지가 하나의 트리에서 렌더된다
+**Bilingual from one component.** 모든 문구는 `app/landing.tsx`의 `copy` 객체에
+로케일 키로 정리되어 있어 KO / EN 페이지가 하나의 트리에서 렌더된다
 ([CyberShield](https://github.com/junhan95/CyberShield) 레포와 같은 패턴).
+독일어는 개발 속도를 위해 제외했고, `copy`에 `de` 키를 다시 추가하면 복구된다.
 
 **Design tokens, measured not guessed.** 색·타이포·간격·버튼 규격은 frankonia-cybershield.com을
 실측해 문서화한 [`docs/FRANKONIA-DESIGN-REFERENCE.md`](docs/FRANKONIA-DESIGN-REFERENCE.md)의
@@ -88,7 +88,7 @@ app/
   site-metadata.ts   # per-locale title, description, hreflang, Open Graph
   globals.css        # design tokens + all styles
   page.tsx           # /        (한국어)
-  en/  de/           # /en/  /de/
+  en/                # /en/
 docs/
   Frankonia-Korea-웹사이트-리뉴얼-기획서.docx   # 리뉴얼 기획서 v2
   FRANKONIA-WEB-PLAN.md                        # 라우팅·페이지·컴포넌트 상세 기획

@@ -189,11 +189,11 @@ type ChamberModel = {
 
 | 항목 | 내용 |
 |---|---|
-| 로케일 | `ko`(기본) / `en` / `de` |
+| 로케일 | **1단계 확정: `ko`(기본) / `en` 2개 언어.** `de`는 개발 속도를 위해 보류 — 코드는 `copy` 객체에 `de` 키를 추가하면 복구되는 구조로 유지 |
 | 라우팅 | next-intl 미들웨어, `localePrefix: 'always'` |
 | 메타데이터 | `generateMetadata`에서 언어별 title/description + `alternates.languages`(hreflang) 자동 출력 |
-| 번역 범위 1단계 | 전 페이지 KO·EN 완역, DE는 Home/Company/제품 개요 우선 |
-| 폴백 | DE 미번역 페이지는 EN 콘텐츠 노출 + 상단 안내 배지 |
+| 번역 범위 1단계 | 전 페이지 KO·EN 완역 (DE 보류) |
+| 폴백 | DE 복구 시 미번역 페이지는 EN 콘텐츠 노출 + 상단 안내 배지 |
 | 폰트 | `next/font`로 Inter + Noto Sans KR 서브셋 로드 (디자인 레퍼런스 §2.1) |
 
 ---
