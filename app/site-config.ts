@@ -7,11 +7,19 @@ export const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
  *  the copy objects are structured so it can be added back as a third key. */
 export type Lang = "ko" | "en";
 
-/** Language switcher order. Korean is the primary locale and lives at the
- *  root; English is served from a subpath. */
+/**
+ * Language switcher order — English first, because this is the head office's
+ * site and English is the language it leads with.
+ *
+ * Display order and route layout are deliberately separate here: Korean still
+ * lives at the root and English at `/en`, which is what the fourth field says.
+ * Do not infer the default locale from this array's order; `langPath` looks
+ * entries up by code, so reordering only changes what the switcher renders
+ * first (and the order alternates are listed in, which carries no meaning).
+ */
 export const languages = [
-  ["ko", "KO", "한국어", "/"],
   ["en", "EN", "English", "/en"],
+  ["ko", "KO", "한국어", "/"],
 ] as const satisfies readonly (readonly [Lang, string, string, string])[];
 
 export const langPath = (lang: Lang) =>
@@ -19,6 +27,29 @@ export const langPath = (lang: Lang) =>
 
 export const siteOrigin =
   process.env.NEXT_PUBLIC_SITE_ORIGIN ?? "http://localhost:3000";
+
+/**
+ * One address for every enquiry on the site. The CyberShield page arrives from
+ * the product site already addressed here, and a second inbox beside it would
+ * split the same conversation in two — so the contact band, the company pages
+ * and the structured data all read from this.
+ */
+export const contactEmail = "sales@frankoniagroup.com";
+
+/**
+ * Applications go somewhere else. The head office's career page names
+ * `jobs[at]frankoniagroup.com` twice — once for the open positions and once for
+ * speculative applications — and routing a CV to the sales inbox instead would
+ * lose it. Used only by the Career page.
+ */
+export const jobsEmail = "jobs@frankoniagroup.com";
+
+/**
+ * The head office site, for the pages this one deliberately does not copy:
+ * the live vacancy PDFs and their application forms. Those are data the head
+ * office keeps current, and a copy here would outlive the posting.
+ */
+export const headOfficeUrl = "https://frankonia-solutions.com";
 
 /**
  * Search engines are kept out until the site moves to www.frankonia-korea.com.

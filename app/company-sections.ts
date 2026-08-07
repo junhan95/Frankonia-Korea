@@ -26,52 +26,54 @@ export const sectionMeta = {
     philosophy: {
       label: "경영이념",
       description:
-        "Frankonia Korea의 세 가지 원칙 — 측정으로 증명하고, 프로젝트 전 주기를 함께하며, 독일 본사 엔지니어링과 직결합니다.",
+        "전문성과 유연성, 품질, 높은 기술 수준으로 전 세계를 무대로 미래에도 유효한 EMC 솔루션을 만듭니다. Frankonia가 추구하는 것과 제공하는 것.",
     },
     history: {
       label: "연혁",
       description:
-        "1987년 설립 이후 80여 개국에 공급해 온 Frankonia와 Frankonia Korea의 연혁.",
+        "1987년 설립부터 Frankosorb® 흡수체 개발과 전 세계 법인 설립까지 — Frankonia 그룹의 연혁과 제품·기술 마일스톤 25건.",
     },
     career: {
       label: "채용",
-      description: "Frankonia Korea 인재상과 채용 안내. 상시 지원을 받고 있습니다.",
+      description:
+        "Frankonia 채용 공고와 상시 지원 안내, 그리고 네 가지 핵심 가치.",
     },
     publications: {
       label: "발간자료",
-      description: "EMC 챔버·시험장비 카탈로그와 CyberShield 브로슈어 안내.",
+      description:
+        "흡수체와 무향 챔버에 관해 Frankonia 연구진과 협력 대학이 발표한 논문·기고문 11건.",
     },
     events: {
       label: "행사·전시",
       description:
-        "Frankonia와 Frankonia Korea가 참가하는 EMC 전시회 및 기술 세미나 일정.",
+        "Frankonia가 참가하는 전시회와 세미나 안내.",
     },
   },
   en: {
     philosophy: {
       label: "Philosophy",
       description:
-        "Three principles at Frankonia Korea — prove it by measurement, stay for the whole project, work directly with engineering in Germany.",
+        "Expertise, flexibility, quality and a high degree of technology, generating future-proof solutions on a global scale. What Frankonia stands for, and what Frankonia provides.",
     },
     history: {
       label: "History",
       description:
-        "Frankonia has supplied EMC chambers to more than 80 countries since 1987. The history of the group and of Frankonia Korea.",
+        "From the foundation in 1987 through the Frankosorb® absorber to the group's companies worldwide — the Frankonia timeline and 25 product and technology milestones.",
     },
     career: {
       label: "Career",
       description:
-        "What Frankonia Korea looks for, and how to apply. Speculative applications welcome.",
+        "Open positions at Frankonia, how to apply speculatively, and the four core values.",
     },
     publications: {
       label: "Publications",
       description:
-        "Catalogues for EMC chambers and test systems, and the CyberShield brochure.",
+        "Eleven papers and articles on absorbers and anechoic chambers, published by Frankonia's researchers and their university partners.",
     },
     events: {
       label: "Events",
       description:
-        "Exhibitions and technical seminars where Frankonia and Frankonia Korea take part.",
+        "Exhibitions and seminars where Frankonia takes part.",
     },
   },
 } as const satisfies Record<Lang, Record<CompanySection, { label: string; description: string }>>;

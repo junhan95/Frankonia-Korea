@@ -28,24 +28,24 @@ const paths: Record<PageKey, string> = {
 const content: Record<PageKey, Record<Lang, { title: string; description: string }>> = {
   landing: {
     ko: {
-      title: "Frankonia Korea — EMC 챔버 · 시험 시스템 · CyberShield",
+      title: "Frankonia — EMC 챔버 · 시험 시스템 · CyberShield",
       description:
-        "독일 Frankonia의 EMC 무향 챔버와 시험 시스템을 한국 시장에 공급하는 공식 파트너. 컨설팅부터 구축·사후지원까지 토탈 솔루션을 제공합니다.",
+        "1987년부터 전 세계 80여 개국에 EMC 무향 챔버와 시험 시스템을 공급해 온 Frankonia. 컨설팅과 설계부터 제작·구축·사후지원까지 토탈 솔루션을 제공합니다.",
     },
     en: {
-      title: "Frankonia Korea — EMC Chambers, Test Systems & CyberShield",
+      title: "Frankonia — EMC Chambers, Test Systems & CyberShield",
       description:
-        "Official Korean partner of Frankonia Germany for EMC anechoic chambers and test systems — consulting, installation and after-sales support.",
+        "EMC anechoic chambers and test systems supplied to more than 80 countries since 1987 — consulting, design, installation and after-sales support.",
     },
   },
   cybershield: {
     ko: {
-      title: "CyberShield — Frankonia Korea",
+      title: "CyberShield — Frankonia",
       description:
         "미션 크리티컬 데이터 인프라를 위한 측정 가능한 전자기 보안 경계. 10kHz~40GHz 최대 120dB, EN 50147-1 · IEEE 299 현장 검증.",
     },
     en: {
-      title: "CyberShield — Frankonia Korea",
+      title: "CyberShield — Frankonia",
       description:
         "A measurable electromagnetic security boundary for mission-critical data infrastructure. Up to 120 dB from 10 kHz to 40 GHz, verified on site to EN 50147-1 and IEEE 299.",
     },
@@ -63,6 +63,11 @@ const ogLocale: Record<Lang, string> = { ko: "ko_KR", en: "en_US" };
  */
 const ogImage = `${siteOrigin}${asset("/og.png")}?v=1`;
 
+/** The description the page's meta tag carries, so the structured data on the
+ *  page can state the same thing rather than keep a second copy of it. */
+export const pageDescription = (lang: Lang, page: PageKey = "landing") =>
+  content[page][lang].description;
+
 export function pageMetadata(lang: Lang, page: PageKey = "landing"): Metadata {
   const { title, description } = content[page][lang];
   return build(lang, paths[page], title, description);
@@ -72,7 +77,7 @@ export function pageMetadata(lang: Lang, page: PageKey = "landing"): Metadata {
  *  company-sections.ts rather than the table above. */
 export function companyMetadata(lang: Lang, section: CompanySection): Metadata {
   const { label, description } = sectionMeta[lang][section];
-  return build(lang, sectionPath(section), `${label} — Frankonia Korea`, description);
+  return build(lang, sectionPath(section), `${label} — Frankonia`, description);
 }
 
 function build(lang: Lang, path: string, title: string, description: string): Metadata {
@@ -111,9 +116,9 @@ function build(lang: Lang, path: string, title: string, description: string): Me
       description,
       type: "website",
       url: canonical,
-      siteName: "Frankonia Korea",
+      siteName: "Frankonia",
       locale: ogLocale[lang],
-      images: [{ url: ogImage, width: 1200, height: 630, alt: "Frankonia Korea" }],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: "Frankonia" }],
     },
     twitter: { card: "summary_large_image", title, description, images: [ogImage] },
   };

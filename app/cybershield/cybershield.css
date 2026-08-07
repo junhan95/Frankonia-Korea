@@ -1,0 +1,852 @@
+/* CyberShield landing page styles, scoped under `.cs`.
+
+   Generated from the product site's stylesheets by
+   scripts/scope-cybershield-css.py — every selector gained a `.cs ` prefix and
+   the `:root` / `html` / `body` rules became the wrapper itself, so the product
+   design lands inside this site's chrome without either stylesheet reaching
+   into the other. `.hero` is renamed `.cs-hero` for the same reason: it is the
+   one class name both stylesheets claim.
+
+   The Tailwind layers come first, as they do upstream: the product page never
+   sees this site's `* { margin: 0; padding: 0 }` reset — globals.css excludes
+   `.cs` from it — and is spaced against the reset in `@layer base` instead.
+
+   Re-run the script to pull upstream changes rather than editing this file. */
+
+/* Korean copy on the product page wraps on the browser's rules; the `keep-all`
+   globals.css sets is this site's own choice and would rewrap it. Unlayered, so
+   it outranks that rule rather than sitting in a layer underneath it. */
+.cs h1, .cs h2, .cs h3, .cs h4, .cs p { word-break: normal; }
+
+@layer properties{@supports (((-webkit-hyphens:none)) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){.cs, .cs *, .cs :before, .cs :after, .cs ::backdrop{--tw-rotate-x:initial;--tw-rotate-y:initial;--tw-rotate-z:initial;--tw-skew-x:initial;--tw-skew-y:initial;--tw-blur:initial;--tw-brightness:initial;--tw-contrast:initial;--tw-grayscale:initial;--tw-hue-rotate:initial;--tw-invert:initial;--tw-opacity:initial;--tw-saturate:initial;--tw-sepia:initial;--tw-drop-shadow:initial;--tw-drop-shadow-color:initial;--tw-drop-shadow-alpha:100%;--tw-drop-shadow-size:initial}}}
+@layer theme{.cs, .cs :host{--font-sans:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";--font-mono:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;--spacing:.25rem;--default-font-family:var(--font-sans);--default-mono-font-family:var(--font-mono)}}
+@layer base{.cs, .cs *, .cs :after, .cs :before, .cs ::backdrop{box-sizing:border-box;border:0 solid;margin:0;padding:0}.cs ::file-selector-button{box-sizing:border-box;border:0 solid;margin:0;padding:0}.cs, .cs :host{-webkit-text-size-adjust:100%;tab-size:4;line-height:1.5;font-family:var(--default-font-family,ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji");font-feature-settings:var(--default-font-feature-settings,normal);font-variation-settings:var(--default-font-variation-settings,normal);-webkit-tap-highlight-color:transparent}.cs hr{height:0;color:inherit;border-top-width:1px}.cs abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}.cs h1, .cs h2, .cs h3, .cs h4, .cs h5, .cs h6{font-size:inherit;font-weight:inherit}.cs a{color:inherit;-webkit-text-decoration:inherit;-webkit-text-decoration:inherit;-webkit-text-decoration:inherit;-webkit-text-decoration:inherit;text-decoration:inherit}.cs b, .cs strong{font-weight:bolder}.cs code, .cs kbd, .cs samp, .cs pre{font-family:var(--default-mono-font-family,ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);font-feature-settings:var(--default-mono-font-feature-settings,normal);font-variation-settings:var(--default-mono-font-variation-settings,normal);font-size:1em}.cs small{font-size:80%}.cs sub, .cs sup{vertical-align:baseline;font-size:75%;line-height:0;position:relative}.cs sub{bottom:-.25em}.cs sup{top:-.5em}.cs table{text-indent:0;border-color:inherit;border-collapse:collapse}.cs :-moz-focusring{outline:auto}.cs progress{vertical-align:baseline}.cs summary{display:list-item}.cs ol, .cs ul, .cs menu{list-style:none}.cs img, .cs svg, .cs video, .cs canvas, .cs audio, .cs iframe, .cs embed, .cs object{vertical-align:middle;display:block}.cs img, .cs video{max-width:100%;height:auto}.cs button, .cs input, .cs select, .cs optgroup, .cs textarea{font:inherit;font-feature-settings:inherit;font-variation-settings:inherit;letter-spacing:inherit;color:inherit;opacity:1;background-color:#0000;border-radius:0}.cs ::file-selector-button{font:inherit;font-feature-settings:inherit;font-variation-settings:inherit;letter-spacing:inherit;color:inherit;opacity:1;background-color:#0000;border-radius:0}.cs :where(select:is([multiple],[size])) optgroup{font-weight:bolder}.cs :where(select:is([multiple],[size])) optgroup option{padding-inline-start:20px}.cs ::file-selector-button{margin-inline-end:4px}.cs ::placeholder{opacity:1}@supports (not ((-webkit-appearance:-apple-pay-button))) or (contain-intrinsic-size:1px){.cs ::placeholder{color:currentColor}@supports (color:color-mix(in lab, red, red)){.cs ::placeholder{color:color-mix(in oklab, currentcolor 50%, transparent)}}}.cs textarea{resize:vertical}.cs ::-webkit-search-decoration{-webkit-appearance:none}.cs ::-webkit-date-and-time-value{min-height:1lh;text-align:inherit}.cs ::-webkit-datetime-edit{display:inline-flex}.cs ::-webkit-datetime-edit-fields-wrapper{padding:0}.cs ::-webkit-datetime-edit{padding-block:0}.cs ::-webkit-datetime-edit-year-field{padding-block:0}.cs ::-webkit-datetime-edit-month-field{padding-block:0}.cs ::-webkit-datetime-edit-day-field{padding-block:0}.cs ::-webkit-datetime-edit-hour-field{padding-block:0}.cs ::-webkit-datetime-edit-minute-field{padding-block:0}.cs ::-webkit-datetime-edit-second-field{padding-block:0}.cs ::-webkit-datetime-edit-millisecond-field{padding-block:0}.cs ::-webkit-datetime-edit-meridiem-field{padding-block:0}.cs ::-webkit-calendar-picker-indicator{line-height:1}.cs :-moz-ui-invalid{box-shadow:none}.cs button, .cs input:where([type=button],[type=reset],[type=submit]){appearance:button}.cs ::file-selector-button{appearance:button}.cs ::-webkit-inner-spin-button{height:auto}.cs ::-webkit-outer-spin-button{height:auto}.cs [hidden]:where(:not([hidden=until-found])){display:none!important}}
+@layer components;
+@layer utilities{.cs .static{position:static}.cs .start{inset-inline-start:var(--spacing)}.cs .end{inset-inline-end:var(--spacing)}.cs .block{display:block}.cs .contents{display:contents}.cs .grid{display:grid}.cs .table{display:table}.cs .transform{transform:var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,)}.cs .filter{filter:var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,)}}
+
+.cs{
+  --primary: #e60000;
+  --primary-dark: #bd0000;
+  --red: #e60000;
+  --ink: #25282b;
+  --body-text: #7e7e7e;
+  /* Readable on --canvas-soft, where --body-text only reaches 3.6:1. */
+  --body-dark: #4a4d50;
+  --muted: #7e7e7e;
+  --mute: #bebebe;
+  --line: #d9d9d9;
+  --canvas: #ffffff;
+  --canvas-soft: #f2f2f2;
+  --paper: #ffffff;
+  --white: #fff;
+  --pill: 60px;
+  --pill-md: 32px;
+  --radius: 6px;
+}
+
+.cs, .cs *{ box-sizing: border-box; }
+.cs{ scroll-behavior: smooth; }
+.cs{
+  margin: 0;
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: Inter, "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.cs button, .cs input, .cs select, .cs textarea{ font: inherit; }
+.cs button, .cs a{ -webkit-tap-highlight-color: transparent; }
+.cs a{ color: inherit; text-decoration: none; }
+.cs img{ display: block; max-width: 100%; }
+
+/* ── Nav bar: dark ink band ───────────────────────────── */
+.cs .site-header{
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 0 4vw;
+  background: var(--ink);
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, .15);
+}
+/* The mark and the FRANKONIA wordmark are one lockup (frankonia-logo.svg,
+   vector outlines taken from the brand artwork). Only the product name sits
+   beside it, divided by a hairline. */
+/* Never let the lockup squash — it would overlap the navigation instead. */
+.cs .brand, .cs .footer-brand{ display: inline-flex; align-items: center; gap: 15px; flex: none; }
+.cs .brand-logo{ display: block; width: auto; height: 44px; }
+.cs .brand-product{
+  display: flex; align-items: center; align-self: stretch;
+  padding-left: 15px;
+  border-left: 1px solid rgba(255, 255, 255, .25);
+}
+.cs .wordmark-defs{ position: absolute; width: 0; height: 0; overflow: hidden; }
+.cs .brand-wordmark{ display: block; height: 26px; width: auto; }
+.cs .nav-desktop{ display: flex; align-items: center; gap: 30px; margin-left: auto; }
+.cs .nav-desktop a{ color: #fff; font-size: 15px; font-weight: 400; }
+.cs .nav-desktop a:hover{ color: var(--mute); }
+.cs .header-actions{ display: flex; align-items: center; gap: 10px; }
+.cs .language-select{ position: relative; }
+.cs .language{
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  height: 44px; padding: 0 13px;
+  border: 1px solid rgba(255, 255, 255, .45); background: transparent;
+  color: #fff;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  border-radius: 10px;
+}
+.cs .language:hover{ border-color: #fff; }
+.cs .language svg{ width: 11px; height: 8px; opacity: .8; transition: transform .2s ease; }
+.cs .language-select.open .language{ border-color: #fff; background: rgba(255, 255, 255, .12); }
+.cs .language-select.open .language svg{ transform: rotate(180deg); }
+.cs .language-menu{
+  position: absolute; top: calc(100% + 8px); right: 0; z-index: 60;
+  min-width: 172px; margin: 0; padding: 6px; list-style: none;
+  background: var(--ink); border: 1px solid rgba(255, 255, 255, .3);
+  border-radius: 10px;
+}
+.cs .language-menu a{
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; border-radius: 7px;
+  color: rgba(255, 255, 255, .75); font-size: 14px;
+}
+.cs .language-menu b{ min-width: 24px; font-size: 12px; font-weight: 800; letter-spacing: .08em; }
+.cs .language-menu a:hover{ background: rgba(255, 255, 255, .12); color: #fff; }
+.cs .language-menu a.current{ color: #fff; }
+.cs .language-menu a.current b{ color: var(--primary); }
+.cs .menu-toggle{
+  display: none;
+  flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  width: 44px; height: 44px; padding: 0;
+  border: 1px solid rgba(255, 255, 255, .45); background: transparent; cursor: pointer;
+  border-radius: 10px;
+}
+.cs .menu-toggle i{ display: block; width: 18px; height: 2px; background: #fff; transition: transform .2s, opacity .2s; }
+.cs .menu-toggle.open i:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+.cs .menu-toggle.open i:nth-child(2){ opacity: 0; }
+.cs .menu-toggle.open i:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+.cs .mobile-menu{
+  position: fixed; top: 76px; left: 0; right: 0; z-index: 40;
+  display: none; flex-direction: column;
+  padding: 10px 4vw 28px;
+  background: var(--ink);
+  border-bottom: 1px solid rgba(255, 255, 255, .15);
+}
+.cs .mobile-menu a{ padding: 16px 0; border-bottom: 1px solid rgba(255, 255, 255, .15); color: #fff; font-size: 17px; font-weight: 400; }
+.cs .mobile-menu a:hover{ color: var(--mute); }
+.cs .mobile-menu .button{ margin-top: 20px; }
+
+/* ── Buttons: signature 60px pills ────────────────────── */
+.cs .button{
+  border: 1px solid var(--primary);
+  padding: 12px 26px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 18px;
+  background: var(--primary); color: white;
+  font-weight: 400; font-size: 18px; line-height: 28px;
+  cursor: pointer; transition: background .2s, border-color .2s;
+  border-radius: var(--pill);
+}
+.cs .button:hover{ background: var(--primary-dark); border-color: var(--primary-dark); }
+.cs .button-small{ padding: 9px 20px; font-size: 16px; line-height: 24px; }
+
+/* ── Hero: dark ink band, colossal 800 uppercase ──────── */
+.cs .cs-hero{ padding: 70px 4vw 0; overflow: hidden; background: var(--ink); color: #fff; }
+.cs .hero-grid{ min-height: 560px; display: grid; grid-template-columns: minmax(390px, .85fr) minmax(540px, 1.15fr); align-items: center; gap: 4vw; max-width: 1400px; margin: auto; }
+.cs .hero-copy{ position: relative; z-index: 2; padding: 10px 0 50px; }
+.cs .eyebrow{ margin: 0 0 22px; color: var(--primary); font-size: 15px; line-height: 1.5; letter-spacing: .01em; font-weight: 800; text-transform: uppercase; }
+.cs h1, .cs h2, .cs h3, .cs p{ margin-top: 0; }
+.cs h1{
+  margin-bottom: 26px;
+  font-size: clamp(38px, 4.3vw, 66px);
+  line-height: 1.04;
+  letter-spacing: -1px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.cs h1 span{ color: var(--primary); }
+.cs .hero-body{ max-width: 600px; color: rgba(255, 255, 255, .78); font-size: 20px; line-height: 1.5; }
+.cs .hero-actions{ display: flex; align-items: center; gap: 14px; margin-top: 38px; flex-wrap: wrap; }
+.cs .text-link{
+  display: inline-flex; align-items: center; gap: 16px;
+  border: 1px solid #fff; border-radius: var(--pill);
+  padding: 12px 26px;
+  color: #fff; font-size: 18px; line-height: 28px; font-weight: 400;
+  transition: background .2s, color .2s;
+}
+.cs .text-link:hover{ background: #fff; color: var(--ink); }
+.cs .hero-visual{ position: relative; min-height: 520px; display: flex; align-items: center; justify-content: center; }
+.cs .hero-visual img, .cs .hero-visual video{
+  position: relative; z-index: 2;
+  width: 100%; max-width: none; height: auto;
+  background: #fff;
+  border-radius: var(--radius);
+}
+.cs .hero-visual video{ height: min(540px, 36vw); object-fit: contain; }
+.cs .visual-ring{ position: absolute; width: 520px; aspect-ratio: 1; border: 1px solid rgba(230, 0, 0, .35); border-radius: 50%; }
+.cs .visual-ring::before, .cs .visual-ring::after{ content: ""; position: absolute; inset: 12%; border: inherit; border-radius: inherit; }
+.cs .visual-ring::after{ inset: 26%; background: rgba(230, 0, 0, .06); }
+.cs .metrics{ max-width: 1400px; margin: auto; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid rgba(255, 255, 255, .2); }
+.cs .metrics div{ padding: 26px 28px 32px; border-right: 1px solid rgba(255, 255, 255, .2); }
+.cs .metrics div:last-child{ border-right: 0; }
+.cs .metrics strong{ display: block; font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
+.cs .metrics span{ display: block; margin-top: 8px; color: rgba(255, 255, 255, .6); font-size: 14px; line-height: 1.45; }
+
+/* ── Proof strip: red brand band ──────────────────────── */
+.cs .proof-strip{ display: grid; grid-template-columns: repeat(4, 1fr); background: var(--primary); color: white; padding: 0 4vw; }
+.cs .proof-strip span{ padding: 22px 18px; display: flex; gap: 16px; align-items: center; border-right: 1px solid rgba(255, 255, 255, .3); font-size: 15px; font-weight: 700; }
+.cs .proof-strip span:last-child{ border-right: 0; }
+.cs .proof-strip b{ color: rgba(255, 255, 255, .7); font-size: 12px; font-weight: 800; }
+
+/* ── Audience band: who the room is built for ─────────── */
+.cs .audience-section{ padding: 110px max(4vw, calc((100% - 1400px) / 2)) 0; background: var(--canvas); }
+.cs .audience-grid{ display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+.cs .audience-grid article{ padding: 26px 30px 0 0; border-right: 1px solid var(--line); margin-right: 30px; }
+.cs .audience-grid article:last-child{ border-right: 0; margin-right: 0; padding-right: 0; }
+.cs .audience-grid span{ display: block; margin-bottom: 12px; color: var(--primary); font-size: 13px; font-weight: 800; }
+.cs .audience-grid h3{ margin-bottom: 10px; font-size: 20px; font-weight: 700; line-height: 1.3; }
+.cs .audience-grid p{ margin: 0; color: var(--body-text); font-size: 15px; line-height: 1.6; }
+
+/* ── Section headline voice: weight 300 calm displays ─── */
+.cs .why-section{ padding: 120px max(4vw, calc((100% - 1400px) / 2)); background: var(--canvas); }
+.cs .why-intro{ display: grid; grid-template-columns: 1.35fr .65fr; gap: 6vw; align-items: end; }
+.cs .why-intro h2{ margin-bottom: 26px; font-size: clamp(34px, 3.6vw, 48px); line-height: 1.1; letter-spacing: 0; font-weight: 300; }
+.cs .why-intro .lead{ max-width: 760px; margin-bottom: 0; color: var(--body-text); font-size: 18px; line-height: 1.6; }
+.cs .why-metric{ padding: 5px 0 4px 30px; border-left: 3px solid var(--primary); }
+.cs .why-metric strong{ display: block; color: var(--primary); font-size: clamp(70px, 8vw, 126px); line-height: .9; letter-spacing: -1px; font-weight: 800; }
+.cs .why-metric > span{ display: block; max-width: 320px; margin-top: 24px; font-size: 16px; line-height: 1.45; font-weight: 700; }
+.cs .why-metric small{ display: block; margin-top: 20px; color: var(--body-text); font-size: 13px; font-weight: 600; }
+.cs .asset-grid{ margin: 72px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ink); }
+.cs .asset-grid article{ min-height: 235px; padding: 24px 30px 25px 0; margin-right: 30px; border-right: 1px solid var(--line); }
+.cs .asset-grid article:last-child{ border-right: 0; margin-right: 0; }
+.cs .asset-grid article > span{ color: var(--primary); font-size: 13px; font-weight: 800; }
+.cs .asset-grid h3{ margin: 40px 0 14px; font-size: 24px; font-weight: 700; }
+.cs .asset-grid p{ margin-bottom: 0; color: var(--body-text); font-size: 15px; line-height: 1.6; }
+
+/* Closing statement of the why section: what CyberShield contributes. */
+.cs .why-value{
+  margin-top: 26px; padding: 40px 44px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px 6vw; align-items: start;
+  background: var(--canvas-soft); border-left: 3px solid var(--primary); border-radius: var(--radius);
+}
+.cs .why-value .eyebrow{ margin-bottom: 14px; font-size: 12px; letter-spacing: .5px; }
+.cs .why-value h3{ margin: 0; font-size: clamp(22px, 2.1vw, 28px); line-height: 1.25; font-weight: 300; }
+.cs .why-value > p{ margin: 0; color: var(--body-text); font-size: 15.5px; line-height: 1.7; }
+
+/* ── Threat band: ink polarity flip ───────────────────── */
+.cs .section-dark{ background: var(--ink); color: white; }
+.cs .threat-section{ padding: 120px max(4vw, calc((100% - 1400px) / 2)); }
+.cs .section-heading{ max-width: 900px; margin-bottom: 64px; }
+.cs .section-heading h2, .cs .system-content h2, .cs .verify-content h2, .cs .lifecycle-content h2, .cs .faq-inner h2, .cs .contact-intro h2{
+  margin-bottom: 26px; font-size: clamp(34px, 3.6vw, 48px); line-height: 1.1; letter-spacing: 0; font-weight: 300;
+}
+.cs .section-heading > p:last-child{ max-width: 680px; color: rgba(255, 255, 255, .65); font-size: 18px; line-height: 1.55; }
+.cs .threat-grid{ display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid rgba(255, 255, 255, .2); }
+.cs .threat-grid article{ min-height: 330px; padding: 25px 25px 30px 0; border-right: 1px solid rgba(255, 255, 255, .15); margin-right: 25px; }
+.cs .threat-grid article:last-child{ border-right: 0; }
+.cs .threat-number{ font-size: 13px; font-weight: 700; color: rgba(255, 255, 255, .45); }
+.cs .threat-icon{ height: 74px; margin: 30px 0 24px; display: flex; align-items: center; color: var(--primary); }
+.cs .threat-icon svg{ width: 52px; height: 52px; }
+.cs .threat-grid h3{ font-size: 21px; font-weight: 700; }
+.cs .threat-grid p{ color: rgba(255, 255, 255, .6); font-size: 15px; line-height: 1.6; }
+.cs .impact-tag{ margin-top: 27px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, .15); }
+.cs .impact-tag span{ display: block; margin-bottom: 6px; color: rgba(255, 255, 255, .45); font-size: 12px; text-transform: uppercase; letter-spacing: .5px; font-weight: 600; }
+.cs .impact-tag strong{ color: white; font-size: 14px; font-weight: 700; }
+
+.cs .evidence-row{ margin: 30px 0 0; padding-top: 18px; border-top: 1px solid var(--line); color: var(--body-text); font-size: 13px; }
+.cs .evidence-row strong{ display: block; color: var(--ink); text-transform: uppercase; letter-spacing: .5px; font-size: 12px; font-weight: 600; }
+.cs .evidence-note{ margin: 12px 0 10px; color: var(--body-text); font-size: 13px; line-height: 1.6; }
+/* Citations, not links: reference, full title, then the claim it supports. */
+.cs .evidence-list{ margin: 0; padding: 0; list-style: none; display: grid; gap: 14px; }
+.cs .evidence-list li{ padding-left: 14px; border-left: 2px solid var(--line); font-size: 13px; line-height: 1.6; }
+.cs .evidence-list strong{ display: block; color: var(--ink); font-size: 13px; font-weight: 700; letter-spacing: 0; text-transform: none; }
+.cs .evidence-list span{ display: block; color: var(--body-text); }
+.cs .evidence-list em{ display: block; margin-top: 2px; color: var(--ink); font-size: 12px; font-style: normal; font-weight: 600; }
+
+/* ── System band: light content ───────────────────────── */
+.cs .system-section{ display: grid; grid-template-columns: 1.05fr .95fr; background: var(--canvas); }
+.cs .system-image{ position: relative; min-height: 640px; overflow: hidden; background: var(--canvas-soft); }
+.cs .system-image img{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cs .system-content{ padding: 120px 6vw; }
+.cs .system-content .lead, .cs .verify-content .lead{ max-width: 650px; color: var(--body-text); font-size: 18px; line-height: 1.6; }
+.cs .feature-list{ margin-top: 52px; border-top: 1px solid var(--ink); }
+.cs .feature-list article, .cs .step-list article{ display: grid; grid-template-columns: 50px 1fr; gap: 18px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+.cs .feature-list article > span, .cs .step-list article > span{ color: var(--primary); font-size: 13px; font-weight: 800; }
+.cs .feature-list h3, .cs .step-list h3{ margin-bottom: 7px; font-size: 18px; font-weight: 700; }
+.cs .feature-list p, .cs .step-list p{ margin: 0; color: var(--body-text); font-size: 15px; line-height: 1.55; }
+
+/* ── Cutaway map: hotspots over the shielded-room render ─ */
+.cs .cutaway-section{ padding: 120px max(4vw, calc((100% - 1400px) / 2)); background: var(--ink); color: #fff; }
+/* Render on the left, part list on the right. The render and its caption stay
+   pinned, so whichever entry the pointer reaches, the highlighted marker and
+   the words describing it are on screen together. */
+.cs .cutaway{
+  display: grid; grid-template-columns: minmax(0, 1fr) clamp(320px, 29%, 430px);
+  gap: 44px; align-items: start;
+}
+.cs .cutaway-view{ position: sticky; top: 96px; }
+
+.cs .cutaway-stage{ position: relative; margin: 0; border-radius: var(--radius); overflow: hidden; }
+.cs .cutaway-stage img{ display: block; width: 100%; height: auto; }
+.cs .cutaway-spot{ position: absolute; inset: 0; opacity: 0; pointer-events: none; transition: opacity .3s ease, background .3s ease; }
+
+.cs .cutaway-pin{
+  position: absolute; z-index: 2; transform: translate(-50%, -50%);
+  width: 26px; height: 26px; padding: 0;
+  display: grid; place-items: center;
+  border: 2px solid rgba(255, 255, 255, .9); border-radius: 50%;
+  background: var(--primary); color: #fff; cursor: pointer;
+  font-size: 12px; font-weight: 800; line-height: 1;
+  transition: transform .25s cubic-bezier(.22, .61, .36, 1), box-shadow .25s ease, background .25s ease, border-color .25s ease, opacity .25s ease;
+}
+.cs .cutaway-pin:hover, .cs .cutaway-pin.is-on{
+  transform: translate(-50%, -50%) scale(1.3); box-shadow: 0 0 0 6px rgba(230, 0, 0, .35);
+  background: var(--primary); border-color: #fff; opacity: 1;
+}
+/* A locked part reads differently from one the pointer is merely passing over,
+   because it stays put after the pointer moves on. */
+.cs .cutaway-pin.is-pinned{
+  transform: translate(-50%, -50%) scale(1.35);
+  box-shadow: 0 0 0 5px rgba(230, 0, 0, .45), 0 0 0 8px rgba(255, 255, 255, .5);
+}
+.cs .cutaway-pin.is-off{ background: rgba(255, 255, 255, .28); border-color: rgba(255, 255, 255, .45); opacity: .75; }
+
+/* Caption sits under the render, inside the pinned column. Keeping it out of
+   the list's column means its per-part height never moves the rows. */
+.cs .cutaway-caption{
+  /* 88px is the hint line and a one-line part description at the same height,
+     so switching between them never nudges what is stacked below. */
+  margin: 20px 0 0; min-height: 88px;
+  padding: 16px 20px; border-left: 3px solid rgba(255, 255, 255, .18);
+  transition: border-color .25s ease;
+}
+.cs .cutaway-caption.is-on{ border-left-color: var(--primary); }
+.cs .cutaway-caption strong{ display: block; margin-bottom: 5px; font-size: 17px; font-weight: 700; }
+.cs .cutaway-caption > span{ display: block; color: rgba(255, 255, 255, .68); font-size: 15px; line-height: 1.6; }
+.cs .cutaway-hint{ color: rgba(255, 255, 255, .45); font-size: 15px; }
+
+.cs .cutaway-groups{
+  min-width: 0; margin: 0;
+  display: grid; grid-template-columns: 1fr; gap: 0;
+  border-top: 1px solid rgba(255, 255, 255, .2); padding-top: 8px;
+}
+.cs .cutaway-group{ padding-top: 18px; transition: opacity .25s ease; }
+.cs .cutaway-group + .cutaway-group{ margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, .14); }
+.cs .cutaway.is-active .cutaway-group:not(.is-on){ opacity: 1; }
+.cs .cutaway-group h3{
+  display: flex; align-items: baseline; gap: 9px; margin: 0 0 12px;
+  font-size: 12px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: var(--primary);
+}
+.cs .cutaway-group h3 b{ color: rgba(255, 255, 255, .4); font-size: 11px; font-weight: 700; }
+.cs .cutaway-group ul{ margin: 0; padding: 0; list-style: none; }
+.cs .cutaway-group li + li{ border-top: 1px solid rgba(255, 255, 255, .1); }
+.cs .cutaway-group button{
+  width: 100%; display: grid; grid-template-columns: 26px 1fr; gap: 8px; align-items: start;
+  padding: 9px 8px; border: 0; background: none; color: rgba(255, 255, 255, .8);
+  text-align: left; cursor: pointer; font-size: 14px; line-height: 1.4;
+  box-shadow: inset 2px 0 0 transparent;
+  /* Geometry has to stay put on hover. Moving the padding narrows the label,
+     re-wraps it, changes the row height and flickers the pointer between rows. */
+  transition: background .2s ease, box-shadow .2s ease, color .2s ease;
+}
+.cs .cutaway-group button b{ color: rgba(255, 255, 255, .38); font-size: 11px; font-weight: 800; line-height: 1.5; }
+/* Pointing at a row previews it; the red rail is reserved for the locked one,
+   so it stays obvious which part the caption is actually showing. */
+.cs .cutaway-group button:hover, .cs .cutaway-group button.is-on{ background: rgba(255, 255, 255, .08); color: #fff; box-shadow: inset 2px 0 0 rgba(255, 255, 255, .4); }
+.cs .cutaway-group button.is-pinned{ background: rgba(255, 255, 255, .13); color: #fff; box-shadow: inset 2px 0 0 var(--primary); }
+.cs .cutaway-group button.is-on b{ color: var(--primary); }
+
+/* ── Comparison table: soft canvas, red advantage rail ── */
+.cs .compare-section{ padding: 120px max(4vw, calc((100% - 1400px) / 2)); background: var(--canvas-soft); }
+.cs .table-scroll{ overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.cs .table-scroll:focus-visible{ outline: 2px solid var(--primary); outline-offset: 3px; }
+.cs .compare-table{ width: 100%; min-width: 720px; border-collapse: collapse; border-top: 1px solid var(--ink); table-layout: fixed; }
+.cs .compare-table thead th{
+  padding: 14px 34px 14px 0; border-bottom: 1px solid var(--line); text-align: left;
+  color: var(--body-text); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px;
+}
+.cs .compare-table thead th:last-child{ color: var(--primary); padding-right: 0; }
+.cs .compare-table th:first-child{ width: 26%; }
+.cs .compare-table th:nth-child(2){ width: 31%; }
+.cs .compare-row > *{ padding: 26px 34px 26px 0; border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; }
+.cs .compare-row th{ font-size: 18px; font-weight: 700; color: var(--ink); }
+.cs .compare-row .standard{ color: var(--body-text); font-size: 15px; line-height: 1.55; }
+.cs .compare-row .advantage{ padding-left: 22px; padding-right: 0; border-left: 2px solid var(--primary); font-size: 15px; line-height: 1.55; font-weight: 700; }
+
+/* ── Product ecosystem: soft tier cards ───────────────── */
+.cs .ecosystem-section{ padding: 120px max(4vw, calc((100% - 1400px) / 2)); background: var(--canvas); }
+.cs .ecosystem-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+/* Photo on top, copy below; the card is a flex column so the spec line can be
+   pushed to the bottom and the three cards in a row stay aligned. */
+.cs .ecosystem-grid article{
+  display: flex; flex-direction: column; overflow: hidden;
+  background: var(--canvas-soft); border: 1px solid var(--mute); border-radius: var(--radius);
+}
+.cs .ecosystem-grid img{ display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+.cs .ecosystem-body{ display: flex; flex-direction: column; flex: 1; padding: 22px 26px 26px; }
+.cs .ecosystem-grid article > .ecosystem-body > span{ color: var(--primary); font-size: 13px; font-weight: 800; }
+.cs .ecosystem-grid h3{ margin: 14px 0 12px; font-size: 20px; line-height: 1.25; font-weight: 700; }
+.cs .ecosystem-grid p{ margin: 0; color: var(--body-text); font-size: 15px; line-height: 1.6; }
+/* Needs to outrank `.ecosystem-grid p`, which zeroes the margin. */
+.cs .ecosystem-grid .ecosystem-spec{
+  margin: auto 0 0; padding-top: 16px;
+  color: var(--ink); font-size: 13px; line-height: 1.6;
+}
+.cs .ecosystem-spec::before{
+  content: ""; display: block; width: 28px; margin-bottom: 14px;
+  border-top: 2px solid var(--primary);
+}
+.cs .ecosystem-note{ margin: 30px 0 0; font-size: 14px; font-weight: 700; }
+.cs .ecosystem-note a{ display: inline-flex; align-items: baseline; gap: 9px; border-bottom: 1px solid var(--mute); padding-bottom: 3px; }
+.cs .ecosystem-note a:hover{ border-bottom-color: var(--primary); color: var(--primary); }
+.cs .ecosystem-note b{ font-size: 15px; transition: transform .25s ease; }
+.cs .ecosystem-note a:hover b{ transform: translateY(3px); }
+
+/* ── Verification band ────────────────────────────────── */
+.cs .verify-section{ padding: 120px max(4vw, calc((100% - 1400px) / 2)); display: grid; grid-template-columns: 1.05fr .95fr; gap: 6vw; background: var(--canvas); }
+.cs .standards-intro{ margin: 44px 0 12px; color: var(--ink); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+.cs .standards-row{ display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 650px; }
+.cs .standards-row div{ padding: 16px 18px; border: 1px solid var(--mute); background: var(--canvas-soft); border-radius: var(--radius); }
+.cs .standards-row strong{ display: block; font-size: 16px; font-weight: 700; }
+.cs .standards-row span{ display: block; margin-top: 5px; color: var(--body-text); font-size: 13px; line-height: 1.5; }
+.cs .verify-visual{ position: relative; min-height: 560px; overflow: hidden; border-radius: var(--radius); }
+.cs .verify-visual img{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 25%; }
+
+/* ── Attenuation band: measured values on ink ─────────── */
+.cs .attenuation-section{ padding: 120px max(4vw, calc((100% - 1400px) / 2)); }
+.cs .attenuation-chart{ width: 100%; min-width: 780px; border-collapse: collapse; table-layout: fixed; border-top: 1px solid rgba(255, 255, 255, .2); }
+.cs .attenuation-chart th, .cs .attenuation-chart td{
+  padding: 0 18px 0 0; border-right: 1px solid rgba(255, 255, 255, .15); text-align: left; vertical-align: bottom;
+}
+.cs .attenuation-chart th:last-child, .cs .attenuation-chart td:last-child{ border-right: 0; padding-right: 0; }
+.cs .attenuation-chart thead th{
+  padding-top: 24px; color: rgba(255, 255, 255, .55); font-size: 13px; font-weight: 700; letter-spacing: .04em;
+}
+.cs .attenuation-bars td{ padding-top: 22px; }
+.cs .attenuation-bar{ display: flex; align-items: flex-end; height: 148px; margin-bottom: 20px; border-bottom: 1px solid rgba(255, 255, 255, .2); }
+.cs .attenuation-bar i{ display: block; width: 20px; background: var(--primary); }
+.cs .attenuation-values td{ padding-top: 0; font-size: 22px; font-weight: 800; letter-spacing: -.02em; }
+.cs .attenuation-fields td{ padding-top: 8px; padding-bottom: 28px; color: rgba(255, 255, 255, .55); font-size: 13px; line-height: 1.45; }
+.cs .attenuation-note{ margin: 32px 0 0; max-width: 780px; color: rgba(255, 255, 255, .55); font-size: 14px; line-height: 1.6; }
+
+/* ── Applications ─────────────────────────────────────── */
+.cs .applications-section{ padding: 120px max(4vw, calc((100% - 1400px) / 2)); background: var(--canvas); }
+.cs .section-heading.light > p:last-child{ color: var(--body-text); }
+.cs .application-grid{ display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink); }
+.cs .application-grid article{ padding: 24px 25px 30px 0; margin-right: 25px; border-right: 1px solid var(--line); }
+.cs .application-grid article:last-child{ border-right: 0; }
+.cs .application-top{ display: flex; justify-content: space-between; color: var(--primary); font-size: 13px; font-weight: 800; }
+.cs .application-top b{ font-size: 18px; }
+.cs .audience{ margin: 48px 0 12px; color: var(--primary); font-size: 12px; text-transform: uppercase; letter-spacing: .5px; font-weight: 600; }
+.cs .application-grid h3{ min-height: 54px; font-size: 22px; line-height: 1.2; font-weight: 700; }
+.cs .application-grid article > p:not(.audience){ min-height: 72px; margin-bottom: 24px; color: var(--body-text); font-size: 15px; line-height: 1.55; }
+.cs .application-grid button{
+  border: 1px solid var(--primary); border-radius: var(--pill);
+  padding: 9px 20px; background: transparent;
+  color: var(--primary); font-size: 15px; font-weight: 400; cursor: pointer;
+  transition: background .2s, color .2s;
+}
+.cs .application-grid button:hover{ background: var(--primary); color: #fff; }
+
+/* ── Scenario cards: canvas-soft tier cards ───────────── */
+.cs .scenario-section{ padding: 120px max(4vw, calc((100% - 1400px) / 2)); background: var(--canvas); }
+.cs .scenario-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.cs .scenario-grid article{ padding: 26px 26px 30px; background: var(--canvas-soft); border: 1px solid var(--mute); border-radius: var(--radius); }
+.cs .scenario-tag{ margin: 0 0 28px; color: var(--primary); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+.cs .scenario-grid h3{ min-height: 52px; margin-bottom: 22px; font-size: 22px; line-height: 1.25; font-weight: 700; }
+.cs .scenario-grid article > div{ padding: 14px 0 16px; border-top: 1px solid var(--line); }
+.cs .scenario-grid article > div > span{ display: block; margin-bottom: 7px; color: var(--body-text); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+.cs .scenario-grid article > div > p{ margin: 0; color: var(--body-text); font-size: 15px; line-height: 1.55; }
+.cs .scenario-grid .scenario-outcome > span{ color: var(--primary); }
+.cs .scenario-grid .scenario-outcome > p{ color: var(--ink); font-weight: 700; }
+.cs .scenario-note{ margin: 36px 0 0; display: flex; gap: 10px 22px; align-items: baseline; flex-wrap: wrap; color: var(--body-text); font-size: 14px; }
+.cs .outbound{ display: inline-flex; align-items: baseline; gap: 8px; padding-bottom: 3px; border-bottom: 1px solid var(--mute); color: var(--ink); font-weight: 600; transition: border-color .25s ease, color .25s ease; }
+.cs .outbound:hover{ border-color: var(--primary); color: var(--primary); }
+.cs .outbound span{ transition: transform .25s ease; }
+.cs .outbound:hover span{ transform: translate(3px, -3px); }
+
+/* ── Process band ─────────────────────────────────────── */
+.cs .lifecycle-section{ display: grid; grid-template-columns: 1.05fr .95fr; background: var(--canvas-soft); }
+.cs .lifecycle-visual{ position: relative; min-height: 640px; overflow: hidden; }
+.cs .lifecycle-visual img{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cs .lifecycle-content{ padding: 120px 6vw; background: var(--canvas); }
+.cs .step-list{ margin-top: 50px; border-top: 1px solid var(--ink); }
+
+/* ── Scope matrix: responsibility split ───────────────── */
+.cs .scope-section{ padding: 120px max(4vw, calc((100% - 1400px) / 2)); background: var(--canvas); }
+.cs .scope-list{ width: 100%; min-width: 680px; border-collapse: collapse; table-layout: fixed; border-top: 1px solid var(--ink); }
+.cs .scope-list thead th{
+  padding: 14px 30px 14px 0; border-bottom: 1px solid var(--line); text-align: left;
+  color: var(--body-text); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px;
+}
+.cs .scope-list th:first-child{ width: 30%; }
+.cs .scope-list th:nth-child(2){ width: 130px; }
+.cs .scope-list tbody th, .cs .scope-list tbody td{
+  padding: 20px 30px 20px 0; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle;
+}
+.cs .scope-list tbody td:last-child{ padding-right: 0; color: var(--body-text); font-size: 15px; line-height: 1.55; }
+.cs .scope-list tbody th{ font-size: 17px; font-weight: 700; color: var(--ink); }
+.cs .scope-rating{ display: inline-flex; gap: 5px; }
+.cs .scope-rating i{ width: 12px; height: 12px; border: 1px solid var(--mute); border-radius: 2px; }
+.cs .scope-rating i.on{ background: var(--primary); border-color: var(--primary); }
+.cs .scope-tag{
+  display: inline-block; margin-right: 12px; padding: 3px 11px;
+  border-radius: var(--pill-md); background: var(--ink); color: #fff;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+}
+.cs .scope-tag.core{ background: var(--primary); }
+.cs .scope-tag.partner, .cs .scope-tag.customer{ background: transparent; border: 1px solid var(--mute); color: var(--body-text); }
+
+/* ── Company band: who stands behind the room ─────────── */
+.cs .company-section{ padding: 120px max(4vw, calc((100% - 1400px) / 2)); background: var(--canvas-soft); }
+/* --body-text on the soft canvas only reaches 3.6:1. This band carries the most
+   prose of any section, so its running text is darkened to 7.6:1. */
+.cs .company-section .section-heading > p:last-child{ color: var(--body-dark); }
+/* Heading left, campus photo right; the photo centres against the copy so the
+   two columns read as one block whatever the locale does to the text length. */
+.cs .company-intro{ display: grid; grid-template-columns: 1fr 1fr; gap: 4vw; align-items: center; }
+.cs .company-intro .section-heading{ max-width: none; margin-bottom: 0; }
+.cs .company-banner{ display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius); }
+.cs .company-glance{ margin: 64px 0 58px; padding-top: 26px; border-top: 1px solid var(--mute); }
+.cs .company-glance > h3{
+  margin: 0 0 22px;
+  font-size: 12px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: var(--primary);
+}
+.cs .company-glance ul{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 26px; margin: 0; padding: 0; list-style: none; }
+.cs .company-glance li{ padding-left: 16px; border-left: 2px solid var(--primary); }
+.cs .company-glance strong{ display: block; margin-bottom: 6px; font-size: 16px; font-weight: 700; }
+.cs .company-glance span{ display: block; color: var(--body-dark); font-size: 14px; line-height: 1.55; }
+.cs .company-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+.cs .company-column h3{
+  margin: 0 0 4px; padding-bottom: 14px; border-bottom: 1px solid var(--ink);
+  font-size: 12px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: var(--primary);
+}
+.cs .company-column ul{ margin: 0; padding: 0; list-style: none; }
+.cs .company-column li{ padding: 18px 0; border-bottom: 1px solid var(--line); }
+.cs .company-column li:last-child{ border-bottom: 0; }
+.cs .company-column strong{ display: block; margin-bottom: 6px; font-size: 16px; font-weight: 700; }
+.cs .company-column span{ display: block; color: var(--body-dark); font-size: 14px; line-height: 1.6; }
+
+/* ── FAQ ──────────────────────────────────────────────── */
+.cs .faq-section{ padding: 120px max(4vw, calc((100% - 1400px) / 2)); background: var(--canvas); }
+.cs .faq-inner{ max-width: none; margin: 0; }
+.cs .faq-list{ margin-top: 58px; max-width: 980px; border-top: 1px solid var(--ink); }
+.cs .faq-list details{ border-bottom: 1px solid var(--line); }
+.cs .faq-list summary{ display: flex; align-items: center; justify-content: space-between; gap: 26px; padding: 23px 0; font-size: 18px; font-weight: 600; cursor: pointer; list-style: none; }
+.cs .faq-list summary::-webkit-details-marker{ display: none; }
+.cs .faq-list summary span{ flex: none; display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--mute); border-radius: 9999px; color: var(--primary); font-size: 17px; font-weight: 400; transition: transform .2s, border-color .2s; }
+.cs .faq-list details[open] summary span{ transform: rotate(45deg); border-color: var(--primary); }
+.cs .faq-list details > p{ margin: 0; max-width: 840px; padding: 0 60px 26px 0; color: var(--body-text); font-size: 16px; line-height: 1.7; }
+
+/* ── Contact: red campaign band ───────────────────────── */
+.cs .contact-section{ padding: 120px max(4vw, calc((100% - 1400px) / 2)); display: grid; grid-template-columns: .8fr 1.2fr; gap: 6vw; background: var(--primary); color: white; }
+.cs .contact-intro{ position: sticky; top: 120px; align-self: start; }
+.cs .contact-intro .eyebrow{ color: white; opacity: .8; }
+.cs .contact-intro > p:nth-of-type(2){ max-width: 520px; color: rgba(255, 255, 255, .8); font-size: 18px; line-height: 1.6; }
+.cs .contact-intro > a{ display: inline-block; margin-top: 25px; padding-bottom: 6px; border-bottom: 1px solid rgba(255, 255, 255, .6); font-size: 16px; font-weight: 700; }
+.cs .contact-phone{ display: block; font-size: 22px; letter-spacing: -.01em; }
+.cs .contact-phone small{ display: block; margin-bottom: 6px; color: rgba(255, 255, 255, .75); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+.cs form{ padding: 40px; background: white; color: var(--ink); border-radius: var(--radius); }
+.cs fieldset{ border: 0; padding: 0; margin: 0 0 32px; }
+.cs legend{ margin-bottom: 12px; color: var(--body-text); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+.cs .request-toggle{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cs .request-toggle legend{ grid-column: 1 / -1; }
+.cs .request-toggle label{ display: flex; align-items: center; justify-content: center; min-height: 52px; padding: 12px 16px; border: 1px solid var(--mute); border-radius: var(--pill); font-size: 15px; font-weight: 700; cursor: pointer; transition: border-color .2s, color .2s; }
+.cs .request-toggle label.selected{ border-color: var(--primary); background: #fdf0f0; color: var(--primary); }
+.cs .request-toggle input{ margin-right: 10px; accent-color: var(--primary); }
+.cs .form-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 20px 18px; }
+.cs .form-grid label{ color: var(--ink); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+.cs .form-grid input, .cs .form-grid select, .cs .form-grid textarea{
+  width: 100%; margin-top: 8px; padding: 12px 14px;
+  border: 1px solid var(--ink); border-radius: var(--radius);
+  outline: none; background: var(--canvas); color: var(--ink);
+  font-size: 16px; text-transform: none; letter-spacing: 0;
+}
+.cs .form-grid input:focus, .cs .form-grid select:focus, .cs .form-grid textarea:focus{ border-color: var(--primary); }
+.cs .form-grid .full{ grid-column: 1 / -1; }
+.cs .form-grid textarea{ resize: vertical; }
+.cs .consent{ display: flex; gap: 10px; align-items: flex-start; margin: 26px 0; color: var(--body-text); font-size: 14px; line-height: 1.5; }
+.cs .consent input{ margin-top: 3px; accent-color: var(--primary); }
+.cs .submit{ width: 100%; }
+.cs .email-note{ margin: 14px 0 0; color: var(--body-text); font-size: 13px; line-height: 1.5; text-align: center; }
+
+.cs .visually-hidden{
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
+/* ── Legal pages: privacy, imprint ────────────────────── */
+.cs .legal-back{ padding: 9px 20px; font-size: 15px; line-height: 24px; }
+.cs .legal-body{ max-width: 820px; margin: 0 auto; padding: 96px 4vw 110px; }
+.cs .legal-body h1{ margin-bottom: 22px; font-size: clamp(34px, 3.6vw, 48px); line-height: 1.1; letter-spacing: 0; font-weight: 300; text-transform: none; }
+.cs .legal-intro{ margin-bottom: 14px; color: var(--body-text); font-size: 18px; line-height: 1.6; }
+.cs .legal-updated{ margin-bottom: 0; padding-bottom: 26px; border-bottom: 1px solid var(--ink); color: var(--muted); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+.cs .legal-body section{ padding: 30px 0; border-bottom: 1px solid var(--line); }
+.cs .legal-body h2{ margin-bottom: 14px; font-size: 19px; font-weight: 700; }
+.cs .legal-body p{ margin: 0 0 14px; color: var(--body-text); font-size: 15.5px; line-height: 1.75; }
+.cs .legal-body p:last-child{ margin-bottom: 0; }
+.cs .legal-body ul{ margin: 0 0 14px; padding-left: 20px; color: var(--body-text); font-size: 15.5px; line-height: 1.75; }
+.cs .legal-body li{ margin-bottom: 5px; }
+.cs .legal-fill{
+  padding: 1px 7px; border: 1px dashed var(--primary); border-radius: var(--radius);
+  background: #fdf0f0; color: var(--primary); font-size: 14px; font-weight: 600; white-space: nowrap;
+}
+
+.cs .notfound-body{ min-height: 46vh; }
+.cs .notfound-links{ display: flex; gap: 26px; flex-wrap: wrap; margin-top: 30px; padding-top: 26px; border-top: 1px solid var(--ink); }
+.cs .notfound-links a{ padding-bottom: 4px; border-bottom: 1px solid var(--mute); color: var(--body-text); font-size: 15px; font-weight: 600; transition: border-color .25s ease, color .25s ease; }
+.cs .notfound-links a:hover{ border-color: var(--primary); color: var(--primary); }
+
+/* ── Footer: ink band ─────────────────────────────────── */
+/* The lockup track is sized to its content: the logo and wordmark are replaced
+   elements with width:auto, so they contribute nothing to a fr track's minimum
+   and the mark would spill over the disclaimer. */
+.cs footer{ padding: 55px 4vw; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 5vw; align-items: start; background: var(--ink); color: white; }
+.cs footer > p{ margin: 0; color: rgba(255, 255, 255, .55); font-size: 14px; line-height: 1.6; }
+.cs footer > div:last-child{ display: flex; justify-content: flex-end; align-items: center; gap: 20px; flex-wrap: wrap; color: rgba(255, 255, 255, .55); font-size: 14px; }
+.cs .footer-langs{ display: flex; gap: 14px; padding-right: 20px; border-right: 1px solid rgba(255, 255, 255, .2); }
+.cs .footer-langs a[aria-current]{ color: #fff; font-weight: 600; }
+.cs footer a:hover{ color: #fff; }
+
+/* ── Interaction layer ───────────────────────────────────
+   Brand rule: depth comes from colour and surface contrast,
+   never from drop shadows. Motion stays short and linear. */
+
+.cs .scroll-progress{ position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; overflow: hidden; }
+.cs .scroll-progress i{ display: block; height: 100%; background: var(--primary); transform: scaleX(0); transform-origin: 0 50%; }
+
+/* .reveal is applied by script, so content stays visible without JS. */
+.cs .reveal{ opacity: 0; transform: translateY(18px); }
+.cs .reveal.is-in{
+  opacity: 1;
+  transform: none;
+  transition: opacity .55s ease, transform .55s cubic-bezier(.22, .61, .36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.cs .nav-desktop a{ position: relative; padding-bottom: 4px; }
+.cs .nav-desktop a::after{
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  background: var(--primary); transform: scaleX(0); transform-origin: 0 50%; transition: transform .25s ease;
+}
+.cs .nav-desktop a:hover::after, .cs .nav-desktop a.active::after{ transform: scaleX(1); }
+.cs .nav-desktop a.active{ color: #fff; }
+
+.cs .button span, .cs .text-link span{ transition: transform .25s ease; }
+.cs .button:hover span, .cs .text-link:hover span{ transform: translate(3px, -3px); }
+.cs .language, .cs .menu-toggle, .cs .button, .cs .text-link{ transition: background .2s, color .2s, border-color .2s, transform .2s; }
+.cs .language:hover{ background: rgba(255, 255, 255, .12); }
+.cs .button:hover, .cs .application-grid button:hover{ transform: translateY(-2px); }
+
+.cs a:focus-visible, .cs button:focus-visible, .cs summary:focus-visible, .cs details:focus-visible, .cs input:focus-visible, .cs select:focus-visible, .cs textarea:focus-visible{
+  outline: 2px solid var(--primary); outline-offset: 3px;
+}
+.cs .section-dark a:focus-visible, .cs .section-dark button:focus-visible, .cs .site-header a:focus-visible, .cs .site-header button:focus-visible, .cs .contact-section a:focus-visible{ outline-color: #fff; }
+
+.cs .metrics div, .cs .proof-strip span{ transition: background .25s ease; }
+.cs .metrics div:hover{ background: rgba(255, 255, 255, .06); }
+.cs .proof-strip span:hover{ background: var(--primary-dark); }
+
+.cs .hero-visual video{ transition: transform .4s cubic-bezier(.22, .61, .36, 1); }
+.cs .hero-visual:hover video{ transform: scale(1.015); }
+.cs .visual-ring{ transition: transform .6s ease; }
+.cs .hero-visual:hover .visual-ring{ transform: scale(1.04); }
+
+/* Cards: a red rule grows across the top edge on hover */
+.cs .asset-grid article, .cs .threat-grid article, .cs .application-grid article{
+  position: relative;
+  transition: background .25s ease;
+}
+.cs .asset-grid article::before, .cs .threat-grid article::before, .cs .application-grid article::before{
+  content: ""; position: absolute; top: -1px; left: 0; right: 0; height: 2px;
+  background: var(--primary); transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform .3s cubic-bezier(.22, .61, .36, 1);
+}
+.cs .asset-grid article:hover::before, .cs .threat-grid article:hover::before, .cs .application-grid article:hover::before{ transform: scaleX(1); }
+
+.cs .asset-grid h3, .cs .threat-grid h3, .cs .application-grid h3{ transition: color .25s ease; }
+.cs .asset-grid article:hover h3, .cs .application-grid article:hover h3{ color: var(--primary); }
+.cs .threat-grid article:hover h3{ color: var(--primary); }
+
+.cs .threat-icon svg{ transition: transform .35s cubic-bezier(.22, .61, .36, 1); transform-origin: 0 50%; }
+.cs .threat-grid article:hover .threat-icon svg{ transform: scale(1.12); }
+.cs .impact-tag strong{ transition: color .25s ease; }
+.cs .threat-grid article:hover .impact-tag strong{ color: var(--primary); }
+
+.cs .application-top b{ display: inline-block; transition: transform .3s cubic-bezier(.22, .61, .36, 1); }
+.cs .application-grid article:hover .application-top b{ transform: translate(4px, -4px); }
+
+/* Scenario tiers: hairline turns brand red and the card lifts */
+.cs .scenario-grid article{ transition: border-color .25s ease, background .25s ease, transform .3s cubic-bezier(.22, .61, .36, 1); }
+.cs .scenario-grid article:hover{ border-color: var(--primary); background: var(--canvas); transform: translateY(-4px); }
+.cs .scenario-grid h3{ transition: color .25s ease; }
+.cs .scenario-grid article:hover h3{ color: var(--primary); }
+
+/* List rows shift toward the reader on hover */
+.cs .feature-list article, .cs .step-list article{
+  padding-left: 0;
+  transition: padding-left .25s ease, background .25s ease;
+}
+.cs .feature-list article:hover, .cs .step-list article:hover{ padding-left: 12px; background: var(--canvas-soft); }
+.cs .feature-list h3, .cs .step-list h3{ transition: color .25s ease; }
+.cs .feature-list article:hover h3, .cs .step-list article:hover h3{ color: var(--primary); }
+
+/* Comparison and scope rows follow the same row-shift language */
+.cs .compare-row, .cs .scope-list tbody tr{ transition: background .25s ease; }
+.cs .compare-row:hover{ background: var(--canvas); }
+.cs .scope-list tbody tr:hover{ background: var(--canvas-soft); }
+.cs .compare-row th, .cs .scope-list tbody th{ transition: color .25s ease; }
+.cs .compare-row:hover th, .cs .scope-list tbody tr:hover th{ color: var(--primary); }
+
+/* Ecosystem cards lift like the scenario tiers */
+.cs .ecosystem-grid article{ transition: border-color .25s ease, background .25s ease, transform .3s cubic-bezier(.22, .61, .36, 1); }
+.cs .ecosystem-grid article:hover{ border-color: var(--primary); background: var(--canvas); transform: translateY(-4px); }
+.cs .ecosystem-grid h3{ transition: color .25s ease; }
+.cs .ecosystem-grid article:hover h3{ color: var(--primary); }
+
+/* Attenuation columns echo the hero metric band */
+.cs .attenuation-bar i{ transition: width .25s ease; }
+.cs .attenuation-chart:hover .attenuation-bar i{ width: 26px; }
+
+.cs .standards-row div{ transition: border-color .25s ease, background .25s ease, transform .25s ease; }
+.cs .standards-row div:hover{ border-color: var(--primary); background: var(--canvas); transform: translateY(-2px); }
+
+.cs .contact-intro > a{ transition: border-color .25s ease, color .25s ease; }
+.cs .contact-intro > a:hover{ border-color: #fff; }
+
+.cs .system-image img, .cs .lifecycle-visual img, .cs .verify-visual img{ transition: transform .7s cubic-bezier(.22, .61, .36, 1); }
+.cs .system-image:hover img, .cs .lifecycle-visual:hover img, .cs .verify-visual:hover img{ transform: scale(1.04); }
+
+.cs .faq-list summary{ transition: color .25s ease; }
+.cs .faq-list details:hover summary, .cs .faq-list details[open] summary{ color: var(--primary); }
+.cs .faq-list details:hover summary span{ border-color: var(--primary); }
+.cs .faq-list details[open] > p{ animation: faq-open .3s cubic-bezier(.22, .61, .36, 1) both; }
+@keyframes faq-open { from { opacity: 0; transform: translateY(-6px); } }
+
+.cs .request-toggle label{ transition: border-color .2s, background .2s, color .2s; }
+.cs .request-toggle label:hover{ border-color: var(--primary); color: var(--primary); }
+.cs .form-grid input, .cs .form-grid select, .cs .form-grid textarea{ transition: border-color .2s ease; }
+.cs .form-grid label:hover input, .cs .form-grid label:hover select, .cs .form-grid label:hover textarea{ border-color: var(--body-text); }
+.cs .form-grid input:focus, .cs .form-grid select:focus, .cs .form-grid textarea:focus{ border-color: var(--primary); }
+
+/* The brand lockup, six nav items and the actions need ~1180px side by side —
+   with German labels it is tighter still, so the nav folds before the content
+   sections do. */
+@media (max-width: 1240px) {
+  .cs .nav-desktop{ display: none; }
+  .cs .menu-toggle{ display: inline-flex; }
+  .cs .mobile-menu{ display: flex; }
+  /* Too narrow for a side rail — render, caption, then the parts underneath. */
+  .cs .cutaway{ grid-template-columns: 1fr; gap: 0; }
+  .cs .cutaway-view{ position: static; }
+  .cs .cutaway-stage{ max-width: 1180px; margin: 0 auto; }
+  /* Stacked, the caption sits above the list, so reserve two description lines
+     — otherwise a longer part shoves the rows the pointer is aiming at. */
+  .cs .cutaway-caption{ max-width: 1180px; margin: 20px auto 0; min-height: 112px; }
+  .cs .cutaway-groups{ max-width: 1180px; margin: 42px auto 0; grid-template-columns: repeat(4, 1fr); gap: 26px; }
+  .cs .cutaway-group + .cutaway-group{ margin-top: 0; border-top: 0; }
+}
+
+@media (max-width: 1100px) {
+  .cs footer{ grid-template-columns: auto minmax(0, 1fr); row-gap: 30px; column-gap: 4vw; }
+  .cs footer > .footer-brand{ grid-column: 1; grid-row: 1; }
+  .cs footer > div:last-child{ grid-column: 2; grid-row: 1; }
+  .cs footer > p{ grid-column: 1 / -1; grid-row: 2; max-width: 680px; }
+  .cs .hero-grid{ grid-template-columns: 1fr; }
+  .cs .hero-copy{ max-width: 760px; }
+  .cs .hero-visual{ min-height: 440px; }
+  .cs .hero-visual img, .cs .hero-visual video{ width: 100%; }
+  .cs .why-intro{ grid-template-columns: 1fr; gap: 50px; }
+  .cs .why-metric{ max-width: 520px; }
+  .cs .why-value{ grid-template-columns: 1fr; padding: 34px 30px; }
+  .cs .threat-grid, .cs .application-grid{ grid-template-columns: repeat(2, 1fr); }
+  .cs .threat-grid article:nth-child(2), .cs .application-grid article:nth-child(2){ border-right: 0; }
+  .cs .audience-grid, .cs .company-grid{ grid-template-columns: 1fr; }
+  .cs .company-intro{ grid-template-columns: 1fr; gap: 40px; }
+  .cs .company-glance ul{ grid-template-columns: repeat(2, 1fr); }
+  .cs .audience-grid article{ border-right: 0; margin-right: 0; padding: 26px 0 0; border-bottom: 1px solid var(--line); padding-bottom: 26px; }
+  .cs .audience-grid article:last-child{ border-bottom: 0; }
+  .cs .company-grid{ gap: 44px; }
+  .cs .system-section, .cs .lifecycle-section{ grid-template-columns: 1fr; }
+  .cs .system-image, .cs .lifecycle-visual{ min-height: 580px; }
+  .cs .verify-section{ grid-template-columns: 1fr; gap: 55px; }
+  .cs .verify-visual{ min-height: 440px; }
+  .cs .scenario-grid{ grid-template-columns: 1fr; }
+  .cs .ecosystem-grid{ grid-template-columns: repeat(2, 1fr); }
+  .cs .cutaway-groups{ grid-template-columns: repeat(2, 1fr); gap: 20px 26px; }
+  .cs .compare-row > *, .cs .scope-list tbody th, .cs .scope-list tbody td{ padding-right: 24px; }
+  .cs .contact-section{ grid-template-columns: 1fr; }
+  .cs .contact-intro{ position: static; }
+}
+
+@media (max-width: 700px) {
+  .cs .site-header{ height: 66px; padding: 0 18px; }
+  .cs .brand{ gap: 11px; }
+  .cs .brand .brand-logo{ height: 34px; }
+  .cs .brand .brand-product{ padding-left: 11px; }
+  .cs .brand .brand-wordmark{ height: 20px; }
+  .cs .button-small{ display: none; }
+  .cs .mobile-menu{ top: 66px; padding: 6px 18px 22px; }
+  .cs .cs-hero{ padding: 50px 18px 0; }
+  .cs .hero-grid{ min-height: auto; }
+  .cs h1{ font-size: clamp(32px, 10vw, 48px); }
+  .cs .hero-body{ font-size: 17px; }
+  .cs .hero-actions{ align-items: stretch; flex-direction: column; gap: 12px; }
+  .cs .text-link{ justify-content: space-between; }
+  .cs .hero-visual{ min-height: 300px; margin: 20px 0 0; }
+  .cs .hero-visual video{ height: auto; }
+  .cs .visual-ring{ width: 300px; }
+  .cs .metrics{ grid-template-columns: 1fr; }
+  .cs .metrics div{ border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, .2); padding: 18px 0; }
+  .cs .metrics div:last-child{ border-bottom: 0; }
+  .cs .proof-strip{ grid-template-columns: 1fr 1fr; padding: 0 18px; }
+  .cs .proof-strip span{ padding: 17px 7px; font-size: 13px; }
+  .cs .why-section, .cs .threat-section, .cs .applications-section, .cs .verify-section, .cs .scenario-section, .cs .faq-section, .cs .contact-section, .cs .compare-section, .cs .ecosystem-section, .cs .attenuation-section, .cs .scope-section, .cs .cutaway-section, .cs .company-section{ padding: 85px 18px; }
+  .cs .audience-section{ padding: 75px 18px 0; }
+  .cs .company-glance ul{ grid-template-columns: 1fr; gap: 20px; }
+  .cs .company-glance{ margin: 34px 0 42px; }
+  .cs .cutaway-pin{ width: 21px; height: 21px; font-size: 10px; border-width: 1.5px; }
+  .cs .cutaway-groups{ grid-template-columns: 1fr; }
+  .cs .cutaway-caption{ padding: 14px 16px; }
+  .cs .section-heading h2, .cs .system-content h2, .cs .verify-content h2, .cs .lifecycle-content h2, .cs .faq-inner h2, .cs .contact-intro h2{ font-size: 32px; }
+  .cs .section-heading{ margin-bottom: 45px; }
+  .cs .threat-grid, .cs .application-grid{ grid-template-columns: 1fr; }
+  .cs .threat-grid article, .cs .application-grid article{ border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, .15); margin-right: 0; padding-right: 0; min-height: auto; }
+  .cs .application-grid article{ border-bottom-color: var(--line); }
+  .cs .asset-grid{ grid-template-columns: 1fr; margin-top: 55px; }
+  .cs .asset-grid article{ min-height: auto; margin: 0; padding-right: 0; border-right: 0; border-bottom: 1px solid var(--line); }
+  .cs .asset-grid h3{ margin-top: 30px; }
+  .cs .why-metric{ padding-left: 20px; }
+  .cs .evidence-list{ gap: 12px; }
+  .cs .system-image, .cs .lifecycle-visual{ min-height: 360px; }
+  .cs .system-content, .cs .lifecycle-content{ padding: 85px 18px; }
+  .cs .verify-visual{ min-height: 340px; }
+  .cs .standards-row{ grid-template-columns: 1fr; }
+  .cs .scenario-grid article{ padding: 24px 20px 26px; }
+  .cs .ecosystem-grid{ grid-template-columns: 1fr; }
+  .cs .ecosystem-grid article{ padding: 24px 20px 26px; }
+  .cs .ecosystem-grid h3{ margin-top: 28px; }
+  .cs .compare-table thead th, .cs .compare-row > *{ padding-right: 18px; }
+  .cs .compare-row th{ font-size: 16px; }
+  .cs .compare-row .advantage{ padding-left: 16px; }
+  .cs .attenuation-bar{ height: 110px; }
+  .cs .attenuation-values td{ font-size: 19px; }
+  .cs .scope-list thead th, .cs .scope-list tbody th, .cs .scope-list tbody td{ padding-right: 20px; }
+  .cs .faq-list summary{ font-size: 16px; gap: 16px; }
+  .cs .faq-list details > p{ padding-right: 0; }
+  .cs .form-grid, .cs .request-toggle{ grid-template-columns: 1fr; }
+  .cs .request-toggle legend, .cs .form-grid .full{ grid-column: auto; }
+  .cs form{ padding: 25px 20px; }
+  .cs footer{ grid-template-columns: 1fr; padding: 45px 18px; row-gap: 26px; }
+  .cs footer > .footer-brand, .cs footer > p, .cs footer > div:last-child{ grid-column: auto; grid-row: auto; }
+  .cs footer > div:last-child{ justify-content: flex-start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cs{ scroll-behavior: auto; }
+  .cs, .cs *{ transition: none !important; animation: none !important; }
+  .cs .scroll-progress{ display: none; }
+}

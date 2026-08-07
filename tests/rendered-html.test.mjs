@@ -81,13 +81,22 @@ test("CyberShield stays inside this site's chrome", () => {
   }
 
   for (const { route, html } of pages.filter((p) => p.route.endsWith("/cybershield/"))) {
-    const product =
-      localeOf(route) === "en"
-        ? "https://www.frankonia-cybershield.com/"
-        : "https://www.frankonia-cybershield.com/ko/";
-    assert.ok(html.includes(`href="${product}"`), `${route}: no link out to the product site`);
     assert.ok(html.includes('<header>'), `${route}: rendered without the site header`);
     assert.ok(html.includes('<footer>'), `${route}: rendered without the site footer`);
+
+    // The product page itself, from its hero down — not a summary of it. These
+    // are its own section ids, which only the port can put here.
+    assert.ok(html.includes('class="cs-hero" id="top"'), `${route}: the product hero is missing`);
+    for (const id of ["why", "solution", "ecosystem", "verification", "applications", "process"]) {
+      assert.ok(html.includes(`id="${id}"`), `${route}: the ${id} section is missing`);
+    }
+
+    // Its navigation bar is the one thing that does not come across: this
+    // site's own header is above it, and two nav bars would be one too many.
+    assert.ok(
+      !html.includes('class="site-header"') && !html.includes("nav-desktop"),
+      `${route}: the product site's own header came along with the port`,
+    );
   }
 
   // Same window throughout: the renewal brief asked for it explicitly, and a
@@ -115,6 +124,19 @@ test("the document language matches the locale of the route", () => {
       html,
       new RegExp(`<html lang="${localeOf(route)}"`),
       `${route} declares the wrong language`,
+    );
+  }
+});
+
+test("the language switcher stays on the page it is used from", () => {
+  // Switching language used to drop the reader on the home page, which the
+  // CyberShield page made obvious: the whole product page for a locale change.
+  for (const { route, html } of pages) {
+    const counterpart = localeOf(route) === "en" ? route.replace("/en/", "/") : `/en${route}`;
+    const label = localeOf(route) === "en" ? "KO" : "EN";
+    assert.ok(
+      html.includes(`href="${BASE}${counterpart}"`) && html.includes(`>${label}</a>`),
+      `${route}: the switcher does not offer ${counterpart}`,
     );
   }
 });
@@ -183,8 +205,31 @@ test("the structured data parses and names the organisation", () => {
     assert.ok(types.includes("WebPage"), `${route}: no WebPage`);
 
     const org = graph.find((node) => node["@id"]?.endsWith("#organization"));
-    assert.equal(org.name, "Frankonia Korea");
-    assert.equal(org.parentOrganization["@id"], `${ORIGIN}${BASE}/#group`);
+    assert.equal(org.name, "Frankonia");
+    assert.deepEqual(org.sameAs, ["https://frankonia-solutions.com/"]);
+
+    // The address may only claim what the footer of this very page prints, so
+    // assert both halves: the shape schema.org expects, and that each part of
+    // it is actually on the page a reader sees.
+    assert.deepEqual(org.address, {
+      "@type": "PostalAddress",
+      streetAddress: "Industriestraße 16",
+      postalCode: "91180",
+      addressLocality: "Heideck",
+      addressCountry: "DE",
+    });
+    assert.equal(org.legalName, "Frankonia Germany EMC Solutions GmbH");
+    assert.equal(org.telephone, "+49 9177 98-500");
+    assert.equal(org.contactPoint.telephone, org.telephone);
+
+    for (const printed of [
+      org.legalName,
+      org.address.streetAddress,
+      `${org.address.postalCode} ${org.address.addressLocality}`,
+      org.telephone,
+    ]) {
+      assert.ok(html.includes(printed), `${route}: the footer does not print ${printed}`);
+    }
   }
 });
 

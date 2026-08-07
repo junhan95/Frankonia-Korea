@@ -1,11 +1,17 @@
-import { localeRoute, type Lang } from "./site-config";
+import { contactEmail, localeRoute, type Lang } from "./site-config";
 import SiteHeader, { type HeaderCopy } from "./site-header";
 import SiteFooter, { type FooterCopy } from "./site-footer";
 import StructuredData from "./structured-data";
 
 /* All copy lives here, keyed by locale — the KO / EN pages render from the
    same tree. Chamber category order is fixed by the site map:
-   Automotive → Military → Commercial → Powertrain → RVC → Others. */
+   Automotive → Military → Commercial → Powertrain → RVC → Others.
+
+   The navigation labels are localised like everything else. Korean labels are
+   far shorter than the English ones ("챔버" against "Anechoic Chambers"), so
+   the bar is laid out to keep the same design in both: see the `.nav` rules in
+   globals.css, which anchor the mark and the controls and centre the menu in
+   whatever space is left rather than letting label width move them. */
 const copy = {
   ko: {
     nav: { company: "회사소개", chamber: "챔버", equip: "EMC 시험장비", cyber: "CyberShield", contact: "문의", career: "채용", cta: "견적 문의" },
@@ -19,11 +25,11 @@ const copy = {
       menuOpen: "메뉴 열기",
       menuClose: "메뉴 닫기",
     },
-    heroTag: "GERMAN ENGINEERING · KOREAN PARTNERSHIP",
+    heroTag: "EMC TEST SOLUTIONS · ENGINEERED IN GERMANY SINCE 1987",
     heroH1a: "EMC 시험의 모든 것,",
-    heroH1b: "Frankonia Korea",
+    heroH1b: "Frankonia",
     heroH1c: "가 함께합니다",
-    heroP: "독일 Frankonia의 EMC 챔버와 시험 시스템을 한국 시장에 공급하는 공식 파트너로서, 컨설팅부터 구축·사후지원까지 토탈 솔루션을 제공합니다.",
+    heroP: "1987년 이래 전 세계 80여 개국에 EMC 무향 챔버와 시험 시스템을 공급해 왔습니다. 컨설팅과 설계부터 제작·구축·검증·사후지원까지, 하나의 팀이 프로젝트 전 과정을 책임집니다.",
     heroB1: "솔루션 보기",
     heroB2: "견적·기술 상담",
     stats: [["1987", "Frankonia 설립"], ["80+", "공급 국가"], ["35+", "챔버 라인업"], ["3", "핵심 솔루션 영역"]],
@@ -40,8 +46,8 @@ const copy = {
     c2list: ["EMI-Receiver (9kHz–6GHz)", "Antennas (9kHz–40GHz)", "Accessories · Amplifiers · GTEM"],
     c3p: "전자파 보안·차폐 솔루션 CyberShield. 사이트 안에서 개요를 보고, 전체 사양은 제품 사이트로 이어집니다.",
     c3list: ["보안 차폐 솔루션", "데이터센터 전자기 보안 경계"],
-    c3go: "CyberShield 자세히 보기 →",
-    more: "자세히 보기 →",
+    c3go: "CyberShield 자세히 보기",
+    more: "자세히 보기",
     chH: "챔버 라인업",
     chP: "적용 분야에 맞는 최적의 챔버를 제안합니다.",
     chambers: [
@@ -59,26 +65,37 @@ const copy = {
       "방사 시험용 광대역 안테나 시스템. 9kHz~40GHz 전 대역 커버.",
       "RF 파워앰프(최대 12kW), GTEM 셀, E-field 센서, RF 파워미터 등 주변 장비 일체.",
     ],
+    csK: "CYBERSHIELD",
+    csH: "전자파 보안·차폐 솔루션",
+    csP: "AI 데이터센터와 보안 시설 주위에 측정 가능한 전자기 보안 경계를 구축합니다. 설계부터 통합, 현장 검증까지 하나의 시스템으로 제공합니다.",
+    cs: [
+      "자립형 강구조에 볼트로 체결하는 모듈형 차폐 패널. 화기 작업 없이 운영 중인 시설과 병행 시공하고, 확장·이전 시 재사용합니다.",
+      "차폐 경계의 출입을 담당하는 RF 차폐 도어. 단문·양문형으로 통행량과 반입 장비 규격에 맞춰 구성합니다.",
+      "전원·신호·데이터 라인이 경계를 통과하는 지점의 필터 뱅크. 케이블을 타고 새는 방사를 차단합니다.",
+      "환기·배관 관통부의 허니콤 도파관. 공조 성능은 유지하면서 개구부를 통한 누설을 억제합니다.",
+    ],
+    csGo: "CyberShield 자세히 보기",
     eq2models: "바이코니컬 · 로그페리오딕 · 혼 안테나",
-    trK: "WHY FRANKONIA KOREA",
-    trH1: "독일 본사의 기술력,",
-    trH2: "한국 파트너",
-    trH3: "의 밀착 지원",
+    trK: "WHY FRANKONIA",
+    trH1: "측정으로 증명하는",
+    trH2: "EMC 엔지니어링",
+    trH3: ", 1987년부터",
     trP1: "Frankonia는 1987년 설립 이후 전 세계 80여 개국에 EMC 챔버와 시험 시스템을 공급해 온 독일의 EMC 전문 기업입니다.",
-    trP2: "Frankonia Korea는 국내 고객에게 컨설팅, 설계, 구축, 교정·유지보수까지 전 과정을 한국어로 지원하며, 본사 엔지니어링 팀과의 직접 협업으로 프로젝트를 수행합니다.",
-    badges: [["Since 1987", "독일 Frankonia 설립"], ["80+", "공급 국가"], ["공식 파트너", "Frankonia Group 한국 파트너"], ["토탈 지원", "컨설팅–구축–사후관리"]],
+    trP2: "챔버와 시험 시스템을 자체 엔지니어링 팀이 직접 설계하고 생산합니다. 요구사항 정의와 사전 검토부터 설치, 인수 시험, 교정과 유지보수까지 한 팀이 끝까지 담당합니다.",
+    badges: [["Since 1987", "Frankonia 설립"], ["80+", "공급 국가"], ["Made in Germany", "자체 설계·생산"], ["토탈 지원", "컨설팅–구축–사후관리"]],
     ctH: "견적 및 기술 상담",
     ctP: "프로젝트 요구사항을 알려주시면 최적의 솔루션을 제안해 드립니다.",
     ctB1: "이메일 문의",
     ctB2: "전화 상담",
-    ftDesc: "독일 Frankonia의 EMC 챔버 및 시험 시스템 한국 공식 파트너",
-    ftAddr: "주소 · 사업자등록번호 · 대표자명 (추후 기입)",
+    ftDesc: "EMC 무향 챔버 · 시험 시스템 · 차폐 솔루션 — 1987년부터 전 세계 80여 개국",
+    // 본사 주소. frankonia-solutions.com 연락처와 CyberShield 임프린트가 일치하는 값.
+    ftAddr: "Frankonia Germany EMC Solutions GmbH · Industriestraße 16, 91180 Heideck, Germany · T +49 9177 98-500",
     ftCompany: "회사소개",
     ftSol: "솔루션",
     ftL1: "챔버",
     ftL2: "EMC 시험장비",
     ftLink: "링크",
-    ftHq: "Frankonia Group (독일 본사)",
+    ftHq: "Frankonia Group",
     ftContact: "견적·기술 문의",
     ftPriv: "개인정보처리방침",
   },
@@ -94,11 +111,11 @@ const copy = {
       menuOpen: "Open menu",
       menuClose: "Close menu",
     },
-    heroTag: "GERMAN ENGINEERING · KOREAN PARTNERSHIP",
+    heroTag: "EMC TEST SOLUTIONS · ENGINEERED IN GERMANY SINCE 1987",
     heroH1a: "Everything for EMC testing,",
-    heroH1b: "Frankonia Korea",
+    heroH1b: "Frankonia",
     heroH1c: " at your side",
-    heroP: "As the official Korean partner of Frankonia Germany, we deliver EMC chambers and test systems with total support — from consulting to installation and after-sales service.",
+    heroP: "Since 1987 we have supplied EMC anechoic chambers and test systems to more than 80 countries. One team carries the project from consulting and design through manufacturing, installation, verification and after-sales service.",
     heroB1: "Explore Solutions",
     heroB2: "Request a Quote",
     stats: [["1987", "Frankonia founded"], ["80+", "Countries supplied"], ["35+", "Chamber models"], ["3", "Core solution areas"]],
@@ -115,8 +132,8 @@ const copy = {
     c2list: ["EMI-Receiver (9kHz–6GHz)", "Antennas (9kHz–40GHz)", "Accessories · Amplifiers · GTEM"],
     c3p: "CyberShield — electromagnetic security & shielding solutions. Read the overview here; the full specifications continue on the product site.",
     c3list: ["Security shielding solutions", "Electromagnetic boundary for data centres"],
-    c3go: "Explore CyberShield →",
-    more: "Learn more →",
+    c3go: "Explore CyberShield",
+    more: "Learn more",
     chH: "Chamber Line-up",
     chP: "The right chamber for every application field.",
     chambers: [
@@ -134,26 +151,36 @@ const copy = {
       "Broadband antenna systems for radiated testing, covering 9kHz–40GHz.",
       "RF power amplifiers (up to 12kW), GTEM cells, E-field sensors, RF power meters and more.",
     ],
+    csK: "CYBERSHIELD",
+    csH: "Electromagnetic Security & Shielding",
+    csP: "A measurable electromagnetic security boundary around AI data centres and secure facilities — engineered, integrated and verified on site as one system.",
+    cs: [
+      "Modular shielding panels bolted onto a self-supporting steel structure. No hot work, so installation runs alongside live operations, and the panels are reusable when the room is extended or relocated.",
+      "RF shielded doors carrying access through the boundary — single or double leaf, sized to traffic and to the equipment that has to pass through.",
+      "Filter banks where power, signal and data lines cross the boundary, stopping emissions that would otherwise travel out along the cabling.",
+      "Honeycomb waveguides at ventilation and pipe penetrations, holding back leakage through the openings while airflow performance is preserved.",
+    ],
+    csGo: "Explore CyberShield",
     eq2models: "Biconical · Log-periodic · Horn antennas",
-    trK: "WHY FRANKONIA KOREA",
-    trH1: "German engineering,",
-    trH2: "your Korean partner",
-    trH3: " at your side",
+    trK: "WHY FRANKONIA",
+    trH1: "EMC engineering",
+    trH2: "proven by measurement",
+    trH3: ", since 1987",
     trP1: "Since 1987, Frankonia has supplied EMC chambers and test systems to more than 80 countries worldwide.",
-    trP2: "Frankonia Korea supports domestic customers through the entire project life cycle — consulting, design, installation, calibration and maintenance — in direct collaboration with the engineering team in Germany.",
-    badges: [["Since 1987", "Frankonia founded in Germany"], ["80+", "Countries supplied"], ["Official Partner", "Korean partner of Frankonia Group"], ["Total Support", "Consulting – Installation – After-sales"]],
+    trP2: "Our chambers and test systems are designed and built by our own engineering team. One team carries a project from requirements and pre-study through installation, acceptance testing, calibration and maintenance.",
+    badges: [["Since 1987", "Frankonia founded"], ["80+", "Countries supplied"], ["Made in Germany", "Designed and built in-house"], ["Total Support", "Consulting – Installation – After-sales"]],
     ctH: "Quotation & Technical Consulting",
     ctP: "Tell us your project requirements and we will propose the optimal solution.",
     ctB1: "Email Us",
     ctB2: "Call Us",
-    ftDesc: "Official Korean partner for Frankonia EMC chambers and test systems",
-    ftAddr: "Address · Business Reg. No. · CEO (to be added)",
+    ftDesc: "EMC anechoic chambers, test systems and shielding solutions — more than 80 countries since 1987",
+    ftAddr: "Frankonia Germany EMC Solutions GmbH · Industriestraße 16, 91180 Heideck, Germany · T +49 9177 98-500",
     ftCompany: "Company",
     ftSol: "Solutions",
     ftL1: "Chambers",
     ftL2: "EMC Test Systems",
     ftLink: "Links",
-    ftHq: "Frankonia Group (Headquarters)",
+    ftHq: "Frankonia Group",
     ftContact: "Quote & Technical Support",
     ftPriv: "Privacy Policy",
   },
@@ -187,6 +214,25 @@ const equipIcons = [
   <svg key="receiver" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="11" rx="2" stroke="#fff" strokeWidth="1.7" /><path d="M6 12h6m-6 3h4" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" /><circle cx="17" cy="13.5" r="2" stroke="#fff" strokeWidth="1.5" /><path d="M12 8V5m0 0L9 3m3 2l3-2" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" /></svg>,
   <svg key="antenna" viewBox="0 0 24 24" fill="none"><path d="M12 21V9m0 0L5 3m7 6l7-6M7.5 5.2L12 9l4.5-3.8" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /><path d="M8 21h8" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" /></svg>,
   <svg key="accessories" viewBox="0 0 24 24" fill="none"><rect x="3" y="10" width="8" height="8" rx="1.5" stroke="#fff" strokeWidth="1.7" /><rect x="13" y="6" width="8" height="12" rx="1.5" stroke="#fff" strokeWidth="1.7" /><path d="M6 14h2m7-4h2m-2 4h4" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" /></svg>,
+];
+
+/* CyberShield gets its own band below the test-system line-up: it is a
+   shielding solution, not measurement equipment, so it does not belong in the
+   EMC Test Systems grid. The cards mirror the product page's ecosystem —
+   panels, doors, filters, waveguides — and the band closes with the link into
+   /cybershield, where the full page lives. */
+const cyberCards = [
+  { name: "Shielding Panels", models: "Modular PAN Panel" },
+  { name: "RF Doors", models: "Single · Double Leaf" },
+  { name: "Filters", models: "Power · Signal · Data" },
+  { name: "Waveguides", models: "Honeycomb Vent · Penetration" },
+] as const;
+
+const cyberIcons = [
+  <svg key="panel" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="1.5" stroke="#fff" strokeWidth="1.7" /><path d="M9 4v16m6-16v16M3 12h18" stroke="#fff" strokeWidth="1.5" /></svg>,
+  <svg key="door" viewBox="0 0 24 24" fill="none"><rect x="4" y="3" width="16" height="18" rx="1.5" stroke="#fff" strokeWidth="1.7" /><path d="M12 3v18" stroke="#fff" strokeWidth="1.5" /><path d="M9.5 12h-.01m5.01 0h.01" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" /></svg>,
+  <svg key="filter" viewBox="0 0 24 24" fill="none"><path d="M3 12h4m10 0h4" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" /><rect x="7" y="7" width="10" height="10" rx="1.5" stroke="#fff" strokeWidth="1.7" /><path d="M10 14l4-4" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" /></svg>,
+  <svg key="waveguide" viewBox="0 0 24 24" fill="none"><path d="M7 4.5h4L13 8l-2 3.5H7L5 8l2-3.5zm6 0h4L19 8l-2 3.5h-4L11 8l2-3.5zM7 12.5h4L13 16l-2 3.5H7L5 16l2-3.5zm6 0h4L19 16l-2 3.5h-4L11 16l2-3.5z" stroke="#fff" strokeWidth="1.4" strokeLinejoin="round" /></svg>,
 ];
 
 /** Strings the contact band needs, wherever it is reused. */
@@ -268,7 +314,9 @@ export default function Landing({ lang }: { lang: Lang }) {
                 <h3>{t.c1h} <span className="sub-label">{t.c1sub}</span></h3>
                 <p>{t.c1p}</p>
                 <ul>{t.c1list.map((li) => <li key={li}>{li}</li>)}</ul>
-                <a className="go" href="#chambers">{t.more}</a>
+                {/* The trailing glyph is its own element so it can lean out of
+                    the link on hover, as it does on the reference page. */}
+                <a className="go" href="#chambers">{t.more}<span aria-hidden="true">→</span></a>
               </div>
             </div>
             <div className="sol">
@@ -279,7 +327,7 @@ export default function Landing({ lang }: { lang: Lang }) {
                 <h3>{t.c2h} <span className="sub-label">{t.c2sub}</span></h3>
                 <p>{t.c2p}</p>
                 <ul>{t.c2list.map((li) => <li key={li}>{li}</li>)}</ul>
-                <a className="go" href="#equipment">{t.more}</a>
+                <a className="go" href="#equipment">{t.more}<span aria-hidden="true">→</span></a>
               </div>
             </div>
             <div className="sol" id="cybershield">
@@ -290,7 +338,7 @@ export default function Landing({ lang }: { lang: Lang }) {
                 <h3>CyberShield</h3>
                 <p>{t.c3p}</p>
                 <ul>{t.c3list.map((li) => <li key={li}>{li}</li>)}</ul>
-                <a className="go" href={cs}>{t.c3go}</a>
+                <a className="go" href={cs}>{t.c3go}<span aria-hidden="true">→</span></a>
               </div>
             </div>
           </div>
@@ -337,7 +385,28 @@ export default function Landing({ lang }: { lang: Lang }) {
         </div>
       </section>
 
-      <section className="alt" id="why">
+      <section className="alt" id="cybershield-solutions">
+        <div className="wrap">
+          <div className="sec-head">
+            <span className="kicker">{t.csK}</span>
+            <h2>{t.csH}</h2>
+            <p>{t.csP}</p>
+          </div>
+          <div className="line-grid">
+            {cyberCards.map((c, i) => (
+              <div className="lc" key={c.name}>
+                <div className="ic">{cyberIcons[i]}</div>
+                <h4>{c.name}</h4>
+                <p>{t.cs[i]}</p>
+                <div className="models">{c.models}</div>
+              </div>
+            ))}
+          </div>
+          <a className="go sec-go" href={cs}>{t.csGo}<span aria-hidden="true">→</span></a>
+        </div>
+      </section>
+
+      <section id="why">
         <div className="wrap trust">
           <div>
             <span className="kicker">{t.trK}</span>
@@ -365,7 +434,7 @@ export default function Landing({ lang }: { lang: Lang }) {
         <h2>{t.ctH}</h2>
         <p>{t.ctP}</p>
         <div className="btns">
-          <a className="btn btn-red" href="mailto:info@frankonia-korea.com">{t.ctB1}</a>
+          <a className="btn btn-red" href={`mailto:${contactEmail}`}>{t.ctB1}</a>
           <a className="btn btn-ghost" href="tel:+8200000000">{t.ctB2}</a>
         </div>
       </div>

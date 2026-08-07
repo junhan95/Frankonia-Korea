@@ -1,46 +1,53 @@
 import { sectionMeta, sectionPath, type CompanySection } from "./company-sections";
-import { asset, localeUrl, route, siteOrigin, type Lang } from "./site-config";
+import { asset, contactEmail, localeUrl, route, siteOrigin, type Lang } from "./site-config";
 
 /**
  * Answer engines and search have to infer entities from prose unless they are
  * stated outright. Everything below is already visible on the page — the
- * partner role, the founding year, the standards listed on the cards — so
- * this only restates it in a machine-readable form. Nothing is asserted here
- * that a reader cannot also see, which is both the schema.org rule and the
- * reason the Korean entity carries no address or registration number yet.
+ * founding year, the countries supplied, the standards listed on the cards,
+ * the head office address and phone number in the footer — so this only
+ * restates it in a machine-readable form. Nothing is asserted here that a
+ * reader cannot also see, which is the schema.org rule and the reason the
+ * entity still carries no registration number.
  */
 
 const homeUrl = `${siteOrigin}${route("/")}`;
 const orgId = `${homeUrl}#organization`;
-const groupId = `${homeUrl}#group`;
 const siteId = `${homeUrl}#website`;
-const contactEmail = "info@frankonia-korea.com";
 
 const localeTag: Record<Lang, string> = { ko: "ko", en: "en" };
 
-const group = {
-  "@type": "Organization",
-  "@id": groupId,
-  name: "Frankonia Group",
-  url: "https://frankonia-solutions.com/",
-  foundingDate: "1987",
-  description:
-    "German manufacturer of EMC anechoic chambers and test systems, supplying more than 80 countries since 1987.",
+/** The head office, exactly as the footer prints it on every page. */
+const headOffice = {
+  "@type": "PostalAddress",
+  streetAddress: "Industriestraße 16",
+  postalCode: "91180",
+  addressLocality: "Heideck",
+  addressCountry: "DE",
 };
+
+const telephone = "+49 9177 98-500";
 
 const organisation = {
   "@type": "Organization",
   "@id": orgId,
-  name: "Frankonia Korea",
+  name: "Frankonia",
+  alternateName: "Frankonia Group",
+  legalName: "Frankonia Germany EMC Solutions GmbH",
   url: homeUrl,
+  sameAs: ["https://frankonia-solutions.com/"],
   image: `${siteOrigin}${asset("/og.png")}`,
-  parentOrganization: { "@id": groupId },
-  areaServed: { "@type": "Country", name: "South Korea" },
+  foundingDate: "1987",
+  description:
+    "German manufacturer of EMC anechoic chambers and test systems, supplying more than 80 countries since 1987.",
   knowsLanguage: ["ko", "en"],
+  address: headOffice,
+  telephone,
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "sales",
     email: contactEmail,
+    telephone,
     availableLanguage: ["ko", "en"],
   },
 };
@@ -52,8 +59,8 @@ const products = (items: readonly ProductInput[]) =>
     "@id": `${homeUrl}#${id}`,
     name,
     description,
-    brand: { "@id": groupId },
-    manufacturer: { "@id": groupId },
+    brand: { "@id": orgId },
+    manufacturer: { "@id": orgId },
     additionalProperty: standards.map((value) => ({
       "@type": "PropertyValue",
       name: "Standard",
@@ -88,13 +95,12 @@ export default function StructuredData(props: Props) {
   const pageUrl = localeUrl(lang, path);
 
   const graph: Record<string, unknown>[] = [
-    group,
     organisation,
     {
       "@type": "WebSite",
       "@id": siteId,
       url: homeUrl,
-      name: "Frankonia Korea",
+      name: "Frankonia",
       publisher: { "@id": orgId },
       inLanguage: Object.values(localeTag),
     },
@@ -120,8 +126,8 @@ export default function StructuredData(props: Props) {
       "@id": `${homeUrl}#cybershield`,
       name: "Frankonia CyberShield",
       description,
-      brand: { "@id": groupId },
-      manufacturer: { "@id": groupId },
+      brand: { "@id": orgId },
+      manufacturer: { "@id": orgId },
       category: "RF shielded enclosures for data centres",
       hasMeasurement: {
         "@type": "QuantitativeValue",
@@ -142,7 +148,7 @@ export default function StructuredData(props: Props) {
       "@type": "BreadcrumbList",
       "@id": `${pageUrl}#breadcrumb`,
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Frankonia Korea", item: localeUrl(lang) },
+        { "@type": "ListItem", position: 1, name: "Frankonia", item: localeUrl(lang) },
         { "@type": "ListItem", position: 2, name: sectionMeta[lang][props.section].label, item: pageUrl },
       ],
     });

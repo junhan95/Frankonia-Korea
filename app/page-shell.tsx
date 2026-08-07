@@ -1,7 +1,7 @@
 import SiteHeader from "./site-header";
 import SiteFooter from "./site-footer";
 import { headerCopy } from "./landing";
-import { localeRoute, type Lang } from "./site-config";
+import { contactEmail, localeRoute, type Lang } from "./site-config";
 
 /**
  * Chrome for every page that is not the landing page: header, a compact dark
@@ -44,7 +44,7 @@ export default function PageShell({
           <h2>{t.ctH}</h2>
           <p>{t.ctP}</p>
           <div className="btns">
-            <a className="btn btn-red" href="mailto:info@frankonia-korea.com">{t.ctB1}</a>
+            <a className="btn btn-red" href={`mailto:${contactEmail}`}>{t.ctB1}</a>
             <a className="btn btn-ghost" href={`${home}#solutions`}>{t.heroB1}</a>
           </div>
         </div>

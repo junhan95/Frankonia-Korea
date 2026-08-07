@@ -1,8 +1,9 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { companySections, sectionMeta, sectionPath } from "./company-sections";
-import { asset, languages, localeRoute, type Lang } from "./site-config";
+import { asset, langPath, languages, localeRoute, type Lang } from "./site-config";
 
 /** Fixed category order — do not reorder (site map rule). */
 const chamberCategories = ["Automotive", "Military", "Commercial", "Powertrain", "RVC", "Others"];
@@ -21,6 +22,19 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const home = localeRoute(lang);
   const close = () => setMenuOpen(false);
+
+  // Switching language keeps the reader on the page they are reading —
+  // /cybershield/ ↔ /en/cybershield/ — instead of dropping them back on the
+  // home page. `usePathname` already has the base path stripped off, and the
+  // English locale is the only one carrying a prefix, so taking that off
+  // leaves the path both locales share.
+  const enPrefix = langPath("en");
+  const pathname = usePathname();
+  const shared = pathname.startsWith(`${enPrefix}/`) || pathname === enPrefix
+    ? pathname.slice(enPrefix.length)
+    : pathname;
+  // localeRoute puts the trailing slash back; carrying it here would double it.
+  const samePage = shared.replace(/\/$/, "");
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -74,7 +88,7 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
             src={asset("/frankonia-logo.svg")}
             width={1898}
             height={1029}
-            alt="Frankonia Korea"
+            alt="Frankonia"
           />
         </a>
 
@@ -102,7 +116,7 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
           {languages.map(([code, label]) => (
             <a
               key={code}
-              href={localeRoute(code)}
+              href={localeRoute(code, samePage)}
               className={code === lang ? "on" : undefined}
               aria-current={code === lang ? "true" : undefined}
             >

@@ -9,7 +9,7 @@ export default function SiteFooter({ lang, t }: { lang: Lang; t: FooterCopy }) {
       <div className="wrap">
         <div className="foot">
           <div>
-            <h5>FRANKONIA KOREA</h5>
+            <h5>FRANKONIA</h5>
             <p className="foot-desc">{t.ftDesc}</p>
             <p className="foot-addr">{t.ftAddr}</p>
           </div>
@@ -41,7 +41,9 @@ export default function SiteFooter({ lang, t }: { lang: Lang; t: FooterCopy }) {
           </div>
         </div>
         <div className="copy">
-          <span>© 2026 Frankonia Korea. All rights reserved.</span>
+          {/* 1987 — the founding year, matching the product site's own footer
+              ("© 1987 Frankonia Group") rather than the current year. */}
+          <span>© 1987 Frankonia. All rights reserved.</span>
           <span>www.frankonia-korea.com</span>
         </div>
       </div>
