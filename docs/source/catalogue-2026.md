@@ -114,12 +114,14 @@ SAC-10V는 `22,580 x 15,680 x 8,700 m`이다. 전부 밀리미터가 맞다. 사
 적었다 — 카탈로그 표기를 그대로 옮기면 명백한 오류를 게시하는 것이 되기 때문이다.
 **한 페이지의 오타가 아니라 표 전체에 걸친 문제이므로 본사에 알려야 한다.**
 
-### 채운 것 (27개 모델 중 8개)
+### 채운 것 (27개 모델 중 12개)
 
 | 브랜치 | 모델 | 인쇄 p. |
 |---|---|---|
 | Military | MIL CHC · MIL-STD Chamber · MIL-STD Chamber Advanced | 54–55 |
 | Automotive | ACTC · UCC · SAC-10V · AVTC | 40–45 |
+| Powertrain | EDTC-SA · EDTC-AX · EDTC-BB | 48–49 |
+| RVC | Reverberation Chamber | 50–51 |
 | Commercial(일부) | Shielded Room | 10–11 |
 
 MIL-STD Advanced는 카탈로그가 Pyramid·Hybrid 두 행으로 나눠 적는다. 별도 제품이 아니라
@@ -141,14 +143,44 @@ Automotive 표는 **치수 행마다 시험거리·정숙구역(QZ) 주석**을 
 한 행으로 따로 준다. Military 표는 그 둘을 한 칸에 합쳐 쓴다. 그래서 `note`는 선택
 필드다 — 카탈로그가 나눠 쓴 곳에서만 나눠 싣는다.
 
-### 남은 브랜치 (19개 모델)
+### E-Drive 표에는 주파수가 없다
+
+EDTC 스프레드는 치수와 부하기(load machine) 구성만 준다. 주파수 범위 행이 아예 없고,
+적합성은 Features의 "Fully compliant with CISPR 25 and ISO 11452"로만 진술된다. 이
+챔버들은 주파수가 아니라 **어떤 부하기를 중심으로 지어졌는지로 규정되기 때문**이다.
+그래서 `spec.range`를 선택 필드로 바꿨다 — 빈칸을 채우려고 만든 수치는 카탈로그가 주지
+않은 수치다.
+
+### RVC는 단일 치수가 없다
+
+카탈로그는 RVC를 상용·산업(e1·e2)과 Automotive(S·M·L·XL·XXL) 두 계열, 총 7개 구성으로
+준다. 우리 목록의 `Reverberation Chamber` 한 항목이 그 전체를 대표하므로 **범위로
+적었다** — 최소(S)부터 최대(XXL)까지, 작업 체적도 같은 방식. LUF는 200MHz(S·M·e1)와
+80MHz(L·XL·XXL·e2)로 갈리므로 "200MHz, 큰 챔버는 80MHz"로 적었다. 요약이지 축약이
+아니다.
+
+### 카탈로그와 웹사이트가 서로 없는 것을 갖고 있다
+
+| 항목 | 카탈로그 | 웹사이트 |
+|---|---|---|
+| MIL CPC | ✅ | ❌ 404 |
+| EDTC-HY (유압 부하기) | ✅ | ❌ 404 |
+| Reverberation Tent | ❌ | ✅ `/portfolio/reverberation-tent/` |
+
+앞의 둘은 앞서 정한 대로 추가하지 않았다. 세 번째는 **반대 방향**이다 — 웹사이트에는
+있는데 2026 카탈로그에서 빠졌다. 단종인지 카탈로그 누락인지 알 수 없어 목록에 남겨
+두되 `spec` 없이 두었다. **본사 확인 사항.**
+
+27개 모델 전체의 `source` 슬러그를 본사 포트폴리오에 대조했다 — **전부 200, 끊어진
+포인터 없음.**
+
+### 남은 브랜치 (15개 모델)
 
 | 브랜치 | 모델 | 카탈로그 인쇄 p. |
 |---|---|---|
 | Commercial — CHC·CTC·FAC | CHC, CHC Plus, CTC, FAC-3, FAC-3 L | 12, 16 |
 | Commercial — SAC | SAC-3 Plus/Square, SAC-5 Plus/Square, SAC-10 Plus/Triton, SAC-10/H, SAC-10/P, Transformer | 18–37 |
-| Powertrain | EDTC-SA, EDTC-AX, EDTC-BB | 48 |
-| RVC | Reverberation Chamber, Reverberation Tent | 50 |
+| RVC | Reverberation Tent (카탈로그에 없음 — 위 참조) | — |
 | 기술 토픽 | Frankosorb, Shielding & Gates, Automation, Services | 58, 62, 64, 6–7 |
 
 각 브랜치는 해당 스프레드를 전문으로 읽고 `spec`을 채운 뒤 산문을 옮기는 순서로

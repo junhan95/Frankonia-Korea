@@ -79,7 +79,11 @@ export type ChamberModel = {
    */
   spec?: {
     size: string;
-    range: string;
+    /** Optional: the E-Drive spread gives no frequency figure at all — those
+     *  chambers are specified by the load machine they are built around, and
+     *  their compliance is stated as standards rather than a span. A field
+     *  invented to fill the gap would be a figure the catalogue does not give. */
+    range?: string;
     /** The qualifier the catalogue prints under a size: the test distance the
      *  dimensions are compliant at, or the quiet zone they produce. Optional
      *  because it only appears where the catalogue tabulates sizes separately
@@ -131,11 +135,15 @@ export const chamberModels: readonly ChamberModel[] = [
   { name: "CHC Plus", desc: "Pre-compliant 3m Compact EMC Chamber", industry: "commercial", type: "chc", source: "chc-plus" },
   { name: "CTC", desc: "Component Testing Chamber", industry: "commercial", type: "component", source: "ctc" },
 
-  { name: "EDTC-SA", desc: "Single Motor Setup — Electric or Hydraulic", industry: "powertrain", type: "component", source: "edtc" },
-  { name: "EDTC-AX", desc: "Axis Setup", industry: "powertrain", type: "component", source: "edtc-ax" },
-  { name: "EDTC-BB", desc: "with EMC-BlueBox", industry: "powertrain", type: "component", source: "edtc-bb" },
+  { name: "EDTC-SA", desc: "E-Drive test chamber prepared for a single external load machine with fixed shaft", industry: "powertrain", type: "component", source: "edtc",
+    spec: { size: "7,880 × 5,480 × 3,750 mm", note: "Fixed-shaft version, e.g. 1 × 250 kW at 3,000 RPM and 3,000 Nm" } },
+  { name: "EDTC-AX", desc: "E-Drive test chamber for e-axle tests, prepared for two external load machines with fixed shaft", industry: "powertrain", type: "component", source: "edtc-ax",
+    spec: { size: "9,080 × 6,080 × 3,750 mm", note: "Fixed-shaft version, e.g. 2 × 250 kW at 3,000 RPM and 3,000 Nm" } },
+  { name: "EDTC-BB", desc: "E-Drive test chamber including the EMC-BlueBox mobile load machine for dynamic powertrain tests", industry: "powertrain", type: "component", source: "edtc-bb",
+    spec: { size: "7,880 × 6,380 × 3,750 mm", note: "For the EMC-BlueBox mobile load machine up to 120 kW" } },
 
-  { name: "Reverberation Chamber", desc: "Reverberation test solution", industry: "others", type: "rvc", source: "reverberation-solutions" },
+  { name: "Reverberation Chamber", desc: "Reverberation chambers with Frankonia performance stirrers, per IEC/EN 61000-4-21 and ISO 11452-11", industry: "others", type: "rvc", source: "reverberation-solutions",
+    spec: { size: "5,330 × 3,380 × 3,300 mm (S) up to 17,480 × 13,580 × 6,600 mm (XXL)", note: "Working volume 2.5 × 1.0 × 1.5 m up to 8.0 × 5.0 × 3.0 m", range: "Lowest usable frequency 200 MHz, or 80 MHz on the larger chambers" } },
   { name: "Reverberation Tent", desc: "Reverberation Test inside EMC Chambers", industry: "others", type: "rvc", source: "reverberation-tent" },
   { name: "Shielded Room", desc: "Modular and pre-fabricated Standard", industry: "others", type: "shielded-room", source: "shielded-room",
     spec: { size: "Any size — modular PAN type panels", range: "10 kHz – 18 GHz, or 40 GHz as an option, acc. EN 50147-1 / IEEE-299" } },
