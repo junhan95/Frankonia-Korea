@@ -80,6 +80,12 @@ export type ChamberModel = {
   spec?: {
     size: string;
     range: string;
+    /** The qualifier the catalogue prints under a size: the test distance the
+     *  dimensions are compliant at, or the quiet zone they produce. Optional
+     *  because it only appears where the catalogue tabulates sizes separately
+     *  from the frequency row — the military table folds the equivalent into
+     *  `range` instead, which is how it is written there. */
+    note?: string;
   };
 };
 
@@ -94,10 +100,14 @@ export type ChamberModel = {
  * should be confirmed against the model page during the content pass.
  */
 export const chamberModels: readonly ChamberModel[] = [
-  { name: "ACTC", desc: "Automotive Component Testing Chamber", industry: "automotive", type: "component", source: "actc" },
-  { name: "UCC", desc: "Pre-compliance Automotive Component Testing Chamber", industry: "automotive", type: "component", source: "ucc" },
-  { name: "SAC-10V", desc: "Semi Anechoic 10m EMC Chamber dedicated to Vehicle Tests per ECE R10", industry: "automotive", type: "sac", source: "sac-10-v" },
-  { name: "AVTC", desc: "Automotive Vehicle Testing Chamber", industry: "automotive", type: "sac", source: "avtc" },
+  { name: "ACTC", desc: "CISPR 25 Automotive Component Testing Chamber", industry: "automotive", type: "component", source: "actc",
+    spec: { size: "6,380 × 5,480 × 3,750 mm", note: "CISPR 25 component level at 1.0 m test distance", range: "150 kHz / 26 MHz – 18 GHz (40 GHz option)" } },
+  { name: "UCC", desc: "Ultra-compact hybrid chamber for pre-compliance component testing, an alternative to the GTEM cell", industry: "automotive", type: "component", source: "ucc",
+    spec: { size: "4,580 × 3,080 × 2,550 mm", note: "Pre-compliant component level at 1.0 m test distance", range: "150 kHz / 26 MHz – 18 GHz (40 GHz option)" } },
+  { name: "SAC-10V", desc: "10 m Semi Anechoic Chamber for ECE R10 vehicle testing with integrated dynamometer", industry: "automotive", type: "sac", source: "sac-10-v",
+    spec: { size: "22,580 × 15,680 × 8,700 mm", note: "Quiet zone ø6.0 m at 10.0 m test distance (H = 3.0 m)", range: "9 kHz / 150 kHz – 18 GHz (40 GHz option)" } },
+  { name: "AVTC", desc: "3 m Automotive Vehicle Testing Chamber for component and full-vehicle tests", industry: "automotive", type: "sac", source: "avtc",
+    spec: { size: "11,480 × 9,380 × 6,000 mm", note: "Quiet zone ø3.0 m at 3.0 m test distance (H = 2.5 m)", range: "9 kHz / 150 kHz – 18 GHz (40 GHz option)" } },
 
   { name: "MIL CHC", desc: "Compact Hybrid Chamber for military component testing", industry: "military", type: "chc", source: "mil-chc",
     spec: { size: "4,880 × 4,880 × 3,000 mm", range: "9 kHz / 30 MHz – 40 GHz, hybrid absorber lining" } },

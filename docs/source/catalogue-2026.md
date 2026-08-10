@@ -108,28 +108,45 @@ Service (DE)   /wp-content/uploads/2025/11/Service-Broschure_DE_PDF.pdf
 
 ### ⚠ 카탈로그의 단위 오기
 
-인쇄 p.55 군용 치수표는 `4,880 x 4,880 x 3,000 **m** (L x W x H)`로 적혀 있다.
-**미터일 수 없다** — 4.88km짜리 챔버가 된다. 밀리미터가 맞다. 사이트에는 `mm`로 적었다.
-카탈로그 표기를 그대로 옮기면 명백한 오류를 게시하는 것이 되기 때문이다. 본사에 알릴
-사항.
+치수표의 단위가 **전부 `m`으로 적혀 있는데 미터일 수 없다.** 군용 MIL CHC는
+`4,880 x 4,880 x 3,000 m`(4.88km짜리 챔버), Automotive ACTC는 `6,380 x 5,480 x 3,750 m`,
+SAC-10V는 `22,580 x 15,680 x 8,700 m`이다. 전부 밀리미터가 맞다. 사이트에는 `mm`로
+적었다 — 카탈로그 표기를 그대로 옮기면 명백한 오류를 게시하는 것이 되기 때문이다.
+**한 페이지의 오타가 아니라 표 전체에 걸친 문제이므로 본사에 알려야 한다.**
 
-### 채운 것
+### 채운 것 (27개 모델 중 8개)
 
-| 모델 | 출처 | 상태 |
+| 브랜치 | 모델 | 인쇄 p. |
 |---|---|---|
-| MIL CHC · MIL-STD Chamber · MIL-STD Chamber Advanced | 인쇄 p.54–55 | ✅ 전문 확인 |
-| Shielded Room | 인쇄 p.10–11 | ✅ 전문 확인 |
+| Military | MIL CHC · MIL-STD Chamber · MIL-STD Chamber Advanced | 54–55 |
+| Automotive | ACTC · UCC · SAC-10V · AVTC | 40–45 |
+| Commercial(일부) | Shielded Room | 10–11 |
 
 MIL-STD Advanced는 카탈로그가 Pyramid·Hybrid 두 행으로 나눠 적는다. 별도 제품이 아니라
 같은 제품의 흡수체 구성이므로 한 항목에 둘 다 적었다.
 
-### 남은 브랜치 (27개 모델 중 23개)
+### 크기 변형은 목록에 넣지 않는다
+
+카탈로그는 모델마다 크기 변형을 함께 표로 준다 — ACTC L, AVTC L·XL, SAC-10V의
+`-6/H`·`-6/P`·SL12·SL18, MIL CHC / DO-160. **목록에는 기본 구성 하나만 싣고** 변형은
+넣지 않았다. 별도 제품이 아니라 같은 제품의 치수 옵션이고, 목록에 다 넣으면 카테고리
+개수가 제품 수가 아니라 구성 수가 된다. 변형은 **모델 상세 페이지의 사양표** 자리다.
+
+목록에 실은 기본 구성: ACTC(6,380×5,480×3,750), UCC(4,580×3,080×2,550),
+AVTC(11,480×9,380×6,000), SAC-10V-6/H(22,580×15,680×8,700).
+
+### `spec.note`
+
+Automotive 표는 **치수 행마다 시험거리·정숙구역(QZ) 주석**을 달고 주파수 범위는 제품당
+한 행으로 따로 준다. Military 표는 그 둘을 한 칸에 합쳐 쓴다. 그래서 `note`는 선택
+필드다 — 카탈로그가 나눠 쓴 곳에서만 나눠 싣는다.
+
+### 남은 브랜치 (19개 모델)
 
 | 브랜치 | 모델 | 카탈로그 인쇄 p. |
 |---|---|---|
 | Commercial — CHC·CTC·FAC | CHC, CHC Plus, CTC, FAC-3, FAC-3 L | 12, 16 |
 | Commercial — SAC | SAC-3 Plus/Square, SAC-5 Plus/Square, SAC-10 Plus/Triton, SAC-10/H, SAC-10/P, Transformer | 18–37 |
-| Automotive | ACTC, UCC, AVTC, SAC-10V | 40–47 |
 | Powertrain | EDTC-SA, EDTC-AX, EDTC-BB | 48 |
 | RVC | Reverberation Chamber, Reverberation Tent | 50 |
 | 기술 토픽 | Frankosorb, Shielding & Gates, Automation, Services | 58, 62, 64, 6–7 |

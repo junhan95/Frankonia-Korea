@@ -179,6 +179,7 @@ function ModelList({ models }: { models: readonly ChamberModel[] }) {
             {model.spec && (
               <span className="hl-spec">
                 <span>{model.spec.size}</span>
+                {model.spec.note && <span>{model.spec.note}</span>}
                 <span>{model.spec.range}</span>
               </span>
             )}
