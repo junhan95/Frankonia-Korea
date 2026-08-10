@@ -572,6 +572,36 @@ export const topicBody: Record<Lang, Partial<Record<ChamberTopic, TopicBody>>> =
         ] },
       ],
     },
+    services: {
+      lead: [
+        "Frankonia starts at the first moment, with the planning, technical drawings, coordination and definition a customer's own demands call for, and stays through every stage that follows.",
+        "The consultancy runs from a first idea to a complete testing readiness level. For decades Frankonia has guided customers through the whole course of realising a laboratory — and then, together with them, defined the work packages and milestones that get to their EMC goals, drawing on a network of EMC experts and the standards and practice of the industrial, military and automotive world.",
+      ],
+      figure: { src: "/chambers/images/topic-services.webp", w: 1240, h: 591 },
+      groups: [
+        { title: "Through every stage of a project", items: [
+          "Project planning — customised projects defined with the customer, with technical details, timelines and complete drawings",
+          "Project management — one interface between Frankonia's scope of delivery and the building parties, from first moment to final handover",
+          "Engineering — requirements implemented from a single product up to a complete solution",
+          "Research and development — Frankosorb®, and continuous research on materials against future standards",
+          "Manufacturing — a stand-alone production network, invested in continuously",
+          "Implementation — Frankonia's own European installation team, working to its modular and prefabricated standard",
+        ] },
+        { title: "Planning and consultation", items: [
+          "Layout of labs, practical usability, consultation on needs and requirements",
+          "Building planning in 3D for new facilities, or the use of existing buildings",
+          "Infrastructure definition including building services — ventilation, power, fire prevention and fire simulation",
+          "Lab planning for and with architects, and efficient implementation of test equipment parameters",
+          "Cost calculation, return on investment, and profitability analysis for running the lab in practice",
+        ] },
+        { title: "Testing readiness", items: [
+          "Test system and software training for newcomers and professionals, with insight into the EMC standards",
+          "Hardware and software setup, functionality check, and equipment set up for verification procedures and routines",
+          "Test templates, test plans and measurement methods — or supervision of your accreditation",
+        ] },
+      ],
+      close: "With more than 35 years of experience, the goal is to turn individual requirements into reliable, state-of-the-art solutions — because only a complete solution creates long-term satisfaction.",
+    },
   },
   ko: {
     frankosorb: {
@@ -685,6 +715,36 @@ export const topicBody: Record<Lang, Partial<Record<ChamberTopic, TopicBody>>> =
           "휴대 기기에서 제어하는 무선 인터페이스",
         ] },
       ],
+    },
+    services: {
+      lead: [
+        "Frankonia는 프로젝트의 첫 순간부터 함께합니다. 고객의 요구에 맞춘 기획, 기술 도면, 조율과 사양 정의로 시작해 이후 모든 단계를 이어서 담당합니다.",
+        "컨설팅은 최초 구상에서 완전한 시험 준비 상태까지 이어집니다. 수십 년간 시험실 구축의 전 과정을 안내해 왔고, 이후에는 고객과 함께 작업 패키지와 마일스톤을 정해 EMC 목표에 도달합니다. 산업·군수·자동차 분야의 규격과 실무를 공유하는 EMC 전문가 네트워크가 그 바탕입니다.",
+      ],
+      figure: { src: "/chambers/images/topic-services.webp", w: 1240, h: 591 },
+      groups: [
+        { title: "프로젝트 전 단계", items: [
+          "프로젝트 기획 — 고객과 함께 정의하는 맞춤 프로젝트, 기술 상세·일정·전체 도면 제공",
+          "프로젝트 관리 — 최초 시점부터 최종 인수까지, Frankonia 공급 범위와 건축 관련 주체 사이의 단일 창구",
+          "엔지니어링 — 단일 제품부터 완결 솔루션까지 요구사항을 그대로 구현",
+          "연구개발 — Frankosorb®, 그리고 미래 규격을 염두에 둔 지속적인 소재 연구",
+          "제조 — 독립된 생산 네트워크와 지속적인 설비 투자",
+          "시공 — 모듈형·사전 제작 표준에 따라 작업하는 Frankonia 자체 유럽 설치팀",
+        ] },
+        { title: "기획과 컨설팅", items: [
+          "시험실 레이아웃, 실사용성, 요구사항 상담",
+          "신축 시설의 3D 건축 기획, 또는 기존 건물 활용 방안",
+          "환기·전력·화재 예방·화재 시뮬레이션을 포함한 인프라 정의",
+          "건축가와 함께하는 시험실 설계, 시험 장비 파라미터의 효율적 반영",
+          "비용 산정, 투자수익률, 실제 운영을 전제로 한 수익성 분석",
+        ] },
+        { title: "시험 준비", items: [
+          "입문자·실무자 대상 시험 시스템과 소프트웨어 교육, EMC 규격 해설",
+          "하드웨어·소프트웨어 셋업, 기능 점검, 검증 절차와 루틴을 위한 장비 구성",
+          "시험 템플릿·시험 계획·측정 방법 수립, 또는 인정(accreditation) 취득 지원",
+        ] },
+      ],
+      close: "35년 이상의 경험으로, 개별 요구사항을 신뢰할 수 있는 최신 솔루션으로 옮기는 것이 목표입니다 — 완결된 솔루션만이 장기적인 만족을 만들기 때문입니다.",
     },
   },
 };
