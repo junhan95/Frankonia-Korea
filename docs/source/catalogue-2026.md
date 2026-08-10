@@ -114,7 +114,7 @@ SAC-10V는 `22,580 x 15,680 x 8,700 m`이다. 전부 밀리미터가 맞다. 사
 적었다 — 카탈로그 표기를 그대로 옮기면 명백한 오류를 게시하는 것이 되기 때문이다.
 **한 페이지의 오타가 아니라 표 전체에 걸친 문제이므로 본사에 알려야 한다.**
 
-### 채운 것 (27개 모델 중 26개)
+### 채운 것 (26개 모델 전부)
 
 | 브랜치 | 모델 | 인쇄 p. |
 |---|---|---|
@@ -122,12 +122,22 @@ SAC-10V는 `22,580 x 15,680 x 8,700 m`이다. 전부 밀리미터가 맞다. 사
 | Automotive | ACTC · UCC · SAC-10V · AVTC | 40–45 |
 | Powertrain | EDTC-SA · EDTC-AX · EDTC-BB | 48–49 |
 | RVC | Reverberation Chamber | 50–51 |
-| Commercial — Shielded Room | Shielded Room | 10–11 |
+| Others — Shielded Room | Shielded Room | 10–11 |
 | Commercial — CHC·CTC·FAC | CHC · CHC Plus · CTC · FAC-3 · FAC-3 L | 12–13, 16–17 |
 | Commercial — SAC | SAC-3 Plus · SAC-5 Plus · SAC-3 Square · SAC-5 Square · SAC-3/FAC-3 Transformer · SAC-10 Plus · SAC-10 Plus Triton · SAC-10/H Hybrid · SAC-10/P Pyramid | 18–37 |
 
-**남은 1개는 Reverberation Tent** — 2026 카탈로그에 없다(위 §"카탈로그와 웹사이트가
-서로 없는 것을 갖고 있다" 참조). 단종인지 누락인지 확인되기 전까지 사양 없이 둔다.
+**Reverberation Tent는 제품 목록에서 제거했다** (2026-08-10, 사용자 결정). 2026
+카탈로그에 없었고, 카탈로그를 기준으로 삼기로 한 이상 목록에 남길 근거가 없다. 본사
+웹사이트에는 `/portfolio/reverberation-tent/`가 아직 살아 있으므로, 본사가 웹을 정리할
+때 다시 확인할 사항으로 남는다.
+
+제거에 따라 함께 고친 것: `others` 산업 3종→2종, `rvc` 형식 2종→1종, 두 카테고리의
+설명문(한/영)에서 텐트 언급 삭제, 랜딩 Others 카드의 모델 표기. 전체 모델 27→26.
+
+**Shielded Room의 분류 주의.** 카탈로그는 Shielded Room을 "Commercial Chamber
+Solutions"에 넣지만, 이 사이트의 데이터는 `industry: "others"`다. 사이트가 먼저 정한
+분류이고 바꾸면 Others가 1종이 되므로 그대로 두었다 — 다만 카탈로그와 다르다는 것은
+알고 있어야 한다.
 
 ### 치수 범위로 적은 모델
 

@@ -44,12 +44,11 @@ WordPress `-1024x1024` 류 접미사가 붙은 것은 축소본이므로 **접�
 
 ## 3. 채우지 못한 자리
 
-**Others(특수·맞춤) 카테고리에 쓸 이미지가 본사에 없다.** 이 카테고리의 3개 모델은
-CTC · Reverberation Chamber · Reverberation Tent인데:
+**Others(특수·맞춤) 카테고리에 쓸 이미지가 본사에 없다.**
 
 - CTC 이미지는 ACTC와 동일 파일 (위 참조)
 - Reverberation Chamber 이미지는 RVC 카드가 이미 쓰고 있다
-- Reverberation Tent는 `/portfolio/reverberation-tent/`에 이미지가 하나도 없다
+- Reverberation Tent는 2026-08-10에 제품 목록에서 제거되었다 (catalogue-2026.md 참조)
 
 지어내지 않는다. 여섯 번째 카드는 이미지 없이 기존 SVG 아이콘을 유지하거나,
 본사에서 별도로 받아야 한다.
@@ -107,7 +106,7 @@ CTC · Reverberation Chamber · Reverberation Tent인데:
 
 ### 아직 남은 것
 
-- **Others 카테고리**: 포토북에도 CTC·Reverberation Tent를 특정할 수 있는 사진이
-  없었다. 아이콘 타일 유지.
+- **Others 카테고리**: 포토북에도 이 카테고리를 특정할 수 있는 사진이 없었다.
+  아이콘 타일 유지.
 - 추출한 나머지 33장은 Chambers 32페이지 본문 작업 때 쓸 수 있다. 스크래치패드에만
   있고 저장소에는 넣지 않았다.

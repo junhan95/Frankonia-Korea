@@ -232,7 +232,7 @@ const chamberCards = [
     shot: { src: "/chambers/images/industry-powertrain-edtc.webp", w: 900, h: 600, kind: "photo" } },
   { name: "RVC", models: "Reverberation Chamber", path: typePath("rvc"),
     shot: { src: "/chambers/images/type-rvc-reverberation.webp", w: 900, h: 600, kind: "photo" } },
-  { name: "Others", models: "CTC · Reverberation Tent", path: industryPath("others"), shot: null },
+  { name: "Others", models: "Reverberation Chamber · Shielded Room", path: industryPath("others"), shot: null },
 ] as const;
 
 const chamberIcons = [

@@ -158,7 +158,6 @@ export const chamberModels: readonly ChamberModel[] = [
 
   { name: "Reverberation Chamber", desc: "Reverberation chambers with Frankonia performance stirrers, per IEC/EN 61000-4-21 and ISO 11452-11", industry: "others", type: "rvc", source: "reverberation-solutions",
     spec: { size: "5,330 × 3,380 × 3,300 mm (S) up to 17,480 × 13,580 × 6,600 mm (XXL)", note: "Working volume 2.5 × 1.0 × 1.5 m up to 8.0 × 5.0 × 3.0 m", range: "Lowest usable frequency 200 MHz, or 80 MHz on the larger chambers" } },
-  { name: "Reverberation Tent", desc: "Reverberation Test inside EMC Chambers", industry: "others", type: "rvc", source: "reverberation-tent" },
   { name: "Shielded Room", desc: "Modular and pre-fabricated Standard", industry: "others", type: "shielded-room", source: "shielded-room",
     spec: { size: "Any size — modular PAN type panels", range: "10 kHz – 18 GHz, or 40 GHz as an option, acc. EN 50147-1 / IEEE-299" } },
 ];
@@ -202,7 +201,7 @@ export const chamberIndustryMeta = {
     others: {
       note: "Reverberation · Shielded Room",
       description:
-        "잔향실, 잔향 텐트, 모듈형 차폐룸 — 표준 카테고리에 속하지 않는 특수·맞춤 솔루션 3종.",
+        "잔향실과 모듈형 차폐룸 — 표준 카테고리에 속하지 않는 특수·맞춤 솔루션 2종.",
     },
   },
   en: {
@@ -229,7 +228,7 @@ export const chamberIndustryMeta = {
     others: {
       note: "Reverberation · Shielded Room",
       description:
-        "Reverberation chamber, reverberation tent and modular shielded room — three solutions outside the standard categories.",
+        "Reverberation chamber and modular shielded room — two solutions outside the standard categories.",
     },
   },
 } as const satisfies Record<Lang, Record<ChamberIndustry, IndustryEntry>>;
@@ -259,7 +258,7 @@ export const typeMeta = {
     rvc: {
       label: "잔향실 RVC",
       description:
-        "잔향 시험 솔루션 2종. 독립형 잔향실과 기존 챔버 안에 설치하는 잔향 텐트.",
+        "잔향 시험 솔루션. IEC/EN 61000-4-21과 ISO 11452-11에 대응하는 Frankonia 스터러 기반 잔향실.",
     },
     "shielded-room": {
       label: "차폐룸",
@@ -291,7 +290,7 @@ export const typeMeta = {
     rvc: {
       label: "Reverberation RVC",
       description:
-        "Two reverberation solutions: the standalone reverberation chamber, and the tent installed inside an existing EMC chamber.",
+        "Reverberation testing with Frankonia performance stirrers, to IEC/EN 61000-4-21 and ISO 11452-11.",
     },
     "shielded-room": {
       label: "Shielded Room",
