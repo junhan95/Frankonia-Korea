@@ -93,3 +93,46 @@ Service (DE)   /wp-content/uploads/2025/11/Service-Broschure_DE_PDF.pdf
 사용자가 준 이 두 PDF를 우리가 공개 저장소에 올리면 본사가 공개하지 않기로 한 자료를
 대신 공개하는 셈이 된다. 게다가 합계 31MB로 git 히스토리에 영구히 남는다. **본사 승인
 없이 올리지 않는다.**
+
+---
+
+## 5. 본문 이관 — 진행 상황
+
+`ChamberModel`에 선택적 `spec { size, range }`를 추가했다. 카탈로그가 모델마다
+**치수와 "주파수 범위 + 흡수체 라이닝"을 항상 함께** 제시하므로 그 짝을 그대로 옮긴다
+(하나만으로는 의미가 없기 때문에 카탈로그가 그렇게 쓴 것이다). 값은 번역하지 않는다 —
+측정값과 규격 표기이고, 독자가 견적서·도면과 대조할 대상이다.
+
+`spec`이 없는 모델은 이전과 똑같이 렌더된다. 데이터는 모델 단위로 들어오고, 페이지는
+가진 것만 보여준다.
+
+### ⚠ 카탈로그의 단위 오기
+
+인쇄 p.55 군용 치수표는 `4,880 x 4,880 x 3,000 **m** (L x W x H)`로 적혀 있다.
+**미터일 수 없다** — 4.88km짜리 챔버가 된다. 밀리미터가 맞다. 사이트에는 `mm`로 적었다.
+카탈로그 표기를 그대로 옮기면 명백한 오류를 게시하는 것이 되기 때문이다. 본사에 알릴
+사항.
+
+### 채운 것
+
+| 모델 | 출처 | 상태 |
+|---|---|---|
+| MIL CHC · MIL-STD Chamber · MIL-STD Chamber Advanced | 인쇄 p.54–55 | ✅ 전문 확인 |
+| Shielded Room | 인쇄 p.10–11 | ✅ 전문 확인 |
+
+MIL-STD Advanced는 카탈로그가 Pyramid·Hybrid 두 행으로 나눠 적는다. 별도 제품이 아니라
+같은 제품의 흡수체 구성이므로 한 항목에 둘 다 적었다.
+
+### 남은 브랜치 (27개 모델 중 23개)
+
+| 브랜치 | 모델 | 카탈로그 인쇄 p. |
+|---|---|---|
+| Commercial — CHC·CTC·FAC | CHC, CHC Plus, CTC, FAC-3, FAC-3 L | 12, 16 |
+| Commercial — SAC | SAC-3 Plus/Square, SAC-5 Plus/Square, SAC-10 Plus/Triton, SAC-10/H, SAC-10/P, Transformer | 18–37 |
+| Automotive | ACTC, UCC, AVTC, SAC-10V | 40–47 |
+| Powertrain | EDTC-SA, EDTC-AX, EDTC-BB | 48 |
+| RVC | Reverberation Chamber, Reverberation Tent | 50 |
+| 기술 토픽 | Frankosorb, Shielding & Gates, Automation, Services | 58, 62, 64, 6–7 |
+
+각 브랜치는 해당 스프레드를 전문으로 읽고 `spec`을 채운 뒤 산문을 옮기는 순서로
+진행한다. 산문까지 들어가면 "콘텐츠 준비 중" 밴드를 그 페이지에서 걷어낸다.

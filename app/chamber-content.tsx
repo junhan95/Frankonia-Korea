@@ -168,7 +168,21 @@ function ModelList({ models }: { models: readonly ChamberModel[] }) {
         <div className="hl-row" key={model.name}>
           <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
           <b>{model.name}</b>
-          <span className="hl-desc">{model.desc}</span>
+          <span className="hl-desc">
+            {model.desc}
+            {/* Catalogue figures, on their own line under the descriptor. The
+                size and the frequency range are deliberately not translated:
+                they are measurements and a standard designation, and both have
+                to match the quotation and the drawings a reader compares them
+                against. Rows without a spec render exactly as before — the
+                data arrives model by model, and a page shows what it has. */}
+            {model.spec && (
+              <span className="hl-spec">
+                <span>{model.spec.size}</span>
+                <span>{model.spec.range}</span>
+              </span>
+            )}
+          </span>
         </div>
       ))}
     </div>

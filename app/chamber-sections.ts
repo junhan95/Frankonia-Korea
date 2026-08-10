@@ -66,6 +66,21 @@ export type ChamberModel = {
    *  under frankonia-solutions.com/portfolio/. Kept so the content pass can
    *  find each original without searching for it again. */
   source: string;
+  /**
+   * Figures from the Anechoic Chambers 2026 catalogue, which is the reference
+   * the content pass follows (docs/source/catalogue-2026.md). Optional because
+   * it arrives model by model — a page renders what it has and says nothing
+   * about what it does not.
+   *
+   * Both fields are the catalogue's own words, not a summary of them. `size`
+   * is inner dimensions L × W × H; `range` is the frequency span and the
+   * absorber lining it is achieved with, which the catalogue always states
+   * together because one does not mean anything without the other.
+   */
+  spec?: {
+    size: string;
+    range: string;
+  };
 };
 
 /**
@@ -84,9 +99,12 @@ export const chamberModels: readonly ChamberModel[] = [
   { name: "SAC-10V", desc: "Semi Anechoic 10m EMC Chamber dedicated to Vehicle Tests per ECE R10", industry: "automotive", type: "sac", source: "sac-10-v" },
   { name: "AVTC", desc: "Automotive Vehicle Testing Chamber", industry: "automotive", type: "sac", source: "avtc" },
 
-  { name: "MIL CHC", desc: "Military Components Testing Chamber", industry: "military", type: "chc", source: "mil-chc" },
-  { name: "MIL-STD Chamber", desc: "Military Testing Chamber for Vehicles and large EUTs", industry: "military", type: "sac", source: "mil-std-chamber" },
-  { name: "MIL-STD Chamber Advanced", desc: "Military Testing Chamber for Vehicles and large EUTs", industry: "military", type: "sac", source: "mil-std-chamber-advanced" },
+  { name: "MIL CHC", desc: "Compact Hybrid Chamber for military component testing", industry: "military", type: "chc", source: "mil-chc",
+    spec: { size: "4,880 × 4,880 × 3,000 mm", range: "9 kHz / 30 MHz – 40 GHz, hybrid absorber lining" } },
+  { name: "MIL-STD Chamber", desc: "Military Testing Chamber for Vehicles and large EUTs", industry: "military", type: "sac", source: "mil-std-chamber",
+    spec: { size: "Custom size", range: "9 kHz / 80 MHz – 40 GHz, short-pyramid absorbers" } },
+  { name: "MIL-STD Chamber Advanced", desc: "Military Testing Chamber for Vehicles and large EUTs, also compliant with commercial and automotive test site requirements", industry: "military", type: "sac", source: "mil-std-chamber-advanced",
+    spec: { size: "Custom size", range: "9 kHz / 26 MHz – 40 GHz long-pyramid, or 30 MHz – 40 GHz hybrid" } },
 
   { name: "SAC-3 Plus", desc: "Semi Anechoic 3m EMC Chamber with dome-shape design", industry: "commercial", type: "sac", source: "sac-3-plus" },
   { name: "SAC-3 Square", desc: "Semi Anechoic 3m EMC Chamber with traditional square design", industry: "commercial", type: "sac", source: "sac-3-square" },
@@ -109,7 +127,8 @@ export const chamberModels: readonly ChamberModel[] = [
 
   { name: "Reverberation Chamber", desc: "Reverberation test solution", industry: "others", type: "rvc", source: "reverberation-solutions" },
   { name: "Reverberation Tent", desc: "Reverberation Test inside EMC Chambers", industry: "others", type: "rvc", source: "reverberation-tent" },
-  { name: "Shielded Room", desc: "Modular and pre-fabricated Standard", industry: "others", type: "shielded-room", source: "shielded-room" },
+  { name: "Shielded Room", desc: "Modular and pre-fabricated Standard", industry: "others", type: "shielded-room", source: "shielded-room",
+    spec: { size: "Any size — modular PAN type panels", range: "10 kHz – 18 GHz, or 40 GHz as an option, acc. EN 50147-1 / IEEE-299" } },
 ];
 
 export const modelsByIndustry = (industry: ChamberIndustry) =>
