@@ -1,5 +1,5 @@
 import { sectionMeta, sectionPath, type CompanySection } from "./company-sections";
-import { asset, contactEmail, localeUrl, route, siteOrigin, type Lang } from "./site-config";
+import { asset, contactEmail, contactPhone, localeUrl, route, siteOrigin, type Lang } from "./site-config";
 
 /**
  * Answer engines and search have to infer entities from prose unless they are
@@ -26,7 +26,11 @@ const headOffice = {
   addressCountry: "DE",
 };
 
-const telephone = "+49 9177 98-500";
+/* Not a second copy of the number: the rule this file works under is that it
+   may only state what the page already prints, and the footer prints whatever
+   site-config holds. Keeping its own literal here was how the landing came to
+   dial one number while claiming another. */
+const telephone = contactPhone;
 
 const organisation = {
   "@type": "Organization",

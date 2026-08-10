@@ -1,4 +1,16 @@
-import { contactEmail, localeRoute, type Lang } from "./site-config";
+import { chambersPath, industryPath, typePath } from "./chamber-sections";
+import { sectionPath } from "./company-sections";
+import {
+  testCategoryPath,
+  testProductPath,
+  testSystemsPath,
+} from "./test-system-sections";
+import {
+  contactEmail,
+  contactPhoneHref,
+  localeRoute,
+  type Lang,
+} from "./site-config";
 import SiteHeader, { type HeaderCopy } from "./site-header";
 import SiteFooter, { type FooterCopy } from "./site-footer";
 import StructuredData from "./structured-data";
@@ -82,6 +94,7 @@ const copy = {
     trH3: ", 1987년부터",
     trP1: "Frankonia는 1987년 설립 이후 전 세계 80여 개국에 EMC 챔버와 시험 시스템을 공급해 온 독일의 EMC 전문 기업입니다.",
     trP2: "챔버와 시험 시스템을 자체 엔지니어링 팀이 직접 설계하고 생산합니다. 요구사항 정의와 사전 검토부터 설치, 인수 시험, 교정과 유지보수까지 한 팀이 끝까지 담당합니다.",
+    trGo: "회사 소개",
     badges: [["Since 1987", "Frankonia 설립"], ["80+", "공급 국가"], ["Made in Germany", "자체 설계·생산"], ["토탈 지원", "컨설팅–구축–사후관리"]],
     ctH: "견적 및 기술 상담",
     ctP: "프로젝트 요구사항을 알려주시면 최적의 솔루션을 제안해 드립니다.",
@@ -168,6 +181,7 @@ const copy = {
     trH3: ", since 1987",
     trP1: "Since 1987, Frankonia has supplied EMC chambers and test systems to more than 80 countries worldwide.",
     trP2: "Our chambers and test systems are designed and built by our own engineering team. One team carries a project from requirements and pre-study through installation, acceptance testing, calibration and maintenance.",
+    trGo: "About Frankonia",
     badges: [["Since 1987", "Frankonia founded"], ["80+", "Countries supplied"], ["Made in Germany", "Designed and built in-house"], ["Total Support", "Consulting – Installation – After-sales"]],
     ctH: "Quotation & Technical Consulting",
     ctP: "Tell us your project requirements and we will propose the optimal solution.",
@@ -186,13 +200,19 @@ const copy = {
   },
 } as const;
 
+/* The six cards the site map fixes the order of, each now pointing at the page
+   that carries its models. Five are industries and RVC is a chamber form —
+   that is the mix the site map asks for, and the chamber branch indexes both
+   axes, so each card can reach its own list without flattening the two into
+   one. The cards already lifted and turned their heading red on hover; they
+   were simply not links, which is a promise a page should not make twice. */
 const chamberCards = [
-  { name: "Automotive", models: "ACTC · UCC · AVTC · SAC-10V" },
-  { name: "Military", models: "MIL-STD Chamber · Advanced · MIL CHC" },
-  { name: "Commercial", models: "SAC 시리즈 · FAC 시리즈 · CHC · Shielded Room" },
-  { name: "Powertrain", models: "EDTC-SA · EDTC-AX · EDTC-BB" },
-  { name: "RVC", models: "Reverberation Chamber" },
-  { name: "Others", models: "CTC · Reverberation Tent" },
+  { name: "Automotive", models: "ACTC · UCC · AVTC · SAC-10V", path: industryPath("automotive") },
+  { name: "Military", models: "MIL-STD Chamber · Advanced · MIL CHC", path: industryPath("military") },
+  { name: "Commercial", models: "SAC 시리즈 · FAC 시리즈 · CHC · Shielded Room", path: industryPath("commercial") },
+  { name: "Powertrain", models: "EDTC-SA · EDTC-AX · EDTC-BB", path: industryPath("powertrain") },
+  { name: "RVC", models: "Reverberation Chamber", path: typePath("rvc") },
+  { name: "Others", models: "CTC · Reverberation Tent", path: industryPath("others") },
 ] as const;
 
 const chamberIcons = [
@@ -204,10 +224,20 @@ const chamberIcons = [
   <svg key="others" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="1.5" stroke="#fff" strokeWidth="1.7" /><rect x="13" y="3" width="8" height="8" rx="1.5" stroke="#fff" strokeWidth="1.7" /><rect x="3" y="13" width="8" height="8" rx="1.5" stroke="#fff" strokeWidth="1.7" /><path d="M17 14v6m-3-3h6" stroke="#fff" strokeWidth="1.7" strokeLinecap="round" /></svg>,
 ];
 
+/* These three predate the Test Systems branch and do not line up with it. The
+   branch is built from the head office's six product families — amplifiers,
+   antennas, field strength meters, preamplifiers, power meters, integrated
+   systems — and carries no EMI receiver at all, so "ERX-6 · ERC-6" names two
+   models this site has no page for. Each card therefore goes to the nearest
+   real destination rather than to a page that would have to be invented:
+   antennas have their own family, EMI receivers are emission-measurement
+   equipment, and Accessories spans four families at once so it goes to the
+   overview. Reconciling the cards with the six families is a copy decision,
+   noted in the README rather than made here. */
 const equipCards = [
-  { name: "EMI-Receiver", models: "ERX-6 · ERC-6" },
-  { name: "Antennas", models: "" },
-  { name: "Accessories", models: "Amplifier · GTEM · Sensor · Meter" },
+  { name: "EMI-Receiver", models: "ERX-6 · ERC-6", path: testCategoryPath("emission") },
+  { name: "Antennas", models: "", path: testProductPath("antenna") },
+  { name: "Accessories", models: "Amplifier · GTEM · Sensor · Meter", path: testSystemsPath },
 ] as const;
 
 const equipIcons = [
@@ -316,7 +346,10 @@ export default function Landing({ lang }: { lang: Lang }) {
                 <ul>{t.c1list.map((li) => <li key={li}>{li}</li>)}</ul>
                 {/* The trailing glyph is its own element so it can lean out of
                     the link on hover, as it does on the reference page. */}
-                <a className="go" href="#chambers">{t.more}<span aria-hidden="true">→</span></a>
+                {/* The branch overview, not this page's own summary band. The
+                    band below is a preview of the branch; "read more" should
+                    leave the landing page, not scroll it. */}
+                <a className="go" href={localeRoute(lang, chambersPath)}>{t.more}<span aria-hidden="true">→</span></a>
               </div>
             </div>
             <div className="sol">
@@ -327,7 +360,7 @@ export default function Landing({ lang }: { lang: Lang }) {
                 <h3>{t.c2h} <span className="sub-label">{t.c2sub}</span></h3>
                 <p>{t.c2p}</p>
                 <ul>{t.c2list.map((li) => <li key={li}>{li}</li>)}</ul>
-                <a className="go" href="#equipment">{t.more}<span aria-hidden="true">→</span></a>
+                <a className="go" href={localeRoute(lang, testSystemsPath)}>{t.more}<span aria-hidden="true">→</span></a>
               </div>
             </div>
             <div className="sol" id="cybershield">
@@ -354,12 +387,12 @@ export default function Landing({ lang }: { lang: Lang }) {
           </div>
           <div className="line-grid three">
             {chamberCards.map((c, i) => (
-              <div className="lc" key={c.name}>
+              <a className="lc" key={c.name} href={localeRoute(lang, c.path)}>
                 <div className="ic">{chamberIcons[i]}</div>
                 <h4>{c.name}</h4>
                 <p>{t.chambers[i]}</p>
                 <div className="models">{c.models}</div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -374,12 +407,12 @@ export default function Landing({ lang }: { lang: Lang }) {
           </div>
           <div className="line-grid three">
             {equipCards.map((c, i) => (
-              <div className="lc" key={c.name}>
+              <a className="lc" key={c.name} href={localeRoute(lang, c.path)}>
                 <div className="ic">{equipIcons[i]}</div>
                 <h4>{c.name}</h4>
                 <p>{t.eq[i]}</p>
                 <div className="models">{c.name === "Antennas" ? t.eq2models : c.models}</div>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -418,6 +451,12 @@ export default function Landing({ lang }: { lang: Lang }) {
             </h2>
             <p>{t.trP1}</p>
             <p>{t.trP2}</p>
+            {/* The band makes a claim about the company and then left the
+                reader with nowhere to check it. Philosophy is where the
+                Company section opens. */}
+            <a className="go" href={localeRoute(lang, sectionPath("philosophy"))}>
+              {t.trGo}<span aria-hidden="true">→</span>
+            </a>
           </div>
           <div className="badges">
             {t.badges.map(([b, s]) => (
@@ -435,7 +474,7 @@ export default function Landing({ lang }: { lang: Lang }) {
         <p>{t.ctP}</p>
         <div className="btns">
           <a className="btn btn-red" href={`mailto:${contactEmail}`}>{t.ctB1}</a>
-          <a className="btn btn-ghost" href="tel:+8200000000">{t.ctB2}</a>
+          <a className="btn btn-ghost" href={contactPhoneHref}>{t.ctB2}</a>
         </div>
       </div>
       </main>

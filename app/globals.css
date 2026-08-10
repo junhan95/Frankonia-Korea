@@ -320,8 +320,16 @@ section:where(:not(.cs *)) { padding: 120px 0; }
 .alt { background: var(--bg2); }
 .line-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 .line-grid.three { grid-template-columns: repeat(3, 1fr); }
-.lc { background: var(--canvas-soft); border: 1px solid var(--mute); border-radius: var(--radius); padding: 26px 26px 30px; transition: border-color .25s ease, background .25s ease, transform .3s cubic-bezier(.22, .61, .36, 1); }
+/* `display: block` because the chamber and test-system cards are anchors now:
+   an inline <a> would not take the padding or fill its grid cell. The hover
+   state below was always written as though the card were clickable — it lifts
+   and turns its heading red — so nothing else changes. */
+.lc { display: block; background: var(--canvas-soft); border: 1px solid var(--mute); border-radius: var(--radius); padding: 26px 26px 30px; transition: border-color .25s ease, background .25s ease, transform .3s cubic-bezier(.22, .61, .36, 1); }
 .lc:hover { border-color: var(--primary); background: var(--canvas); transform: translateY(-4px); }
+/* The shared focus ring below squares corners to 2px, which is right for an
+   inline link and wrong for a card — the card would visibly un-round the
+   moment it took keyboard focus. Cards keep their own radius. */
+.lc:focus-visible { border-radius: var(--radius); }
 .alt .lc { background: var(--canvas); }
 .alt .lc:hover { background: var(--canvas-soft); }
 .lc h4 { transition: color .25s ease; }

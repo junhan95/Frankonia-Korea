@@ -46,6 +46,18 @@ export const siteOrigin =
 export const contactEmail = "sales@frankoniagroup.com";
 
 /**
+ * The head office switchboard, in the form the footer prints and the
+ * structured data states — one value, because a page that gives two different
+ * numbers is a page a reader cannot act on. The landing's "call us" button
+ * used to carry `tel:+8200000000`, a placeholder Korean number, on a page
+ * whose own footer said this one.
+ */
+export const contactPhone = "+49 9177 98-500";
+
+/** The same number as a dialler will take it: E.164, no spaces or dashes. */
+export const contactPhoneHref = "tel:+49917798500";
+
+/**
  * Applications go somewhere else. The head office's career page names
  * `jobs[at]frankoniagroup.com` twice — once for the open positions and once for
  * speculative applications — and routing a CV to the sales inbox instead would
