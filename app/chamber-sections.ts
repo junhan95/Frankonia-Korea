@@ -1,4 +1,5 @@
 import { industries, type Industry } from "./industries";
+import type { PageBody } from "./page-body";
 import { plural, type Lang } from "./site-config";
 
 /**
@@ -578,41 +579,6 @@ export const referenceTotals = {
 };
 
 /**
- * A plate on a chamber page.
- *
- * `alt` is optional because the first plates carried over were decorative: the
- * heading above them already said what the page was about, and the head office
- * marks its own header images `alt=""` for the same reason. A plate that shows
- * something the prose does not — a dome roof, a stirrer mid-turn, a load
- * machine on a turntable — carries both an `alt` and a `caption`, because then
- * the picture is an argument rather than a band of colour.
- */
-export type Plate = { src: string; w: number; h: number; alt?: string; caption?: string };
-
-/**
- * One of the catalogue's configuration tables, carried over as data.
- *
- * Every chamber spread prints one: a row per size or variant, the inner
- * dimensions, and the qualifier the catalogue sets underneath — the quiet zone
- * and the test distance it holds at, the load machine the chamber is built
- * around, the working volume and stirrer of a reverberation chamber. A cell
- * splits on `\n`: the first line is the figure, the rest are that qualifier.
- *
- * Only `head`, `title` and `note` are translated. The cells are measurements
- * and designations — a reader matches them against a drawing and a quotation,
- * so a Korean rendering would be the wrong thing to give them.
- */
-export type SpecTable = {
-  title: string;
-  /** What the table does not say on its own: which frequency range the whole
-   *  block shares, or that a row is in the catalogue but not yet in the head
-   *  office's published product list. */
-  note?: string;
-  head: readonly string[];
-  rows: readonly (readonly string[])[];
-};
-
-/**
  * Page copy for a chamber page, carried over from the 2026 catalogue.
  *
  * Originally the technology topics only, where the prose is the whole page.
@@ -623,25 +589,15 @@ export type SpecTable = {
  * That is the same rule `spec` follows — the data arrives a page at a time and
  * nothing pretends otherwise.
  *
+ * The shape itself — lead, plates, tables, titled groups — is `PageBody`, which
+ * the EMC Test Systems branch reads from as well; only the two blocks below
+ * belong to this branch alone. See page-body.ts.
+ *
  * Absorber designations (P600, H1300 Turbine), standard numbers and the
  * figures beside them are not translated: they are what a reader matches
  * against a drawing and a quotation.
  */
-export type TopicBody = {
-  lead: readonly string[];
-  /** May be empty: References is built from the two blocks below instead, and
-   *  an empty list renders no band rather than an empty one. */
-  groups: readonly { title: string; items: readonly string[] }[];
-  close?: string;
-  /** Wide plate under the lead. */
-  figure?: Plate;
-  /** Three smaller plates beside each other, under the wide one. Used where a
-   *  page has to show a range rather than a single room. They are cropped to
-   *  one ratio before they get here — `.figure-row` is a grid of equal columns,
-   *  and three different ratios put three captions at three heights. */
-  figureRow?: readonly Plate[];
-  /** The catalogue's configuration tables for this page, in its own order. */
-  tables?: readonly SpecTable[];
+export type TopicBody = PageBody & {
   /**
    * References only. `shots` is keyed rather than ordered so a caption cannot
    * drift onto the wrong panorama; the label and the file live in

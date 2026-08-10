@@ -28,11 +28,10 @@ import {
   type ChamberModel,
   type ChamberTopic,
   type ChamberType,
-  type Plate,
-  type SpecTable,
   type TopicBody,
 } from "./chamber-sections";
 import { industryLabel } from "./industries";
+import { Groups, Lead, Tables } from "./page-parts";
 import PageShell from "./page-shell";
 import StructuredData, { type TrailStep } from "./structured-data";
 import { asset, contactEmail, localeRoute, plural, type Lang } from "./site-config";
@@ -120,7 +119,12 @@ export default function ChamberPage({ lang, view }: { lang: Lang; view: ChamberV
   if (body) bands.push({ key: "lead", node: <Lead body={body} /> });
   if (view.kind === "overview") bands.push({ key: "axes", node: <Axes lang={lang} /> });
   if (models.length > 0) bands.push({ key: "models", node: <Models lang={lang} models={models} /> });
-  if (body?.tables?.length) bands.push({ key: "tables", node: <Tables lang={lang} tables={body.tables} /> });
+  if (body?.tables?.length) {
+    bands.push({
+      key: "tables",
+      node: <Tables tables={body.tables} kicker={t.specs} title={t.specsTitle} note={t.specsNote} />,
+    });
+  }
   if (body && body.groups.length > 0) bands.push({ key: "groups", node: <Groups body={body} /> });
   if (body?.panoramas) bands.push({ key: "panoramas", node: <Panoramas panoramas={body.panoramas} /> });
   if (body?.references) bands.push({ key: "references", node: <References lang={lang} references={body.references} /> });
@@ -142,54 +146,6 @@ export default function ChamberPage({ lang, view }: { lang: Lang; view: ChamberV
         ))}
       </PageShell>
     </>
-  );
-}
-
-/** The catalogue's opening paragraphs for the page, and the plates under them.
- *  On an index this is everything above the model list; on a topic page, where
- *  there is no list, the next band follows straight on. */
-function Lead({ body }: { body: TopicBody }) {
-  return (
-    <>
-      <div className="prose">
-        {body.lead.map((p) => <p key={p}>{p}</p>)}
-      </div>
-      {body.figure && <Figure plate={body.figure} wide />}
-      {body.figureRow && (
-        <div className="figure-row">
-          {body.figureRow.map((plate) => <Figure key={plate.src} plate={plate} />)}
-        </div>
-      )}
-    </>
-  );
-}
-
-/**
- * A plate.
- *
- * A wide plate is capped at its own natural width rather than the 1000px
- * `.figure-wide` allows: the military plate is 744px across in the catalogue,
- * and stretching it to fill the band would print a soft image at a size the
- * source cannot support. Enlarging a source is the one thing the asset ledger
- * rules out (`withoutEnlargement`), and the rule holds at render time too.
- */
-function Figure({ plate, wide = false }: { plate: Plate; wide?: boolean }) {
-  return (
-    <figure
-      className={wide ? "figure figure-wide" : "figure"}
-      style={wide ? { maxWidth: Math.min(plate.w, 1000) } : undefined}
-    >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={asset(plate.src)}
-        alt={plate.alt ?? ""}
-        width={plate.w}
-        height={plate.h}
-        loading="lazy"
-        decoding="async"
-      />
-      {plate.caption && <figcaption>{plate.caption}</figcaption>}
-    </figure>
   );
 }
 
@@ -239,96 +195,6 @@ function Models({ lang, models }: { lang: Lang; models: readonly ChamberModel[] 
         <h2>{t.modelsTitle(models.length)}</h2>
       </div>
       <ModelList models={models} />
-    </>
-  );
-}
-
-/**
- * The catalogue's configuration tables for the page.
- *
- * These carry what the model list above cannot: the sizes a model is built in.
- * `chamberModels` holds one entry per product, because that is what the head
- * office publishes as a product — but the catalogue prints four of the SAC-3
- * Plus, seven of the SAC-10V and two of every compact chamber, and the size a
- * laboratory needs is the reason it reads this page at all.
- */
-function Tables({ lang, tables }: { lang: Lang; tables: readonly SpecTable[] }) {
-  const t = copy[lang];
-  return (
-    <>
-      <div className="sec-head">
-        <span className="kicker">{t.specs}</span>
-        <h2>{t.specsTitle}</h2>
-        <p>{t.specsNote}</p>
-      </div>
-      {tables.map((table, i) => (
-        <div key={table.title}>
-          {/* Every table keeps its own title, including the first: the band
-              heading names the band, and a page can carry four tables under
-              it. */}
-          <h3 className="sub-head" style={i > 0 ? { marginTop: "56px" } : undefined}>{table.title}</h3>
-          <div className="spec-wrap">
-            <table className="spec-table">
-              <thead>
-                <tr>
-                  {table.head.map((h, c) => (
-                    /* An empty heading is a row-label column, which has no name
-                       of its own — the load machine tables read down, not
-                       across. It still needs a cell for the column to exist. */
-                    <th key={h || `c${c}`} scope="col">{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {table.rows.map((row) => (
-                  <tr key={row[0]}>
-                    {row.map((cell, c) => <td key={`${row[0]}-${c}`}><Cell text={cell} /></td>)}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {table.note && <p className="spec-note">{table.note}</p>}
-        </div>
-      ))}
-    </>
-  );
-}
-
-/** A cell splits on a newline: the figure first, then the lines the catalogue
- *  sets under it in smaller type. Written as one string in the data because
- *  that is how the catalogue reads — a dimension and its qualifier are one
- *  statement, not two columns. */
-function Cell({ text }: { text: string }) {
-  const [main, ...sub] = text.split("\n");
-  return (
-    <>
-      {main}
-      {sub.map((line) => <small key={line}>{line}</small>)}
-    </>
-  );
-}
-
-/** The catalogue's own titled groups as check lists, then its closing line. */
-function Groups({ body }: { body: TopicBody }) {
-  return (
-    <>
-      {body.groups.map((group, i) => (
-        <div key={group.title} style={i > 0 ? { marginTop: "56px" } : undefined}>
-          <div className="sec-head">
-            <h2>{group.title}</h2>
-          </div>
-          <ul className="check-list">
-            {group.items.map((item) => (
-              <li key={item}>
-                <svg className="chk" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5" /></svg>
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-      {body.close && <p className="callout">{body.close}</p>}
     </>
   );
 }
