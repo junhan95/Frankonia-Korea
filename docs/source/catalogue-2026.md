@@ -114,7 +114,7 @@ SAC-10V는 `22,580 x 15,680 x 8,700 m`이다. 전부 밀리미터가 맞다. 사
 적었다 — 카탈로그 표기를 그대로 옮기면 명백한 오류를 게시하는 것이 되기 때문이다.
 **한 페이지의 오타가 아니라 표 전체에 걸친 문제이므로 본사에 알려야 한다.**
 
-### 채운 것 (27개 모델 중 12개)
+### 채운 것 (27개 모델 중 17개)
 
 | 브랜치 | 모델 | 인쇄 p. |
 |---|---|---|
@@ -122,7 +122,8 @@ SAC-10V는 `22,580 x 15,680 x 8,700 m`이다. 전부 밀리미터가 맞다. 사
 | Automotive | ACTC · UCC · SAC-10V · AVTC | 40–45 |
 | Powertrain | EDTC-SA · EDTC-AX · EDTC-BB | 48–49 |
 | RVC | Reverberation Chamber | 50–51 |
-| Commercial(일부) | Shielded Room | 10–11 |
+| Commercial — Shielded Room | Shielded Room | 10–11 |
+| Commercial — CHC·CTC·FAC | CHC · CHC Plus · CTC · FAC-3 · FAC-3 L | 12–13, 16–17 |
 
 MIL-STD Advanced는 카탈로그가 Pyramid·Hybrid 두 행으로 나눠 적는다. 별도 제품이 아니라
 같은 제품의 흡수체 구성이므로 한 항목에 둘 다 적었다.
@@ -135,7 +136,9 @@ MIL-STD Advanced는 카탈로그가 Pyramid·Hybrid 두 행으로 나눠 적는�
 개수가 제품 수가 아니라 구성 수가 된다. 변형은 **모델 상세 페이지의 사양표** 자리다.
 
 목록에 실은 기본 구성: ACTC(6,380×5,480×3,750), UCC(4,580×3,080×2,550),
-AVTC(11,480×9,380×6,000), SAC-10V-6/H(22,580×15,680×8,700).
+AVTC(11,480×9,380×6,000), SAC-10V-6/H(22,580×15,680×8,700), CHC(7,355×3,755×3,300),
+CHC Plus(7,355×3,755×3,300), FAC-3(8,705×4,655×3,750).
+빠뜨린 변형: ACTC L, AVTC L·XL, SAC-10V 4구성, MIL CHC/DO-160, **CHC L**, **CHC Plus L**.
 
 ### `spec.note`
 
@@ -174,11 +177,10 @@ EDTC 스프레드는 치수와 부하기(load machine) 구성만 준다. 주파�
 27개 모델 전체의 `source` 슬러그를 본사 포트폴리오에 대조했다 — **전부 200, 끊어진
 포인터 없음.**
 
-### 남은 브랜치 (15개 모델)
+### 남은 브랜치 (10개 모델)
 
 | 브랜치 | 모델 | 카탈로그 인쇄 p. |
 |---|---|---|
-| Commercial — CHC·CTC·FAC | CHC, CHC Plus, CTC, FAC-3, FAC-3 L | 12, 16 |
 | Commercial — SAC | SAC-3 Plus/Square, SAC-5 Plus/Square, SAC-10 Plus/Triton, SAC-10/H, SAC-10/P, Transformer | 18–37 |
 | RVC | Reverberation Tent (카탈로그에 없음 — 위 참조) | — |
 | 기술 토픽 | Frankosorb, Shielding & Gates, Automation, Services | 58, 62, 64, 6–7 |
