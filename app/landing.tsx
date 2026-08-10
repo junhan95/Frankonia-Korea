@@ -230,9 +230,8 @@ const chamberCards = [
     shot: { src: "/chambers/images/industry-commercial.webp", w: 900, h: 636, kind: "photo" } },
   { name: "Powertrain", models: "EDTC-SA · EDTC-AX · EDTC-BB", path: industryPath("powertrain"),
     shot: { src: "/chambers/images/industry-powertrain-edtc.webp", w: 900, h: 600, kind: "photo" } },
-  { name: "RVC", models: "Reverberation Chamber", path: typePath("rvc"),
+  { name: "RVC", models: "RVC e1 · e2 · S · M · L · XL · XXL", path: typePath("rvc"),
     shot: { src: "/chambers/images/type-rvc-reverberation.webp", w: 900, h: 600, kind: "photo" } },
-  { name: "Others", models: "Reverberation Chamber · Shielded Room", path: industryPath("others"), shot: null },
 ] as const;
 
 const chamberIcons = [

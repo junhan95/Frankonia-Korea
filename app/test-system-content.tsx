@@ -2,7 +2,8 @@ import { industryLabel, industries, type Industry } from "./industries";
 import PageShell from "./page-shell";
 import StructuredData, { type TrailStep } from "./structured-data";
 import { contactEmail, localeRoute, type Lang } from "./site-config";
-import { chambersPath, industryPath as chamberIndustryPath } from "./chamber-sections";
+import { chambersPath, industryPath as chamberIndustryPath,
+  isChamberIndustry } from "./chamber-sections";
 import {
   modelsByProduct,
   productsOfCategory,
@@ -216,12 +217,19 @@ function IndustryBody({ lang, slug }: { lang: Lang; slug: Industry }) {
           </p>
         )}
 
-        {/* The reason the two branches share one industry list. */}
-        <p style={{ marginTop: "40px" }}>
-          <a className="hl-action" style={{ marginLeft: 0 }} href={localeRoute(lang, chamberIndustryPath(slug))}>
-            {t.chamberCross} →
-          </a>
-        </p>
+        {/* The reason the two branches share one industry list — but the
+            sharing is of slugs, not of categories. The chamber branch has no
+            `others` page: its reverberation chambers are filed by what they
+            test and its shielded room sits with the commercial range, so
+            nothing is left over. Test systems still have standards that are,
+            hence the guard rather than a link to a 404. */}
+        {isChamberIndustry(slug) && (
+          <p style={{ marginTop: "40px" }}>
+            <a className="hl-action" style={{ marginLeft: 0 }} href={localeRoute(lang, chamberIndustryPath(slug))}>
+              {t.chamberCross} →
+            </a>
+          </p>
+        )}
       </div>
     </section>
   );

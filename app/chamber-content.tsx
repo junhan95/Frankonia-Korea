@@ -22,7 +22,7 @@ import {
 import { industryLabel } from "./industries";
 import PageShell from "./page-shell";
 import StructuredData, { type TrailStep } from "./structured-data";
-import { contactEmail, localeRoute, type Lang } from "./site-config";
+import { contactEmail, localeRoute, plural, type Lang } from "./site-config";
 
 /**
  * Every page in the Anechoic Chambers branch, plus the downloads hub.
@@ -64,8 +64,8 @@ const copy = {
     byType: "By Chamber Type",
     browse: "Browse",
     models: "Models",
-    modelCount: (n: number) => `${n} models`,
-    modelsTitle: (n: number) => `${n} models in this category`,
+    modelCount: (n: number) => plural(n, "model"),
+    modelsTitle: (n: number) => `${plural(n, "model")} in this category`,
     stubTitle: "Content in preparation",
     stubBody:
       "The route and the structure are in place; the copy is being prepared from the head office's own material. If you need a specification or a document now, we will send it straight over.",

@@ -118,3 +118,11 @@ export const localeRoute = (lang: Lang, path = "") => {
 /** Absolute form of `localeRoute`, for canonical / hreflang / sitemap URLs. */
 export const localeUrl = (lang: Lang, path = "") =>
   `${siteOrigin}${localeRoute(lang, path)}`;
+
+/**
+ * "1 model", not "1 models". Trivial until a category actually holds one —
+ * Shielded Room does, and the navigation printed the plural on every page of
+ * the site. Korean counts with 종 and needs no equivalent.
+ */
+export const plural = (n: number, one: string, many = `${one}s`) =>
+  `${n} ${n === 1 ? one : many}`;

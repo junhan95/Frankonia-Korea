@@ -114,15 +114,15 @@ SAC-10V는 `22,580 x 15,680 x 8,700 m`이다. 전부 밀리미터가 맞다. 사
 적었다 — 카탈로그 표기를 그대로 옮기면 명백한 오류를 게시하는 것이 되기 때문이다.
 **한 페이지의 오타가 아니라 표 전체에 걸친 문제이므로 본사에 알려야 한다.**
 
-### 채운 것 (26개 모델 전부)
+### 채운 것 (32개 모델 전부)
 
 | 브랜치 | 모델 | 인쇄 p. |
 |---|---|---|
 | Military | MIL CHC · MIL-STD Chamber · MIL-STD Chamber Advanced | 54–55 |
 | Automotive | ACTC · UCC · SAC-10V · AVTC | 40–45 |
 | Powertrain | EDTC-SA · EDTC-AX · EDTC-BB | 48–49 |
-| RVC | Reverberation Chamber | 50–51 |
-| Others — Shielded Room | Shielded Room | 10–11 |
+| RVC (7종) | RVC e1 · e2 (Commercial) · RVC S · M · L · XL · XXL (Automotive) | 50–51 |
+| Commercial — Shielded Room | Shielded Room | 10–11 |
 | Commercial — CHC·CTC·FAC | CHC · CHC Plus · CTC · FAC-3 · FAC-3 L | 12–13, 16–17 |
 | Commercial — SAC | SAC-3 Plus · SAC-5 Plus · SAC-3 Square · SAC-5 Square · SAC-3/FAC-3 Transformer · SAC-10 Plus · SAC-10 Plus Triton · SAC-10/H Hybrid · SAC-10/P Pyramid | 18–37 |
 
@@ -134,19 +134,34 @@ SAC-10V는 `22,580 x 15,680 x 8,700 m`이다. 전부 밀리미터가 맞다. 사
 제거에 따라 함께 고친 것: `others` 산업 3종→2종, `rvc` 형식 2종→1종, 두 카테고리의
 설명문(한/영)에서 텐트 언급 삭제, 랜딩 Others 카드의 모델 표기. 전체 모델 27→26.
 
-**Shielded Room의 분류 주의.** 카탈로그는 Shielded Room을 "Commercial Chamber
-Solutions"에 넣지만, 이 사이트의 데이터는 `industry: "others"`다. 사이트가 먼저 정한
-분류이고 바꾸면 Others가 1종이 되므로 그대로 두었다 — 다만 카탈로그와 다르다는 것은
-알고 있어야 한다.
+**Shielded Room은 카탈로그를 따라 Commercial로 옮겼다.** 앞서 `others`에 두고 카탈로그와
+다르다고 적어 두었던 항목이다. RVC 재분류로 Others 자체가 없어지면서 함께 해소됐다.
+
+### RVC를 7종으로 펼치고 산업군을 나눴다 (2026-08-10, 사용자 지시)
+
+카탈로그는 RVC를 **Commercial & Industrial**(e1·e2)과 **Automotive**(S·M·L·XL·XXL)
+두 표로 나눠 준다. 앞서 한 항목에 범위로 압축해 두었던 것을 카탈로그의 구분대로 7종으로
+펼치고, 표 제목이 곧 산업군이므로 그대로 배정했다. 각 모델은 치수 · 작업 체적 · 스터러
+구성 · LUF를 개별로 갖는다.
+
+RVC S·M의 "Products" 줄은 *Military or Automotive*라고 적지만 표 제목이 Automotive이므로
+그쪽에 넣고, 설명문이 군수·자동차 부품 양쪽을 말하게 했다.
+
+**이로써 Others 산업군이 비었다.** 잔향실은 시험 대상별로, 차폐룸은 카탈로그가 넣은
+Commercial로 갔다. `chamberIndustries`를 공유 목록에서 분리해 4종으로 줄였다 —
+`industries` 자체는 시험 시스템 브랜치가 아직 `others`를 쓰므로 5종 그대로다. 슬러그를
+공유하는 이유는 두 브랜치가 서로를 가리키기 위해서이지 같은 카테고리를 가져야 해서가
+아니다.
+
+타입 체커가 이 변경에서 세 곳을 잡았다: 산업 라우트 가드가 `others`를 통과시키고 있었고,
+시험 시스템 → 챔버 교차 링크가 없어질 페이지를 가리키고 있었다. 후자는 조건부로 바꿨다.
 
 ### 치수 범위로 적은 모델
 
-한 항목이 카탈로그의 여러 구성을 대표하는 경우, 최소~최대를 범위로 적었다. 임의로 한
-구성만 골라 대표시키면 나머지가 사라지기 때문이다.
+한 항목이 카탈로그의 여러 구성을 대표하는 경우, 최소~최대를 범위로 적었다.
 
 | 모델 | 적은 값 |
 |---|---|
-| Reverberation Chamber | S(5,330×3,380×3,300) ~ XXL(17,480×13,580×6,600), LUF 200/80 MHz |
 | SAC-10/H Hybrid | ø3.0m(18,380×12,830×8,550) ~ ø6.0m(21,680×15,680×8,700) |
 | SAC-10/P Pyramid | ø3.0m(21,680×13,730×8,550) ~ ø6.0m(24,980×17,180×9,000) |
 

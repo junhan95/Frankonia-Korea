@@ -1,5 +1,5 @@
-import { industries, isIndustry, type Industry } from "./industries";
-import type { Lang } from "./site-config";
+import { industries, type Industry } from "./industries";
+import { plural, type Lang } from "./site-config";
 
 /**
  * The Anechoic Chambers branch of the navigation, and the model data both of
@@ -18,7 +18,20 @@ import type { Lang } from "./site-config";
 /** Industry filter, in the head office's own order of prominence. The list
  *  itself lives in industries.ts because the test-system branch sorts by the
  *  same five. */
-export const chamberIndustries = industries;
+/**
+ * The industries the chamber branch sorts by. Four of the shared five: the
+ * chamber range has nothing left that does not belong to one of them, now
+ * that the reverberation chambers are filed by what they are built to test
+ * and the shielded room sits with the commercial range the catalogue puts it
+ * in. `others` stays in `industries` because the test-system branch still
+ * uses it — the slug set is shared so the two branches can point at each
+ * other, not so they must carry the same categories.
+ */
+export const chamberIndustries = industries.filter(
+  (i): i is Exclude<Industry, "others"> => i !== "others",
+);
+
+export type ChamberIndustry = (typeof chamberIndustries)[number];
 
 /** Chamber form. Largest family first, single-model families last. */
 export const chamberTypes = [
@@ -40,11 +53,15 @@ export const chamberTopics = [
   "references",
 ] as const;
 
-export type ChamberIndustry = Industry;
 export type ChamberType = (typeof chamberTypes)[number];
 export type ChamberTopic = (typeof chamberTopics)[number];
 
-export const isChamberIndustry = isIndustry;
+/** Narrows to the chamber branch's four, not the shared five. Re-using
+ *  `isIndustry` here let `others` through the route guard while the meta
+ *  tables no longer had an entry for it — the type checker caught it, and
+ *  this is the fix rather than a cast at each call site. */
+export const isChamberIndustry = (value: string): value is ChamberIndustry =>
+  (chamberIndustries as readonly string[]).includes(value);
 export const isChamberType = (v: string): v is ChamberType =>
   (chamberTypes as readonly string[]).includes(v);
 export const isChamberTopic = (v: string): v is ChamberTopic =>
@@ -156,9 +173,21 @@ export const chamberModels: readonly ChamberModel[] = [
   { name: "EDTC-BB", desc: "E-Drive test chamber including the EMC-BlueBox mobile load machine for dynamic powertrain tests", industry: "powertrain", type: "component", source: "edtc-bb",
     spec: { size: "7,880 × 6,380 × 3,750 mm", note: "For the EMC-BlueBox mobile load machine up to 120 kW" } },
 
-  { name: "Reverberation Chamber", desc: "Reverberation chambers with Frankonia performance stirrers, per IEC/EN 61000-4-21 and ISO 11452-11", industry: "others", type: "rvc", source: "reverberation-solutions",
-    spec: { size: "5,330 × 3,380 × 3,300 mm (S) up to 17,480 × 13,580 × 6,600 mm (XXL)", note: "Working volume 2.5 × 1.0 × 1.5 m up to 8.0 × 5.0 × 3.0 m", range: "Lowest usable frequency 200 MHz, or 80 MHz on the larger chambers" } },
-  { name: "Shielded Room", desc: "Modular and pre-fabricated Standard", industry: "others", type: "shielded-room", source: "shielded-room",
+  { name: "RVC e1", desc: "Reverberation chamber for small and medium size ISM and multimedia products", industry: "commercial", type: "rvc", source: "reverberation-solutions",
+    spec: { size: "7,580 × 5,630 × 4,200 mm", note: "Working volume 3.3 × 3.5 × 2.6 m · 1 × Z-fold stirrer (vertical)", range: "Lowest usable frequency 200 MHz" } },
+  { name: "RVC e2", desc: "Reverberation chamber for large ISM and multimedia products", industry: "commercial", type: "rvc", source: "reverberation-solutions",
+    spec: { size: "11,280 × 7,280 × 4,950 mm", note: "Working volume 5.5 × 4.0 × 2.6 m · 2 × Z-fold stirrer (vertical and horizontal)", range: "Lowest usable frequency 80 MHz" } },
+  { name: "RVC S", desc: "Reverberation chamber for military and automotive components", industry: "automotive", type: "rvc", source: "reverberation-solutions",
+    spec: { size: "5,330 × 3,380 × 3,300 mm", note: "Working volume 2.5 × 1.0 × 1.5 m · 1 × Z-fold stirrer (vertical)", range: "Lowest usable frequency 200 MHz" } },
+  { name: "RVC M", desc: "Reverberation chamber for large military and automotive components", industry: "automotive", type: "rvc", source: "reverberation-solutions",
+    spec: { size: "7,580 × 5,630 × 4,200 mm", note: "Working volume 3.3 × 3.5 × 2.6 m · 1 × Z-fold stirrer (vertical)", range: "Lowest usable frequency 200 MHz" } },
+  { name: "RVC L", desc: "Reverberation chamber for vehicles", industry: "automotive", type: "rvc", source: "reverberation-solutions",
+    spec: { size: "13,880 × 11,480 × 6,300 mm (custom)", note: "Working volume 8.0 × 5.0 × 3.0 m · 2 × Z-fold stirrer (vertical and horizontal)", range: "Lowest usable frequency 80 MHz" } },
+  { name: "RVC XL", desc: "Reverberation chamber for vehicles, with large-disc stirrer", industry: "automotive", type: "rvc", source: "reverberation-solutions",
+    spec: { size: "15,530 × 11,480 × 6,600 mm (custom)", note: "Working volume 8.0 × 5.0 × 3.0 m · 1 × large-disc stirrer ø9.0 m, 2 × disc stirrer ø4.0 m", range: "Lowest usable frequency 80 MHz" } },
+  { name: "RVC XXL", desc: "Reverberation chamber for large vehicles", industry: "automotive", type: "rvc", source: "reverberation-solutions",
+    spec: { size: "17,480 × 13,580 × 6,600 mm (custom)", note: "Working volume 8.0 × 5.0 × 3.0 m · 1 × large-disc stirrer ø12.0 m, 2 × disc stirrer ø4.0 m", range: "Lowest usable frequency 80 MHz" } },
+  { name: "Shielded Room", desc: "Modular and pre-fabricated Standard", industry: "commercial", type: "shielded-room", source: "shielded-room",
     spec: { size: "Any size — modular PAN type panels", range: "10 kHz – 18 GHz, or 40 GHz as an option, acc. EN 50147-1 / IEEE-299" } },
 ];
 
@@ -179,9 +208,9 @@ type IndustryEntry = { description: string; note: string };
 export const chamberIndustryMeta = {
   ko: {
     automotive: {
-      note: "ACTC · UCC · SAC-10V · AVTC",
+      note: "ACTC · UCC · AVTC · RVC",
       description:
-        "차량·전장부품 EMC 시험용 챔버 4종. ECE R10, CISPR 25/EN 55025, ISO 11452-2, CISPR 12/EN 55012 시험에 대응합니다.",
+        "차량·전장부품 EMC 시험용 챔버 9종. 무향 챔버 4종에 차량·부품용 잔향실(RVC S~XXL) 5종을 더해, ECE R10, CISPR 25/EN 55025, ISO 11452-2, CISPR 12/EN 55012 시험에 대응합니다.",
     },
     military: {
       note: "MIL CHC · MIL-STD Chamber",
@@ -189,26 +218,21 @@ export const chamberIndustryMeta = {
         "MIL-STD-461 RS-103 대응 군수·방산 EMC 시험 챔버 3종. 부품 단위부터 차량·대형 피시험체까지.",
     },
     commercial: {
-      note: "SAC · FAC · CHC 계열",
+      note: "SAC · FAC · CHC · RVC",
       description:
-        "일반 산업·전자기기용 EMC 챔버 14종. 3m·5m·10m 반무향, 완전무향, 컴팩트 챔버 전 계열.",
+        "일반 산업·전자기기용 EMC 챔버 17종. 3m·5m·10m 반무향, 완전무향, 컴팩트 챔버 전 계열에 차폐룸과 ISM·멀티미디어용 잔향실(RVC e1·e2)까지.",
     },
     powertrain: {
       note: "EDTC-SA · AX · BB",
       description:
         "전기차 구동계 시험용 EMC 챔버 3종. 단일 모터(EDTC-SA), 축 구성(EDTC-AX), EMC-BlueBox(EDTC-BB).",
     },
-    others: {
-      note: "Reverberation · Shielded Room",
-      description:
-        "잔향실과 모듈형 차폐룸 — 표준 카테고리에 속하지 않는 특수·맞춤 솔루션 2종.",
-    },
   },
   en: {
     automotive: {
-      note: "ACTC · UCC · SAC-10V · AVTC",
+      note: "ACTC · UCC · AVTC · RVC",
       description:
-        "Four chambers for vehicle and automotive component EMC testing, covering ECE R10, CISPR 25 / EN 55025, ISO 11452-2 and CISPR 12 / EN 55012.",
+        "Nine chambers for vehicle and automotive EMC testing — four anechoic plus the five reverberation chambers from RVC S to XXL — covering ECE R10, CISPR 25 / EN 55025, ISO 11452-2 and CISPR 12 / EN 55012.",
     },
     military: {
       note: "MIL CHC · MIL-STD Chamber",
@@ -216,19 +240,14 @@ export const chamberIndustryMeta = {
         "Three defence-grade EMC chambers for MIL-STD-461 RS-103, from component level up to vehicles and large EUTs.",
     },
     commercial: {
-      note: "SAC · FAC · CHC series",
+      note: "SAC · FAC · CHC · RVC",
       description:
-        "Fourteen chambers for industrial and consumer electronics — the full 3m, 5m and 10m semi-anechoic, fully anechoic and compact range.",
+        "Seventeen chambers for industrial and consumer electronics — the full 3m, 5m and 10m semi-anechoic, fully anechoic and compact range, plus the shielded room and the RVC e1 and e2 reverberation chambers.",
     },
     powertrain: {
       note: "EDTC-SA · AX · BB",
       description:
         "Three EMC chambers for electric drivetrain testing: single motor (EDTC-SA), axis setup (EDTC-AX) and EMC-BlueBox (EDTC-BB).",
-    },
-    others: {
-      note: "Reverberation · Shielded Room",
-      description:
-        "Reverberation chamber and modular shielded room — two solutions outside the standard categories.",
     },
   },
 } as const satisfies Record<Lang, Record<ChamberIndustry, IndustryEntry>>;
@@ -258,7 +277,7 @@ export const typeMeta = {
     rvc: {
       label: "잔향실 RVC",
       description:
-        "잔향 시험 솔루션. IEC/EN 61000-4-21과 ISO 11452-11에 대응하는 Frankonia 스터러 기반 잔향실.",
+        "잔향실 7종. 상용·산업용 RVC e1·e2와 차량·부품용 RVC S~XXL — IEC/EN 61000-4-21, ISO 11452-11 대응, Frankonia 스터러 기반.",
     },
     "shielded-room": {
       label: "차폐룸",
@@ -290,7 +309,7 @@ export const typeMeta = {
     rvc: {
       label: "Reverberation RVC",
       description:
-        "Reverberation testing with Frankonia performance stirrers, to IEC/EN 61000-4-21 and ISO 11452-11.",
+        "Seven reverberation chambers: RVC e1 and e2 for industry, RVC S to XXL for components and vehicles — to IEC/EN 61000-4-21 and ISO 11452-11, with Frankonia performance stirrers.",
     },
     "shielded-room": {
       label: "Shielded Room",
@@ -362,13 +381,13 @@ export const chambersOverviewMeta = {
     label: "챔버",
     title: "Anechoic Chambers",
     description:
-      "Frankosorb® 흡수체 기반의 모듈형 EMC 무향 챔버 27종. 산업군별로도, 챔버 형식별로도 찾아보실 수 있습니다.",
+      "Frankosorb® 흡수체 기반의 모듈형 EMC 챔버 32종. 산업군별로도, 챔버 형식별로도 찾아보실 수 있습니다.",
   },
   en: {
     label: "Anechoic Chambers",
     title: "Anechoic Chambers",
     description:
-      "Twenty-seven modular EMC anechoic chambers built on Frankosorb® absorber technology — browse by industry or by chamber type.",
+      "Thirty-two modular EMC chambers built on Frankosorb® absorber technology — browse by industry or by chamber type.",
   },
 } as const satisfies Record<Lang, { label: string; title: string; description: string }>;
 
@@ -398,8 +417,8 @@ export const chamberNavCopy = {
     byIndustry: "By Industry",
     byType: "By Chamber Type",
     technology: "Technology & Services",
-    models: (n: number) => `${n} models`,
-    allModels: (n: number) => `All ${n} models`,
+    models: (n: number) => plural(n, "model"),
+    allModels: (n: number) => `All ${plural(n, "model")}`,
   },
 } as const;
 
