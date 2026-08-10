@@ -4,10 +4,10 @@
    in the fallback chain so the stack still reads correctly if a variable is
    ever missing. */
 
-/* Design tokens. The reference surface is the CyberShield page
-   (/en/cybershield → app/cybershield/cybershield.css); this file mirrors it so
-   the landing page and every sub-page render in the same format. Spec and the
-   line-by-line derivation: 디자인.md at the repository root.
+/* Design tokens. The reference surface is the CyberShield product site
+   (www.frankonia-cybershield.com); this file mirrors it so the landing page and
+   every sub-page render in the same format. Spec and the line-by-line
+   derivation: 디자인.md at the repository root.
 
    Token names are the reference's (`--canvas`, `--body-text`, …). The older
    names below them are aliases pointing at the same values, kept because the
@@ -44,15 +44,11 @@
   --bg2: var(--canvas-soft);
 }
 
-/* The CyberShield page is exempt: its stylesheet is the product site's, written
-   against the browser's element defaults, and zeroing them here would collapse
-   its vertical rhythm. `:where()` carries no specificity, so the reset behaves
-   exactly as before everywhere else. See app/cybershield/cybershield.css. */
-*:where(:not(.cs, .cs *)) { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 /* The header is sticky, so an anchor would otherwise land its target
    underneath it. Keep this above the header height (76px), matching the
-   reference's own sticky offset (`.cs .cutaway-view { top: 96px }`). */
+   design reference's own sticky offset (`.cutaway-view { top: 96px }`). */
 #main, .hero[id], section[id], .band[id] { scroll-margin-top: 96px; }
 body {
   font-family: var(--font-inter), var(--font-noto-kr), Inter, "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
@@ -426,11 +422,9 @@ button.btn:disabled:hover { transform: none; background: var(--primary); border-
 .hl-action:hover { text-decoration: underline; }
 
 /* ===== Sections ===== */
-/* Exempt for the same reason as the reset above: the CyberShield page brings
-   its own section rhythm, and 110px on every <section> it nests would push it
-   apart. `:where()` carries no specificity, so this is otherwise unchanged. */
-section:where(:not(.cs *)) { padding: 120px 0; }
-/* `.cs .section-heading`: left-aligned, 900px, 64px of air before the content.
+section { padding: 120px 0; }
+/* `.section-heading` in the design reference: left-aligned, 900px, 64px of air
+   before the content.
    The reference never centres a heading — the left edge is the spine every
    band, table and card grid on the page is hung from. */
 .sec-head { text-align: left; max-width: 900px; margin: 0 0 64px; }
@@ -1013,7 +1007,7 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
   .brand-logo { height: 36px; }
   .wrap { padding-inline: 18px; }
   header .wrap, footer .wrap, .mobile-menu .wrap { padding-inline: 18px; }
-  section:where(:not(.cs *)) { padding: 85px 0; }
+  section { padding: 85px 0; }
   .hero-in { padding: 60px 0 70px; }
   .page-head { padding: 60px 0 50px; }
   .band { padding-block: 85px; padding-inline: 18px; }

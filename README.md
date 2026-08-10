@@ -43,7 +43,7 @@ Career는 GNB에서 내려 Company 드롭다운으로 돌아갔다. 그 자리�
 | Company | 5 | Philosophy · History · Publications · Events · Career | 완성 |
 | Anechoic Chambers | 15 | 개요 + 산업 5 + 챔버 형태 6 + 기술 4 (FrankoSorb · 차폐 게이트 · 자동화 · 서비스) + References | 골격 |
 | EMC Test Systems | 17 | 개요 + 산업 5 + 시험 종류 4 + 제품군 6 + 규격 인덱스 | 골격 |
-| CyberShield | 1 | 제품 페이지 전문을 이 사이트의 헤더·푸터 안에서 렌더 | 완성 |
+| CyberShield | 1 | 요약 — 위협·PAN 시스템·제품군 6·측정과 표준·적용 분야, 그리고 제품 사이트로 넘기는 링크 | 완성 |
 | Contact | 1 | 사업장 5곳(독일 2 · 중국 · 인도 · 한국)의 주소·메일·전화 + 문의에 담을 세 가지 | 완성(폼 없음) |
 | Downloads | 1 | 카탈로그·포토북·인증서 허브 | 골격 |
 | Legal | 2 | Imprint(TMG §5) · Privacy Policy(GDPR 제13조) | 완성 |
@@ -101,7 +101,8 @@ export에 함께 실린다([`app/fonts.ts`](app/fonts.ts)). 방문자 IP가 Goog
 않으므로 독일에서 운영하는 사이트가 감수할 이유가 없는 GDPR 논쟁이 사라지고,
 `@import`가 만들던 왕복 한 번도 없어진다. 두 폰트 모두 가변 폰트라 유니코드 범위당
 파일 하나가 300~800 굵기를 전부 담당하며, 브라우저는 그 페이지에 실제로 쓰인 범위만
-받는다 — 랜딩 267KB, CyberShield 340KB.
+받는다 — 랜딩 267KB. (함께 적어 두었던 CyberShield 340KB는 걷어낸 포팅본을 잰
+값이라 삭제했다. 요약본 수치는 다시 재야 한다.)
 
 **Design tokens, measured not guessed.** 색·타이포·간격·버튼 규격은
 [`docs/FRANKONIA-DESIGN-REFERENCE.md`](docs/FRANKONIA-DESIGN-REFERENCE.md)에
@@ -114,12 +115,15 @@ export에 함께 실린다([`app/fonts.ts`](app/fonts.ts)). 방문자 IP가 Goog
 모바일에서는 같은 컬럼이 네이티브 `<details>`로 접힌다 — 하이드레이션 전에도
 동작하고 키보드도 알아서 받는다.
 
-**CyberShield keeps the chrome.** 제품 사이트는 `X-Frame-Options: SAMEORIGIN`과
-`frame-ancestors 'self'`를 보내고 CORS 헤더가 없어 다른 오리진에서 iframe도 fetch도
-불가능하다. 그래서 제품 페이지를 `app/cybershield/`에 포팅해 이 사이트의 헤더·푸터
-안에서 직접 렌더하고, 전체 사양과 룸 구성기만
-[frankonia-cybershield.com](https://www.frankonia-cybershield.com/)으로 이어진다
-(현재 창, 로케일 매칭 — KO는 `/ko/`).
+**CyberShield summarises and hands over.** 이 라우트는 한동안 제품 페이지 전문을
+포팅해 렌더했다(`app/cybershield/`, 약 3,200줄 + 전용 스타일시트). 본사 요청에 따라
+요약본으로 바꾸고 포팅본은 걷어냈다 — 제품팀이 소유·수정하는 수치와 규격의 사본을
+이쪽에 두면 제품 사이트가 바뀌는 순간 전부 낡은 문장이 된다. 지금은 이 사이트의
+밴드로 쓴 요약 한 장이 남고, 주장을 하는 밴드마다
+[frankonia-cybershield.com](https://www.frankonia-cybershield.com/)으로 나가는 링크가
+붙는다 (새 탭, 로케일 매칭 — KO는 `/ko/`). 새 탭은 2026-08-11 본사 요청으로 기획서
+원문("현재 창에서")을 뒤집은 것이다 — 그 문장은 이 라우트가 제품 페이지 자체였을 때
+쓰였고, 지금은 뒤에 돌아올 요약본이 남는다.
 
 ## Stack
 
@@ -180,8 +184,7 @@ app/
   industries.ts           # 두 branch가 공유하는 산업 분류
   company-sections.ts     # slug 순서, 내비 라벨, meta description — 단일 출처
   company-content.tsx     # Company 5페이지
-  cybershield/            # 제품 사이트에서 포팅한 랜딩 + 스코프된 스타일시트
-  cybershield-content.tsx # 그 포팅본을 이 사이트의 크롬 안에 넣는 래퍼
+  cybershield-content.tsx # CyberShield 요약 1페이지 + 제품 사이트로 나가는 링크
   site-header.tsx    # 스티키 GNB + 메가 패널 (서버 컴포넌트)
   nav-drawer.tsx     # 모바일 드로어의 상태 — 클라이언트, 마크업은 서버에서 받는다
   lang-switch.tsx    # 언어 스위처 — 현재 경로를 알아야 해서 클라이언트
@@ -196,7 +199,7 @@ deploy/
   deploy.py          # 빌드 + 업로드를 한 번에
   upload.py          # out/ SFTP 푸시, 오래된 파일 정리 포함
   htaccess           # 정규 호스트, 보안 헤더, 캐시 정책
-scripts/             # 스테이징 빌드 변수(테스트와 공유), CyberShield CSS 스코핑
+scripts/             # 스테이징 빌드 변수(테스트와 공유), 정적 빌드 러너
 tests/               # 렌더된 HTML에 대한 검사
 docs/
   Frankonia-Korea-웹사이트-리뉴얼-기획서.docx   # 리뉴얼 기획서 v2
@@ -285,11 +288,10 @@ python deploy/deploy.py
   App Router 런타임이다. 사실상 정적인 사이트가 이만큼을 싣는 것은 Next의 하이드
   레이션 모델을 쓰는 대가이고, 여기서 더 줄이려면 프레임워크를 바꿔야 한다 —
   리팩터링으로 해결되는 항목이 아니라는 뜻이다.
-- **CyberShield 페이지만 100KB를 더 싣는다.** 이식해 온
-  [`app/cybershield/landing.tsx`](app/cybershield/landing.tsx)가 `useEffect` 3개와
-  문의 폼 상태 때문에 통째로 클라이언트 컴포넌트다. 헤더에 한 것과 같은 방식으로
-  섹션을 서버로 내리고 인터랙션만 남기면 줄어들지만, 이 파일은 제품 사이트에서
-  재동기화할 수 있게 원본 구조를 유지하는 것이 설계 의도라 그 편익과 맞바꿔야 한다.
+- **CyberShield 요약본은 제품 사이트를 따라가지 않는다.** 수치와 규격은 제품
+  페이지에서 옮겨 적은 것이라, 저쪽이 바뀌면 이쪽은 자동으로 낡는다. 요약본이
+  인용하는 항목(차폐 성능 4개, 적용 표준 6개, 제품군 6개)은 제품 사이트 개편 때마다
+  한 번씩 대조해야 한다 — 그래서 인용을 그만큼으로 묶어 두었다.
 
 ## Notes
 

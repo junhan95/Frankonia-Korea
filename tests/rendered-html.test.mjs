@@ -190,10 +190,10 @@ test("the export contains the pages the site map defines", () => {
   );
 });
 
-test("CyberShield stays inside this site's chrome", () => {
-  // The product site answers X-Frame-Options: SAMEORIGIN and sends no CORS
-  // header, so it cannot be embedded. The nav therefore points at the internal
-  // page, which carries the same header and footer as every other route.
+test("CyberShield summarises, and hands the reader to the product site", () => {
+  // The navigation points at this site's own summary page — not straight out
+  // to the product site, which would take a reader out of the site from the
+  // menu bar without warning.
   for (const { route, html } of pages) {
     const internal = localeOf(route) === "ko" ? `${BASE}/ko/cybershield/` : `${BASE}/cybershield/`;
     assert.ok(
@@ -203,29 +203,42 @@ test("CyberShield stays inside this site's chrome", () => {
   }
 
   for (const { route, html } of pages.filter((p) => p.route.endsWith("/cybershield/"))) {
-    assert.ok(html.includes('<header>'), `${route}: rendered without the site header`);
-    assert.ok(html.includes('<footer>'), `${route}: rendered without the site footer`);
+    assert.ok(html.includes("<header>"), `${route}: rendered without the site header`);
+    assert.ok(html.includes("<footer>"), `${route}: rendered without the site footer`);
 
-    // The product page itself, from its hero down — not a summary of it. These
-    // are its own section ids, which only the port can put here.
-    assert.ok(html.includes('class="cs-hero" id="top"'), `${route}: the product hero is missing`);
-    for (const id of ["why", "solution", "ecosystem", "verification", "applications", "process"]) {
-      assert.ok(html.includes(`id="${id}"`), `${route}: the ${id} section is missing`);
-    }
-
-    // Its navigation bar is the one thing that does not come across: this
-    // site's own header is above it, and two nav bars would be one too many.
+    // A summary in this site's own bands, not the port of the product page
+    // that used to live here: that carried its own stylesheet and ~3,200 lines
+    // of copy the product team owns, and went stale the moment they edited it.
     assert.ok(
-      !html.includes('class="site-header"') && !html.includes("nav-desktop"),
-      `${route}: the product site's own header came along with the port`,
+      !html.includes('class="cs-hero"') && !html.includes('class="cs '),
+      `${route}: the ported product page is back`,
     );
+    assert.ok(html.includes('class="page-head"'), `${route}: not built on the shared page head`);
+
+    // The link out is the point of the page, so it has to be on it — and it
+    // has to carry the reader's locale, because the product site serves
+    // English from its root and Korean from /ko/.
+    const product =
+      localeOf(route) === "ko"
+        ? "https://www.frankonia-cybershield.com/ko/"
+        : "https://www.frankonia-cybershield.com/";
+    const outbound = [...html.matchAll(/<a[^>]*href="(https:\/\/www\.frankonia-cybershield\.com[^"]*)"/g)];
+    assert.ok(outbound.length >= 2, `${route}: the product site is linked ${outbound.length} time(s)`);
+    for (const [, href] of outbound) {
+      assert.equal(href, product, `${route}: an outbound link drops the reader's locale`);
+    }
   }
 
-  // Same window throughout: the renewal brief asked for it explicitly, and a
-  // stray target="_blank" would be invisible in review.
+  // A new tab, so the summary the reader is standing on stays open — asked for
+  // on 2026-08-11, and it reverses the earlier brief, so it is worth a test
+  // rather than a comment. `rel="noopener"` comes with it; `noreferrer` does
+  // not, because the referrer is how the product site sees this page send it
+  // traffic.
   for (const { route, html } of pages) {
     for (const [link] of html.matchAll(/<a[^>]*frankonia-cybershield\.com[^>]*>/g)) {
-      assert.ok(!link.includes("target="), `${route} opens the product site in a new tab: ${link}`);
+      assert.ok(link.includes('target="_blank"'), `${route}: the product site opens in this window: ${link}`);
+      assert.ok(link.includes('rel="noopener"'), `${route}: an outbound link is missing rel="noopener": ${link}`);
+      assert.ok(!link.includes("noreferrer"), `${route}: an outbound link strips the referrer: ${link}`);
     }
   }
 });

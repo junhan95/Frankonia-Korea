@@ -81,10 +81,15 @@ export const headOfficeUrl = "https://frankonia-solutions.com";
 export const isIndexable = process.env.NEXT_PUBLIC_INDEXABLE === "1";
 
 /**
- * CyberShield lives on its own product site, so every entry point here —
- * navigation, landing card, footer — hands the visitor straight over to it,
- * in the same window rather than a new tab (renewal brief: "새 창에서 열리는
- * 것이 아닌 현재 창에서").
+ * CyberShield lives on its own product site. The navigation, the landing card
+ * and the footer point at this site's own summary page instead — leaving the
+ * site from the menu bar with no warning is not something a reader asked for —
+ * and the summary is where the hand-over happens: see app/cybershield-content.
+ *
+ * Those links open in a new tab (2026-08-11, head office). The earlier renewal
+ * brief asked for the same window ("새 창에서 열리는 것이 아닌 현재 창에서"),
+ * which was written when this route carried the product page itself and there
+ * was nothing here to come back to.
  *
  * That site serves English from the root and Korean from /ko/; it has no /en/.
  */

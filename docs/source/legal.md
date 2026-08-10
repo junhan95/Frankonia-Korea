@@ -55,7 +55,7 @@
 | 서비스 워커 | 등록 0 |
 | **오리진 밖 요청** | **0건** — 랜딩·CyberShield 두 페이지 모두 |
 | 분석·태그·광고 | 없음 |
-| 폼 | 랜딩 0개. CyberShield 1개 — `preventDefault()` 후 `window.location.href = mailto:…`로 **방문자의 메일 클라이언트를 열 뿐, 전송하지 않는다** (`app/cybershield/landing.tsx:1338`) |
+| 폼 | 랜딩 0개. MyChamber 1개 — `preventDefault()` 후 `mailto:` 링크로 **방문자의 메일 클라이언트를 열 뿐, 전송하지 않는다** (`app/mychamber-wizard.tsx:518`). CyberShield 페이지가 갖고 있던 문의 양식은 2026-08-11 요약본 전환으로 사라졌다 — 그 양식은 이제 제품 사이트에만 있다 |
 | 외부 링크 | frankonia-solutions.com, frankonia-cybershield.com |
 
 개인정보보호 책임자는 본사가 명시한 **Melanie Kolb (kolb@grothprojekt.de)**.
