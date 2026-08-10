@@ -146,9 +146,9 @@ WordPress `-1024x1024` 류 접미사가 붙은 것은 축소본이므로 **접�
 | `ind-automotive-vehicle.webp` | 포토북 `p-016-039` | 1600×1095 · 178KB | 턴테이블 위 짙은 색 세단과 좌측에서 겨눈 로그페리오딕 붐 | `/chambers/industry/automotive` |
 | `ind-military-milchc.webp` | 카탈로그 `c-028-076` (인쇄 p.55) | 744×590 · 72KB | 하이브리드 라이닝의 소형 군용 챔버, 접지면 있는 목재 시험대 | `/chambers/industry/military` |
 | `ind-commercial-sac.webp` | 포토북 `p-009-017` | 1600×988 · 213KB | 비어 있는 반무향실. 페라이트 끝벽, 노랑·검정으로 구획된 접지면과 매립 턴테이블 | `/chambers/industry/commercial` |
-| `ind-powertrain-edtc.webp` | 포토북 `p-018-043` | 1600×1095 · 214KB | 턴테이블 위 구동계 시험 장치 — 파란 부하기 함체, 초록 전동기, 구리 부스바 | `/chambers/industry/powertrain` |
-| `type-sac-dome.webp` | 포토북 `p-010-018` | 1600×1095 · 198KB | 돔형 천장이 아치로 넘어가는 반무향실 내부, 벽쪽에 바닥 흡수체 대차 | `/chambers/type/sac` |
-| `type-fac-freespace.webp` | 포토북 `p-005-006` | 1600×1095 · 185KB | 바닥까지 흰 피라미드로 덮인 완전무향실, 통로 위 목재 시험대, 좌측 붉은 마운트의 혼 안테나 | `/chambers/type/fac` |
+| `ind-powertrain-edtc.webp` | 포토북 `p-018-043` | 1600×1095 · 214KB | 턴테이블 위 구동계 시험 장치 — 파란 부하기 함체, 초록 전동기, 구리 부스바 | `/chambers/industry/powertrain` · 랜딩 히어로 2번째 |
+| `type-sac-dome.webp` | 포토북 `p-010-018` | 1600×1095 · 198KB | 돔형 천장이 아치로 넘어가는 반무향실 내부, 벽쪽에 바닥 흡수체 대차 | `/chambers/type/sac` · 랜딩 히어로 3번째 |
+| `type-fac-freespace.webp` | 포토북 `p-005-006` | 1600×1095 · 185KB | 바닥까지 흰 피라미드로 덮인 완전무향실, 통로 위 목재 시험대, 좌측 붉은 마운트의 혼 안테나 | `/chambers/type/fac` · 랜딩 히어로 4번째 |
 | `type-chc-panel.webp` | 카탈로그 `c-007-015` (인쇄 p.12) | 1122×591 · 34KB | 흡수체와 어두운 패널벽이 만나는 모서리. 볼트 고정 관통 패널, 경고 라벨, FRANKONIA 각인 | `/chambers/type/chc` |
 | `type-component-cispr25.webp` | 포토북 `p-017-042` | 1600×988 · 157KB | 접지면 있는 목재 시험대와 좌측 붉은 안테나 대차, 뒤쪽 하이브리드 벽 | `/chambers/type/component` |
 | `type-rvc-stirrer.webp` | 카탈로그 `c-026-070` (인쇄 p.50) | 1122×591 · 51KB | 잔향실 내부. 맨 금속 패널, 회전 중 흐려진 천장 대형 디스크 스터러, 턴테이블 위 청색 승용차 | `/chambers/type/rvc` |

@@ -212,12 +212,94 @@ nav.menu .mi--hl > a:hover { background: var(--primary); border-color: var(--pri
 
 /* ===== Hero ===== */
 .hero { position: relative; background: var(--ink); color: #fff; overflow: hidden; }
-/* The photograph fills the band and the ink stays underneath it, so the hero
-   still reads as the same dark band it was if the image is slow or missing.
-   `object-position` sits above centre: the frame's interest is the absorber
-   ceiling and the far corner, and centring would put the bare floor behind the
-   headline. */
-.hero-shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; }
+/* The photographs fill the band and the ink stays underneath them, so the hero
+   still reads as the same dark band it was if an image is slow or missing.
+
+   `.hero-media` earns its place with one declaration: `z-index: 0` opens a
+   stacking context, so the slides' own z-index values order them against each
+   other and nothing else. `.hero::after` — the scrim the headline's contrast
+   depends on — comes later in the DOM at the same level and therefore still
+   paints over the whole stack. Without this wrapper the slides would climb
+   over the scrim and take the red emphasis word down to 2.4:1. */
+.hero-media { position: absolute; inset: 0; z-index: 0; }
+/* `object-position` sits above centre on every frame: what is worth seeing is
+   the absorber ceiling and the far corner, and centring would put bare floor
+   behind the headline. The two frames with a subject standing on the turntable
+   are nudged a little lower so the subject is not cropped at the chin. */
+.hero-shot {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: 50% 38%;
+  animation-name: hero-cycle, var(--hero-pan, hero-pan-a);
+  animation-duration: 36s;
+  animation-timing-function: ease-in-out, linear;
+  animation-iteration-count: infinite;
+  animation-delay: var(--hero-in, 0s);
+}
+/* The round is 36s and there are four slides, so each holds the band for 9s.
+   The delays are negative — every slide starts mid-animation — and they are
+   set so the first frame is the one on screen at t=0, five percent in, having
+   just finished its own fade. That keeps the LCP image the image a visitor
+   actually sees, and it means the band is never blank while the round starts.
+
+   Read the delays as positions on the 36s clock: 1.8s, 28.8s, 19.8s, 10.8s
+   put the four slides at 5%, 80%, 55% and 30%, and they take the band in DOM
+   order from there. */
+.hero-media .hero-shot:nth-child(1) { --hero-pan: hero-pan-a; --hero-in: -1.8s; }
+.hero-media .hero-shot:nth-child(2) { --hero-pan: hero-pan-b; --hero-in: -28.8s; object-position: 50% 46%; }
+.hero-media .hero-shot:nth-child(3) { --hero-pan: hero-pan-c; --hero-in: -19.8s; object-position: 50% 42%; }
+.hero-media .hero-shot:nth-child(4) { --hero-pan: hero-pan-d; --hero-in: -10.8s; object-position: 50% 46%; }
+/* One slide's turn.
+   0–5%    fading in, on top      (1.8s)
+   5–25%   held, on top           (7.2s)
+   25–100% waiting underneath, still fully opaque
+
+   The z-index steps are what make the hand-over a dissolve rather than a dip
+   through the ink. The outgoing slide does not fade at all — it simply drops a
+   level and the incoming one fades in above it, so the band is covered by an
+   opaque photograph at every instant. Cross-fading the pair instead would let
+   the background show through at 25% in the middle of every transition, which
+   on a dark band reads as a flicker. */
+@keyframes hero-cycle {
+  0%     { opacity: 0; z-index: 4; }
+  5%     { opacity: 1; }
+  25%    { opacity: 1; z-index: 4; }
+  25.01% { z-index: 3; }
+  50%    { z-index: 3; }
+  50.01% { z-index: 2; }
+  75%    { z-index: 2; }
+  75.01% { z-index: 1; }
+  100%   { opacity: 1; z-index: 1; }
+}
+/* The camera move. Each slide pushes in over the 30% of the round that covers
+   its fade-in, its hold and its hand-over, then holds the framing it ended on
+   for the rest of the round — the reset to the wide framing happens at 100%,
+   underneath an opaque slide, where nobody can see it snap.
+
+   The push is ~14% over 10.8s, which is about a pixel of growth every three
+   frames at 1920 wide: enough that the band is never still, slow enough that
+   it never reads as a zoom. The four differ in direction so consecutive
+   slides do not drift the same way. `overflow: hidden` on `.hero` and a
+   starting scale above 1 keep the edges covered throughout. */
+@keyframes hero-pan-a {
+  0%   { transform: scale(1.03) translate3d(0, 0, 0); }
+  30%  { transform: scale(1.17) translate3d(-1.6%, -1.4%, 0); }
+  100% { transform: scale(1.17) translate3d(-1.6%, -1.4%, 0); }
+}
+@keyframes hero-pan-b {
+  0%   { transform: scale(1.04) translate3d(1.5%, -0.6%, 0); }
+  30%  { transform: scale(1.18) translate3d(-1.2%, 1.2%, 0); }
+  100% { transform: scale(1.18) translate3d(-1.2%, 1.2%, 0); }
+}
+@keyframes hero-pan-c {
+  0%   { transform: scale(1.02) translate3d(-1.5%, 1%, 0); }
+  30%  { transform: scale(1.16) translate3d(1.4%, -1.2%, 0); }
+  100% { transform: scale(1.16) translate3d(1.4%, -1.2%, 0); }
+}
+@keyframes hero-pan-d {
+  0%   { transform: scale(1.05) translate3d(0, -1.2%, 0); }
+  30%  { transform: scale(1.19) translate3d(1.6%, 1%, 0); }
+  100% { transform: scale(1.19) translate3d(1.6%, 1%, 0); }
+}
 /* The scrim, and the reason the first half of it is opaque rather than merely
    dark.
 
@@ -798,6 +880,13 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
     scroll-behavior: auto !important;
   }
   .sol:hover, .lc:hover, .bd:hover, .btn:hover, .cta-top:hover { transform: none; }
+  /* Collapsing the duration above would leave every slide parked on its last
+     keyframe — all four opaque, so the band would settle on whichever is last
+     in the DOM at a 1.17 crop. Stop the animation outright instead and show
+     the first frame at its true framing: the hero someone who asked for less
+     motion gets is the hero this band had before the round existed. */
+  .hero-shot { animation: none !important; transform: none; }
+  .hero-media .hero-shot:not(:first-child) { opacity: 0; }
 }
 
 /* ===== Responsive =====

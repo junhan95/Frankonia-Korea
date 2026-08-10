@@ -292,6 +292,28 @@ export type BandCopy = { ctH: string; ctP: string; ctB1: string; ctB2: string; h
 export const headerCopy = (lang: Lang): HeaderCopy & FooterCopy & BandCopy =>
   copy[lang];
 
+/** The hero backdrop, in the order it plays.
+ *
+ *  The first frame is the one the band has always opened on and stays the LCP
+ *  image — it loads at high priority and is what a visitor sees at t=0. The
+ *  three behind it are already in the repository (they carry the chamber
+ *  pages) and were picked so each is a different room at a different
+ *  exposure: an empty chamber, a powertrain rig under test, a domed SAC, a
+ *  fully anechoic room. The cut between them then reads as a change of scene
+ *  rather than a change of crop.
+ *
+ *  Subject placement decided the shortlist as much as subject did. The scrim
+ *  is opaque ink to 42% of the band and only clears past 78%, so a frame is
+ *  only worth adding if what it shows sits right of centre. The automotive
+ *  shot from `/chambers/industry/automotive` is the better photograph and was
+ *  cut for exactly this: its car lands at 40% of the frame, under the ink. */
+const heroSlides = [
+  { src: "/chambers/images/hero-anechoic-chamber.webp", w: 2000, h: 1415 },
+  { src: "/chambers/images/ind-powertrain-edtc.webp", w: 1600, h: 1095 },
+  { src: "/chambers/images/type-sac-dome.webp", w: 1600, h: 1095 },
+  { src: "/chambers/images/type-fac-freespace.webp", w: 1600, h: 1095 },
+];
+
 export default function Landing({ lang }: { lang: Lang }) {
   const t = copy[lang];
   const cs = localeRoute(lang, "/cybershield");
@@ -323,22 +345,35 @@ export default function Landing({ lang }: { lang: Lang }) {
 
       <main id="main">
       <div className="hero" id="top">
-        {/* The chamber behind the headline. Decorative — the h1 says what the
-            company does and this says what that looks like; naming it in alt
-            would only put a caption in front of the sentence it illustrates.
-            An <img> rather than a CSS background so it is in the HTML the
-            browser parses first: this is the largest thing on the page and
-            wants to start downloading before the stylesheet resolves. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className="hero-shot"
-          src={asset("/chambers/images/hero-anechoic-chamber.webp")}
-          alt=""
-          width={2000}
-          height={1415}
-          fetchPriority="high"
-          decoding="async"
-        />
+        {/* The chambers behind the headline. Decorative — the h1 says what the
+            company does and these say what that looks like; naming them in alt
+            would only put a caption in front of the sentence they illustrate.
+            <img> rather than CSS backgrounds so the first frame is in the HTML
+            the browser parses first: it is the largest thing on the page and
+            wants to start downloading before the stylesheet resolves. The
+            other three are marked low so they queue behind it rather than
+            competing with it for the same connection.
+
+            The wrapper is what keeps the scrim on top. The slides carry
+            z-index to order the cross-dissolve (see `.hero-media` in
+            globals.css); without a stacking context of their own they would
+            also climb over `.hero::after`, and the headline would lose the
+            contrast that overlay exists to guarantee. */}
+        <div className="hero-media">
+          {heroSlides.map((slide, i) => (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              key={slide.src}
+              className="hero-shot"
+              src={asset(slide.src)}
+              alt=""
+              width={slide.w}
+              height={slide.h}
+              fetchPriority={i === 0 ? "high" : "low"}
+              decoding="async"
+            />
+          ))}
+        </div>
         <div className="wrap hero-in">
           <span className="tag">{t.heroTag}</span>
           <h1>
