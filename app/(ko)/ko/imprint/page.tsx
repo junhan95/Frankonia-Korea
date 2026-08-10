@@ -1,0 +1,14 @@
+import LegalPage from "../../../legal-content";
+import { legalMeta, legalPath } from "../../../legal-sections";
+import { routeMetadata, siteViewport } from "../../../site-metadata";
+
+export const viewport = siteViewport;
+
+export function generateMetadata() {
+  const { label, description } = legalMeta.ko.imprint;
+  return routeMetadata("ko", legalPath("imprint"), label, description);
+}
+
+export default function Page() {
+  return <LegalPage lang="ko" section="imprint" />;
+}

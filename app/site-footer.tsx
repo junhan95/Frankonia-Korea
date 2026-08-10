@@ -1,4 +1,5 @@
 import { chambersPath } from "./chamber-sections";
+import { legalPath } from "./legal-sections";
 import { companySections, sectionMeta, sectionPath } from "./company-sections";
 import { testSystemsPath } from "./test-system-sections";
 import { localeRoute, type Lang } from "./site-config";
@@ -40,7 +41,11 @@ export default function SiteFooter({ lang, t }: { lang: Lang; t: FooterCopy }) {
             <ul>
               <li><a href="https://frankonia-solutions.com/" target="_blank" rel="noopener">{t.ftHq}</a></li>
               <li><a href={`${home}#contact`}>{t.ftContact}</a></li>
-              <li><a href="#">{t.ftPriv}</a></li>
+              {/* Both were promised by the footer long before they existed —
+                  the privacy entry pointed at `#`, which on 84 pages is a link
+                  that does nothing. */}
+              <li><a href={localeRoute(lang, legalPath("imprint"))}>{t.ftImprint}</a></li>
+              <li><a href={localeRoute(lang, legalPath("privacy"))}>{t.ftPriv}</a></li>
             </ul>
           </div>
         </div>
@@ -58,5 +63,5 @@ export default function SiteFooter({ lang, t }: { lang: Lang; t: FooterCopy }) {
 export type FooterCopy = {
   ftDesc: string; ftAddr: string; ftCompany: string; ftSol: string;
   ftL1: string; ftL2: string; ftLink: string; ftHq: string;
-  ftContact: string; ftPriv: string;
+  ftContact: string; ftImprint: string; ftPriv: string;
 };

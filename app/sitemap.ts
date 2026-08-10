@@ -11,6 +11,7 @@ import {
 } from "./chamber-sections";
 import { companySections, sectionPath } from "./company-sections";
 import { industries } from "./industries";
+import { legalPath, legalSections } from "./legal-sections";
 import {
   testCategories,
   testCategoryPath,
@@ -88,5 +89,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...testProducts.flatMap((p) => perLocale(testProductPath(p), lastModified, 0.7, "monthly")),
     ...perLocale(testStandardsPath, lastModified, 0.6, "yearly"),
     ...perLocale(downloadsPath, lastModified, 0.5, "yearly"),
+    // Lowest priority of anything on the site, but listed: these are the two
+    // pages a regulator or a reader looks for by name, and leaving them out of
+    // the sitemap would be the one place they are hard to find.
+    ...legalSections.flatMap((s) => perLocale(legalPath(s), lastModified, 0.3, "yearly")),
   ];
 }

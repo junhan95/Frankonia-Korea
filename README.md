@@ -6,13 +6,13 @@
 
 [frankonia-solutions.com](https://frankonia-solutions.com/) 의 콘텐츠를 기준으로
 정보 구조와 디자인을 다시 짠 **본사 사이트 리뉴얼 제안**이다.
-English · 한국어 두 개 로케일, 로케일당 42페이지를 정적 HTML로 프리렌더한다.
+English · 한국어 두 개 로케일, 로케일당 44페이지를 정적 HTML로 프리렌더한다.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.2-000000?logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-19.2-149ECA?logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)
 ![Static export](https://img.shields.io/badge/output-static%20export-2ea44f)
-![Pages](https://img.shields.io/badge/pages-84-25282B)
+![Pages](https://img.shields.io/badge/pages-88-25282B)
 
 ### [English](https://junhan95.github.io/Frankonia-Korea/) · [한국어](https://junhan95.github.io/Frankonia-Korea/ko/)
 
@@ -30,7 +30,7 @@ GitHub Pages(스테이징)에서 서빙되며 검토가 끝나면 정식 도메�
 ## The site
 
 여섯 개 GNB — Company · Anechoic Chambers · EMC Test Systems · CyberShield ·
-Contact · Career. 로케일당 42페이지, 합계 84페이지.
+Contact · Career. 로케일당 44페이지, 합계 88페이지.
 
 | Branch | Pages | 무엇이 있는가 | 상태 |
 |---|---|---|---|
@@ -40,6 +40,7 @@ Contact · Career. 로케일당 42페이지, 합계 84페이지.
 | EMC Test Systems | 17 | 개요 + 산업 5 + 시험 종류 4 + 제품군 6 + 규격 인덱스 | 골격 |
 | CyberShield | 1 | 제품 페이지 전문을 이 사이트의 헤더·푸터 안에서 렌더 | 완성 |
 | Downloads | 1 | 카탈로그·포토북·인증서 허브 | 골격 |
+| Legal | 2 | Imprint(TMG §5) · Privacy Policy(GDPR 제13조) | 완성 |
 
 **"골격"이 뜻하는 것.** 라우트 · 분류 축 · 메타데이터 · 브레드크럼 · 모델 목록은
 실제 데이터다 — 챔버 27종과 시험 시스템 36개 제품은 이름과 한 줄 설명까지, 24개
@@ -127,7 +128,7 @@ npm test
 ```
 
 `npm test`는 정적 export를 먼저 만든 뒤 **실제로 생성된 HTML에** 16개 항목을
-검사한다 — 84페이지 전수로 스테이징 `noindex`가 붙어 있는지, 루트가 영어이고
+검사한다 — 88페이지 전수로 스테이징 `noindex`가 붙어 있는지, 루트가 영어이고
 한국어가 `/ko` 아래에 있는지, `<html lang>`이 경로의 로케일과 맞는지, canonical · hreflang · `og:image`가 맞는지, sitemap이
 디스크 위의 페이지 목록과 정확히 일치하는지, 그리고 export에 없는 파일을 가리키는
 내부 링크가 하나도 없는지. 검사 항목은 전부 한 번씩 실제로 깨졌던 것들이다.
@@ -212,8 +213,13 @@ python deploy/deploy.py
 
 정식 오픈 전에 반드시 처리해야 하는 것들. 순서는 대략 급한 순이다.
 
-- **법적 고지 페이지가 없다.** 독일 법인이 운영하는 사이트에는 Impressum(TMG §5)과
-  개인정보처리방침이 필요하다. 현재 두 페이지 모두 없다.
+- **법적 고지 두 페이지가 법률 검토를 받지 않았다.** `/imprint`와 `/privacy`는 있다 —
+  임프린트는 본사 원문을 그대로 옮겼고(19개 항목 기계 대조, 불일치 0), 개인정보처리방침은
+  본사 문안을 복사하는 대신 **이 사이트가 실제로 하는 일을 측정해서** 썼다(본사 방침은
+  쿠키·분석·뉴스레터·서버 폼을 전제하는데 이 사이트엔 넷 다 없다 — 그대로 옮기면 허위
+  기재가 된다). 다만 법률 자문을 받은 문서는 아니므로 정식 도메인 이전 전 본사 법무
+  확인이 필요하고, **서버 로그 보존 기간**과 **호스팅 수탁자 표기**는 아직 비어 있다.
+  경위는 [`docs/source/legal.md`](docs/source/legal.md).
 - **HSTS `includeSubDomains`가 2년으로 걸려 있다.** [`deploy/htaccess`](deploy/htaccess).
   HTTP로만 서비스되는 서브도메인이 하나라도 있으면 배포 즉시 끊기고, 브라우저에
   캐시되므로 되돌릴 수 없다. 정식 도메인 배포 전 서브도메인을 전수 확인해야 한다.

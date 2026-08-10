@@ -111,6 +111,7 @@ const copy = {
     ftLink: "링크",
     ftHq: "Frankonia Group",
     ftContact: "견적·기술 문의",
+    ftImprint: "법적 고지",
     ftPriv: "개인정보처리방침",
   },
   en: {
@@ -197,6 +198,7 @@ const copy = {
     ftLink: "Links",
     ftHq: "Frankonia Group",
     ftContact: "Quote & Technical Support",
+    ftImprint: "Imprint",
     ftPriv: "Privacy Policy",
   },
 } as const;
