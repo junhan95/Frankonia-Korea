@@ -176,11 +176,15 @@ Commercial로 갔다. `chamberIndustries`를 공유 목록에서 분리해 4종�
 
 | 토픽 | 인쇄 p. | 상태 |
 |---|---|---|
-| Frankosorb® | 58–59 | ✅ 본문 완료 (426단어, 5개 그룹 20항목) |
-| Shielding & Gates | 62–63 | 대기 |
-| Automation | 64–65 | 대기 |
+| Frankosorb® | 58–59 | ✅ 426단어 · 5그룹 20항목 |
+| Shielding & Gates | 62–63 | ✅ 339단어 · 6그룹 26항목 |
+| Automation | 64–65 | ✅ 204단어 · 2그룹 11항목 |
 | Extended Services | 6–7 | 대기 |
-| References | — | 카탈로그에 대응 스프레드 없음 |
+| References | — | **카탈로그에 대응 스프레드 없음** — 본사 웹 References 페이지에서 가져와야 한다 (이미지 3장은 이미 확보) |
+
+Shielding과 Automation은 확보해 둔 이미지(`topic-shielding-gates` · `topic-automation`)를
+본문 밴드로 함께 썼다. 카탈로그의 오타 하나는 교정했다 — Automation 스프레드의
+"compliant wiht CISPR 16-1-4".
 
 흡수체 명칭(P600, H1300 Turbine), 규격 번호와 그 옆의 수치는 번역하지 않는다 — 도면과
 견적서에 맞춰 볼 값이다.

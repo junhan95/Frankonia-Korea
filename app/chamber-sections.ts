@@ -500,6 +500,78 @@ export const topicBody: Record<Lang, Partial<Record<ChamberTopic, TopicBody>>> =
       ],
       close: "The Frankosorb® absorber technology remains the number one choice when it comes to long-term performance paired with its unique non-combustibility.",
     },
+    "shielding-gates": {
+      lead: [
+        "Since 1987 Frankonia has followed a prefabrication and modular standard at the highest quality and efficiency. Nothing is welded, nothing is glued: everything stays modular so that any future modification remains possible.",
+        "Every chamber is designed as an independent room with its own fully integrated electrical setup and simple interfaces to the building around it. As a specialist in RF shielding and EMC test chambers, Frankonia supplies the complementary products — standard and customised — that keep it a turnkey provider.",
+      ],
+      figure: { src: "/chambers/images/topic-shielding-gates.webp", w: 1600, h: 1067 },
+      groups: [
+        { title: "Shielding and structure", items: [
+          "Modular and prefabricated PAN type shielding system",
+          "Highest shielding attenuation for every accessory — honeycombs, doors, feed-through elements, electrics and gates",
+          "Acoustic panels (FAP) with absorption per ISO 354",
+          "Static steel structure adapted to local seismic conditions",
+        ] },
+        { title: "Doors and gates", items: [
+          "Single-leaf door (SLD)",
+          "Double-leaf door (DLD)",
+          "Sliding door (SSD)",
+          "Sliding gate (SG)",
+          "A broad range of sizes, modular and prefabricated throughout",
+        ] },
+        { title: "Ramps and platforms", items: [
+          "Automatic ramps",
+          "Automatic platforms with a flush entrance",
+          "Customised entrance solutions",
+        ] },
+        { title: "Electrical integration and compliance", items: [
+          "Electrical distribution unit accessible from outside, cabling and safety functions to local standards",
+          "LED lighting, explosion protection option, emergency lighting",
+          "AC and DC filters, signal and data filters, optic converters",
+          "Safety matrix and higher-level laboratory control unit (PLC system)",
+          "CE conformity per Machinery Directive 2006/42/EC as standard, or for the complete laboratory as an option",
+        ] },
+        { title: "Ventilation, smoke and gas", items: [
+          "Honeycombs, cooling and exhaust systems",
+          "Air sampling network for gas and smoke detection",
+          "Smoke and gas detection analyser with alarm central, ATEX compliance",
+          "Liquid detection system",
+          "Extinguishing solutions such as sprinklers",
+        ] },
+        { title: "Video, audio and test tables", items: [
+          "HD camera systems, fixed or mobile",
+          "Audio and recording systems",
+          "CISPR 25 and MIL wooden test tables (FGT) with ground plane",
+          "CISPR 32 transparent test tables (FTT)",
+        ] },
+      ],
+    },
+    automation: {
+      lead: [
+        "Frankonia builds its own positioning equipment — turntables and antenna masts — in its R&D department, to the quality and technology standards the current EMC standards ask for.",
+        "The FTM turntables are fully compliant with the chamber environment: integrated flush into the raised floor and surrounded by a conductivity grounding ring that keeps contact with the chamber's ground plane. The FC06.1 controller drives them over IEEE 488.2 (GPIB) commands.",
+        "The FAM antenna mast is the standard solution to CISPR 16-1-4, on wheels for easy handling and built from fibreglass and plastics so that reflecting material is kept to a minimum. The FBM boresight mast adds a tilt function compliant with ANSI C63.4 and CISPR 16-1-4 — its software calculates the tilt angle from the antenna reference point, the distance and the size of the EUT, and monitors the test procedure. The tilt can be switched off, leaving the FBM working as a standard mast.",
+      ],
+      figure: { src: "/chambers/images/topic-automation.webp", w: 1600, h: 1067 },
+      groups: [
+        { title: "Turntables — FTM series", items: [
+          "Integrated turntables from ø1.2 m to ø12.0 m, up to 80 tons",
+          "Energy chains, rotary joints for data, electrics or fluids, exhaust and cooling systems, or customer-specific items",
+          "Dynamometers integrated: fitted, free-roller or mobile on-top",
+          "FC06.1 controller with independent software (SCPI commands)",
+          "Controllable from common EMC software, with a wireless access option",
+        ] },
+        { title: "Antenna masts — FAM, FBM and FSM", items: [
+          "FAM standard antenna mast (CISPR)",
+          "FBM boresight antenna mast (FCC/ANSI and CISPR)",
+          "FSM antenna stand, optionally with a polarisation unit",
+          "FC06 controller with independent software (SCPI commands)",
+          "Controllable from common EMC software",
+          "Wireless interface for control from a handheld device",
+        ] },
+      ],
+    },
   },
   ko: {
     frankosorb: {
@@ -541,6 +613,78 @@ export const topicBody: Record<Lang, Partial<Record<ChamberTopic, TopicBody>>> =
         ] },
       ],
       close: "장기 성능과 고유의 불연 특성을 함께 요구할 때, Frankosorb® 흡수체 기술은 여전히 첫 번째 선택지입니다.",
+    },
+    "shielding-gates": {
+      lead: [
+        "Frankonia는 1987년부터 최고 수준의 품질과 효율을 목표로 사전 제작·모듈형 표준을 지켜 왔습니다. 용접도 접착도 하지 않습니다 — 모든 것을 모듈로 두어 이후의 어떤 변경 요구에도 대응할 수 있게 합니다.",
+        "모든 챔버는 자체 전기 설비를 완결적으로 갖추고 건물과는 단순한 인터페이스로만 연결되는 독립된 방으로 설계됩니다. RF 차폐와 EMC 시험 챔버 전문 기업으로서, 턴키 공급자의 자리를 지키는 데 필요한 표준·맞춤 부대 제품을 함께 공급합니다.",
+      ],
+      figure: { src: "/chambers/images/topic-shielding-gates.webp", w: 1600, h: 1067 },
+      groups: [
+        { title: "차폐와 구조", items: [
+          "모듈형 사전 제작 PAN 타입 차폐 시스템",
+          "허니콤, 도어, 관통 소자, 전기 설비, 게이트 등 모든 부속에 최고 수준의 차폐 감쇠",
+          "ISO 354 흡음 성능의 음향 패널(FAP)",
+          "현지 내진 조건에 맞춘 정적 철골 구조",
+        ] },
+        { title: "도어와 게이트", items: [
+          "단문형 도어(SLD)",
+          "양문형 도어(DLD)",
+          "슬라이딩 도어(SSD)",
+          "슬라이딩 게이트(SG)",
+          "전 규격 모듈형 사전 제작, 다양한 크기",
+        ] },
+        { title: "램프와 플랫폼", items: [
+          "자동 램프",
+          "단차 없는 진입을 위한 자동 플랫폼",
+          "맞춤형 진입 솔루션",
+        ] },
+        { title: "전기 통합과 적합성", items: [
+          "외부에서 접근 가능한 배전반, 현지 규격에 따른 배선과 안전 기능",
+          "LED 조명, 방폭 옵션, 비상 조명",
+          "AC·DC 필터, 신호·데이터 필터, 광 변환기",
+          "안전 매트릭스와 상위 시험실 제어 유닛(PLC)",
+          "기계류 지침 2006/42/EC에 따른 CE 적합성 — 제품 단위 기본, 시험실 전체는 옵션",
+        ] },
+        { title: "환기·연기·가스", items: [
+          "허니콤, 냉각·배기 시스템",
+          "가스·연기 감지용 공기 샘플링 네트워크",
+          "경보 중앙 장치와 연동되는 연기·가스 분석기, ATEX 적합",
+          "누액 감지 시스템",
+          "스프링클러 등 소화 솔루션",
+        ] },
+        { title: "영상·음향과 시험대", items: [
+          "고정형·이동형 HD 카메라 시스템",
+          "음향 및 녹화 시스템",
+          "접지면이 있는 CISPR 25·MIL 목재 시험대(FGT)",
+          "CISPR 32 투명 시험대(FTT)",
+        ] },
+      ],
+    },
+    automation: {
+      lead: [
+        "Frankonia는 턴테이블과 안테나 마스트를 자체 R&D 부서에서 설계·개발합니다. 현행 EMC 규격이 요구하는 품질과 기술 수준을 기준으로 삼습니다.",
+        "FTM 턴테이블은 챔버 환경에 완전히 부합합니다. 이중바닥에 매립되고 도전성 접지 링으로 둘러싸여 챔버 접지면과의 접촉을 유지합니다. 제어는 IEEE 488.2(GPIB) 명령을 쓰는 FC06.1 컨트롤러가 담당합니다.",
+        "FAM 안테나 마스트는 CISPR 16-1-4에 적합한 표준 솔루션으로, 취급이 쉽도록 바퀴가 달려 있고 반사를 최소화하기 위해 유리섬유와 플라스틱으로 제작됩니다. FBM 보어사이트 마스트는 여기에 ANSI C63.4·CISPR 16-1-4 적합 틸트 기능을 더합니다 — 소프트웨어가 안테나 기준점과 거리, 피시험체 크기로부터 틸트 각도를 계산하고 시험 절차 전체를 감시합니다. 틸트를 끄면 표준 마스트로 동작합니다.",
+      ],
+      figure: { src: "/chambers/images/topic-automation.webp", w: 1600, h: 1067 },
+      groups: [
+        { title: "턴테이블 — FTM 시리즈", items: [
+          "ø1.2m~ø12.0m 매립형 턴테이블, 최대 80톤",
+          "에너지 체인, 데이터·전기·유체용 로터리 조인트, 배기·냉각 계통, 고객 지정 품목 통합",
+          "다이나모미터 통합 — 고정형, 프리롤러, 이동식 온톱",
+          "독립 소프트웨어(SCPI 명령)를 갖춘 FC06.1 컨트롤러",
+          "일반 EMC 소프트웨어에서 제어 가능, 무선 접속 옵션",
+        ] },
+        { title: "안테나 마스트 — FAM · FBM · FSM", items: [
+          "FAM 표준 안테나 마스트(CISPR)",
+          "FBM 보어사이트 안테나 마스트(FCC/ANSI · CISPR)",
+          "FSM 안테나 스탠드, 편파 유닛 옵션",
+          "독립 소프트웨어(SCPI 명령)를 갖춘 FC06 컨트롤러",
+          "일반 EMC 소프트웨어에서 제어 가능",
+          "휴대 기기에서 제어하는 무선 인터페이스",
+        ] },
+      ],
     },
   },
 };
