@@ -104,6 +104,7 @@ test("the export contains the pages the site map defines", () => {
       "/ko/cybershield/",
       "/ko/downloads/",
       "/ko/imprint/",
+      "/ko/mychamber/",
       "/ko/privacy/",
       "/ko/test-systems/",
       "/ko/test-systems/industry/automotive/",
@@ -122,6 +123,7 @@ test("the export contains the pages the site map defines", () => {
       "/ko/test-systems/test/emission/",
       "/ko/test-systems/test/magnetic/",
       "/ko/test-systems/test/radiated/",
+      "/mychamber/",
       "/privacy/",
       "/test-systems/",
       "/test-systems/industry/automotive/",
@@ -180,6 +182,52 @@ test("CyberShield stays inside this site's chrome", () => {
   for (const { route, html } of pages) {
     for (const [link] of html.matchAll(/<a[^>]*frankonia-cybershield\.com[^>]*>/g)) {
       assert.ok(!link.includes("target="), `${route} opens the product site in a new tab: ${link}`);
+    }
+  }
+});
+
+test("MyChamber holds the marked slot in the bar, and Career keeps a home", () => {
+  // Career came out of the top-level menu to make room for MyChamber. The
+  // failure mode of that swap is not a missing menu item — it is a page nobody
+  // can reach any more, which no other test here would notice.
+  for (const { route, html } of pages) {
+    const ko = localeOf(route) === "ko";
+    const mychamber = ko ? `${BASE}/ko/mychamber/` : `${BASE}/mychamber/`;
+    const career = ko ? `${BASE}/ko/company/career/` : `${BASE}/company/career/`;
+
+    assert.ok(
+      html.includes('class="mi mi--hl"'),
+      `${route}: nothing in the navigation bar is marked`,
+    );
+    assert.ok(
+      html.includes(`<a href="${mychamber}">MyChamber`),
+      `${route}: the bar does not offer MyChamber`,
+    );
+    assert.ok(
+      html.includes(`href="${career}"`),
+      `${route}: the Career page is not reachable from the chrome`,
+    );
+    assert.ok(
+      !html.includes(`<a href="${career}">Career<`) || html.includes('class="dd-panel"'),
+      `${route}: Career is back in the bar rather than in the Company panel`,
+    );
+  }
+});
+
+test("the questionnaire is in the exported HTML, not assembled by script", () => {
+  // A static export with a client-rendered first step would serve an empty
+  // page to a crawler and to anyone whose bundle has not landed yet.
+  const first = {
+    "/mychamber/": "What kind of product are you testing?",
+    "/ko/mychamber/": "어떤 종류의 제품을 시험하시나요?",
+  };
+  for (const [route, question] of Object.entries(first)) {
+    const page = pages.find((p) => p.route === route);
+    assert.ok(page, `${route} is not in the export`);
+    assert.ok(page.html.includes(question), `${route}: the first question is not in the HTML`);
+    // Every option of it, too — the answer set is the page.
+    for (const option of ["Automotive", "Military", "Commercial", "Powertrain"]) {
+      assert.ok(page.html.includes(option), `${route}: the ${option} option is missing`);
     }
   }
 });

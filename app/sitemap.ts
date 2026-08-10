@@ -12,6 +12,7 @@ import {
 import { companySections, sectionPath } from "./company-sections";
 import { industries } from "./industries";
 import { legalPath, legalSections } from "./legal-sections";
+import { mychamberPath } from "./mychamber-sections";
 import {
   testCategories,
   testCategoryPath,
@@ -74,6 +75,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
         alternates: alternates(sectionPath(section)),
       })),
     ),
+    // Ranked with the branch overviews rather than below them: it is a way
+    // into the chamber range, and for a reader who does not yet know a model
+    // name it is the better one.
+    ...perLocale(mychamberPath, lastModified, 0.9, "monthly"),
     // The chamber branch. The overview outranks its two index axes, which in
     // turn outrank the technology pages — the order a crawler should read them
     // in, and the order the dropdown presents them.

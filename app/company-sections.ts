@@ -5,6 +5,10 @@ import type { Lang } from "./site-config";
  * component imports so both the header and the page content can read it —
  * the header is a client component, and importing the page module there
  * would close an import cycle.
+ *
+ * All five are in the dropdown. Career used to be held out of it because it
+ * had a top-level item of its own; MyChamber has that slot now, so the one
+ * link to the Career page is the one in this list.
  */
 export const companySections = [
   "philosophy",
@@ -15,14 +19,6 @@ export const companySections = [
 ] as const;
 
 export type CompanySection = (typeof companySections)[number];
-
-/**
- * The subset the Company dropdown lists. Career keeps its own top-level GNB
- * item pointing at the same page, so repeating it here only gave the reader
- * two links to one place.
- */
-export const companyNavSections: readonly CompanySection[] =
-  companySections.filter((s) => s !== "career");
 
 export const isCompanySection = (value: string): value is CompanySection =>
   (companySections as readonly string[]).includes(value);

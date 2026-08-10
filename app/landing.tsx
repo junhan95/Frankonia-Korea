@@ -27,7 +27,7 @@ import StructuredData from "./structured-data";
    whatever space is left rather than letting label width move them. */
 const copy = {
   ko: {
-    nav: { company: "회사소개", chamber: "챔버", equip: "EMC 시험장비", cyber: "CyberShield", contact: "문의", career: "채용", cta: "견적 문의" },
+    nav: { company: "회사소개", chamber: "챔버", equip: "EMC 시험장비", cyber: "CyberShield", contact: "문의", cta: "견적 문의" },
     navSubs: {
       contact: { quote: "견적·기술 문의", catalog: "카탈로그 다운로드" },
     },
@@ -115,7 +115,7 @@ const copy = {
     ftPriv: "개인정보처리방침",
   },
   en: {
-    nav: { company: "Company", chamber: "Anechoic Chambers", equip: "EMC Test Systems", cyber: "CyberShield", contact: "Contact", career: "Career", cta: "Get a Quote" },
+    nav: { company: "Company", chamber: "Anechoic Chambers", equip: "EMC Test Systems", cyber: "CyberShield", contact: "Contact", cta: "Get a Quote" },
     navSubs: {
       contact: { quote: "Quote & Technical Support", catalog: "Catalog Downloads" },
     },

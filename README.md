@@ -30,11 +30,16 @@ GitHub Pages(스테이징)에서 서빙되며 검토가 끝나면 정식 도메�
 ## The site
 
 여섯 개 GNB — Company · Anechoic Chambers · EMC Test Systems · CyberShield ·
-Contact · Career. 로케일당 44페이지, 합계 88페이지.
+Contact · **MyChamber**. 로케일당 45페이지, 합계 90페이지.
+
+Career는 GNB에서 내려 Company 드롭다운으로 돌아갔다. 그 자리는 챔버를 사러 온
+사람에게 더 값이 나가는 자리이고, 이 사이트가 할 일은 사양을 견적으로 옮기는
+것이다. 페이지 자체는 그대로 있고 Company 메뉴와 푸터에서 이어진다.
 
 | Branch | Pages | 무엇이 있는가 | 상태 |
 |---|---|---|---|
 | Landing | 1 | 히어로, 세 개 제품 축 요약, 레퍼런스, 컨택 밴드 | 완성 |
+| MyChamber | 1 | 질문 4~6개로 챔버 32종을 좁히고, 결과를 그대로 견적 메일로 | 완성 |
 | Company | 5 | Philosophy · History · Publications · Events · Career | 완성 |
 | Anechoic Chambers | 15 | 개요 + 산업 5 + 챔버 형태 6 + 기술 4 (FrankoSorb · 차폐 게이트 · 자동화 · 서비스) + References | 골격 |
 | EMC Test Systems | 17 | 개요 + 산업 5 + 시험 종류 4 + 제품군 6 + 규격 인덱스 | 골격 |
@@ -57,6 +62,28 @@ Contact · Career. 로케일당 44페이지, 합계 88페이지.
 거른 결과다. 모델을 하나 추가하는 일은 항목 하나를 넣는 일이지 페이지를 만드는
 일이 아니다. 두 branch의 산업 축은 같은 다섯 개로 맞췄다 — 자동차 고객은 양쪽에서
 사는데, 그러려고 분류 체계를 두 번 배울 이유가 없다.
+
+**MyChamber — 하드 필터 뒤에 가중치 채점.** 32종을 고르는 일을 결정 트리로 짜면
+산업 × 시험 × 크기 × 거리 × 규격의 조합마다 가지가 하나씩 필요한데, 카탈로그가
+그렇게 갈라지지 않는다 (MIL-STD Chamber Advanced는 군용이면서 상용·자동차
+시험장 요건을 만족하고, CTC는 Commercial에 걸려 있으면서 자동차·군용 부품용이다).
+그래서 `mychamber-advisor.ts`는 두 단계로 나눈다 — **물리적으로 불가능한 것**
+(피시험체보다 작은 챔버, 정식 방사 방출을 요구받은 잔향실, 3m 챔버에 10m 측정,
+부하기 구성이 다른 E-Drive 챔버)은 하드 필터로 아예 빼고, 남은 것에 가중치를
+매겨 순위와 **그 순위의 이유**를 함께 낸다. 1위 점수의 절반에 못 미치는 결과는
+"대안" 자리를 채우려고 끼워 넣지 않는다. 표준 모델로 답이 안 나오면 빈 목록이
+정답이고, 페이지는 맞춤 설계 문의로 넘긴다.
+
+질문은 다섯 가지 사실만 묻는다 — 산업, 시험, 피시험체 크기, 측정 거리, 부하기
+구성. 앞의 셋은 모두에게, 뒤의 둘은 해당되는 사람에게만 (측정 거리는 **방사
+방출**을 고른 뒤에야, 부하기는 Powertrain을 고른 뒤에야 나타난다). 규격은
+마지막에 앞선 답에서 역산해 미리 체크해 두고, 건너뛸 수 있게 두었다. 최단 4문항,
+최장 6문항.
+
+**전송하지 않는 견적 문의.** 정적 배포라 백엔드가 없고, 외부 폼 서비스로 보내면
+고객의 프로젝트 내용이 고객도 Frankonia도 고르지 않은 곳에 남는다. 그래서 답변과
+추천 결과를 `mailto:` 본문으로 조립한다 — 읽는 사람의 메일 앱이 본문이 다 쓰인
+채로 열리고, 보내기 전에 본인이 읽는다. 이 페이지는 아무것도 저장하지 않는다.
 
 **Bilingual from one component.** 모든 문구는 로케일 키로 정리된 `copy` 객체에
 있고 KO / EN 페이지가 하나의 트리에서 렌더된다. 로케일별 `<html lang>`을 서버
@@ -145,6 +172,10 @@ app/
   chamber-content.tsx     # Chambers branch 15페이지 + Downloads 허브
   test-system-sections.ts # 제품 36개 · 규격 24개 · 산업/시험/제품군 축
   test-system-content.tsx # Test Systems branch 17페이지
+  mychamber-sections.ts   # MyChamber 라우트 + 라벨 (헤더가 읽는 것은 이것뿐)
+  mychamber-advisor.ts    # 질문지 · 32종 적합도 인덱스 · 추천 엔진
+  mychamber-wizard.tsx    # 질문 UI와 견적 메일 조립 — 클라이언트
+  mychamber-content.tsx   # 카탈로그와 적합도 인덱스를 조인해 위저드에 넘긴다
   industries.ts           # 두 branch가 공유하는 산업 분류
   company-sections.ts     # slug 순서, 내비 라벨, meta description — 단일 출처
   company-content.tsx     # Company 5페이지

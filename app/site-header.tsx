@@ -14,9 +14,10 @@ import {
   typeMeta,
   typePath,
 } from "./chamber-sections";
-import { companyNavSections, sectionMeta, sectionPath } from "./company-sections";
+import { companySections, sectionMeta, sectionPath } from "./company-sections";
 import { industryLabel } from "./industries";
 import LangSwitch from "./lang-switch";
+import { mychamberMeta, mychamberPath } from "./mychamber-sections";
 import NavDrawer from "./nav-drawer";
 import {
   modelsByProduct,
@@ -51,7 +52,7 @@ import { asset, localeRoute, type Lang } from "./site-config";
 export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
   const home = localeRoute(lang);
 
-  const company = companyNavSections.map(
+  const company = companySections.map(
     (s) => ({ label: sectionMeta[lang][s].label, href: localeRoute(lang, sectionPath(s)) }),
   );
 
@@ -94,6 +95,10 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
 
   const chamberUtils: NavLink[] = [
     { label: cn.allModels(chamberModels.length), href: localeRoute(lang, chambersPath) },
+    // The reader who opened this panel to find out which of twenty-seven
+    // models is theirs is exactly the reader MyChamber is for, so the entry
+    // is here as well as in the bar.
+    { label: mychamberMeta[lang].label, href: localeRoute(lang, mychamberPath) },
     { label: topicMeta[lang].references.label, href: localeRoute(lang, topicPath("references")) },
     { label: t.navSubs.contact.catalog, href: localeRoute(lang, downloadsPath) },
   ];
@@ -162,7 +167,16 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
         { label: t.navSubs.contact.catalog, href: localeRoute(lang, downloadsPath) },
       ],
     },
-    { label: t.nav.career, href: localeRoute(lang, sectionPath("career")) },
+    // The one item in the bar that is marked. It is the only entry that does
+    // something rather than going somewhere — five questions and a reader who
+    // did not know which of thirty-two chambers to ask about has a model name
+    // and a quotation. Career held this slot and has gone back into the
+    // Company dropdown it belongs to.
+    {
+      label: mychamberMeta[lang].label,
+      href: localeRoute(lang, mychamberPath),
+      accent: true,
+    },
   ];
 
   return (
@@ -192,7 +206,7 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
 
             <nav className="menu" aria-label={t.a11y.primaryNav}>
               {sections.map((section) => (
-                <div className="mi" key={section.label}>
+                <div className={section.accent ? "mi mi--hl" : "mi"} key={section.label}>
                   <a href={section.href}>
                     {section.label}
                     {hasMenu(section) && <span className="caret" aria-hidden="true">▼</span>}
@@ -244,7 +258,9 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
         <div className="wrap">
           {sections.map((section) => (
             <div className="mm-group" key={section.label}>
-              <a className="mm-top" href={section.href}>{section.label}</a>
+              <a className={section.accent ? "mm-top mm-top--hl" : "mm-top"} href={section.href}>
+                {section.label}
+              </a>
               {/* Chambers alone carries fifteen links. Flat, they turn the
                   drawer into a scroll; <details> folds them by group with no
                   state of our own and no loss of keyboard access. */}
@@ -290,17 +306,26 @@ type NavLink = { label: string; href: string; note?: string };
 type NavGroup = { title: string; links: NavLink[] };
 
 /** A top-level entry. `items` renders the plain single-column panel; `groups`
- *  renders the wide multi-column one. A section uses one or the other. */
+ *  renders the wide multi-column one. A section uses one or the other.
+ *
+ *  `accent` marks the one entry the bar highlights. It is a flag rather than a
+ *  hard-coded label check so the styling stays in the stylesheet and the
+ *  decision of *which* entry stays in the list above — and so a second marked
+ *  entry would be a deliberate line of code rather than an accident of
+ *  matching on a string. */
 type NavSection = {
   label: string;
   href: string;
   items?: NavLink[];
   groups?: NavGroup[];
   utils?: NavLink[];
+  accent?: boolean;
 };
 
 export type HeaderCopy = {
-  nav: { company: string; chamber: string; equip: string; cyber: string; contact: string; career: string; cta: string };
+  /** MyChamber is not here: its label is the same word in both locales and
+   *  lives with its route, in mychamber-sections.ts. */
+  nav: { company: string; chamber: string; equip: string; cyber: string; contact: string; cta: string };
   /** Company's submenu comes from company-sections.ts and Chambers' from
    *  chamber-sections.ts, not from here. */
   navSubs: { contact: { quote: string; catalog: string } };

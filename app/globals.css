@@ -149,6 +149,19 @@ nav.menu .mi:has(.dd-panel--mega) { position: static; }
 .dd-utils a { padding: 7px 0; font-size: 13px; border-left: 0; }
 .dd-utils a:hover { border-left: 0; background: none; text-decoration: underline; }
 
+/* The one marked entry in the bar — MyChamber (see the note in site-header).
+   An outlined pill rather than red lettering, and the reason is contrast:
+   --primary on --ink measures 3.08:1, which a 15px regular nav label may not
+   use. So the colour goes onto the border, where 3:1 is the applicable floor
+   and 3.08 clears it, and the label stays white at 15.9:1. Hovering fills the
+   pill, which is white on red at 4.81:1 — the same pair as every other button
+   on this site. Outlined rather than filled so it does not read as a second
+   copy of the red CTA at the end of the bar. */
+nav.menu .mi--hl > a { border: 1px solid var(--primary); border-radius: var(--pill); padding: 6px 15px 7px; transition: background .2s, border-color .2s, color .2s; }
+/* The wipe-in underline would run underneath the pill. */
+nav.menu .mi--hl > a::after { display: none; }
+nav.menu .mi--hl > a:hover { background: var(--primary); border-color: var(--primary); color: #fff; }
+
 .lang { display: flex; gap: 2px; background: rgba(255, 255, 255, .08); border-radius: 6px; padding: 3px; }
 .lang a { color: #9db1c7; font-size: 12.5px; font-weight: 700; padding: 5px 10px; border-radius: 4px; transition: .15s; }
 .lang a.on { background: var(--red); color: #fff; }
@@ -181,6 +194,9 @@ nav.menu .mi:has(.dd-panel--mega) { position: static; }
 .mobile-menu[hidden] { display: none; }
 .mm-group { border-bottom: 1px solid rgba(255, 255, 255, .1); padding: 4px 0 10px; }
 .mm-top { display: block; color: #fff; font-size: 16px; font-weight: 700; padding: 14px 2px 8px; }
+/* The drawer's copy of the marked entry. Same pill for the same contrast
+   reason as `.mi--hl`, sized to the drawer's larger type. */
+.mm-top--hl { display: inline-block; border: 1px solid var(--primary); border-radius: var(--pill); padding: 10px 20px; margin: 10px 0 6px; }
 .mm-subs { display: flex; flex-wrap: wrap; gap: 6px 18px; padding-bottom: 6px; }
 .mm-subs a { color: #c9c9c9; font-size: 14px; padding: 6px 2px; }
 /* Grouped submenu, collapsed by default — see the note in site-header. Native
@@ -272,7 +288,16 @@ html[lang="ko"] .hero h1 { font-size: clamp(32px, 3.4vw, 52px); line-height: 1.1
 .btn-red:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
 .btn-ghost { border-color: #fff; color: #fff; }
 .btn-ghost:hover { background: #fff; color: var(--ink); }
+/* `.btn-ghost` is the outline for dark bands — its border is white, which
+   disappears on canvas. This is the same pill on a light surface. */
+.btn-outline { background: var(--canvas); border-color: var(--mute); color: var(--ink); }
+.btn-outline:hover { border-color: var(--primary); color: var(--primary); }
 .btn:hover { transform: translateY(-2px); }
+/* The pill was written for anchors; MyChamber puts it on real buttons, which
+   bring their own font and cursor. */
+button.btn { font-family: inherit; cursor: pointer; }
+button.btn:disabled { opacity: .45; cursor: not-allowed; }
+button.btn:disabled:hover { transform: none; background: var(--primary); border-color: var(--primary); }
 /* Trailing ↗ ↓ → glyphs lean out of the pill on hover. */
 .btn span { transition: transform .25s ease; }
 .btn:hover span { transform: translate(3px, -3px); }
@@ -308,7 +333,9 @@ html[lang="ko"] .hero h1 { font-size: clamp(32px, 3.4vw, 52px); line-height: 1.1
 .empty { border: 1px solid var(--mute); border-radius: var(--radius); background: var(--canvas); padding: 44px 32px; text-align: center; max-width: 680px; margin: 0 auto; }
 .empty h4 { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
 .empty p { color: var(--body-dark); font-size: 15px; line-height: 1.6; margin-bottom: 26px; }
-.hl-action { display: inline-block; margin-left: 14px; color: var(--primary); font-weight: 700; font-size: 13px; white-space: nowrap; }
+/* Also used as a real <button> by the MyChamber summary, so it carries the
+   reset a button needs; both declarations are inert on an anchor. */
+.hl-action { display: inline-block; margin-left: 14px; padding: 0; background: none; border: 0; font-family: inherit; color: var(--primary); font-weight: 700; font-size: 13px; white-space: nowrap; cursor: pointer; }
 .hl-action:hover { text-decoration: underline; }
 
 /* ===== Sections ===== */
@@ -364,6 +391,8 @@ section:where(:not(.cs *)) { padding: 120px 0; }
 .go:hover span { transform: translate(3px, -3px); }
 /* Closing link under a full-width card grid rather than inside a card. */
 .sec-go { margin-top: 36px; }
+/* MyChamber's "start again" is the same hairline link on a <button>. */
+button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); font-family: inherit; cursor: pointer; }
 
 /* Lineup cards */
 .alt { background: var(--bg2); }
@@ -536,12 +565,129 @@ section:where(:not(.cs *)) { padding: 120px 0; }
 .figure-wide { max-width: 1000px; margin-top: 44px; }
 .figure-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 
+/* Panorama — the head office's 360° panoramas, carried over without a viewer
+   library. On an equirectangular image the horizontal axis is yaw, linearly, so
+   scrolling the strip sideways *is* panning the room: keep going and the reader
+   arrives back where they started. The source is cropped to the middle half of
+   its height (±45° of elevation) because the poles of a full sphere flatten
+   into smears; what is left is an ordinary cylindrical panorama at 4:1.
+   Built on `.figure`, so the frame, the `.alt` fill and the caption are the
+   ones every other plate on this site uses. */
+.pano { max-width: 900px; }
+.pano-scroll { overflow-x: auto; overflow-y: hidden; }
+/* The image overruns its frame rather than fitting it, which is what leaves
+   something to scroll — so `.figure img`'s `width: 100%` has to go. Fixing the
+   height lets the width follow the ratio: 460px tall is ~1840px wide against a
+   900px frame, so half the room is off-screen at any moment. */
+.pano-scroll img { width: auto; max-width: none; height: 460px; }
+/* The scroller carries the focus ring, not the figure: a reader on the keyboard
+   has to land on the element the arrow keys scroll. Inset, because the frame's
+   own hairline is one pixel outside it. */
+.pano-scroll:focus-visible { outline: 2px solid var(--primary); outline-offset: -3px; }
+
 /* Statement — a single line the head office site gives a section of its own.
    Left-aligned over a short primary rule: the reference never centres a
    heading, and the left edge is the spine every band hangs from. */
 .statement { max-width: 900px; }
 .statement::before { content: ""; display: block; width: 64px; height: 3px; background: var(--primary); margin-bottom: 34px; }
 .statement p { font-size: clamp(26px, 2.8vw, 38px); font-weight: 300; line-height: 1.28; letter-spacing: 0; }
+
+/* ===== MyChamber =====
+   The questionnaire, its result cards and the enquiry form. Built from the
+   vocabulary already on this page — the card hairline and 4px lift of `.lc`,
+   the primary rule of `.callout`, the check rows of `.check-list` — so a
+   sequence of questions still reads as the same site as the pages it leads to.
+   Nothing here introduces a shadow, a gradient or a second radius. */
+
+/* Progress. A count in the kicker's voice and a 2px rule that fills — the
+   number of steps changes with the answers, so the bar has to be honest about
+   a total that moves. */
+.mc-progress { display: flex; align-items: center; gap: 18px; max-width: 900px; margin-bottom: 40px; }
+.mc-count { flex: none; color: var(--primary); font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.mc-track { flex: 1; height: 2px; background: var(--line); }
+.mc-fill { display: block; height: 100%; background: var(--primary); transition: width .3s ease; }
+
+.mc-head { margin-bottom: 32px; }
+/* The heading takes focus when the step changes, so it needs a ring of its
+   own — the shared rule below covers only the interactive elements. */
+h2[tabindex]:focus-visible { outline: 2px solid var(--primary); outline-offset: 8px; border-radius: 2px; }
+
+.mc-mode { color: var(--mute); font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 14px; }
+.mc-opt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 900px; }
+.mc-opt { position: relative; display: flex; align-items: flex-start; gap: 14px; padding: 18px 20px; background: var(--canvas-soft); border: 1px solid var(--mute); border-radius: var(--radius); cursor: pointer; transition: border-color .25s ease, background .25s ease, transform .3s cubic-bezier(.22, .61, .36, 1); }
+.mc-opt:hover { border-color: var(--primary); background: var(--canvas); transform: translateY(-2px); }
+/* Selected state carries the 3px primary rule `.callout` uses. Drawn as an
+   element rather than an inset shadow — this site has no shadow in it, and
+   colour is not the only signal here anyway: the box beside it is ticked. */
+.mc-opt.on { border-color: var(--primary); background: var(--canvas); }
+.mc-opt.on::before { content: ""; position: absolute; top: -1px; bottom: -1px; left: -1px; width: 3px; background: var(--primary); border-radius: var(--radius) 0 0 var(--radius); }
+.mc-opt:focus-within { outline: 2px solid var(--primary); outline-offset: 3px; }
+.mc-opt input { flex: none; width: 17px; height: 17px; margin-top: 3px; accent-color: var(--primary); }
+.mc-opt-body b { display: block; font-size: 16px; font-weight: 700; line-height: 1.4; }
+.mc-opt-body span { display: block; margin-top: 5px; color: var(--body-dark); font-size: 13.5px; line-height: 1.5; }
+
+.mc-actions { align-items: center; margin-top: 34px; }
+.mc-need { color: var(--body-dark); font-size: 14px; }
+
+/* Result cards. Picture left, everything else right — the picture is a
+   category photograph and is captioned as one, so it sits in its own ink
+   panel rather than bleeding into the card the way `.lc-shot` does. */
+.mc-results { display: grid; gap: 20px; }
+.mc-card { display: grid; grid-template-columns: 300px 1fr; background: var(--canvas-soft); border: 1px solid var(--mute); border-radius: var(--radius); overflow: hidden; }
+.mc-card--top { background: var(--canvas); border-color: var(--primary); }
+/* `align-self: start` so the ink panel is the height of the picture and its
+   caption, not of the whole card — the copy beside it runs to 700px, and a
+   440px block of unbroken ink under a 200px photograph would be the darkest
+   thing on the page for no reason. */
+.mc-shot { margin: 0; align-self: start; display: flex; flex-direction: column; background: var(--ink); }
+/* 3:2, the ratio every other photograph on this site is framed at
+   (`.lc-shot`), rather than stretched to the height of whatever the card body
+   happens to be — a 900×578 photograph pulled to 300×560 would show a third of
+   its width and none of the room. The ink runs on below it, which is the same
+   dark panel the landing's solution cards carry. */
+/* `height: auto` is load-bearing: the <img> carries the source's own height
+   attribute, which is a presentational hint that would otherwise win over
+   aspect-ratio and leave the picture at its intrinsic height. */
+.mc-shot img { flex: none; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; display: block; }
+.mc-shot figcaption { padding: 11px 14px 13px; color: rgba(255, 255, 255, .55); font-size: 11.5px; line-height: 1.45; }
+.mc-card-body { padding: 26px 30px 26px; }
+.mc-rank { display: inline-block; padding: 4px 13px; border: 1px solid var(--line); border-radius: var(--pill); color: var(--body-text); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.mc-card--top .mc-rank { background: var(--primary); border-color: var(--primary); color: #fff; }
+/* Model designations are Latin in both locales, so this keeps the display
+   voice rather than the Korean heading exception. */
+.mc-card h3 { font-size: 26px; font-weight: 700; line-height: 1.2; margin: 16px 0 8px; }
+.mc-desc { max-width: 640px; color: var(--body-dark); font-size: 15px; line-height: 1.6; }
+.mc-spec { margin-top: 22px; border-top: 1px solid var(--line); }
+.mc-spec > div { display: grid; grid-template-columns: 140px 1fr; gap: 14px; padding: 11px 2px; border-bottom: 1px solid var(--line); }
+.mc-spec dt { color: var(--body-text); font-size: 13px; font-weight: 700; }
+.mc-spec dd { font-size: 14px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+.mc-why { margin-top: 24px; }
+.mc-why h4 { color: var(--primary); font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
+/* The check rows are `.check-list`, minus the ink rule over the top and the
+   hover shift — inside a card there is nothing to shift toward. */
+.mc-why .check-list { border-top: 0; }
+.mc-why .check-list li { padding: 9px 2px; font-size: 14.5px; }
+.mc-why .check-list li:hover { padding-left: 2px; background: none; color: var(--body-dark); }
+.mc-caveat { margin-top: 22px; padding: 16px 20px; border-left: 3px solid var(--primary); background: var(--canvas-soft); border-radius: var(--radius); color: var(--body-dark); font-size: 14px; line-height: 1.6; }
+.mc-card--top .mc-caveat { background: var(--canvas-soft); }
+.mc-caveat b { display: block; margin-bottom: 6px; color: var(--ink); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.mc-card-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; margin-top: 26px; padding-top: 20px; border-top: 1px solid var(--line); }
+.mc-choose { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; cursor: pointer; }
+.mc-choose input { width: 17px; height: 17px; accent-color: var(--primary); }
+.mc-choose.on { color: var(--primary); }
+
+/* Enquiry form. The site had no input styling at all until this page — these
+   are the card's own hairline and radius on a field. */
+.mc-form { max-width: 900px; }
+.mc-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.mc-field { display: flex; flex-direction: column; gap: 8px; }
+.mc-field--wide { margin-top: 20px; }
+.mc-field label { font-size: 13px; font-weight: 700; }
+.mc-field label em { margin-left: 8px; color: var(--primary); font-style: normal; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.mc-field input, .mc-field textarea { width: 100%; padding: 12px 14px; font: inherit; font-size: 15px; color: var(--ink); background: var(--canvas); border: 1px solid var(--mute); border-radius: var(--radius); transition: border-color .2s; }
+.mc-field input:hover, .mc-field textarea:hover { border-color: var(--body-text); }
+.mc-field textarea { resize: vertical; line-height: 1.6; }
+.mc-note { margin-top: 16px; color: var(--body-dark); font-size: 14px; }
 
 /* Contact band — the page's one red full-bleed surface, once per page.
    Left-aligned on the same container as every other band; the reference's
@@ -631,6 +777,15 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
      readable; below 1100 that is no longer there. */
   .value-grid { grid-template-columns: 1fr 1fr; }
   .badges-four { grid-template-columns: 1fr 1fr; }
+  /* The frame is narrower here, so the strip can be shorter and still leave the
+     same proportion of the room off-screen to scroll to. */
+  .pano-scroll img { height: 400px; }
+  /* The result card's picture column stops earning its 300px once the copy
+     beside it has to wrap mid-figure, so it goes back on top. */
+  .mc-card { grid-template-columns: 1fr; }
+  /* Full width now, so the 3:2 frame would be 700px of photograph over the
+     copy. Cropped to a band instead, the way the page head is. */
+  .mc-shot img { aspect-ratio: auto; height: 240px; }
 }
 
 /* 700: single column, and the generous 120px band rhythm drops to 85px — the
@@ -654,12 +809,26 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
   .check-cols { grid-template-columns: 1fr; gap: 50px; }
   .sub-head, .check-col h3 { font-size: 22px; }
   .value-grid, .figure-row { grid-template-columns: 1fr; }
+  /* 280px against an 18px-gutter frame still shows a third of the turn at once,
+     which is enough to read the room while dragging through it. */
+  .pano-scroll img { height: 280px; }
   /* The index column is dead weight once the row is this narrow: the year or
      number moves onto its own line above the heading. */
   .entry { grid-template-columns: 1fr; gap: 4px; }
   .entry p, .entry .entry-links { grid-column: 1; }
   .foot { grid-template-columns: 1fr; }
   .callout { padding: 34px 30px; }
+  .mc-opt-grid, .mc-fields { grid-template-columns: 1fr; }
+  .mc-card-body { padding: 22px 20px 24px; }
+  .mc-card h3 { font-size: 22px; }
+  /* A 140px label column leaves nothing for a size like "19,205 × 12,080 ×
+     8,325 mm", so the figure moves under its label. */
+  .mc-spec > div { grid-template-columns: 1fr; gap: 4px; }
+  .mc-progress { flex-wrap: wrap; gap: 10px; }
+  .mc-track { flex-basis: 100%; }
+  /* `.btns` is already column here, so the buttons stretch; the hint under
+     them should not. */
+  .mc-need { text-align: center; }
   .hero-stats { flex-wrap: wrap; }
   .hero-stats .st { flex: 1 1 100%; padding: 18px 0; border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, .2); }
   .hero-stats .st:last-child { border-bottom: 0; }
