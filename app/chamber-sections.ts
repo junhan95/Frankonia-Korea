@@ -344,7 +344,7 @@ export const topicMeta = {
     references: {
       label: "구축 사례",
       description:
-        "전 세계 120여 개 고객사의 Frankonia 챔버 구축 사례와 챔버 내부 360° 파노라마.",
+        "본사가 공개한 구축 사례 목록 그대로 — 28개국 106건, 그리고 설치 현장 3곳의 360° 파노라마.",
     },
   },
   en: {
@@ -371,7 +371,7 @@ export const topicMeta = {
     references: {
       label: "References",
       description:
-        "Frankonia chamber installations at more than 120 customers worldwide, with 360° panoramas from inside the chambers.",
+        "The head office's own reference list, as published — 106 entries across 28 countries, with 360° panoramas from three installations.",
     },
   },
 } as const satisfies Record<Lang, Record<ChamberTopic, Entry>>;
@@ -438,6 +438,146 @@ export const topicPath = (t: ChamberTopic) => `/chambers/${t}`;
 export const downloadsPath = "/downloads";
 
 /**
+ * The three installations the head office publishes a 360° panorama of, in its
+ * own order (docs/source/chambers-references.md).
+ *
+ * Each is headed `MODEL – PLACE` there, and neither half is translated in
+ * either locale: the designation has to match the catalogue, and the place is a
+ * place. They are kept as two fields rather than one string so the heading can
+ * set the model in bold and let the place stay light, the way `.sub-head`
+ * splits every other group heading on this site.
+ *
+ * The head office says nothing about whose lab each one is, so neither do we —
+ * Heideck is the head office's own address, which makes "customer installation"
+ * a claim its own page does not make.
+ *
+ * Every panorama is cropped the same way, so the dimensions are one constant
+ * rather than three copies of the same pair.
+ */
+export const chamberPanoramas = [
+  { key: "fac-3", model: "FAC-3", place: "Marktheidenfeld", src: "/chambers/images/pano-fac-3.webp" },
+  { key: "sac-5-plus", model: "SAC-5 Plus", place: "Heideck", src: "/chambers/images/pano-sac-5-plus.webp" },
+  { key: "sac-10-hybrid", model: "SAC-10 Hybrid", place: "Kösching", src: "/chambers/images/pano-sac-10-hybrid.webp" },
+] as const;
+
+export type PanoramaKey = (typeof chamberPanoramas)[number]["key"];
+
+/** The middle half of a 2:1 equirectangular source — ±45° of elevation, which
+ *  is the band a cylindrical projection keeps readable. See `.pano`. */
+export const panoramaSize = { w: 2000, h: 500 } as const;
+
+/**
+ * The head office's reference list, grouped by country.
+ *
+ * The source lists all 106 entries flat across two columns, roughly
+ * alphabetical for the first forty and then in the order they were added. This
+ * groups them instead, which is the one thing the flat list cannot show: how
+ * far the range has travelled. Countries run by number of entries, then
+ * alphabetically; `international` is last because it is not a country — it is
+ * the word the head office itself put where a country goes.
+ *
+ * **Customer names are the head office's own spelling and are never
+ * translated or corrected** — `Fuijan-Daimler`, `Harmann-Becker`, `RI.SE`,
+ * `Uni Brüssel` included. They work like a citation: a reader has to be able
+ * to match them against what the head office publishes. Near-duplicates
+ * (`Daimler AG` and `Daimler`, `Linetest` and `IMC Linetest`) are left as two
+ * entries for the same reason — only the head office knows whether they are
+ * one organisation or two sites.
+ *
+ * Three country tokens were normalised so the grouping does not split on a
+ * spelling: `Singapur` → Singapore (the list already carries `Singapore`),
+ * `Brasil` → Brazil, and `Dortmund` → Germany (a city, not a country). All
+ * three are recorded in docs/source/chambers-references.md.
+ */
+export const referenceGroups = [
+  { country: "germany", customers: [
+    "Adam Opel AG", "AKKA EMC", "Audi AG", "BDS Technik", "BMW AG", "Bosch", "Continental",
+    "Daimler AG", "EMC Test NRW", "EMITEL", "Eurofins", "Harmann-Becker", "Heidelberger Druck",
+    "IABG", "Siemens", "TÜV Süd", "MBtech EMC", "MECTRONIC", "Messtechnik Nord", "Miele",
+    "PKM electronic GmbH", "Rheinmetall Kassel", "VDE Offenbach", "Uni Magdeburg",
+    "ZDP-Duisburg", "Viessmann", "Daimler", "DEKRA",
+  ] },
+  { country: "india", customers: [
+    "ARAI", "BEL", "Bosch", "CPRI", "EQDC", "HiPhysics", "Azista", "Eaton", "RCI", "Rishabh",
+    "TÜV Rheinland India", "WIPRO",
+  ] },
+  { country: "china", customers: [
+    "CATARC", "EETI", "Fuijan-Daimler", "HID Corp Ltd", "JAC Motors", "NMEI", "NRIST", "SDQI",
+    "SQI", "Wuhan Long An 6907",
+  ] },
+  { country: "france", customers: [
+    "Alcatel Lucent", "ATERMES", "EDF", "Airbus/Ariane Group", "Nokia Alcatel Lucent", "RSI",
+    "SAGEM", "Thales",
+  ] },
+  { country: "usa", customers: [
+    "Electrolux", "AT4 Wireless (DEKRA)", "Ubiquiti Networks", "Garmin", "TÜV Rheinland",
+    "A123", "Gentherm",
+  ] },
+  { country: "israel", customers: ["Elbit", "Standard Institute", "Mellanox", "RADA"] },
+  { country: "thailand", customers: ["Daikin", "NSTDA", "Suranaree", "TMUC"] },
+  { country: "turkey", customers: ["Arcelik", "Aselsan", "BTK", "ETU"] },
+  { country: "australia", customers: ["AUSTEST Labs", "ELSA", "Rheinmetall"] },
+  { country: "russia", customers: ["IMC Linetest", "Linetest", "Willtest"] },
+  { country: "italy", customers: ["CAME", "CMC"] },
+  { country: "japan", customers: ["Atom Medical", "Stanley"] },
+  { country: "malaysia", customers: ["Keysight", "TÜV Rheinland"] },
+  { country: "singapore", customers: ["Ametek", "Speedy"] },
+  { country: "argentina", customers: ["LENOR"] },
+  { country: "austria", customers: ["TÜV Austria"] },
+  { country: "belarus", customers: ["TKC"] },
+  { country: "belgium", customers: ["Uni Brüssel"] },
+  { country: "brazil", customers: ["IBEC"] },
+  { country: "indonesia", customers: ["PT Qualis"] },
+  { country: "morocco", customers: ["CETIEV"] },
+  { country: "netherlands", customers: ["Prodrives"] },
+  { country: "poland", customers: ["PCB"] },
+  { country: "saudi-arabia", customers: ["NCMS"] },
+  { country: "spain", customers: ["AT4 Wireless (DEKRA)"] },
+  { country: "sweden", customers: ["RI.SE"] },
+  { country: "switzerland", customers: ["Quinel"] },
+  { country: "ukraine", customers: ["SELTEQ"] },
+  { country: "international", customers: ["Continental (International)"] },
+] as const;
+
+export type ReferenceCountry = (typeof referenceGroups)[number]["country"];
+
+/** Country names are the one part of an entry that is translated — the name
+ *  beside them is not. `satisfies` makes a missing label a type error rather
+ *  than a blank heading. */
+export const referenceCountryLabel = {
+  ko: {
+    germany: "독일", india: "인도", china: "중국", france: "프랑스", usa: "미국",
+    israel: "이스라엘", thailand: "태국", turkey: "튀르키예", australia: "호주",
+    russia: "러시아", italy: "이탈리아", japan: "일본", malaysia: "말레이시아",
+    singapore: "싱가포르", argentina: "아르헨티나", austria: "오스트리아",
+    belarus: "벨라루스", belgium: "벨기에", brazil: "브라질", indonesia: "인도네시아",
+    morocco: "모로코", netherlands: "네덜란드", poland: "폴란드",
+    "saudi-arabia": "사우디아라비아", spain: "스페인", sweden: "스웨덴",
+    switzerland: "스위스", ukraine: "우크라이나", international: "국제",
+  },
+  en: {
+    germany: "Germany", india: "India", china: "China", france: "France", usa: "USA",
+    israel: "Israel", thailand: "Thailand", turkey: "Turkey", australia: "Australia",
+    russia: "Russia", italy: "Italy", japan: "Japan", malaysia: "Malaysia",
+    singapore: "Singapore", argentina: "Argentina", austria: "Austria",
+    belarus: "Belarus", belgium: "Belgium", brazil: "Brazil", indonesia: "Indonesia",
+    morocco: "Morocco", netherlands: "Netherlands", poland: "Poland",
+    "saudi-arabia": "Saudi Arabia", spain: "Spain", sweden: "Sweden",
+    switzerland: "Switzerland", ukraine: "Ukraine", international: "International",
+  },
+} as const satisfies Record<Lang, Record<ReferenceCountry, string>>;
+
+/** Entries, and countries excluding `international`. Counted rather than
+ *  written down, so the figures on the page cannot drift from the list above.
+ *  The one place they are still written by hand is
+ *  `topicMeta.references.description`, which metadata reads as a static
+ *  string. */
+export const referenceTotals = {
+  entries: referenceGroups.reduce((n, g) => n + g.customers.length, 0),
+  countries: referenceGroups.filter((g) => g.country !== "international").length,
+};
+
+/**
  * Page copy for the technology topics, carried over from the 2026 catalogue.
  *
  * These four pages have no model list, so the prose is the page. A topic with
@@ -451,11 +591,30 @@ export const downloadsPath = "/downloads";
  */
 export type TopicBody = {
   lead: readonly string[];
+  /** May be empty: References is built from the two blocks below instead, and
+   *  an empty list renders no band rather than an empty one. */
   groups: readonly { title: string; items: readonly string[] }[];
   close?: string;
   /** Decorative band under the lead. The heading above it already says what
-   *  the page is about, so it carries no alt text of its own. */
+   *  the page is about, so it carries no alt text of its own — which is also
+   *  how the head office marks up its own header images (`alt=""`). */
   figure?: { src: string; w: number; h: number };
+  /**
+   * References only. `shots` is keyed rather than ordered so a caption cannot
+   * drift onto the wrong panorama; the label and the file live in
+   * `chamberPanoramas`, because neither is translated.
+   *
+   * `hint` is interface copy, not head office copy: the strip is scrolled to
+   * pan it, and a reader has to be told that before they will try.
+   */
+  panoramas?: {
+    title: string;
+    hint: string;
+    shots: Record<PanoramaKey, { alt: string; caption: string }>;
+  };
+  /** References only. The entries themselves are in `referenceGroups` — this
+   *  is the heading over them and the note that says what the list is. */
+  references?: { title: string; note: string };
 };
 
 export const topicBody: Record<Lang, Partial<Record<ChamberTopic, TopicBody>>> = {
@@ -602,6 +761,36 @@ export const topicBody: Record<Lang, Partial<Record<ChamberTopic, TopicBody>>> =
       ],
       close: "With more than 35 years of experience, the goal is to turn individual requirements into reliable, state-of-the-art solutions — because only a complete solution creates long-term satisfaction.",
     },
+    references: {
+      lead: [
+        "Frankonia is recognized as a highly specialized technology corporation for EMC anechoic chambers and test system within the automotive and industrial sector for testing of electromagnetic compatibility.",
+        "Our EMC anechoic chambers and test systems are proven and tested in the development departments of well-known manufacturers, in the areas of research by universities and colleges, as well as in labs of leading EMC service providers. Our customers benefit from our extensive experience and our multi-layered knowledge.",
+      ],
+      figure: { src: "/chambers/images/reference-3.webp", w: 1280, h: 533 },
+      groups: [],
+      panoramas: {
+        title: "360° Panoramas",
+        hint: "Each strip is one full turn of the room, flattened out. Drag it sideways — or use the arrow keys — to look around.",
+        shots: {
+          "fac-3": {
+            alt: "Fully anechoic chamber lined with long pyramid absorbers on the walls, the ceiling and the floor. A grey single-leaf shielded door stands under an illuminated emergency exit sign, with a feed-through panel in the wall beside it, and a small antenna sits on a yellow and white mast at the right.",
+            caption: "The absorbers carry on across the floor, which is what makes the chamber fully anechoic — the FAC-3 measures under free-space conditions, as a test site without a ground plane.",
+          },
+          "sac-5-plus": {
+            alt: "Semi-anechoic chamber. Pyramid absorbers cover a dome-shaped ceiling and the walls; the floor is a hard reflecting surface with a flush turntable, marked out in red lines and yellow and black tape.",
+            caption: "Absorbers above, a reflecting ground plane below — under the dome-shaped roof the catalogue gives as the SAC-5 Plus's own concept.",
+          },
+          "sac-10-hybrid": {
+            alt: "Large vehicle chamber. A white two-seat sports car stands on the turntable circle with a corrugated duct running from its tailpipe to a box in the floor. Short pyramid absorbers on the ceiling, long pyramid absorbers on the right-hand wall, dark panelling above them, and an antenna mast behind the car.",
+            caption: "The duct at the tailpipe takes the exhaust out through the floor, so the car can run inside a room that stays shielded.",
+          },
+        },
+      },
+      references: {
+        title: "Some of our references",
+        note: "Reproduced entire from the head office's own list, read on 10 August 2026. Names are kept in the head office's spelling, and entries it publishes twice are left as two.",
+      },
+    },
   },
   ko: {
     frankosorb: {
@@ -745,6 +934,36 @@ export const topicBody: Record<Lang, Partial<Record<ChamberTopic, TopicBody>>> =
         ] },
       ],
       close: "35년 이상의 경험으로, 개별 요구사항을 신뢰할 수 있는 최신 솔루션으로 옮기는 것이 목표입니다 — 완결된 솔루션만이 장기적인 만족을 만들기 때문입니다.",
+    },
+    references: {
+      lead: [
+        "Frankonia는 전자기 적합성 시험을 위한 EMC 무향실과 시험 시스템 분야에서, 자동차와 산업 부문의 고도로 전문화된 기술 기업으로 인정받고 있습니다.",
+        "Frankonia의 EMC 무향실과 시험 시스템은 이름이 알려진 제조사의 개발 부서에서, 대학과 고등교육기관의 연구 현장에서, 그리고 주요 EMC 시험 서비스 기업의 시험실에서 검증되어 왔습니다. 고객은 그렇게 쌓인 폭넓은 경험과 여러 층으로 축적된 지식을 그대로 활용합니다.",
+      ],
+      figure: { src: "/chambers/images/reference-3.webp", w: 1280, h: 533 },
+      groups: [],
+      panoramas: {
+        title: "360° 파노라마",
+        hint: "각 띠는 챔버를 한 바퀴 돌아 펼친 것입니다. 좌우로 끌거나 화살표 키로 둘러보실 수 있습니다.",
+        shots: {
+          "fac-3": {
+            alt: "완전 무향실 내부. 벽과 천장, 그리고 바닥까지 장피라미드 흡수체로 덮여 있다. 좌측에는 비상구 표시등 아래 회색 단문형 차폐문과 그 옆 벽면의 관통 패널이 있고, 우측에는 노랑·흰색 마스트에 얹힌 소형 안테나가 있다.",
+            caption: "흡수체가 바닥까지 이어지는 것이 완전 무향실의 조건입니다 — FAC-3은 접지면이 없는 시험장으로서 자유공간 조건에서 측정합니다.",
+          },
+          "sac-5-plus": {
+            alt: "반무향실 내부. 돔형 천장과 벽면은 피라미드 흡수체로 덮여 있고, 바닥은 반사면이다. 매립형 턴테이블이 있고 붉은 선과 노랑·검정 표시로 시험 구역이 구획되어 있다.",
+            caption: "위는 흡수체, 아래는 반사 접지면 — 그리고 카탈로그가 SAC-5 Plus의 고유 개념으로 꼽는 돔형 천장입니다.",
+          },
+          "sac-10-hybrid": {
+            alt: "대형 차량 챔버 내부. 턴테이블 원 위에 흰색 2인승 스포츠카가 서 있고 배기구에서 나온 주름 덕트가 바닥의 배기함으로 이어진다. 천장은 단피라미드, 우측 벽은 장피라미드 흡수체이며 그 위쪽 벽면은 어두운 패널이다. 차 뒤에 안테나 마스트가 있다.",
+            caption: "배기구에 연결된 덕트가 배기를 바닥으로 빼냅니다. 차폐를 유지한 채 차량을 구동시키기 위한 구조입니다.",
+          },
+        },
+      },
+      references: {
+        title: "주요 구축 사례",
+        note: "본사가 공개한 목록을 2026년 8월 10일 기준으로 그대로 옮겼습니다. 고객사 표기는 본사 표기를 그대로 쓰고 국가명만 번역했으며, 본사가 두 번 올린 항목은 두 건으로 두었습니다.",
+      },
     },
   },
 };

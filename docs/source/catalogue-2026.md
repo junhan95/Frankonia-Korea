@@ -180,14 +180,15 @@ Commercial로 갔다. `chamberIndustries`를 공유 목록에서 분리해 4종�
 | Shielding & Gates | 62–63 | ✅ 339단어 · 6그룹 26항목 |
 | Automation | 64–65 | ✅ 204단어 · 2그룹 11항목 |
 | Extended Services | 6–7 | ✅ 249단어 · 3그룹 14항목 |
-| References | — | **카탈로그에 대응 스프레드 없음** — 본사 웹 References 페이지에서 가져와야 한다 (이미지 3장은 이미 확보) |
+| References | — | ✅ 카탈로그에 대응 스프레드가 없어 본사 웹 페이지에서 수집 — [chambers-references.md](chambers-references.md) |
 
 Shielding과 Automation은 확보해 둔 이미지를, Extended Services는 카탈로그 인쇄 p.7의
 굴착기 사진을 새로 추출해 본문 밴드로 썼다. 카탈로그의 오타 하나는 교정했다 —
 Automation 스프레드의 "compliant wiht CISPR 16-1-4".
 
-**기술 토픽 5개 중 4개 완료.** 남은 References는 카탈로그에 스프레드가 없어 본사 웹에서
-가져와야 하고, 그 페이지 이미지 3장 중 2장은 아직 열어 보지 않았다(위 §1 표 참조).
+**기술 토픽 5개 전부 완료.** References는 카탈로그에 스프레드가 없어 본사 웹 References
+페이지가 유일한 원본이었다 — 도입 문단·360° 파노라마·고객사 목록 106건을 그쪽에서
+가져왔고, 미확인이던 이미지 2장도 함께 확인했다([chambers-references.md](chambers-references.md)).
 
 흡수체 명칭(P600, H1300 Turbine), 규격 번호와 그 옆의 수치는 번역하지 않는다 — 도면과
 견적서에 맞춰 볼 값이다.
