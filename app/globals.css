@@ -244,7 +244,14 @@ nav.menu .mi:has(.dd-panel--mega) { position: static; }
 .hero-in { position: relative; padding-block: 110px 120px; }
 /* The reference's `.eyebrow`: 15px ExtraBold uppercase in primary, 22px clear
    of the headline. Every red label above a heading on this site is this. */
-.hero .tag { display: inline-block; color: var(--primary); font-size: 15px; line-height: 1.5; font-weight: 800; letter-spacing: .01em; text-transform: uppercase; margin-bottom: 22px; }
+/* 19px, not the reference's 15px. --primary on --ink measures 3.08:1, which
+   clears WCAG's 3:1 floor for large text and misses the 4.5:1 that 15px bold
+   needs — a red eyebrow on the ink band was the one piece of type on the site
+   that failed AA. The colour pair has no headroom to fix (99% opacity behind
+   it only returns 3.00), so the type crosses the 18.66px bold threshold that
+   makes 3:1 the applicable floor instead. Brand red is kept; the same eyebrow
+   on light surfaces is 4.81:1 and stays at 15px via .kicker. */
+.hero .tag { display: inline-block; color: var(--primary); font-size: 19px; line-height: 1.5; font-weight: 800; letter-spacing: .01em; text-transform: uppercase; margin-bottom: 22px; }
 /* `.cs h1` — the one place on a page that shouts. */
 .hero h1 { max-width: 900px; font-size: clamp(38px, 4.3vw, 66px); line-height: 1.04; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 26px; word-break: keep-all; }
 /* 한글은 66px/-1px에서 자형이 무너진다 — 스케일과 자간만 완화하고 굵기·대문자 규칙은 그대로 둔다. */
@@ -285,7 +292,7 @@ html[lang="ko"] .hero h1 { font-size: clamp(32px, 3.4vw, 52px); line-height: 1.1
    where the landing's is ExtraBold uppercase, so a sub-page is recognisably
    the same site without competing with the home page (design ref §4.2-1). */
 .page-head { background: var(--ink); color: #fff; padding: 96px 0 76px; }
-.page-head .tag { display: inline-block; color: var(--primary); font-size: 15px; line-height: 1.5; font-weight: 800; letter-spacing: .01em; text-transform: uppercase; margin-bottom: 22px; }
+.page-head .tag { display: inline-block; color: var(--primary); font-size: 19px; line-height: 1.5; font-weight: 800; letter-spacing: .01em; text-transform: uppercase; margin-bottom: 22px; }
 /* Same display voice as a section heading — the reference's own long-form head
    (`.cs .legal-body h1`) uses exactly this rather than the hero's ExtraBold. */
 .page-head h1 { font-size: clamp(34px, 3.6vw, 48px); font-weight: 300; line-height: 1.1; letter-spacing: 0; margin-bottom: 26px; max-width: 900px; }

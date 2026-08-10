@@ -225,7 +225,7 @@ const chamberCards = [
   { name: "Automotive", models: "ACTC · UCC · AVTC · SAC-10V", path: industryPath("automotive"),
     shot: { src: "/chambers/images/industry-automotive.webp", w: 900, h: 578, kind: "photo" } },
   { name: "Military", models: "MIL-STD Chamber · Advanced · MIL CHC", path: industryPath("military"),
-    shot: { src: "/chambers/images/industry-military.webp", w: 744, h: 590, kind: "photo" } },
+    shot: { src: "/chambers/images/industry-military.webp", w: 744, h: 591, kind: "photo" } },
   { name: "Commercial", models: "SAC 시리즈 · FAC 시리즈 · CHC · Shielded Room", path: industryPath("commercial"),
     shot: { src: "/chambers/images/industry-commercial.webp", w: 900, h: 636, kind: "photo" } },
   { name: "Powertrain", models: "EDTC-SA · EDTC-AX · EDTC-BB", path: industryPath("powertrain"),
