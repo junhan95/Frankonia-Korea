@@ -6,6 +6,7 @@ import {
   testSystemsPath,
 } from "./test-system-sections";
 import {
+  asset,
   contactEmail,
   contactPhoneHref,
   localeRoute,
@@ -206,13 +207,28 @@ const copy = {
    axes, so each card can reach its own list without flattening the two into
    one. The cards already lifted and turned their heading red on hover; they
    were simply not links, which is a promise a page should not make twice. */
+/* `shot` is the card's picture, collected from the head office and recorded in
+   docs/source/chambers-assets.md. `kind` is not decoration: the cutaway
+   renders are drawings floating on white with their own margins, so they are
+   fitted whole against white, while the photographs fill the frame. Cropping a
+   render to 3:2 would cut the roof off the chamber.
+
+   Others has none. The head office serves the same file for CTC as for ACTC,
+   the reverberation chamber's photograph is already the RVC card's, and the
+   tent has no picture at all — so that card keeps the icon the whole row used
+   to carry. Better an even row with one plain tile than a made-up photograph. */
 const chamberCards = [
-  { name: "Automotive", models: "ACTC · UCC · AVTC · SAC-10V", path: industryPath("automotive") },
-  { name: "Military", models: "MIL-STD Chamber · Advanced · MIL CHC", path: industryPath("military") },
-  { name: "Commercial", models: "SAC 시리즈 · FAC 시리즈 · CHC · Shielded Room", path: industryPath("commercial") },
-  { name: "Powertrain", models: "EDTC-SA · EDTC-AX · EDTC-BB", path: industryPath("powertrain") },
-  { name: "RVC", models: "Reverberation Chamber", path: typePath("rvc") },
-  { name: "Others", models: "CTC · Reverberation Tent", path: industryPath("others") },
+  { name: "Automotive", models: "ACTC · UCC · AVTC · SAC-10V", path: industryPath("automotive"),
+    shot: { src: "/chambers/images/industry-automotive-avtc.webp", w: 900, h: 900, kind: "render" } },
+  { name: "Military", models: "MIL-STD Chamber · Advanced · MIL CHC", path: industryPath("military"),
+    shot: { src: "/chambers/images/industry-military-mil-std.webp", w: 900, h: 630, kind: "render" } },
+  { name: "Commercial", models: "SAC 시리즈 · FAC 시리즈 · CHC · Shielded Room", path: industryPath("commercial"),
+    shot: { src: "/chambers/images/industry-commercial-sac-3.webp", w: 900, h: 675, kind: "render" } },
+  { name: "Powertrain", models: "EDTC-SA · EDTC-AX · EDTC-BB", path: industryPath("powertrain"),
+    shot: { src: "/chambers/images/industry-powertrain-edtc.webp", w: 900, h: 600, kind: "photo" } },
+  { name: "RVC", models: "Reverberation Chamber", path: typePath("rvc"),
+    shot: { src: "/chambers/images/type-rvc-reverberation.webp", w: 900, h: 600, kind: "photo" } },
+  { name: "Others", models: "CTC · Reverberation Tent", path: industryPath("others"), shot: null },
 ] as const;
 
 const chamberIcons = [
@@ -304,6 +320,22 @@ export default function Landing({ lang }: { lang: Lang }) {
 
       <main id="main">
       <div className="hero" id="top">
+        {/* The chamber behind the headline. Decorative — the h1 says what the
+            company does and this says what that looks like; naming it in alt
+            would only put a caption in front of the sentence it illustrates.
+            An <img> rather than a CSS background so it is in the HTML the
+            browser parses first: this is the largest thing on the page and
+            wants to start downloading before the stylesheet resolves. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className="hero-shot"
+          src={asset("/chambers/images/hero-anechoic-chamber.webp")}
+          alt=""
+          width={2000}
+          height={1333}
+          fetchPriority="high"
+          decoding="async"
+        />
         <div className="wrap hero-in">
           <span className="tag">{t.heroTag}</span>
           <h1>
@@ -388,7 +420,20 @@ export default function Landing({ lang }: { lang: Lang }) {
           <div className="line-grid three">
             {chamberCards.map((c, i) => (
               <a className="lc" key={c.name} href={localeRoute(lang, c.path)}>
-                <div className="ic">{chamberIcons[i]}</div>
+                {c.shot ? (
+                  <div className={`lc-shot lc-shot--${c.shot.kind}`}>
+                    {/* Decorative: the heading beside it already names the
+                        category, and a screen reader repeating "cutaway of an
+                        automotive chamber" under the word Automotive is noise.
+                        The pictures are described in the asset ledger. */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={asset(c.shot.src)} alt="" width={c.shot.w} height={c.shot.h} loading="lazy" decoding="async" />
+                  </div>
+                ) : (
+                  <div className="lc-shot lc-shot--icon">
+                    <span className="ic">{chamberIcons[i]}</span>
+                  </div>
+                )}
                 <h4>{c.name}</h4>
                 <p>{t.chambers[i]}</p>
                 <div className="models">{c.models}</div>

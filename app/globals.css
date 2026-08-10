@@ -196,6 +196,48 @@ nav.menu .mi:has(.dd-panel--mega) { position: static; }
 
 /* ===== Hero ===== */
 .hero { position: relative; background: var(--ink); color: #fff; overflow: hidden; }
+/* The photograph fills the band and the ink stays underneath it, so the hero
+   still reads as the same dark band it was if the image is slow or missing.
+   `object-position` sits above centre: the frame's interest is the absorber
+   ceiling and the far corner, and centring would put the bare floor behind the
+   headline. */
+.hero-shot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 38%; }
+/* The scrim, and the reason the first half of it is opaque rather than merely
+   dark.
+
+   The headline's emphasis word is `--primary` on `--ink`, which is a 3.08:1
+   pair — it clears WCAG's 3:1 floor for large text by 0.08 and has no headroom
+   at all. Put anything behind it and it fails: with a 95%-opacity scrim over
+   this photograph, whose ceiling lights sit exactly where the word lands, it
+   measured 2.37:1. Raising the scrim does not rescue it either — even at 99%
+   the red only returns to 3.00, because the shortfall is in the colour pair,
+   not the overlay.
+
+   So the copy column gets true ink, not a tint of it, and the photograph is
+   given the half of the band where nothing is written. The chamber is then a
+   photograph rather than a texture, and the headline is exactly as legible as
+   it was before there was an image at all. Measured over the real pixels:
+   red emphasis 3.08, white headline 15.9, 78% body copy 8.9. */
+.hero::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(100deg,
+    var(--ink) 0%,
+    var(--ink) 42%,
+    rgba(37, 40, 43, .82) 58%,
+    rgba(37, 40, 43, .5) 78%,
+    rgba(37, 40, 43, .34) 100%);
+}
+/* Below the fold-out width the copy uses the whole band, so the photograph
+   goes back to being a backdrop and the scrim closes over it. */
+@media (max-width: 1100px) {
+  .hero::after {
+    background: linear-gradient(100deg, var(--ink) 0%, var(--ink) 72%, rgba(37, 40, 43, .88) 100%);
+  }
+}
+/* Both bands sit above the image and the scrim. `.hero-in` already carries
+   position: relative for its own reasons; this only adds the order. */
+.hero-in, .hero-stats { z-index: 1; }
+.hero-stats { position: relative; }
 /* `.hero-in` is the container itself (`class="wrap hero-in"`), so the copy
    column is capped on the children — a max-width here would fight the
    container's own padding-inline and collapse the band on wide screens. */
@@ -334,7 +376,27 @@ section:where(:not(.cs *)) { padding: 120px 0; }
 .alt .lc:hover { background: var(--canvas-soft); }
 .lc h4 { transition: color .25s ease; }
 .lc:hover h4 { color: var(--primary); }
+/* The chamber cards' picture band. One ratio for all six regardless of what
+   the source image is — the renders are square-ish and the photographs 3:2, so
+   without this the row would step up and down. Negative margins pull it out to
+   the card edge against the 26px padding; only the top corners round, because
+   the bottom of the band is an interior edge. */
+.lc-shot { position: relative; aspect-ratio: 3 / 2; margin: -26px -26px 18px; border-radius: var(--radius) var(--radius) 0 0; overflow: hidden; }
+.lc-shot img { display: block; width: 100%; height: 100%; }
+/* Photographs fill the frame. Renders are drawings on white with their own
+   margins, so they are fitted whole against that same white — cropping one to
+   3:2 would take the roof off the chamber. */
+.lc-shot--photo img { object-fit: cover; }
+.lc-shot--render { background: #fff; }
+.lc-shot--render img { object-fit: contain; }
+/* Others has no picture at the head office (see the asset ledger). Rather than
+   leave a hole in the row, that card keeps the icon every card used to carry,
+   on the soft canvas — a plainer tile, not a broken one. */
+.lc-shot--icon { background: var(--canvas-soft); display: flex; align-items: center; justify-content: center; }
+.alt .lc:hover .lc-shot--icon { background: var(--canvas); }
 .lc .ic { width: 46px; height: 46px; border-radius: 8px; background: var(--ink); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+/* Inside the band the icon is centred, so it carries no bottom margin. */
+.lc-shot .ic { margin-bottom: 0; }
 .lc .ic svg { width: 24px; height: 24px; }
 .lc h4 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
 .lc p { font-size: 15px; line-height: 1.55; color: var(--body-dark); }
