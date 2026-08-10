@@ -8,19 +8,28 @@ export const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 export type Lang = "ko" | "en";
 
 /**
- * Language switcher order — English first, because this is the head office's
- * site and English is the language it leads with.
+ * The locales, and where each one is served from.
  *
- * Display order and route layout are deliberately separate here: Korean still
- * lives at the root and English at `/en`, which is what the fourth field says.
- * Do not infer the default locale from this array's order; `langPath` looks
- * entries up by code, so reordering only changes what the switcher renders
- * first (and the order alternates are listed in, which carries no meaning).
+ * English holds the root and Korean sits at `/ko`. This is the head office's
+ * site, English is the language it leads with, and a visitor who types the
+ * domain with no further instruction should land in it — the site used to
+ * open in Korean, which read as a Korean branch site rather than the head
+ * office's own.
+ *
+ * The fourth field is the route prefix, and it is the single source of that
+ * fact: `langPath` looks entries up by code, `localeRoute` builds every
+ * internal link from it, and the sitemap gives priority 1 to whichever locale
+ * has "/". Changing which locale owns the root is this table plus the two
+ * directory trees under `app/`; nothing else hard-codes it.
  */
 export const languages = [
-  ["en", "EN", "English", "/en"],
-  ["ko", "KO", "한국어", "/"],
+  ["en", "EN", "English", "/"],
+  ["ko", "KO", "한국어", "/ko"],
 ] as const satisfies readonly (readonly [Lang, string, string, string])[];
+
+/** The locale served from the root — what an unqualified visit resolves to,
+ *  and therefore what `x-default` points at. */
+export const defaultLang: Lang = "en";
 
 export const langPath = (lang: Lang) =>
   languages.find(([code]) => code === lang)![3];
@@ -82,12 +91,12 @@ export const route = (path: string) => {
 };
 
 /**
- * Locale-prefixed internal route. Korean is served from the root, so it takes
- * no prefix — every caller that needs a per-locale link goes through here
- * rather than repeating that exception.
+ * Locale-prefixed internal route. The root locale takes no prefix — every
+ * caller that needs a per-locale link goes through here rather than repeating
+ * that exception.
  *
- *   localeRoute("ko")                 → "/"
- *   localeRoute("en", "/cybershield") → "/en/cybershield/"
+ *   localeRoute("en")                 → "/"
+ *   localeRoute("ko", "/cybershield") → "/ko/cybershield/"
  */
 export const localeRoute = (lang: Lang, path = "") => {
   const prefix = langPath(lang);

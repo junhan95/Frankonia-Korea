@@ -35,7 +35,11 @@ async function collectPages(dir = OUT, route = "/") {
 
 const pages = await collectPages();
 const url = (route) => `${ORIGIN}${BASE}${route}`;
-const localeOf = (route) => (route.startsWith("/en/") || route === "/en/" ? "en" : "ko");
+const localeOf = (route) => (route.startsWith("/ko/") || route === "/ko/" ? "ko" : "en");
+/** The same page in the other locale. English holds the root, so one
+ *  direction strips the /ko prefix and the other adds it. */
+const counterpartOf = (route) =>
+  localeOf(route) === "ko" ? route.replace("/ko/", "/") : `/ko${route}`;
 
 const exists = async (file) => {
   try {
@@ -75,48 +79,48 @@ test("the export contains the pages the site map defines", () => {
       "/company/publications/",
       "/cybershield/",
       "/downloads/",
-      "/en/",
-      "/en/chambers/",
-      "/en/chambers/automation/",
-      "/en/chambers/frankosorb/",
-      "/en/chambers/industry/automotive/",
-      "/en/chambers/industry/commercial/",
-      "/en/chambers/industry/military/",
-      "/en/chambers/industry/others/",
-      "/en/chambers/industry/powertrain/",
-      "/en/chambers/references/",
-      "/en/chambers/services/",
-      "/en/chambers/shielding-gates/",
-      "/en/chambers/type/chc/",
-      "/en/chambers/type/component/",
-      "/en/chambers/type/fac/",
-      "/en/chambers/type/rvc/",
-      "/en/chambers/type/sac/",
-      "/en/chambers/type/shielded-room/",
-      "/en/company/career/",
-      "/en/company/events/",
-      "/en/company/history/",
-      "/en/company/philosophy/",
-      "/en/company/publications/",
-      "/en/cybershield/",
-      "/en/downloads/",
-      "/en/test-systems/",
-      "/en/test-systems/industry/automotive/",
-      "/en/test-systems/industry/commercial/",
-      "/en/test-systems/industry/military/",
-      "/en/test-systems/industry/others/",
-      "/en/test-systems/industry/powertrain/",
-      "/en/test-systems/product/amplifier/",
-      "/en/test-systems/product/antenna/",
-      "/en/test-systems/product/efs/",
-      "/en/test-systems/product/meter/",
-      "/en/test-systems/product/preamp/",
-      "/en/test-systems/product/system/",
-      "/en/test-systems/standards/",
-      "/en/test-systems/test/conducted/",
-      "/en/test-systems/test/emission/",
-      "/en/test-systems/test/magnetic/",
-      "/en/test-systems/test/radiated/",
+      "/ko/",
+      "/ko/chambers/",
+      "/ko/chambers/automation/",
+      "/ko/chambers/frankosorb/",
+      "/ko/chambers/industry/automotive/",
+      "/ko/chambers/industry/commercial/",
+      "/ko/chambers/industry/military/",
+      "/ko/chambers/industry/others/",
+      "/ko/chambers/industry/powertrain/",
+      "/ko/chambers/references/",
+      "/ko/chambers/services/",
+      "/ko/chambers/shielding-gates/",
+      "/ko/chambers/type/chc/",
+      "/ko/chambers/type/component/",
+      "/ko/chambers/type/fac/",
+      "/ko/chambers/type/rvc/",
+      "/ko/chambers/type/sac/",
+      "/ko/chambers/type/shielded-room/",
+      "/ko/company/career/",
+      "/ko/company/events/",
+      "/ko/company/history/",
+      "/ko/company/philosophy/",
+      "/ko/company/publications/",
+      "/ko/cybershield/",
+      "/ko/downloads/",
+      "/ko/test-systems/",
+      "/ko/test-systems/industry/automotive/",
+      "/ko/test-systems/industry/commercial/",
+      "/ko/test-systems/industry/military/",
+      "/ko/test-systems/industry/others/",
+      "/ko/test-systems/industry/powertrain/",
+      "/ko/test-systems/product/amplifier/",
+      "/ko/test-systems/product/antenna/",
+      "/ko/test-systems/product/efs/",
+      "/ko/test-systems/product/meter/",
+      "/ko/test-systems/product/preamp/",
+      "/ko/test-systems/product/system/",
+      "/ko/test-systems/standards/",
+      "/ko/test-systems/test/conducted/",
+      "/ko/test-systems/test/emission/",
+      "/ko/test-systems/test/magnetic/",
+      "/ko/test-systems/test/radiated/",
       "/test-systems/",
       "/test-systems/industry/automotive/",
       "/test-systems/industry/commercial/",
@@ -143,7 +147,7 @@ test("CyberShield stays inside this site's chrome", () => {
   // header, so it cannot be embedded. The nav therefore points at the internal
   // page, which carries the same header and footer as every other route.
   for (const { route, html } of pages) {
-    const internal = localeOf(route) === "en" ? `${BASE}/en/cybershield/` : `${BASE}/cybershield/`;
+    const internal = localeOf(route) === "ko" ? `${BASE}/ko/cybershield/` : `${BASE}/cybershield/`;
     assert.ok(
       html.includes(`<a href="${internal}">CyberShield`),
       `${route}: the navigation does not point at the internal CyberShield page`,
@@ -198,12 +202,28 @@ test("the document language matches the locale of the route", () => {
   }
 });
 
+test("the root is English and Korean sits under /ko", () => {
+  // This is the whole point of the locale layout and the easiest thing to
+  // undo by accident: moving a directory or reordering the table in
+  // site-config would flip it back with every other test still passing.
+  const root = pages.find((p) => p.route === "/");
+  assert.ok(root, "there is no page at /");
+  assert.match(root.html, /<html lang="en"/, "/ does not open in English");
+
+  const korean = pages.find((p) => p.route === "/ko/");
+  assert.ok(korean, "there is no page at /ko/");
+  assert.match(korean.html, /<html lang="ko"/, "/ko/ does not open in Korean");
+
+  // No page may be left at the old /en prefix.
+  assert.deepEqual(pages.filter((p) => p.route.startsWith("/en/")).map((p) => p.route), []);
+});
+
 test("the language switcher stays on the page it is used from", () => {
   // Switching language used to drop the reader on the home page, which the
   // CyberShield page made obvious: the whole product page for a locale change.
   for (const { route, html } of pages) {
-    const counterpart = localeOf(route) === "en" ? route.replace("/en/", "/") : `/en${route}`;
-    const label = localeOf(route) === "en" ? "KO" : "EN";
+    const counterpart = counterpartOf(route);
+    const label = localeOf(route) === "ko" ? "EN" : "KO";
     assert.ok(
       html.includes(`href="${BASE}${counterpart}"`) && html.includes(`>${label}</a>`),
       `${route}: the switcher does not offer ${counterpart}`,
@@ -222,13 +242,13 @@ test("each page is canonical to its own URL", () => {
 
 test("both locales and an x-default are offered on every page", () => {
   for (const { route, html } of pages) {
-    const counterpart = localeOf(route) === "en" ? route.replace("/en/", "/") : `/en${route}`;
+    const counterpart = counterpartOf(route);
     const ko = localeOf(route) === "ko" ? route : counterpart;
     const en = localeOf(route) === "en" ? route : counterpart;
 
     assert.ok(html.includes(`hrefLang="ko" href="${url(ko)}"`), `${route}: ko alternate`);
     assert.ok(html.includes(`hrefLang="en" href="${url(en)}"`), `${route}: en alternate`);
-    assert.ok(html.includes(`hrefLang="x-default" href="${url(ko)}"`), `${route}: x-default`);
+    assert.ok(html.includes(`hrefLang="x-default" href="${url(en)}"`), `${route}: x-default`);
     assert.ok(!html.includes('hrefLang="de"'), `${route} still offers German`);
   }
 });
@@ -332,5 +352,5 @@ test("every internal link resolves to a file in the export", async () => {
 
 test("German is gone from the export", async () => {
   assert.equal(await exists(path.join(OUT, "de")), false);
-  assert.equal(await exists(path.join(OUT, "en", "de")), false);
+  assert.equal(await exists(path.join(OUT, "ko", "de")), false);
 });

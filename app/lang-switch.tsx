@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { langPath, languages, localeRoute, type Lang } from "./site-config";
+import { languages, localeRoute, type Lang } from "./site-config";
 
 /**
  * The language switcher, which has to know where the reader currently is.
@@ -19,15 +19,18 @@ import { langPath, languages, localeRoute, type Lang } from "./site-config";
  * would catch it. `usePathname` cannot be wrong about where it is.
  */
 export default function LangSwitch({ lang }: { lang: Lang }) {
-  // `usePathname` already has the base path stripped off, and the English
-  // locale is the only one carrying a prefix, so taking that off leaves the
-  // path both locales share.
-  const enPrefix = langPath("en");
+  // `usePathname` already has the base path stripped off. Strip whichever
+  // locale prefix this path carries and what is left is the part both locales
+  // share, which localeRoute then re-prefixes for each of them.
+  //
+  // Asking the table which prefixes exist rather than naming one: this used to
+  // take English off, because English was the locale that had a prefix. When
+  // the root swapped to English that assumption inverted silently and every
+  // Korean page offered /ko/ko/… — a link to nothing, on 42 pages.
   const pathname = usePathname();
-  const shared =
-    pathname.startsWith(`${enPrefix}/`) || pathname === enPrefix
-      ? pathname.slice(enPrefix.length)
-      : pathname;
+  const prefixes = languages.map(([, , , path]) => path).filter((path) => path !== "/");
+  const carried = prefixes.find((p) => pathname === p || pathname.startsWith(`${p}/`));
+  const shared = carried ? pathname.slice(carried.length) : pathname;
   // localeRoute puts the trailing slash back; carrying it here would double it.
   const samePage = shared.replace(/\/$/, "");
 

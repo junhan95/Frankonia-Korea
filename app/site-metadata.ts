@@ -6,6 +6,7 @@ import {
 } from "./company-sections";
 import {
   asset,
+  defaultLang,
   isIndexable,
   languages,
   localeUrl,
@@ -123,7 +124,10 @@ function build(lang: Lang, path: string, title: string, description: string): Me
         ...Object.fromEntries(
           languages.map(([code]) => [code, localeUrl(code, path)]),
         ),
-        "x-default": localeUrl("ko", path),
+        // Whatever locale holds the root: it is what an unqualified visit
+        // resolves to, so it is what a crawler with no language signal should
+        // be sent to as well.
+        "x-default": localeUrl(defaultLang, path),
       },
     },
     openGraph: {

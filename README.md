@@ -6,7 +6,7 @@
 
 [frankonia-solutions.com](https://frankonia-solutions.com/) 의 콘텐츠를 기준으로
 정보 구조와 디자인을 다시 짠 **본사 사이트 리뉴얼 제안**이다.
-한국어 · English 두 개 로케일, 로케일당 42페이지를 정적 HTML로 프리렌더한다.
+English · 한국어 두 개 로케일, 로케일당 42페이지를 정적 HTML로 프리렌더한다.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.2-000000?logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-19.2-149ECA?logo=react&logoColor=white)
@@ -14,7 +14,7 @@
 ![Static export](https://img.shields.io/badge/output-static%20export-2ea44f)
 ![Pages](https://img.shields.io/badge/pages-84-25282B)
 
-### [한국어](https://junhan95.github.io/Frankonia-Korea/) · [English](https://junhan95.github.io/Frankonia-Korea/en/)
+### [English](https://junhan95.github.io/Frankonia-Korea/) · [한국어](https://junhan95.github.io/Frankonia-Korea/ko/)
 
 </div>
 
@@ -59,9 +59,13 @@ Contact · Career. 로케일당 42페이지, 합계 84페이지.
 
 **Bilingual from one component.** 모든 문구는 로케일 키로 정리된 `copy` 객체에
 있고 KO / EN 페이지가 하나의 트리에서 렌더된다. 로케일별 `<html lang>`을 서버
-HTML에 그대로 담기 위해 `(ko)` / `(en)` 라우트 그룹이 각자의 루트 레이아웃을
-갖는다 — 그룹은 URL에 나타나지 않으므로 경로는 `/`, `/en/` 그대로다. 독일어는
-개발 속도를 위해 제외했고, `copy`에 `de` 키를 다시 추가하면 복구된다.
+HTML에 그대로 담기 위해 `(en)` / `(ko)` 라우트 그룹이 각자의 루트 레이아웃을
+갖는다 — 그룹은 URL에 나타나지 않으므로 경로는 `/`, `/ko/` 그대로다. **영어가
+루트를 갖고 한국어가 `/ko`에 붙는다**: 본사 사이트이고 도메인만 치고 들어온
+방문자는 영어로 받는 것이 맞다. 어느 로케일이 루트를 갖는지는
+`app/site-config.ts`의 `languages` 표 네 번째 필드 하나가 정하며, 그 밖에
+하드코딩된 곳은 없다. 독일어는 개발 속도를 위해 제외했고, `copy`에 `de` 키를
+다시 추가하면 복구된다.
 
 **Nothing is fetched off this origin.** Inter와 Noto Sans KR은 빌드 시점에 받아
 export에 함께 실린다([`app/fonts.ts`](app/fonts.ts)). 방문자 IP가 Google로 가지
@@ -122,9 +126,9 @@ npm run lint
 npm test
 ```
 
-`npm test`는 정적 export를 먼저 만든 뒤 **실제로 생성된 HTML에** 15개 항목을
-검사한다 — 84페이지 전수로 스테이징 `noindex`가 붙어 있는지, `<html lang>`이
-경로의 로케일과 맞는지, canonical · hreflang · `og:image`가 맞는지, sitemap이
+`npm test`는 정적 export를 먼저 만든 뒤 **실제로 생성된 HTML에** 16개 항목을
+검사한다 — 84페이지 전수로 스테이징 `noindex`가 붙어 있는지, 루트가 영어이고
+한국어가 `/ko` 아래에 있는지, `<html lang>`이 경로의 로케일과 맞는지, canonical · hreflang · `og:image`가 맞는지, sitemap이
 디스크 위의 페이지 목록과 정확히 일치하는지, 그리고 export에 없는 파일을 가리키는
 내부 링크가 하나도 없는지. 검사 항목은 전부 한 번씩 실제로 깨졌던 것들이다.
 
@@ -132,8 +136,8 @@ npm test
 
 ```
 app/
-  (ko)/              # /  ·  /chambers/*  ·  /test-systems/*  ·  /company/*   <html lang="ko">
-  (en)/en/           # 같은 트리, /en 아래                                     <html lang="en">
+  (en)/              # /  ·  /chambers/*  ·  /test-systems/*  ·  /company/*   <html lang="en">
+  (ko)/ko/           # 같은 트리, /ko 아래                                     <html lang="ko">
   root-shell.tsx     # 두 루트 레이아웃이 공유하는 <html>/<body> 셸
   landing.tsx        # 랜딩 페이지 전체와 로케일별 카피
   chamber-sections.ts     # 챔버 27개 모델 · 산업/형태/기술 축 · 라우트 표
@@ -145,7 +149,9 @@ app/
   company-content.tsx     # Company 5페이지
   cybershield/            # 제품 사이트에서 포팅한 랜딩 + 스코프된 스타일시트
   cybershield-content.tsx # 그 포팅본을 이 사이트의 크롬 안에 넣는 래퍼
-  site-header.tsx    # 스티키 GNB + 메가 패널 + 모바일 드로어 (유일한 클라이언트 컴포넌트)
+  site-header.tsx    # 스티키 GNB + 메가 패널 (서버 컴포넌트)
+  nav-drawer.tsx     # 모바일 드로어의 상태 — 클라이언트, 마크업은 서버에서 받는다
+  lang-switch.tsx    # 언어 스위처 — 현재 경로를 알아야 해서 클라이언트
   site-footer.tsx
   page-shell.tsx     # 랜딩이 아닌 모든 페이지의 크롬
   structured-data.tsx  # JSON-LD: Organization, WebSite, WebPage, Product, BreadcrumbList
