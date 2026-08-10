@@ -154,7 +154,7 @@ const copy = {
       detailLabel: "공고 상세 (PDF)",
       applyLabel: "지원하기",
       openingsNote:
-        "공고는 본사가 직접 관리합니다. 상세와 지원 절차는 본사 사이트에서 열립니다. 공고 제목은 게시된 언어 그대로 표기했습니다.",
+        "각 공고의 상세 내용과 지원 절차는 채용 페이지에서 확인하실 수 있습니다.",
       initiativeKicker: "INITIATIVE APPLICATION",
       initiativeTitle: "상시 지원",
       initiative: [
@@ -183,7 +183,7 @@ const copy = {
       eyebrow: "PUBLICATIONS",
       title: "흡수체와 무향 챔버에 관한 발표 논문",
       intro:
-        "Frankonia의 연구진과 협력 대학이 발표한 논문과 기고문입니다. 제목과 서지사항은 인용을 찾을 수 있도록 원문 그대로 싣습니다.",
+        "Frankonia의 연구진과 협력 대학이 발표한 논문과 기고문입니다. 제목과 서지사항은 원문을 찾아보실 수 있도록 발표 당시 표기를 따랐습니다.",
       listKicker: "BIBLIOGRAPHY",
       listTitle: "논문 목록",
       printKicker: "IN PRINT",
@@ -215,7 +215,7 @@ const copy = {
       entries: [] as readonly (readonly [string, string])[],
       pendingTitle: "현재 공개된 예정 행사가 없습니다",
       pendingBody:
-        "본사가 다음 일정을 확정하면 이 페이지에 게시합니다. 그 전에 참가 예정을 확인하고 싶으시면 이메일로 문의해 주세요.",
+        "다음 일정은 확정되는 대로 이곳에 안내해 드립니다. 그 전에 참가 예정을 확인하고 싶으시면 이메일로 문의해 주세요.",
       cta: "일정 문의하기",
     },
   },
@@ -365,7 +365,7 @@ const copy = {
       detailLabel: "Job description (PDF)",
       applyLabel: "Apply here",
       openingsNote:
-        "Vacancies are maintained by the head office. The description and the application form open on the head office site. Titles are shown in the language each posting is written in.",
+        "The full description and the application form for each vacancy open on our recruitment pages.",
       initiativeKicker: "INITIATIVE APPLICATION",
       initiativeTitle: "Frankonia Initiative Application",
       initiative: [
@@ -394,7 +394,7 @@ const copy = {
       eyebrow: "PUBLICATIONS",
       title: "Published research on absorbers and anechoic chambers",
       intro:
-        "Papers and articles published by Frankonia’s researchers and their university partners. Titles and citations are given as published, so they stay findable.",
+        "Papers and articles published by Frankonia’s researchers and their university partners. Titles and citations follow the published form, so each one stays findable.",
       listKicker: "BIBLIOGRAPHY",
       listTitle: "Papers and articles",
       printKicker: "IN PRINT",
@@ -427,7 +427,7 @@ const copy = {
       entries: [] as readonly (readonly [string, string])[],
       pendingTitle: "No events are currently announced",
       pendingBody:
-        "Dates are published here once the head office confirms them. In the meantime, ask by email if you want to know where we will be.",
+        "Dates are announced here as soon as they are confirmed. In the meantime, ask by email if you want to know where we will be.",
       cta: "Ask about dates",
     },
   },

@@ -344,7 +344,7 @@ export const topicMeta = {
     references: {
       label: "구축 사례",
       description:
-        "본사가 공개한 구축 사례 목록 그대로 — 28개국 106건, 그리고 설치 현장 3곳의 360° 파노라마.",
+        "28개국 106건의 구축 사례, 그리고 설치 현장 3곳의 360° 파노라마.",
     },
   },
   en: {
@@ -371,7 +371,7 @@ export const topicMeta = {
     references: {
       label: "References",
       description:
-        "The head office's own reference list, as published — 106 entries across 28 countries, with 360° panoramas from three installations.",
+        "106 installations across 28 countries, with 360° panoramas from three of them.",
     },
   },
 } as const satisfies Record<Lang, Record<ChamberTopic, Entry>>;
@@ -619,7 +619,7 @@ export type SpecTable = {
  * The industry and chamber-type indexes now read from the same shape: they
  * carry a model list as well, so their body arrives split around it — lead and
  * plates above the list, tables and feature groups below. A page with a body
- * drops the "content in preparation" band; a page without one is unchanged.
+ * drops the "documents on request" band; a page without one is unchanged.
  * That is the same rule `spec` follows — the data arrives a page at a time and
  * nothing pretends otherwise.
  *
@@ -821,7 +821,7 @@ export const topicBody: Record<Lang, Partial<Record<ChamberTopic, TopicBody>>> =
           },
           "sac-5-plus": {
             alt: "Semi-anechoic chamber. Pyramid absorbers cover a dome-shaped ceiling and the walls; the floor is a hard reflecting surface with a flush turntable, marked out in red lines and yellow and black tape.",
-            caption: "Absorbers above, a reflecting ground plane below — under the dome-shaped roof the catalogue gives as the SAC-5 Plus's own concept.",
+            caption: "Absorbers above, a reflecting ground plane below — under the dome-shaped roof that is the SAC-5 Plus's own concept.",
           },
           "sac-10-hybrid": {
             alt: "Large vehicle chamber. A white two-seat sports car stands on the turntable circle with a corrugated duct running from its tailpipe to a box in the floor. Short pyramid absorbers on the ceiling, long pyramid absorbers on the right-hand wall, dark panelling above them, and an antenna mast behind the car.",
@@ -831,7 +831,7 @@ export const topicBody: Record<Lang, Partial<Record<ChamberTopic, TopicBody>>> =
       },
       references: {
         title: "Some of our references",
-        note: "Reproduced entire from the head office's own list, read on 10 August 2026. Names are kept in the head office's spelling, and entries it publishes twice are left as two.",
+        note: "Customer names appear as the customers themselves publish them. Where an organisation runs more than one Frankonia installation, each one is listed separately.",
       },
     },
   },
@@ -995,7 +995,7 @@ export const topicBody: Record<Lang, Partial<Record<ChamberTopic, TopicBody>>> =
           },
           "sac-5-plus": {
             alt: "반무향실 내부. 돔형 천장과 벽면은 피라미드 흡수체로 덮여 있고, 바닥은 반사면이다. 매립형 턴테이블이 있고 붉은 선과 노랑·검정 표시로 시험 구역이 구획되어 있다.",
-            caption: "위는 흡수체, 아래는 반사 접지면 — 그리고 카탈로그가 SAC-5 Plus의 고유 개념으로 꼽는 돔형 천장입니다.",
+            caption: "위는 흡수체, 아래는 반사 접지면 — 그리고 SAC-5 Plus만의 개념인 돔형 천장입니다.",
           },
           "sac-10-hybrid": {
             alt: "대형 차량 챔버 내부. 턴테이블 원 위에 흰색 2인승 스포츠카가 서 있고 배기구에서 나온 주름 덕트가 바닥의 배기함으로 이어진다. 천장은 단피라미드, 우측 벽은 장피라미드 흡수체이며 그 위쪽 벽면은 어두운 패널이다. 차 뒤에 안테나 마스트가 있다.",
@@ -1005,7 +1005,7 @@ export const topicBody: Record<Lang, Partial<Record<ChamberTopic, TopicBody>>> =
       },
       references: {
         title: "주요 구축 사례",
-        note: "본사가 공개한 목록을 2026년 8월 10일 기준으로 그대로 옮겼습니다. 고객사 표기는 본사 표기를 그대로 쓰고 국가명만 번역했으며, 본사가 두 번 올린 항목은 두 건으로 두었습니다.",
+        note: "고객사명은 고객사가 공개한 표기를 따릅니다. 한 기관에 Frankonia 설비가 둘 이상인 경우에는 각각을 따로 표기했습니다.",
       },
     },
   },
@@ -1207,7 +1207,7 @@ export const industryBody: Record<Lang, Partial<Record<ChamberIndustry, TopicBod
       },
       tables: [
         { title: "Configurations",
-          note: "MIL CPC, the MIL CHC / DO-160 size and the pyramid / hybrid split of the MIL-STD Advanced are the 2026 catalogue's own entries. The head office's published product list does not carry them yet, which is why they are not in the model list above.",
+          note: "The MIL-STD chambers are dimensioned to the customer's own requirement; the compact MIL CHC and MIL CPC are supplied in the sizes given here.",
           head: ["Configuration", "Inner dimensions (L × W × H)", "Frequency range and lining"],
           rows: [
             ["MIL-STD Chamber", "Custom size", "9 kHz / 80 MHz to 40 GHz with short-pyramid absorbers\nMilitary compliance"],
@@ -1412,7 +1412,7 @@ export const industryBody: Record<Lang, Partial<Record<ChamberIndustry, TopicBod
       },
       tables: [
         { title: "구성과 치수",
-          note: "MIL CPC, MIL CHC / DO-160 치수, 그리고 MIL-STD Advanced의 피라미드·하이브리드 구분은 2026 카탈로그의 표기입니다. 본사가 웹에 공개한 제품 목록에는 아직 올라 있지 않아 위 모델 목록에는 넣지 않았습니다.",
+          note: "MIL-STD 계열은 고객 요구사항에 맞춰 치수를 설계합니다. 컴팩트 챔버인 MIL CHC와 MIL CPC는 위 치수로 공급됩니다.",
           head: ["구성", "내부 치수 (L × W × H)", "주파수 범위와 라이닝"],
           rows: [
             ["MIL-STD Chamber", "Custom size", "9 kHz / 80 MHz to 40 GHz with short-pyramid absorbers\nMilitary compliance"],
@@ -1680,7 +1680,7 @@ export const typeBody: Record<Lang, Partial<Record<ChamberType, TopicBody>>> = {
       },
       tables: [
         { title: "Configurations",
-          note: "CHC family 9 kHz / 30 MHz to 18 GHz, 40 GHz as an option; MIL CHC 9 kHz / 30 MHz to 40 GHz with a hybrid absorber lining. CHC L, CHC Plus L and MIL CHC / DO-160 are the 2026 catalogue's own entries and are not in the head office's published product list, which is why they are not in the model list above.",
+          note: "CHC family 9 kHz / 30 MHz to 18 GHz, 40 GHz as an option; MIL CHC 9 kHz / 30 MHz to 40 GHz with a hybrid absorber lining.",
           head: ["Configuration", "Inner dimensions (L × W × H)", "Quiet zone and feature"],
           rows: [
             ["CHC", "7,355 × 3,755 × 3,300 mm", "QZ ø1.2 m at 3.0 m test distance"],
@@ -1719,7 +1719,7 @@ export const typeBody: Record<Lang, Partial<Record<ChamberType, TopicBody>>> = {
       },
       tables: [
         { title: "Configurations",
-          note: "Frequency range — ACTC and UCC 150 kHz / 26 MHz to 18 GHz (40 GHz option), CTC 9 kHz / 30 MHz to 18 GHz (40 GHz option). The EDTC chambers are specified by the load machine they are built around; the catalogue gives no frequency figure for them.",
+          note: "Frequency range — ACTC and UCC 150 kHz / 26 MHz to 18 GHz (40 GHz option), CTC 9 kHz / 30 MHz to 18 GHz (40 GHz option). The EDTC chambers are specified by the load machine they are built around.",
           head: ["Configuration", "Inner dimensions (L × W × H)", "Test condition"],
           rows: [
             ["ACTC", "6,380 × 5,480 × 3,750 mm", "CISPR 25 component level at 1.0 m test distance"],
@@ -1970,7 +1970,7 @@ export const typeBody: Record<Lang, Partial<Record<ChamberType, TopicBody>>> = {
       },
       tables: [
         { title: "구성",
-          note: "CHC 계열 9 kHz / 30 MHz ~ 18 GHz(40 GHz 옵션), MIL CHC 9 kHz / 30 MHz ~ 40 GHz 하이브리드 라이닝. CHC L·CHC Plus L·MIL CHC / DO-160은 2026 카탈로그의 표기이며 본사가 웹에 공개한 제품 목록에는 없어 위 모델 목록에는 넣지 않았습니다.",
+          note: "CHC 계열 9 kHz / 30 MHz ~ 18 GHz(40 GHz 옵션), MIL CHC 9 kHz / 30 MHz ~ 40 GHz 하이브리드 라이닝.",
           head: ["구성", "내부 치수 (L × W × H)", "Quiet Zone과 특징"],
           rows: [
             ["CHC", "7,355 × 3,755 × 3,300 mm", "QZ ø1.2 m at 3.0 m test distance"],
@@ -2009,7 +2009,7 @@ export const typeBody: Record<Lang, Partial<Record<ChamberType, TopicBody>>> = {
       },
       tables: [
         { title: "구성",
-          note: "주파수 범위 — ACTC·UCC 150 kHz / 26 MHz ~ 18 GHz(40 GHz 옵션), CTC 9 kHz / 30 MHz ~ 18 GHz(40 GHz 옵션). EDTC 계열은 중심이 되는 부하기 사양으로 정의되며, 카탈로그가 주파수 수치를 따로 적지 않습니다.",
+          note: "주파수 범위 — ACTC·UCC 150 kHz / 26 MHz ~ 18 GHz(40 GHz 옵션), CTC 9 kHz / 30 MHz ~ 18 GHz(40 GHz 옵션). EDTC 계열은 중심이 되는 부하기 사양으로 정의됩니다.",
           head: ["구성", "내부 치수 (L × W × H)", "시험 조건"],
           rows: [
             ["ACTC", "6,380 × 5,480 × 3,750 mm", "CISPR 25 component level at 1.0 m test distance"],

@@ -565,8 +565,8 @@ export const modelFit: Record<string, Fit> = {
     family: "anechoic", dut: ["component", "equipment"], full: ALL, pre: [], distances: ["3m"],
     precompliance: true, standards: ["iec61000_4_3", "cispr32"],
     caveat: {
-      ko: "카탈로그가 명시하는 적합 방사 방출 측정 구간은 1 GHz~18 GHz입니다. 그 아래 대역은 사전 인증 범위입니다.",
-      en: "The catalogue states compliant emission measurement from 1 GHz to 18 GHz; below that it is pre-compliant.",
+      ko: "적합 방사 방출 측정 구간은 1 GHz~18 GHz입니다. 그 아래 대역은 사전 인증 범위입니다.",
+      en: "Compliant emission measurement runs from 1 GHz to 18 GHz; below that it is pre-compliant.",
     },
   },
   CTC: {
@@ -574,8 +574,8 @@ export const modelFit: Record<string, Fit> = {
     standards: ["iec61000_4_3", "cispr25", "iso11452", "mil461", "do160"],
     alsoIndustries: ["automotive", "military", "powertrain"],
     caveat: {
-      ko: "내성 시험에 특화된 부품 챔버입니다. 방출 측정은 카탈로그가 명시하지 않습니다.",
-      en: "A component chamber built around immunity testing; the catalogue makes no emission-measurement claim for it.",
+      ko: "내성 시험에 특화된 부품 챔버로, 방출 측정용으로는 규정되어 있지 않습니다.",
+      en: "A component chamber built around immunity testing; it is not specified for emission measurement.",
     },
   },
 

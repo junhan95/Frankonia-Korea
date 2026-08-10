@@ -43,8 +43,8 @@ import { asset, contactEmail, localeRoute, plural, type Lang } from "./site-conf
  * The overview, the four industry indexes, the six chamber-type indexes and the
  * five technology topics all carry their copy from the 2026 catalogue. Only the
  * downloads hub still does not: it states what it is, from the same meta the
- * navigation and the search snippet read, and then says outright that the
- * contents are being prepared rather than letting the page read as broken.
+ * navigation and the search snippet read, and then offers the documents by
+ * email rather than letting the page read as broken.
  */
 
 export type ChamberView =
@@ -68,12 +68,13 @@ const copy = {
     modelsTitle: (n: number) => `해당 모델 ${n}종`,
     /** Counted from `referenceGroups`, not written down — see `referenceTotals`. */
     referenceCount: (entries: number, countries: number) => `${entries}건 · ${countries}개국`,
-    /** Over the tables: the catalogue is the source, and a reader comparing a
-     *  quotation against this page should know which edition it came from. */
-    specsNote: "Frankonia Anechoic Chambers 2026 카탈로그의 표를 그대로 옮긴 것입니다. 치수와 규격 표기는 번역하지 않습니다 — 도면·견적서와 대조할 값이기 때문입니다.",
-    stubTitle: "콘텐츠 준비 중입니다",
+    /** Over the tables: these are the standard sizes, and the reader's own
+     *  requirement is rarely exactly one of them — so the note ends on the
+     *  next step rather than on where the numbers came from. */
+    specsNote: "Frankonia 표준 사양 기준입니다. 설치 공간과 적용 규격에 따라 치수와 구성은 조정할 수 있으며, 상세 도면과 견적은 문의해 주시면 안내해 드립니다.",
+    stubTitle: "자료를 보내 드립니다",
     stubBody:
-      "구조와 경로를 먼저 열어 둔 페이지입니다. 독일 본사 원본 자료를 정리해 순차적으로 채웁니다. 지금 필요한 사양이나 자료가 있으시면 바로 보내 드립니다.",
+      "이 항목의 상세 자료는 요청하시면 바로 보내 드립니다. 필요한 사양·도면·적용 규격을 알려 주시면 담당 엔지니어가 검토해 회신드립니다.",
     stubCta: "자료 요청 · 기술 문의",
     subject: (label: string) => `[자료 요청] ${label}`,
   },
@@ -91,10 +92,10 @@ const copy = {
     referenceCount: (entries: number, countries: number) =>
       `${plural(entries, "entry", "entries")} · ${plural(countries, "country", "countries")}`,
     specsNote:
-      "Reproduced from the tables in the Frankonia Anechoic Chambers 2026 catalogue. Dimensions and standard designations are not translated — they are what a reader matches against a drawing and a quotation.",
-    stubTitle: "Content in preparation",
+      "Frankonia standard configurations. Dimensions and layout can be adapted to your site and to the standards you test against — contact us for a drawing and a quotation.",
+    stubTitle: "Documents on request",
     stubBody:
-      "The route and the structure are in place; the copy is being prepared from the head office's own material. If you need a specification or a document now, we will send it straight over.",
+      "Tell us which specification, drawing or standard you need for this, and an engineer will go through it and come back to you.",
     stubCta: "Request documents",
     subject: (label: string) => `[Document request] ${label}`,
   },

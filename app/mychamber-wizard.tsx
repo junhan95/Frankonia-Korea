@@ -65,7 +65,7 @@ const copy = {
 
     noneH: "표준 모델로는 맞는 것이 없습니다",
     noneP:
-      "선택하신 조건은 맞춤 설계 구간입니다. Frankonia는 카탈로그에 'Custom size'로 적힌 챔버를 실제로 제작합니다 — 조건을 그대로 보내 주시면 설계팀이 검토해 회신드립니다.",
+      "선택하신 조건은 맞춤 설계 구간입니다. Frankonia는 표준 치수를 벗어나는 챔버를 실제로 제작해 왔습니다 — 조건을 그대로 보내 주시면 설계팀이 검토해 회신드립니다.",
     noneCta: "맞춤 설계 문의",
     noneSubject: "[MyChamber] 맞춤 설계 문의",
 
@@ -133,7 +133,7 @@ const copy = {
 
     noneH: "No standard model matches",
     noneP:
-      "What you described is in the custom range. Frankonia does build the chambers the catalogue marks 'Custom size' — send the requirement as it stands and the engineering team will come back on it.",
+      "What you described is in the custom range. Frankonia builds chambers beyond the standard sizes as a matter of course — send the requirement as it stands and the engineering team will come back on it.",
     noneCta: "Ask about a custom design",
     noneSubject: "[MyChamber] Custom design enquiry",
 
