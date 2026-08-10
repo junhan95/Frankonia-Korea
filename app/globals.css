@@ -564,6 +564,58 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
    small plates side by side. */
 .figure-wide { max-width: 1000px; margin-top: 44px; }
 .figure-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+/* A row of plates opens the same air above itself a single wide plate does —
+   less when it is the second plate block in a row, because the two read as one
+   figure group rather than two. */
+.prose + .figure-row { margin-top: 44px; }
+.figure-wide + .figure-row { margin-top: 20px; }
+
+/* Spec table — the catalogue's own configuration tables. Every chamber spread
+   prints one: a row per size or variant, its inner dimensions, and the
+   qualifier underneath (the quiet zone, the test distance, the load machine).
+   `.hairline-list` cannot carry them, because a row here is three columns of
+   figures rather than a name and a description — but the grammar is the same
+   one, so the table keeps it: an ink rule over the head, a hairline per row,
+   the row lifting on hover, and tabular numerals so the digit columns line up
+   down the page. Figures and designations are never translated; only the
+   column headings are. */
+.spec-wrap { max-width: 1000px; overflow-x: auto; }
+.spec-wrap + .spec-wrap { margin-top: 56px; }
+/* Below the table's own measure the wrapper scrolls, and a reader has no way to
+   know a third column exists off the right edge. These four layers are the
+   standard cue: two solid-coloured masks scrolling *with* the content and two
+   shadows pinned to the frame, so a shadow only shows on the side that has
+   more table behind it, and disappears when that side is reached. The masks
+   have to match the band fill, which is why `.alt` restates them. */
+.spec-wrap {
+  background:
+    linear-gradient(to right, var(--canvas) 40%, rgba(255, 255, 255, 0)) 0 0 / 32px 100% no-repeat local,
+    linear-gradient(to left, var(--canvas) 40%, rgba(255, 255, 255, 0)) 100% 0 / 32px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgba(37, 40, 43, .13), rgba(37, 40, 43, 0)) 0 0 / 14px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgba(37, 40, 43, .13), rgba(37, 40, 43, 0)) 100% 0 / 14px 100% no-repeat scroll;
+}
+.alt .spec-wrap {
+  background:
+    linear-gradient(to right, var(--canvas-soft) 40%, rgba(242, 242, 242, 0)) 0 0 / 32px 100% no-repeat local,
+    linear-gradient(to left, var(--canvas-soft) 40%, rgba(242, 242, 242, 0)) 100% 0 / 32px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgba(37, 40, 43, .13), rgba(37, 40, 43, 0)) 0 0 / 14px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgba(37, 40, 43, .13), rgba(37, 40, 43, 0)) 100% 0 / 14px 100% no-repeat scroll;
+}
+.spec-table { width: 100%; min-width: 620px; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.spec-table th { text-align: left; vertical-align: bottom; padding: 0 20px 12px 4px; border-bottom: 1px solid var(--ink); color: var(--primary); font-size: 13px; font-weight: 800; letter-spacing: .01em; text-transform: uppercase; }
+.spec-table td { padding: 16px 20px 16px 4px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--body-dark); font-size: 15px; line-height: 1.5; }
+.spec-table tbody tr { transition: background .25s ease; }
+.spec-table tbody tr:hover { background: var(--canvas-soft); }
+.alt .spec-table tbody tr:hover { background: var(--canvas); }
+/* The first column is the row's name — a model designation or a measured
+   quantity — so it takes the weight the descriptor takes in `.hl-row`. */
+.spec-table td:first-child { color: var(--ink); font-weight: 700; white-space: nowrap; }
+/* The lines the catalogue prints under a dimension: same relation to the cell
+   as `.hl-spec` has to its row. */
+.spec-table small { display: block; margin-top: 5px; color: var(--body-text); font-size: 13px; line-height: 1.5; }
+.alt .spec-table small { color: var(--body-dark); }
+.spec-note { max-width: 1000px; margin-top: 18px; color: var(--body-text); font-size: 13.5px; line-height: 1.6; }
+.alt .spec-note { color: var(--body-dark); }
 
 /* Panorama — the head office's 360° panoramas, carried over without a viewer
    library. On an equirectangular image the horizontal axis is yaw, linearly, so
@@ -809,6 +861,11 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
   .check-cols { grid-template-columns: 1fr; gap: 50px; }
   .sub-head, .check-col h3 { font-size: 22px; }
   .value-grid, .figure-row { grid-template-columns: 1fr; }
+  /* The table keeps its 620px measure and scrolls inside `.spec-wrap` rather
+     than reflowing: a dimension like "22,580 × 15,680 × 8,700 mm" cannot wrap
+     and stay readable, and a row split across two lines stops being a row.
+     Only the column gutter gives way. */
+  .spec-table th, .spec-table td { padding-right: 14px; }
   /* 280px against an 18px-gutter frame still shows a third of the turn at once,
      which is enough to read the room while dragging through it. */
   .pano-scroll img { height: 280px; }
