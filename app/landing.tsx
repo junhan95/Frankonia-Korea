@@ -209,11 +209,13 @@ const copy = {
    axes, so each card can reach its own list without flattening the two into
    one. The cards already lifted and turned their heading red on hover; they
    were simply not links, which is a promise a page should not make twice. */
-/* `shot` is the card's picture, collected from the head office and recorded in
-   docs/source/chambers-assets.md. `kind` is not decoration: the cutaway
-   renders are drawings floating on white with their own margins, so they are
-   fitted whole against white, while the photographs fill the frame. Cropping a
-   render to 3:2 would cut the roof off the chamber.
+/* `shot` is the card's picture. Every one is now a photograph of a real
+   chamber, taken from the 2026 catalogue and photobook — Automotive, Military
+   and Commercial were cutaway renders until those arrived, and a drawing of a
+   chamber is a weaker argument than the chamber. `kind` stays because the
+   fitting rule differs: photographs fill the frame, renders would have to be
+   fitted whole against white, and the site may take renders again for a model
+   that has no photograph.
 
    Others has none. The head office serves the same file for CTC as for ACTC,
    the reverberation chamber's photograph is already the RVC card's, and the
@@ -221,11 +223,11 @@ const copy = {
    to carry. Better an even row with one plain tile than a made-up photograph. */
 const chamberCards = [
   { name: "Automotive", models: "ACTC · UCC · AVTC · SAC-10V", path: industryPath("automotive"),
-    shot: { src: "/chambers/images/industry-automotive-avtc.webp", w: 900, h: 900, kind: "render" } },
+    shot: { src: "/chambers/images/industry-automotive.webp", w: 900, h: 578, kind: "photo" } },
   { name: "Military", models: "MIL-STD Chamber · Advanced · MIL CHC", path: industryPath("military"),
-    shot: { src: "/chambers/images/industry-military-mil-std.webp", w: 900, h: 630, kind: "render" } },
+    shot: { src: "/chambers/images/industry-military.webp", w: 744, h: 590, kind: "photo" } },
   { name: "Commercial", models: "SAC 시리즈 · FAC 시리즈 · CHC · Shielded Room", path: industryPath("commercial"),
-    shot: { src: "/chambers/images/industry-commercial-sac-3.webp", w: 900, h: 675, kind: "render" } },
+    shot: { src: "/chambers/images/industry-commercial.webp", w: 900, h: 636, kind: "photo" } },
   { name: "Powertrain", models: "EDTC-SA · EDTC-AX · EDTC-BB", path: industryPath("powertrain"),
     shot: { src: "/chambers/images/industry-powertrain-edtc.webp", w: 900, h: 600, kind: "photo" } },
   { name: "RVC", models: "Reverberation Chamber", path: typePath("rvc"),
@@ -334,7 +336,7 @@ export default function Landing({ lang }: { lang: Lang }) {
           src={asset("/chambers/images/hero-anechoic-chamber.webp")}
           alt=""
           width={2000}
-          height={1333}
+          height={1415}
           fetchPriority="high"
           decoding="async"
         />
