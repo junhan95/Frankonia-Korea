@@ -260,11 +260,12 @@ python deploy/deploy.py
 - **Others 카테고리 카드에 쓸 이미지가 본사에 없다.** 지금은 아이콘 타일로 두었다.
   본사에서 CTC나 Reverberation Tent 사진을 받으면 그 자리에 넣으면 된다 —
   자세한 사정은 [`docs/source/chambers-assets.md`](docs/source/chambers-assets.md).
-- **랜딩의 시험장비 3카드가 Test Systems 분류와 어긋난다.** 카드는 EMI-Receiver ·
-  Antennas · Accessories인데 실제 브랜치는 본사의 6개 제품군(앰프·안테나·전계강도계·
-  프리앰프·파워미터·통합시스템)으로 지어졌고 EMI 리시버 계열이 없다. 카드가 이름을
-  대는 `ERX-6 · ERC-6`은 이 사이트에 페이지가 없는 모델이다. 지금은 각 카드를 가장
-  가까운 실제 목적지로 보내 두었고, 카드를 6개 제품군에 맞출지는 카피 결정이다.
+- ~~**랜딩의 시험장비 3카드가 Test Systems 분류와 어긋난다.**~~ 2026-08-11 해소.
+  카드를 본사의 6개 제품군(앰프·안테나·전계강도계·프리앰프·파워미터·통합시스템)
+  그대로로 바꾸고, 페이지가 없는 `ERX-6 · ERC-6`을 걷어냈다. 각 카드는 자기 제품군
+  페이지로 가고, 모델 줄은 그 페이지가 실제로 인쇄하는 모델만 댄다. 아이콘 자리에는
+  제품 사진이 들어갔다 — 앰프 사진만 본사 웹에 없어 2019 Selection Book 18쪽에서
+  잘라 왔고, 경위는 [`docs/source/test-systems-assets.md`](docs/source/test-systems-assets.md).
 - **Downloads에 파일이 없다.** 내비게이션 세 곳이 이 페이지를 가리킨다.
 - **Contact가 페이지가 아니라 앵커다.** 기획서 §3.7의 견적·기술 문의 폼은 아직 없고,
   랜딩의 `#contact` 밴드에서 `mailto:`로 연결된다.

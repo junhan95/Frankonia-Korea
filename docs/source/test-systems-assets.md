@@ -25,8 +25,26 @@ WordPress가 `-1024x572` 같은 축소본을 마크업에 심어 두므로 **접
 | `system-cit-100.webp` | `2020/05/CIT-100-Proto-Perspektivisch-scaled.jpg` | 2560×975 | 1600×609 q84 | 62 KB | `product/system`, `test/conducted` |
 | `system-mts-800.webp` | `2017/08/MTS800.png` | 2438×1361 | 1400×782 q80 | 101 KB | `test/magnetic` 와이드, `product/system` 3열 |
 | `system-psg-300.webp` | `2017/08/PSG300.png` | 2438×964 | 1400×554 q80 | 94 KB | `product/system` 3열 |
+| `amplifier-rack.webp` | `amplifiers_web.pdf` p.18 (2019 Amplifier Selection Book) | 1592×2230 | 900×600 q80 | 86 KB | 랜딩 TEST SYSTEMS 카드 |
 
-12장, 합계 **약 0.9 MB** (챔버 브랜치는 28장 3.3 MB).
+13장, 합계 **약 1.0 MB** (챔버 브랜치는 28장 3.3 MB).
+
+### 앰프 사진만 웹이 아니라 PDF에서 나온 이유 (추가 2026-08-11)
+
+본사는 앰프 제품군을 **대역 × 모델명 매트릭스**로만 인쇄한다 — 표 17개가 전부고
+사진이 한 장도 없다 ([test-systems-source.md](test-systems-source.md) §앰프 참고).
+그래서 70종짜리 최대 제품군이 사이트 전체에서 유일하게 그림이 없는 제품군이었고,
+랜딩의 제품군 카드 여섯 장 중 한 장만 아이콘으로 남는 상황이 됐다.
+
+Amplifier Selection Book 18쪽에 랙 전면 사진이 한 장 있다 (CMYK JPX, 192 ppi).
+ECU 컨트롤 유닛 아래로 FLG-50F(2–6 GHz) · FLG-50A(0.8–2 GHz) · FLH-500B1
+(80 MHz–1 GHz)이 쌓인 컷이다. 3:2 카드 비율에 맞춰 두 장의 앰프 전면이 온전히
+들어오도록 잘랐다 (`extract` 0,812 → 1265×843 → 900×600).
+
+읽히는 것만 캡션·alt의 근거로 삼는 이 원장의 규칙대로, 사진에서 판독되는 것은
+모델명 세 개와 각 패널에 인쇄된 대역뿐이다. 랙 구성이나 출력은 사진에서 알 수 없고
+적지 않았다. FLH-500B1은 `testModels`에 없는 모델이다 — 사진 설명에 쓰지 않았으므로
+데이터에 넣을 이유도 없다.
 
 ### 세 장을 한 상자에 넣은 이유
 

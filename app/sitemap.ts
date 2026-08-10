@@ -1,11 +1,13 @@
 import type { MetadataRoute } from "next";
 import {
   chamberIndustries,
+  chamberModelSlugs,
   chamberTopics,
   chamberTypes,
   chambersPath,
   downloadsPath,
   industryPath,
+  modelPath,
   topicPath,
   typePath,
 } from "./chamber-sections";
@@ -83,6 +85,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...perLocale(chambersPath, lastModified, 0.9, "monthly"),
     ...chamberIndustries.flatMap((i) => perLocale(industryPath(i), lastModified, 0.7, "monthly")),
     ...chamberTypes.flatMap((t) => perLocale(typePath(t), lastModified, 0.7, "monthly")),
+    // Below the two index axes that lead to them, above the technology pages:
+    // a model page is what a reader who already knows the designation is
+    // looking for, but it is not a way into the range.
+    ...chamberModelSlugs.flatMap((s) => perLocale(modelPath(s), lastModified, 0.65, "monthly")),
     ...chamberTopics.flatMap((t) => perLocale(topicPath(t), lastModified, 0.6, "yearly")),
     // The test-system branch, ranked the same way: overview, then its two
     // index axes, then the standards index.

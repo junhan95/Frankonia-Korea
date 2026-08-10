@@ -455,11 +455,22 @@ section:where(:not(.cs *)) { padding: 120px 0; }
 .sol:hover h3 { color: var(--primary); }
 .alt .sol { background: var(--canvas); }
 .alt .sol:hover { background: var(--canvas-soft); }
-.sol .thumb { height: 170px; display: flex; align-items: center; justify-content: center; position: relative; }
-.sol .thumb svg { width: 76px; height: 76px; }
-.t1 { background: #25282b; }
-.t2 { background: #3a3e42; }
-.t3 { background: linear-gradient(135deg, #25282b, #bd0000); }
+/* The card's picture band. It carried a line icon on a flat colour tile until
+   the branches had photographs of their own; now it shows the thing itself,
+   the way the chamber and test-system rows below already do. The band is a
+   fixed height rather than an aspect ratio because the three cards sit in one
+   row and their bodies are what should decide the row's height — a ratio would
+   make the pictures grow with the column and push the copy down with them.
+   Fitting follows `.lc-shot`: photographs fill the band, product renders are
+   drawings on white with their own margins and are fitted whole against that
+   same white. */
+.sol .thumb { height: 200px; position: relative; overflow: hidden; background: var(--ink); }
+.sol .thumb img { display: block; width: 100%; height: 100%; }
+/* Scoped to `.sol` so they outweigh the two-class base rule above — otherwise
+   the ink fill wins on specificity and shows through the render's letterbox. */
+.sol .thumb--photo img { object-fit: cover; }
+.sol .thumb--render { background: #fff; }
+.sol .thumb--render img { object-fit: contain; }
 .sol .body { padding: 22px 26px 26px; flex: 1; display: flex; flex-direction: column; }
 .sol h3 { font-size: 20px; font-weight: 700; line-height: 1.25; margin: 0 0 12px; }
 .sol h3 .sub-label { color: var(--body-dark); font-weight: 500; font-size: 14px; }
@@ -476,6 +487,28 @@ section:where(:not(.cs *)) { padding: 120px 0; }
 .go:hover { border-bottom-color: var(--primary); color: var(--primary); }
 .go span { transition: transform .25s ease; }
 .go:hover span { transform: translate(3px, -3px); }
+/* The card is the link. `.sol` already lifted and turned its heading red on
+   hover, which is a promise of a click, but only the two words of the "read
+   more" link took one — the picture, the heading and the copy above it were
+   all dead. The chamber and test-system rows below solved this by making the
+   whole card an <a>; these cards cannot, because the "read more" link is
+   inside them and an anchor may not nest.
+
+   So the link stretches instead: an empty pseudo-element pinned to the card's
+   padding box. One real link, no nested anchors, and the accessible name still
+   comes from the link's own text. `.sol` is already `position: relative`, so
+   that is what the inset resolves against.
+
+   Paint order is why the picture is clickable too. `.thumb` is positioned and
+   comes first in the DOM; this overlay is positioned and comes last, so it
+   paints over the picture rather than under it. */
+.sol .go--card::after { content: ""; position: absolute; inset: 0; }
+/* The ring belongs on what Enter actually activates. Left on the link itself
+   it would draw a 2px outline around "자세히 보기" while the target is the
+   whole card — pointing at the wrong thing. */
+.sol:has(.go--card:focus-visible) { outline: 2px solid var(--red); outline-offset: 3px; }
+.sol .go--card:focus-visible { outline: none; }
+
 /* Closing link under a full-width card grid rather than inside a card. */
 .sec-go { margin-top: 36px; }
 /* MyChamber's "start again" is the same hairline link on a <button>. */
@@ -512,15 +545,17 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
 .lc-shot--photo img { object-fit: cover; }
 .lc-shot--render { background: #fff; }
 .lc-shot--render img { object-fit: contain; }
-/* Others has no picture at the head office (see the asset ledger). Rather than
-   leave a hole in the row, that card keeps the icon every card used to carry,
-   on the soft canvas — a plainer tile, not a broken one. */
-.lc-shot--icon { background: var(--canvas-soft); display: flex; align-items: center; justify-content: center; }
-.alt .lc:hover .lc-shot--icon { background: var(--canvas); }
-.lc .ic { width: 46px; height: 46px; border-radius: 8px; background: var(--ink); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
-/* Inside the band the icon is centred, so it carries no bottom margin. */
-.lc-shot .ic { margin-bottom: 0; }
-.lc .ic svg { width: 24px; height: 24px; }
+/* The test-system cards. Their pictures are instrument cut-outs on white,
+   nothing like a chamber photograph: the aspect ratios run from a 360×595
+   field probe to a 1600×669 switching unit, so they are fitted whole on the
+   same white ground and given room to breathe — cropping to 3:2 would take the
+   horn off an antenna. The inset is what makes the row read as one shelf of
+   instruments rather than six differently-scaled photographs. */
+.lc-shot--plate { background: #fff; padding: 16px 20px; }
+.lc-shot--plate img { object-fit: contain; }
+/* The icon tile these three rules drew is gone with the Others card: every card
+   in every line-grid on the site now carries a photograph, and the fallback had
+   no card left to fall back to. */
 .lc h4 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
 .lc p { font-size: 15px; line-height: 1.55; color: var(--body-dark); }
 .lc .models { margin-top: 12px; font-size: 13px; color: var(--mute); letter-spacing: .3px; }
@@ -580,7 +615,6 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
 .alt .bd:hover { background: var(--canvas-soft); }
 .bd b { display: block; font-size: 24px; font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
 .bd span { display: block; margin-top: 5px; font-size: 13px; line-height: 1.5; color: var(--body-text); }
-
 /* Figure — a photograph carried over from the head office site, framed like a
    card (`.lc`) so an image band sits on the same hairline grammar as the rest
    of the page. No shadow: depth here is surface contrast. */
@@ -588,6 +622,12 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
 .alt .figure { background: var(--canvas); }
 .figure img { display: block; width: 100%; height: auto; }
 .figure figcaption { padding: 14px 18px; font-size: 13px; line-height: 1.5; color: var(--body-text); border-top: 1px solid var(--line); }
+/* The head office aerial under the two trust columns. Full frame width, so it
+   opens more air above itself than a figure inside a prose column does — it is
+   closing the band, not illustrating the paragraph immediately above it. After
+   `.figure` rather than before: same specificity, and `.figure { margin: 0 }`
+   would otherwise win on source order and the plate would sit flush. */
+.trust-shot { margin-top: 72px; }
 
 /* Check columns — the source page's paired "stands for" / "provides" lists.
    Same hairline-per-row grammar as `.hairline-list`, with a primary check in
@@ -658,7 +698,7 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
 .figure-wide + .figure-row { margin-top: 20px; }
 
 /* Spec table — the catalogue's own configuration tables. Every chamber spread
-   prints one: a row per size or variant, its inner dimensions, and the
+   prints one: a row per size or variant, its external dimension, and the
    qualifier underneath (the quiet zone, the test distance, the load machine).
    `.hairline-list` cannot carry them, because a row here is three columns of
    figures rather than a name and a description — but the grammar is the same
@@ -952,6 +992,12 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
   .btns { align-items: stretch; flex-direction: column; gap: 12px; }
   .sol-grid, .line-grid, .line-grid.three { grid-template-columns: 1fr; }
   .badges, .badges-wide, .badges-four { grid-template-columns: 1fr; }
+  /* The band rhythm drops to 85px here, so the plate closing it follows. And
+     2.74:1 across an 18px-gutter frame is a 123px stripe — too short to read a
+     building in. Cropped to a band instead, the way `.mc-shot` is: the centre
+     56% of the aerial is the works itself, which is what the plate is for. */
+  .trust-shot { margin-top: 45px; }
+  .trust-shot img { height: 220px; object-fit: cover; }
   .check-cols { grid-template-columns: 1fr; gap: 50px; }
   .sub-head, .check-col h3 { font-size: 22px; }
   .value-grid, .figure-row { grid-template-columns: 1fr; }

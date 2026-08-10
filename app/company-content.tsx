@@ -1,3 +1,4 @@
+import { CheckColumn, CheckList } from "./page-parts";
 import PageShell from "./page-shell";
 import StructuredData from "./structured-data";
 import { sectionMeta, type CompanySection } from "./company-sections";
@@ -546,42 +547,6 @@ function EntryList({
           <h4>{text}</h4>
         </div>
       ))}
-    </div>
-  );
-}
-
-/** A checked list without the paired-column framing `CheckColumn` adds. */
-function CheckList({ items }: { items: readonly string[] }) {
-  return (
-    <ul className="check-list">
-      {items.map((item) => (
-        <li key={item}>
-          <svg className="chk" viewBox="0 0 16 16" aria-hidden="true">
-            <path d="M2 8.6l4 4 8-9.2" />
-          </svg>
-          {item}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-/** One "Frankonia stands for" / "Frankonia provides" column. The head is split
- *  so the predicate carries the weight, as it does on the source page. */
-function CheckColumn({
-  head: [lead, emphasis],
-  items,
-}: {
-  head: readonly [string, string];
-  items: readonly string[];
-}) {
-  return (
-    <div className="check-col">
-      <h3>
-        {lead}
-        <b>{emphasis}</b>
-      </h3>
-      <CheckList items={items} />
     </div>
   );
 }

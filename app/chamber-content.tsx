@@ -11,7 +11,11 @@ import {
   downloadsPath,
   industryBody,
   industryPath,
+  modelBody,
+  modelMeta,
+  modelPath,
   modelsByIndustry,
+  modelsBySlug,
   modelsByType,
   overviewBody,
   panoramaSize,
@@ -28,10 +32,11 @@ import {
   type ChamberModel,
   type ChamberTopic,
   type ChamberType,
+  type ModelBody,
   type TopicBody,
 } from "./chamber-sections";
 import { industryLabel } from "./industries";
-import { Groups, Lead, Tables } from "./page-parts";
+import { CheckColumn, Groups, Lead, Tables } from "./page-parts";
 import PageShell from "./page-shell";
 import StructuredData, { type TrailStep } from "./structured-data";
 import { asset, contactEmail, localeRoute, plural, type Lang } from "./site-config";
@@ -51,6 +56,9 @@ export type ChamberView =
   | { kind: "industry"; slug: ChamberIndustry }
   | { kind: "type"; slug: ChamberType }
   | { kind: "topic"; slug: ChamberTopic }
+  /** One model, by `ChamberModel.slug` — a string rather than a union because
+   *  the slugs are derived from the model list, not declared beside it. */
+  | { kind: "model"; slug: string }
   | { kind: "downloads" };
 
 const copy = {
@@ -71,6 +79,12 @@ const copy = {
      *  requirement is rarely exactly one of them — so the note ends on the
      *  next step rather than on where the numbers came from. */
     specsNote: "Frankonia 표준 사양 기준입니다. 설치 공간과 적용 규격에 따라 치수와 구성은 조정할 수 있으며, 상세 도면과 견적은 문의해 주시면 안내해 드립니다.",
+    /** Model pages cite the catalogue by name — an index page draws on several
+     *  spreads, a model page on exactly one, and a reader comparing figures
+     *  should know which document they are comparing against. */
+    modelSpecsNote: "2026 Anechoic Chambers 카탈로그의 구성표입니다. 치수는 외형 기준이며, 설치 공간과 적용 규격에 맞춰 조정할 수 있습니다.",
+    overview: "한눈에",
+    standardsKicker: "적용 규격",
     stubTitle: "자료를 보내 드립니다",
     stubBody:
       "이 항목의 상세 자료는 요청하시면 바로 보내 드립니다. 필요한 사양·도면·적용 규격을 알려 주시면 담당 엔지니어가 검토해 회신드립니다.",
@@ -92,6 +106,10 @@ const copy = {
       `${plural(entries, "entry", "entries")} · ${plural(countries, "country", "countries")}`,
     specsNote:
       "Frankonia standard configurations. Dimensions and layout can be adapted to your site and to the standards you test against — contact us for a drawing and a quotation.",
+    modelSpecsNote:
+      "The configuration table from the 2026 Anechoic Chambers catalogue. Dimensions are external, and both size and layout can be adapted to your site and to the standards you test against.",
+    overview: "At a glance",
+    standardsKicker: "Standards",
     stubTitle: "Documents on request",
     stubBody:
       "Tell us which specification, drawing or standard you need for this, and an engineer will go through it and come back to you.",
@@ -118,16 +136,43 @@ export default function ChamberPage({ lang, view }: { lang: Lang; view: ChamberV
 
   if (body) bands.push({ key: "lead", node: <Lead body={body} /> });
   if (view.kind === "overview") bands.push({ key: "axes", node: <Axes lang={lang} /> });
-  if (models.length > 0) bands.push({ key: "models", node: <Models lang={lang} models={models} /> });
+  // The summary strip sits directly under the lead: it is what a reader checks
+  // before deciding whether the rest of the page is about their problem.
+  if (body && "overview" in body && body.overview) {
+    bands.push({ key: "overview", node: <Overview lang={lang} items={body.overview} /> });
+  }
+  // A model page does not list itself. The RVC page is the exception the
+  // condition is written for — seven models under one slug, and the reader
+  // arriving from "RVC XL" needs to see which row is theirs.
+  if (models.length > 1 || view.kind !== "model") {
+    if (models.length > 0) bands.push({ key: "models", node: <Models lang={lang} models={models} /> });
+  }
   if (body?.tables?.length) {
     bands.push({
       key: "tables",
-      node: <Tables tables={body.tables} kicker={t.specs} title={t.specsTitle} note={t.specsNote} />,
+      node: (
+        <Tables
+          tables={body.tables}
+          kicker={t.specs}
+          title={t.specsTitle}
+          note={view.kind === "model" ? t.modelSpecsNote : t.specsNote}
+        />
+      ),
     });
   }
+  if (body && "standards" in body && body.standards) {
+    bands.push({ key: "standards", node: <Standards lang={lang} groups={body.standards} /> });
+  }
   if (body && body.groups.length > 0) bands.push({ key: "groups", node: <Groups body={body} /> });
-  if (body?.panoramas) bands.push({ key: "panoramas", node: <Panoramas panoramas={body.panoramas} /> });
-  if (body?.references) bands.push({ key: "references", node: <References lang={lang} references={body.references} /> });
+  // `in` rather than `?.`: the two body shapes add different optional bands to
+  // `PageBody`, so the union has neither property in common — narrowing is what
+  // says "this one is a topic body" without a cast.
+  if (body && "panoramas" in body && body.panoramas) {
+    bands.push({ key: "panoramas", node: <Panoramas panoramas={body.panoramas} /> });
+  }
+  if (body && "references" in body && body.references) {
+    bands.push({ key: "references", node: <References lang={lang} references={body.references} /> });
+  }
   if (!body) bands.push({ key: "stub", node: <Stub lang={lang} label={label} /> });
 
   return (
@@ -194,7 +239,50 @@ function Models({ lang, models }: { lang: Lang; models: readonly ChamberModel[] 
         <span className="kicker">{t.models}</span>
         <h2>{t.modelsTitle(models.length)}</h2>
       </div>
-      <ModelList models={models} />
+      <ModelList lang={lang} models={models} />
+    </>
+  );
+}
+
+/** The head office's Overview strip. Badges rather than a table: four to six
+ *  pairs summarising the page, not measurements to compare row by row. The
+ *  four-up variant already exists for the landing page's figures. */
+function Overview({ lang, items }: { lang: Lang; items: NonNullable<ModelBody["overview"]> }) {
+  return (
+    <>
+      <div className="sec-head">
+        <h2>{copy[lang].overview}</h2>
+      </div>
+      <div className={items.length === 4 ? "badges-four" : "badges-wide"}>
+        {items.map((item) => (
+          <div className="bd" key={item.label}>
+            <b>{item.value}</b>
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+/** Typical Product and Verification Standards, in the head office's own
+ *  pairing: emission on the left, immunity on the right. */
+function Standards({ lang, groups }: { lang: Lang; groups: NonNullable<ModelBody["standards"]> }) {
+  return (
+    <>
+      {groups.map((group, i) => (
+        <div key={group.title} style={i > 0 ? { marginTop: "56px" } : undefined}>
+          <div className="sec-head">
+            {i === 0 && <span className="kicker">{copy[lang].standardsKicker}</span>}
+            <h2>{group.title}</h2>
+          </div>
+          <div className="check-cols">
+            {group.columns.map((column) => (
+              <CheckColumn key={column.head} head={column.head} items={column.items} />
+            ))}
+          </div>
+        </div>
+      ))}
     </>
   );
 }
@@ -284,13 +372,21 @@ function Stub({ lang, label }: { lang: Lang; label: string }) {
   );
 }
 
-/** Model names stay in the head office's spelling — see the note on
- *  ChamberModel. Not links: the model pages do not exist yet. */
-function ModelList({ models }: { models: readonly ChamberModel[] }) {
+/**
+ * Model names stay in the head office's spelling — see the note on
+ * ChamberModel.
+ *
+ * Each row links to its model page. `lang` is threaded down for that: the row
+ * is the only place on an index page where a reader can get from a designation
+ * to the figures behind it, and until the model pages existed it went nowhere.
+ * The seven reverberation chambers all point at the same page, which is where
+ * both sources tabulate them together.
+ */
+function ModelList({ lang, models }: { lang: Lang; models: readonly ChamberModel[] }) {
   return (
     <div className="hairline-list">
       {models.map((model, i) => (
-        <div className="hl-row" key={model.name}>
+        <a className="hl-row" key={model.name} href={localeRoute(lang, modelPath(model.slug))}>
           <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
           <b>{model.name}</b>
           <span className="hl-desc">
@@ -309,7 +405,7 @@ function ModelList({ models }: { models: readonly ChamberModel[] }) {
               </span>
             )}
           </span>
-        </div>
+        </a>
       ))}
     </div>
   );
@@ -322,7 +418,10 @@ function resolve(lang: Lang, view: ChamberView): {
   path: string;
   trail: TrailStep[];
   models: readonly ChamberModel[];
-  body?: TopicBody;
+  /** A union rather than a common supertype: the two shapes add different
+   *  optional bands to `PageBody`, and the band list narrows with `in` before
+   *  it reads either. */
+  body?: TopicBody | ModelBody;
 } {
   const chambers = chambersOverviewMeta[lang];
   const root: TrailStep = { name: chambers.label, path: chambersPath };
@@ -376,6 +475,25 @@ function resolve(lang: Lang, view: ChamberView): {
         trail: [root, { name: label, path }],
         models: [],
         body: topicBody[lang][view.slug],
+      };
+    }
+    case "model": {
+      const { label, description } = modelMeta[lang][view.slug];
+      const path = modelPath(view.slug);
+      const models = modelsBySlug(view.slug);
+      // Three steps, not two: the model's own chamber type is the way back to
+      // its siblings, and a reader who arrived from a search result has no
+      // other route to them. Every model under one slug shares a type, so the
+      // first is as good as any.
+      const type = models[0].type;
+      return {
+        label,
+        title: label,
+        description,
+        path,
+        trail: [root, { name: typeMeta[lang][type].label, path: typePath(type) }, { name: label, path }],
+        models,
+        body: modelBody[lang][view.slug],
       };
     }
     case "downloads": {

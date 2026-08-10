@@ -137,6 +137,59 @@ function Cell({ text }: { text: string }) {
   );
 }
 
+/**
+ * A checked list, and the paired-column framing over it.
+ *
+ * Moved here from company-content.tsx when the chamber model pages needed the
+ * same two columns for the head office's Typical Product Standards — emission
+ * on one side, immunity on the other, which is exactly the shape the philosophy
+ * page already had.
+ *
+ * The tick is a different glyph from the one `Groups` draws below. They were
+ * authored separately and both are in production; making them one is a visual
+ * change to the company pages, which is a design decision and not part of
+ * moving a component. Left as found.
+ */
+export function CheckList({ items }: { items: readonly string[] }) {
+  return (
+    <ul className="check-list">
+      {items.map((item) => (
+        <li key={item}>
+          <svg className="chk" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M2 8.6l4 4 8-9.2" />
+          </svg>
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/**
+ * One column of a checked pair.
+ *
+ * `head` takes a tuple where the source splits the heading and puts the weight
+ * on the second half — "Frankonia **stands for**" — and a plain string where it
+ * does not. The standards lists are one word each ("Emission", "Immunity"),
+ * and a tuple of `["", "Emission"]` would be a worse way to say that.
+ */
+export function CheckColumn({
+  head,
+  items,
+}: {
+  head: string | readonly [string, string];
+  items: readonly string[];
+}) {
+  return (
+    <div className="check-col">
+      <h3>
+        {typeof head === "string" ? <b>{head}</b> : <>{head[0]}<b>{head[1]}</b></>}
+      </h3>
+      <CheckList items={items} />
+    </div>
+  );
+}
+
 /** The source's own titled groups as check lists, then its closing line. */
 export function Groups({ body }: { body: PageBody }) {
   return (
