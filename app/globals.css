@@ -122,12 +122,17 @@ nav.menu .mi > a { display: inline-flex; align-items: center; gap: 5px; }
 .dd-panel a { display: block; padding: 9px 18px; color: #c9c9c9; font-size: 13.5px; font-weight: 400; border-bottom: 0; border-left: 2px solid transparent; }
 .dd-panel a:hover { color: #fff; border-left-color: var(--red); background: rgba(255, 255, 255, .05); border-bottom: 0; }
 
-/* Mega panel — Chambers only. Fifteen links in one 216px column would not be
-   scannable, so they are grouped into three titled columns of four to six.
-   The panel keeps the single-column panel's ink fill, hairline and hover rule;
-   only the width and the internal grid are new. It stays centred under its own
-   menu item (`.dropdown` does that) rather than aligning to the header, which
-   would mean restructuring the bar for one menu. */
+/* Mega panel — the two product branches. Fifteen links in one 216px column
+   would not be scannable, so they are grouped into titled columns of four to
+   six. The panel keeps the single-column panel's ink fill, hairline and hover
+   rule; only the width and the internal grid are new. */
+/* The column count is not fixed here: Chambers takes three, Test Systems two,
+   and `site-header` sets `--dd-cols` from the length of the group list it is
+   already mapping over. A panel wide enough for three with only two in it
+   leaves a column of empty ink, which reads as a broken menu rather than as a
+   short one — and the count is a property of the data, so the data is what
+   states it. 243.33px is one column plus one 10px gap; the +30 is the row's
+   40px of side padding less the gap the last column does not have. */
 /* A 760px panel cannot be centred under its own item without hanging off one
    edge of the window: Chambers sits too far left, Test Systems too far right.
    Dropping the item out of the positioning flow hands the panel to nav.menu,
@@ -136,8 +141,8 @@ nav.menu .mi > a { display: inline-flex; align-items: center; gap: 5px; }
    own item, which is right for their width. */
 /* Selector matches `nav.menu .mi` above so it can override its position. */
 nav.menu .mi:has(.dd-panel--mega) { position: static; }
-.dd-panel--mega { width: 760px; max-width: calc(100vw - 48px); padding: 20px 0 0; }
-.dd-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 10px; padding: 0 20px 16px; }
+.dd-panel--mega { --dd-cols: 3; width: calc(var(--dd-cols) * 243.33px + 30px); max-width: calc(100vw - 48px); padding: 20px 0 0; }
+.dd-cols { display: grid; grid-template-columns: repeat(var(--dd-cols), 1fr); gap: 0 10px; padding: 0 20px 16px; }
 /* Same voice as the `.kicker` above every section heading on the site. */
 .dd-col h6 { color: var(--primary); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 0 10px 8px; }
 .dd-panel--mega a { padding: 7px 10px; line-height: 1.35; }

@@ -7,10 +7,13 @@ import type { Lang } from "./site-config";
  * The head office keeps these two apart: chambers are filtered by industry,
  * test systems by standard, and nothing crosses between them. But a customer
  * building an automotive EMC laboratory buys both, and the standards that
- * define their work — CISPR 25, ISO 11452 — are the same on either side. One
- * slug set means /chambers/industry/automotive and
- * /test-systems/industry/automotive can point at each other, which is the
- * whole reason for sharing rather than for tidiness.
+ * define their work — CISPR 25, ISO 11452 — are the same on either side.
+ *
+ * Only the chamber branch has industry routes; test systems dropped theirs
+ * because an industry page there could only reprint one heading of the
+ * standards index. The shared slug set still earns its keep: it is what lets
+ * each industry group on /test-systems/standards link straight to
+ * /chambers/industry/<same slug>, and what keeps one label set for both.
  */
 export const industries = [
   "automotive",

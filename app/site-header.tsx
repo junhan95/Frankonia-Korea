@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import {
   chamberIndustries,
   chamberIndustryMeta,
@@ -24,9 +25,6 @@ import {
   testCategories,
   testCategoryMeta,
   testCategoryPath,
-  testIndustries,
-  testIndustryMeta,
-  testIndustryPath,
   testModels,
   testNavCopy,
   testProductMeta,
@@ -103,22 +101,17 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     { label: t.navSubs.contact.catalog, href: localeRoute(lang, downloadsPath) },
   ];
 
-  // Test Systems takes the same three-column shape, and its first column is
-  // the same five industries as Chambers — an automotive customer buys from
-  // both branches and should not have to learn a second taxonomy to do it.
-  // The head office sorts test systems by standard instead; every one of those
-  // standards belongs to an industry, so the standard axis folds into this one
-  // and keeps its own index in the utility row below.
+  // Test Systems takes two columns, not the chamber branch's three. It carried
+  // an industry column to begin with, on the reasoning that an automotive
+  // customer buys from both branches and should not have to learn a second
+  // taxonomy — but an industry page here could only ever list that industry's
+  // standards, which is the slice of the standards index that the standards
+  // index already prints under the same heading. The axis was a second door
+  // into one room. Industry survives as the grouping *inside* that index, and
+  // the two axes left are the ones that describe instruments rather than
+  // buyers: what the test is, and what the equipment is.
   const tn = testNavCopy[lang];
   const testGroups: NavGroup[] = [
-    {
-      title: tn.byIndustry,
-      links: testIndustries.map((i) => ({
-        label: industryLabel[lang][i],
-        href: localeRoute(lang, testIndustryPath(i)),
-        note: testIndustryMeta[lang][i].note,
-      })),
-    },
     {
       title: tn.byTest,
       links: testCategories.map((c) => ({
@@ -214,7 +207,13 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
                   {hasMenu(section) && (
                     <div className="dropdown">
                       {section.groups ? (
-                        <div className="dd-panel dd-panel--mega">
+                        /* The panel sizes itself from the column count rather
+                           than from a width per branch — see the note on
+                           `--dd-cols` in globals.css. */
+                        <div
+                          className="dd-panel dd-panel--mega"
+                          style={{ "--dd-cols": section.groups.length } as CSSProperties}
+                        >
                           <div className="dd-cols">
                             {section.groups.map((group) => (
                               <div className="dd-col" key={group.title}>

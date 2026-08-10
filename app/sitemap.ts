@@ -10,13 +10,11 @@ import {
   typePath,
 } from "./chamber-sections";
 import { companySections, sectionPath } from "./company-sections";
-import { industries } from "./industries";
 import { legalPath, legalSections } from "./legal-sections";
 import { mychamberPath } from "./mychamber-sections";
 import {
   testCategories,
   testCategoryPath,
-  testIndustryPath,
   testProductPath,
   testProducts,
   testStandardsPath,
@@ -86,10 +84,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...chamberIndustries.flatMap((i) => perLocale(industryPath(i), lastModified, 0.7, "monthly")),
     ...chamberTypes.flatMap((t) => perLocale(typePath(t), lastModified, 0.7, "monthly")),
     ...chamberTopics.flatMap((t) => perLocale(topicPath(t), lastModified, 0.6, "yearly")),
-    // The test-system branch, ranked the same way: overview, then its three
+    // The test-system branch, ranked the same way: overview, then its two
     // index axes, then the standards index.
     ...perLocale(testSystemsPath, lastModified, 0.9, "monthly"),
-    ...industries.flatMap((i) => perLocale(testIndustryPath(i), lastModified, 0.7, "monthly")),
     ...testCategories.flatMap((c) => perLocale(testCategoryPath(c), lastModified, 0.7, "monthly")),
     ...testProducts.flatMap((p) => perLocale(testProductPath(p), lastModified, 0.7, "monthly")),
     ...perLocale(testStandardsPath, lastModified, 0.6, "yearly"),
