@@ -324,7 +324,7 @@ export const topicMeta = {
     frankosorb: {
       label: "Frankosorb® 흡수체",
       description:
-        "Frankonia가 30년간 자체 개발한 Frankosorb® 흡수체 — 피라미드·하이브리드·HF 시리즈, 26MHz~40GHz, A2 불연 등급.",
+        "Frankonia 자체 개발 Frankosorb® 나노 박막 흡수체 — 피라미드·하이브리드 시리즈, 26MHz~40GHz, DIN EN 13501-1 A2 불연 등급, 35년 이상 무결함 가동.",
     },
     "shielding-gates": {
       label: "차폐·도어",
@@ -351,7 +351,7 @@ export const topicMeta = {
     frankosorb: {
       label: "Frankosorb® Absorbers",
       description:
-        "Frankosorb® absorbers, developed in-house over 30 years — pyramid, hybrid and HF series, 26 MHz to 40 GHz, class A2 non-combustible.",
+        "Frankonia's own Frankosorb® nano thin-film absorbers — pyramid and hybrid series, 26 MHz to 40 GHz, DIN EN 13501-1 class A2 non-combustible, and more than 35 years in service without a defect.",
     },
     "shielding-gates": {
       label: "Shielding & Gates",
@@ -436,3 +436,111 @@ export const topicPath = (t: ChamberTopic) => `/chambers/${t}`;
  * used to land.
  */
 export const downloadsPath = "/downloads";
+
+/**
+ * Page copy for the technology topics, carried over from the 2026 catalogue.
+ *
+ * These four pages have no model list, so the prose is the page. A topic with
+ * a body renders it and drops the "content in preparation" band; a topic
+ * without one is unchanged. That is the same rule `spec` follows — the data
+ * arrives a page at a time and nothing pretends otherwise.
+ *
+ * Absorber designations (P600, H1300 Turbine), standard numbers and the
+ * figures beside them are not translated: they are what a reader matches
+ * against a drawing and a quotation.
+ */
+export type TopicBody = {
+  lead: readonly string[];
+  groups: readonly { title: string; items: readonly string[] }[];
+  close?: string;
+  /** Decorative band under the lead. The heading above it already says what
+   *  the page is about, so it carries no alt text of its own. */
+  figure?: { src: string; w: number; h: number };
+};
+
+export const topicBody: Record<Lang, Partial<Record<ChamberTopic, TopicBody>>> = {
+  en: {
+    frankosorb: {
+      lead: [
+        "Since Frankonia's Frankosorb® nano thin-film absorber technology started to conquer the world market, more and more customers have come to appreciate its stable performance characteristics. Frankosorb® convinces with more than 35 years of operation without malfunction, defect, quality or performance loss, and without the need to refurbish.",
+        "The technology is available either as a hybrid solution in combination with ferrite absorbers, or as a stand-alone pyramid solution with a length of up to 2.4 m. The most important advantage of the long-pyramid absorbers is that they cover the whole frequency range from 26 MHz up to 40 GHz on their own, so additional ferrite absorbers become unnecessary — a pure cost saver.",
+      ],
+      figure: { src: "/chambers/images/topic-frankosorb.webp", w: 1280, h: 533 },
+      groups: [
+        { title: "Pyramid (P) series", items: [
+          "Short-pyramid absorbers from 80 MHz to 18/40 GHz: P600 or P900",
+          "Long-pyramid absorbers from 26 MHz to 18/40 GHz: P2000, P2200 or P2400",
+        ] },
+        { title: "Hybrid (H) series", items: [
+          "Ferrite absorbers from 30 MHz to 1 GHz",
+          "Hybrid absorbers from 30 MHz to 18/40 GHz: H450, H600 or H1000",
+          "Performance hybrid absorber from 30 MHz to 18/40 GHz: H1300 Turbine",
+        ] },
+        { title: "Unique features", items: [
+          "High absorption capability paired with a fast cooling feature (hollow absorber)",
+          "A manufacturing process that guarantees identical performance",
+          "No ageing or drooping, no loss of performance — proven stability for more than 35 years",
+          "White colouring improves the illumination level, so no covers are necessary",
+          "Equal performance for hybrid and long-pyramid absorbers",
+          "Compliant with all existing verification standards, including magnetic field standards",
+        ] },
+        { title: "People safety and laboratory protection", items: [
+          "Non-combustible absorbers to DIN EN 13501-1 class A2 - s1 d0, handling up to 1 kW/m² or 600 V/m continuous and 2.0 kW/m² or 850 V/m intermediate",
+          "Hardly inflammable absorbers to DIN EN 13501-1 class B as the alternative, handling up to 0.9 kW/m² or 550 V/m continuous and 1.8 kW/m² or 800 V/m intermediate",
+          "With the non-combustible absorbers no sprinkler or fire extinguishing system is necessary",
+        ] },
+        { title: "Eco and user-friendliness", items: [
+          "No toxic gases emitted if an absorber heats up",
+          "No dirt, no carbon dust, solvent-free, and free of glue or other harmful substances",
+          "Recyclable at 99%",
+          "Non-hygroscopic materials, so humidity- and temperature-proof",
+          "Clean room classification to ISO 14644-1",
+          "Easy to clean and washable, with a virus and bacteria resistant surface",
+        ] },
+      ],
+      close: "The Frankosorb® absorber technology remains the number one choice when it comes to long-term performance paired with its unique non-combustibility.",
+    },
+  },
+  ko: {
+    frankosorb: {
+      lead: [
+        "Frankonia의 Frankosorb® 나노 박막 흡수체 기술이 세계 시장에 자리 잡은 이래, 안정적인 성능 특성을 평가하는 고객이 계속 늘고 있습니다. Frankosorb®는 35년 이상 가동하는 동안 오작동·결함·품질 저하·성능 손실이 없었고, 교체 보수도 필요하지 않았습니다.",
+        "이 기술은 페라이트 흡수체와 결합한 하이브리드 방식으로도, 길이 2.4m까지의 단독 피라미드 방식으로도 제공됩니다. 장피라미드 흡수체의 가장 큰 장점은 26MHz~40GHz 전 대역을 단독으로 커버한다는 점입니다 — 페라이트 흡수체를 따로 두지 않아도 되므로 그 자체가 비용 절감입니다.",
+      ],
+      figure: { src: "/chambers/images/topic-frankosorb.webp", w: 1280, h: 533 },
+      groups: [
+        { title: "피라미드(P) 시리즈", items: [
+          "단피라미드 흡수체 80MHz~18/40GHz: P600, P900",
+          "장피라미드 흡수체 26MHz~18/40GHz: P2000, P2200, P2400",
+        ] },
+        { title: "하이브리드(H) 시리즈", items: [
+          "페라이트 흡수체 30MHz~1GHz",
+          "하이브리드 흡수체 30MHz~18/40GHz: H450, H600, H1000",
+          "고성능 하이브리드 흡수체 30MHz~18/40GHz: H1300 Turbine",
+        ] },
+        { title: "고유 특성", items: [
+          "높은 흡수 성능과 빠른 방열(중공 구조)을 함께 확보",
+          "동일한 성능을 보장하는 제조 공정",
+          "노화·처짐 없음, 성능 저하 없음 — 35년 이상 입증된 장기 안정성",
+          "흰색 마감으로 조도가 개선되어 별도 커버가 불필요",
+          "하이브리드와 장피라미드 흡수체가 동등한 성능",
+          "자기장 규격을 포함한 모든 현행 검증 규격에 적합",
+        ] },
+        { title: "인체 안전과 시험실 보호", items: [
+          "DIN EN 13501-1 A2 - s1 d0 불연 흡수체 — 연속 1kW/m²·600V/m, 중간 출력 2.0kW/m²·850V/m까지 대응",
+          "대안으로 DIN EN 13501-1 class B 난연 흡수체 — 연속 0.9kW/m²·550V/m, 중간 출력 1.8kW/m²·800V/m까지 대응",
+          "불연 흡수체를 쓰면 스프링클러나 소화 설비를 두지 않아도 됩니다",
+        ] },
+        { title: "환경과 사용성", items: [
+          "흡수체가 가열되어도 유독 가스가 발생하지 않음",
+          "분진·카본 더스트 없음, 무용제, 접착제 및 유해 물질 없음",
+          "99% 재활용 가능",
+          "비흡습성 소재로 습도·온도 변화에 강함",
+          "ISO 14644-1 클린룸 등급",
+          "세척이 쉽고 물청소 가능, 바이러스·세균에 강한 표면",
+        ] },
+      ],
+      close: "장기 성능과 고유의 불연 특성을 함께 요구할 때, Frankosorb® 흡수체 기술은 여전히 첫 번째 선택지입니다.",
+    },
+  },
+};

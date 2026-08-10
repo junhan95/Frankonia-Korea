@@ -10,6 +10,7 @@ import {
   industryPath,
   modelsByIndustry,
   modelsByType,
+  topicBody,
   topicMeta,
   topicPath,
   typeMeta,
@@ -18,11 +19,12 @@ import {
   type ChamberModel,
   type ChamberTopic,
   type ChamberType,
+  type TopicBody,
 } from "./chamber-sections";
 import { industryLabel } from "./industries";
 import PageShell from "./page-shell";
 import StructuredData, { type TrailStep } from "./structured-data";
-import { contactEmail, localeRoute, plural, type Lang } from "./site-config";
+import { asset, contactEmail, localeRoute, plural, type Lang } from "./site-config";
 
 /**
  * Every page in the Anechoic Chambers branch, plus the downloads hub.
@@ -76,7 +78,7 @@ const copy = {
 
 export default function ChamberPage({ lang, view }: { lang: Lang; view: ChamberView }) {
   const t = copy[lang];
-  const { label, title, description, path, trail, models } = resolve(lang, view);
+  const { label, title, description, path, trail, models, body } = resolve(lang, view);
 
   return (
     <>
@@ -88,6 +90,8 @@ export default function ChamberPage({ lang, view }: { lang: Lang; view: ChamberV
         intro={description}
       >
         {view.kind === "overview" && <Axes lang={lang} />}
+
+        {body && <TopicBodyView body={body} />}
 
         {models.length > 0 && (
           <section>
@@ -101,6 +105,7 @@ export default function ChamberPage({ lang, view }: { lang: Lang; view: ChamberV
           </section>
         )}
 
+        {!body && (
         <section className={models.length > 0 || view.kind === "overview" ? "alt" : undefined}>
           <div className="wrap">
             <div className="empty">
@@ -115,6 +120,7 @@ export default function ChamberPage({ lang, view }: { lang: Lang; view: ChamberV
             </div>
           </div>
         </section>
+        )}
       </PageShell>
     </>
   );
@@ -159,6 +165,51 @@ function Axes({ lang }: { lang: Lang }) {
   );
 }
 
+/** A technology topic's page copy: lead paragraphs, then the catalogue's own
+ *  titled groups as check lists, then its closing line. Nothing here is a
+ *  component this site did not already have — the company pages established
+ *  `.prose`, `.check-list` and `.figure-wide`. */
+function TopicBodyView({ body }: { body: TopicBody }) {
+  return (
+    <>
+      <section>
+        <div className="wrap">
+          <div className="prose">
+            {body.lead.map((p) => <p key={p}>{p}</p>)}
+          </div>
+          {body.figure && (
+            <figure className="figure figure-wide" style={{ marginTop: "44px" }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={asset(body.figure.src)} alt="" width={body.figure.w} height={body.figure.h} loading="lazy" decoding="async" />
+            </figure>
+          )}
+        </div>
+      </section>
+
+      <section className="alt">
+        <div className="wrap">
+          {body.groups.map((group, i) => (
+            <div key={group.title} style={i > 0 ? { marginTop: "56px" } : undefined}>
+              <div className="sec-head">
+                <h2>{group.title}</h2>
+              </div>
+              <ul className="check-list">
+                {group.items.map((item) => (
+                  <li key={item}>
+                    <svg className="chk" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5" /></svg>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          {body.close && <p className="callout">{body.close}</p>}
+        </div>
+      </section>
+    </>
+  );
+}
+
 /** Model names stay in the head office's spelling — see the note on
  *  ChamberModel. Not links: the model pages do not exist yet. */
 function ModelList({ models }: { models: readonly ChamberModel[] }) {
@@ -197,6 +248,7 @@ function resolve(lang: Lang, view: ChamberView): {
   path: string;
   trail: TrailStep[];
   models: readonly ChamberModel[];
+  body?: TopicBody;
 } {
   const chambers = chambersOverviewMeta[lang];
   const root: TrailStep = { name: chambers.label, path: chambersPath };
@@ -246,6 +298,7 @@ function resolve(lang: Lang, view: ChamberView): {
         path,
         trail: [root, { name: label, path }],
         models: [],
+        body: topicBody[lang][view.slug],
       };
     }
     case "downloads": {
