@@ -16,6 +16,7 @@ import {
   typePath,
 } from "./chamber-sections";
 import { companySections, sectionMeta, sectionPath } from "./company-sections";
+import { contactPath } from "./contact-sections";
 import { industryLabel } from "./industries";
 import LangSwitch from "./lang-switch";
 import { mychamberMeta, mychamberPath } from "./mychamber-sections";
@@ -43,8 +44,9 @@ import { asset, localeRoute, type Lang } from "./site-config";
  * the browser are separate files and import none of this: NavDrawer holds the
  * open/closed state, LangSwitch needs to know the current path.
  *
- * `home` anchors resolve against the locale's landing page so the nav works
- * from any route. Dropdown targets map 1:1 to the routes planned in
+ * `home` is the locale's landing page, which the lockup links to. Nothing in
+ * the bar points at an anchor any more: Contact was the last one, and it is a
+ * page now. Dropdown targets map 1:1 to the routes planned in
  * docs/FRANKONIA-WEB-PLAN.md (§2).
  */
 export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
@@ -151,10 +153,14 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     // content is rendered inside this chrome instead. See cybershield-content.
     { label: t.nav.cyber, href: localeRoute(lang, "/cybershield") },
     {
+      // A page now, not an anchor. Every entry point here used to scroll the
+      // landing page to its closing band, which offered one mail address and
+      // the German switchboard; the page it points at instead carries all five
+      // offices, the Korean one included.
       label: t.nav.contact,
-      href: `${home}#contact`,
+      href: localeRoute(lang, contactPath),
       items: [
-        { label: t.navSubs.contact.quote, href: `${home}#contact` },
+        { label: t.navSubs.contact.quote, href: localeRoute(lang, contactPath) },
         // Catalogues live in the downloads hub — not on Publications, which
         // holds the research papers.
         { label: t.navSubs.contact.catalog, href: localeRoute(lang, downloadsPath) },
@@ -250,7 +256,7 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
 
             <LangSwitch lang={lang} />
 
-            <a className="cta-top" href={`${home}#contact`}>{t.nav.cta}</a>
+            <a className="cta-top" href={localeRoute(lang, contactPath)}>{t.nav.cta}</a>
           </>
         }
       >
@@ -289,7 +295,7 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
               )}
             </div>
           ))}
-          <a className="btn btn-red mm-cta" href={`${home}#contact`}>{t.nav.cta}</a>
+          <a className="btn btn-red mm-cta" href={localeRoute(lang, contactPath)}>{t.nav.cta}</a>
         </div>
       </NavDrawer>
     </header>

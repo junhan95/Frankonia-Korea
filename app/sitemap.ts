@@ -12,6 +12,7 @@ import {
   typePath,
 } from "./chamber-sections";
 import { companySections, sectionPath } from "./company-sections";
+import { contactPath } from "./contact-sections";
 import { legalPath, legalSections } from "./legal-sections";
 import { mychamberPath } from "./mychamber-sections";
 import {
@@ -97,6 +98,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...testProducts.flatMap((p) => perLocale(testProductPath(p), lastModified, 0.7, "monthly")),
     ...perLocale(testStandardsPath, lastModified, 0.6, "yearly"),
     ...perLocale(downloadsPath, lastModified, 0.5, "yearly"),
+    // With the branch overviews rather than below them: every CTA in the
+    // header, the footer and the closing band of all 86 pages leads here, and
+    // it is the page a reader arrives at ready to act.
+    ...perLocale(contactPath, lastModified, 0.9, "monthly"),
     // Lowest priority of anything on the site, but listed: these are the two
     // pages a regulator or a reader looks for by name, and leaving them out of
     // the sitemap would be the one place they are hard to find.

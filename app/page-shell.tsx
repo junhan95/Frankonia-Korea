@@ -1,7 +1,8 @@
 import SiteHeader from "./site-header";
 import SiteFooter from "./site-footer";
+import ContactBand from "./contact-band";
 import { headerCopy } from "./landing";
-import { contactEmail, localeRoute, type Lang } from "./site-config";
+import type { Lang } from "./site-config";
 
 /**
  * Chrome for every page that is not the landing page: header, a compact dark
@@ -14,16 +15,18 @@ export default function PageShell({
   eyebrow,
   title,
   intro,
+  bandActions,
   children,
 }: {
   lang: Lang;
   eyebrow: string;
   title: React.ReactNode;
   intro?: string;
+  /** Replaces the closing band's two buttons. Only the contact page needs it. */
+  bandActions?: React.ReactNode;
   children: React.ReactNode;
 }) {
   const t = headerCopy(lang);
-  const home = localeRoute(lang);
 
   return (
     <>
@@ -40,14 +43,7 @@ export default function PageShell({
 
         {children}
 
-        <div className="band" id="contact">
-          <h2>{t.ctH}</h2>
-          <p>{t.ctP}</p>
-          <div className="btns">
-            <a className="btn btn-red" href={`mailto:${contactEmail}`}>{t.ctB1}</a>
-            <a className="btn btn-ghost" href={`${home}#solutions`}>{t.heroB1}</a>
-          </div>
-        </div>
+        <ContactBand lang={lang} t={t} actions={bandActions} />
       </main>
 
       <SiteFooter lang={lang} t={t} />

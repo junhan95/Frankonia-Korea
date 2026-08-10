@@ -4,13 +4,9 @@ import {
   testProductPath,
   testSystemsPath,
 } from "./test-system-sections";
-import {
-  asset,
-  contactEmail,
-  contactPhoneHref,
-  localeRoute,
-  type Lang,
-} from "./site-config";
+import { contactPath } from "./contact-sections";
+import { asset, localeRoute, type Lang } from "./site-config";
+import ContactBand, { type BandCopy } from "./contact-band";
 import SiteHeader, { type HeaderCopy } from "./site-header";
 import SiteFooter, { type FooterCopy } from "./site-footer";
 import StructuredData from "./structured-data";
@@ -116,10 +112,19 @@ const copy = {
     trShotAlt: "독일 하이데크의 Frankonia 본사와 생산 시설 항공 전경. 붉은 테두리의 흰 건물 여러 동과 지붕을 덮은 태양광 패널, 뒤편으로 마을과 들판이 보인다",
     trShotCap: "독일 하이데크 본사. 1987년 이곳에서 시작해, 지금도 설계와 생산이 같은 부지에 있습니다.",
     badges: [["95%", "부품·제품 자체 설계·생산"], ["5", "글로벌 거점"], ["1991", "Frankosorb® 1세대 이후 무결함"], ["100%", "턴키 — 설계에서 인수 시험까지"]],
-    ctH: "견적 및 기술 상담",
-    ctP: "프로젝트 요구사항을 알려주시면 최적의 솔루션을 제안해 드립니다.",
-    ctB1: "이메일 문의",
-    ctB2: "전화 상담",
+    /* The band used to read "견적 및 기술 상담 — 프로젝트 요구사항을 알려주시면
+       최적의 솔루션을 제안해 드립니다", which is a sentence that could close any
+       B2B page ever written: it named nothing the reader has to supply and
+       nothing they get back. Its two buttons were a mail link and the German
+       switchboard, and the switchboard was the only phone number a Korean
+       reader was ever offered. Both are gone — the copy now states the three
+       inputs the first reply actually needs, and the buttons lead to the
+       contact page where all five offices are. */
+    ctK: "CONTACT",
+    ctH: "무엇이 필요한지부터 함께 정리합니다",
+    ctP: "통과해야 하는 규격, 피시험체 크기, 확보된 설치 공간 — 세 가지만 보내주시면 챔버 형식과 장비 구성을 추려 회신합니다. 독일·중국·인도·한국 다섯 곳 어디로 보내셔도 같은 엔지니어링 팀이 받습니다.",
+    ctB1: "문의처 보기",
+    ctB2: "이메일로 바로 문의",
     ftDesc: "EMC 무향 챔버 · 시험 시스템 · 차폐 솔루션 — 1987년부터 전 세계 80여 개국",
     // 본사 주소. frankonia-solutions.com 연락처와 CyberShield 임프린트가 일치하는 값.
     ftAddr: "Frankonia Germany EMC Solutions GmbH · Industriestraße 16, 91180 Heideck, Germany · T +49 9177 98-500",
@@ -224,10 +229,11 @@ const copy = {
     trShotAlt: "Aerial view of the Frankonia head office and production site in Heideck, Germany — white buildings with red trim, solar panels across the roofs, the village and open fields behind",
     trShotCap: "The head office in Heideck, Germany. The company started here in 1987, and design and production still share the site.",
     badges: [["95%", "Components and products built in-house"], ["5", "Sites worldwide"], ["1991", "First Frankosorb® generation — no defect since"], ["100%", "Turnkey — design through acceptance testing"]],
-    ctH: "Quotation & Technical Consulting",
-    ctP: "Tell us your project requirements and we will propose the optimal solution.",
-    ctB1: "Email Us",
-    ctB2: "Call Us",
+    ctK: "CONTACT",
+    ctH: "We start from what the test has to prove",
+    ctP: "The standard you have to satisfy, the size of the device under test, and the space you have — send those three and we come back with the chamber form and the instrument configuration that fit. Five offices across Germany, China, India and Korea, one engineering team.",
+    ctB1: "Contact us",
+    ctB2: "Email us directly",
     ftDesc: "EMC anechoic chambers, test systems and shielding solutions — more than 80 countries since 1987",
     ftAddr: "Frankonia Germany EMC Solutions GmbH · Industriestraße 16, 91180 Heideck, Germany · T +49 9177 98-500",
     ftCompany: "Company",
@@ -378,9 +384,6 @@ const cyberCards = [
   { name: "Lifecycle", models: "Maintenance · Re-certification", shot: "lifecycle" },
 ] as const;
 
-/** Strings the contact band needs, wherever it is reused. */
-export type BandCopy = { ctH: string; ctP: string; ctB1: string; ctB2: string; heroB1: string };
-
 /** The chrome slice of the copy object, shared with every other page, so the
  *  header, footer and contact band read the same strings as the landing. */
 export const headerCopy = (lang: Lang): HeaderCopy & FooterCopy & BandCopy =>
@@ -482,7 +485,11 @@ export default function Landing({ lang }: { lang: Lang }) {
           <p>{t.heroP}</p>
           <div className="btns">
             <a className="btn btn-red" href="#solutions">{t.heroB1}</a>
-            <a className="btn btn-ghost" href="#contact">{t.heroB2}</a>
+            {/* The contact page rather than the band at the foot of this one:
+                the reader who presses "견적·기술 상담" in the hero is asking who
+                to write to, and scrolling them past six sections to a mail
+                link was the long way round to a worse answer. */}
+            <a className="btn btn-ghost" href={localeRoute(lang, contactPath)}>{t.heroB2}</a>
           </div>
         </div>
         <div className="wrap hero-stats">
@@ -701,14 +708,7 @@ export default function Landing({ lang }: { lang: Lang }) {
         </div>
       </section>
 
-      <div className="band" id="contact">
-        <h2>{t.ctH}</h2>
-        <p>{t.ctP}</p>
-        <div className="btns">
-          <a className="btn btn-red" href={`mailto:${contactEmail}`}>{t.ctB1}</a>
-          <a className="btn btn-ghost" href={contactPhoneHref}>{t.ctB2}</a>
-        </div>
-      </div>
+      <ContactBand lang={lang} t={t} />
       </main>
 
       <SiteFooter lang={lang} t={t} />

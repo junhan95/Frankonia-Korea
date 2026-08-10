@@ -579,6 +579,13 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
 .alt .hl-row:hover { background: var(--canvas); }
 .hl-row .hl-idx { color: var(--primary); font-size: 13px; font-weight: 800; min-width: 30px; }
 .hl-row b { font-size: 18px; font-weight: 700; white-space: nowrap; transition: color .25s ease; }
+/* Registered company names are long: "Frankonia Germany EMC Solutions GmbH"
+   measures 362px at the row's 18px bold, against the 345px of content a 375px
+   viewport leaves after its 4vw gutters — nowrap put nine pixels of the site
+   off the right edge. The rule stays everywhere else, where this cell holds a
+   short label ("주소", a model designation) that should never break; the
+   contact page's office rows opt out. */
+.hl-row--name b { white-space: normal; }
 .hl-row:hover b { color: var(--primary); }
 .hl-row .hl-desc { color: var(--body-text); font-size: 15px; line-height: 1.55; margin-left: auto; text-align: right; }
 /* Catalogue figures under the descriptor: a size and a frequency range, each
@@ -587,6 +594,17 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
    still choosing a category is served by the line above, and the one who has
    chosen reads this. Tabular numerals keep the digit columns from jittering
    between rows. */
+/* The contact page's office rows carry a mail address and a number under the
+   postal one. `.hl-spec` below is the line that would normally take them, and
+   it is the one line on the row a reader is meant to click — but it is --mute
+   on canvas (1.9:1) and --body-text on the soft band (3.6:1), neither of which
+   clears AA. So these inherit the descriptor's own colour and take only the
+   break and the spacing from here. Tabular numerals for the same reason the
+   spec line uses them: five numbers stacked in a column should not jitter. */
+.hl-contact { display: block; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.hl-contact a { border-bottom: 1px solid var(--line); transition: color .25s ease, border-color .25s ease; }
+.hl-contact a:hover { color: var(--primary); border-bottom-color: var(--primary); }
+.hl-contact .sep { padding: 0 9px; color: var(--mute); }
 .hl-spec { display: block; margin-top: 6px; color: var(--mute); font-size: 13px; line-height: 1.5; font-variant-numeric: tabular-nums; }
 .hl-spec span { display: block; }
 .alt .hl-spec { color: var(--body-text); }
@@ -609,6 +627,20 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
 /* Four across, matching the hero's own metric band, for the head office's
    at-a-glance figures. */
 .badges-four { grid-template-columns: repeat(4, 1fr); }
+/* The model pages' "at a glance" strip.
+   Same grid, smaller type. The landing page's badges carry headline metrics —
+   `95%`, `1991`, `100%` — and 24px/800 is the right size for a number that is
+   an argument. A model page's values are designations and measurements
+   (`IEC/EN 61000-4-3`, `ø1.2 m`, `10,000 kg`): at that weight they read as
+   claims and six of them push the band past a screen, which is the opposite of
+   what a summary strip is for. At 17px/700 they read as specification, and the
+   whole strip is two rows.
+   Only the type and the padding change — the fill, the hairline and the hover
+   are the `.bd` every other band uses. */
+.badges-compact { gap: 10px; }
+.badges-compact .bd { padding: 12px 14px; }
+.badges-compact .bd b { font-size: 17px; font-weight: 700; letter-spacing: 0; }
+.badges-compact .bd span { margin-top: 2px; font-size: 12px; }
 .bd { background: var(--canvas-soft); border: 1px solid var(--mute); border-radius: var(--radius); padding: 16px 18px; transition: border-color .25s ease, background .25s ease, transform .25s ease; }
 .bd:hover { border-color: var(--primary); background: var(--canvas); transform: translateY(-2px); }
 .alt .bd { background: var(--canvas); }
@@ -992,6 +1024,15 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
   .btns { align-items: stretch; flex-direction: column; gap: 12px; }
   .sol-grid, .line-grid, .line-grid.three { grid-template-columns: 1fr; }
   .badges, .badges-wide, .badges-four { grid-template-columns: 1fr; }
+  /* After the rule above, which it overrides at equal specificity. The landing
+     page's badges go single-column here because a headline metric at 24px
+     needs the width; the model pages' at-a-glance values are short enough to
+     pair, and six of them stacked is a screen and a half of scrolling for
+     something called a glance. 15px so the longest of them
+     (`2.0 mm galvanized steel`) still fits two lines in half a phone. */
+  .badges-compact { grid-template-columns: 1fr 1fr; }
+  .badges-compact .bd { padding: 11px 12px; }
+  .badges-compact .bd b { font-size: 15px; }
   /* The band rhythm drops to 85px here, so the plate closing it follows. And
      2.74:1 across an 18px-gutter frame is a 123px stripe — too short to read a
      building in. Cropped to a band instead, the way `.mc-shot` is: the centre

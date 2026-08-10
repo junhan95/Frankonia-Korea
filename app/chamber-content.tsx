@@ -75,14 +75,21 @@ const copy = {
     modelsTitle: (n: number) => `해당 모델 ${n}종`,
     /** Counted from `referenceGroups`, not written down — see `referenceTotals`. */
     referenceCount: (entries: number, countries: number) => `${entries}건 · ${countries}개국`,
-    /** Over the tables: these are the standard sizes, and the reader's own
-     *  requirement is rarely exactly one of them — so the note ends on the
-     *  next step rather than on where the numbers came from. */
-    specsNote: "Frankonia 표준 사양 기준입니다. 설치 공간과 적용 규격에 따라 치수와 구성은 조정할 수 있으며, 상세 도면과 견적은 문의해 주시면 안내해 드립니다.",
-    /** Model pages cite the catalogue by name — an index page draws on several
-     *  spreads, a model page on exactly one, and a reader comparing figures
-     *  should know which document they are comparing against. */
-    modelSpecsNote: "2026 Anechoic Chambers 카탈로그의 구성표입니다. 치수는 외형 기준이며, 설치 공간과 적용 규격에 맞춰 조정할 수 있습니다.",
+    /**
+     * Over the tables. Three things a reader needs at this point, in the order
+     * they need them: these are standard sizes and yours will probably differ,
+     * the figures are the outside of the chamber and not the room they get,
+     * and here is what to do next.
+     *
+     * The second line is the one that was missing. `External dimension` is the
+     * column head, and a reader planning a hall has to know whether to subtract
+     * the lining before it means anything — so the note says it in words rather
+     * than leaving the header to carry it.
+     *
+     * Where the figures came from is not on the page: that belongs in
+     * docs/source/chambers-models.md, not in front of someone sizing a room.
+     */
+    specsNote: "Frankonia 표준 구성입니다. 치수는 외형 기준으로, 챔버 자체의 크기이며 내부 유효 공간이 아닙니다. 설치 공간과 적용 규격에 맞춰 치수와 구성을 조정할 수 있으며, 상세 도면과 견적은 문의해 주시면 안내해 드립니다.",
     overview: "한눈에",
     standardsKicker: "적용 규격",
     stubTitle: "자료를 보내 드립니다",
@@ -105,9 +112,7 @@ const copy = {
     referenceCount: (entries: number, countries: number) =>
       `${plural(entries, "entry", "entries")} · ${plural(countries, "country", "countries")}`,
     specsNote:
-      "Frankonia standard configurations. Dimensions and layout can be adapted to your site and to the standards you test against — contact us for a drawing and a quotation.",
-    modelSpecsNote:
-      "The configuration table from the 2026 Anechoic Chambers catalogue. Dimensions are external, and both size and layout can be adapted to your site and to the standards you test against.",
+      "Frankonia standard configurations. The dimensions are external — the size of the chamber itself, not the usable volume inside it. Both size and layout can be adapted to your site and to the standards you test against; contact us for a drawing and a quotation.",
     overview: "At a glance",
     standardsKicker: "Standards",
     stubTitle: "Documents on request",
@@ -145,19 +150,17 @@ export default function ChamberPage({ lang, view }: { lang: Lang; view: ChamberV
   // condition is written for — seven models under one slug, and the reader
   // arriving from "RVC XL" needs to see which row is theirs.
   if (models.length > 1 || view.kind !== "model") {
-    if (models.length > 0) bands.push({ key: "models", node: <Models lang={lang} models={models} /> });
+    if (models.length > 0) {
+      bands.push({
+        key: "models",
+        node: <Models lang={lang} models={models} here={view.kind === "model" ? view.slug : undefined} />,
+      });
+    }
   }
   if (body?.tables?.length) {
     bands.push({
       key: "tables",
-      node: (
-        <Tables
-          tables={body.tables}
-          kicker={t.specs}
-          title={t.specsTitle}
-          note={view.kind === "model" ? t.modelSpecsNote : t.specsNote}
-        />
-      ),
+      node: <Tables tables={body.tables} kicker={t.specs} title={t.specsTitle} note={t.specsNote} />,
     });
   }
   if (body && "standards" in body && body.standards) {
@@ -231,7 +234,15 @@ function Axes({ lang }: { lang: Lang }) {
   );
 }
 
-function Models({ lang, models }: { lang: Lang; models: readonly ChamberModel[] }) {
+function Models({
+  lang,
+  models,
+  here,
+}: {
+  lang: Lang;
+  models: readonly ChamberModel[];
+  here?: string;
+}) {
   const t = copy[lang];
   return (
     <>
@@ -239,7 +250,7 @@ function Models({ lang, models }: { lang: Lang; models: readonly ChamberModel[] 
         <span className="kicker">{t.models}</span>
         <h2>{t.modelsTitle(models.length)}</h2>
       </div>
-      <ModelList lang={lang} models={models} />
+      <ModelList lang={lang} models={models} here={here} />
     </>
   );
 }
@@ -253,7 +264,10 @@ function Overview({ lang, items }: { lang: Lang; items: NonNullable<ModelBody["o
       <div className="sec-head">
         <h2>{copy[lang].overview}</h2>
       </div>
-      <div className={items.length === 4 ? "badges-four" : "badges-wide"}>
+      {/* `.badges` carries the grid; `-four` and `-wide` only override its
+          column count. Without the base class the strip fell back to block and
+          printed six full-width rows. */}
+      <div className={`badges badges-compact ${items.length === 4 ? "badges-four" : "badges-wide"}`}>
         {items.map((item) => (
           <div className="bd" key={item.label}>
             <b>{item.value}</b>
@@ -381,12 +395,30 @@ function Stub({ lang, label }: { lang: Lang; label: string }) {
  * to the figures behind it, and until the model pages existed it went nowhere.
  * The seven reverberation chambers all point at the same page, which is where
  * both sources tabulate them together.
+ *
+ * `here` is the slug of the page the list is on, and its rows render as plain
+ * `div`s. Only the RVC page has any — seven models under one slug — and seven
+ * links back to the page you are reading is worse than no link at all.
  */
-function ModelList({ lang, models }: { lang: Lang; models: readonly ChamberModel[] }) {
+function ModelList({
+  lang,
+  models,
+  here,
+}: {
+  lang: Lang;
+  models: readonly ChamberModel[];
+  here?: string;
+}) {
   return (
     <div className="hairline-list">
-      {models.map((model, i) => (
-        <a className="hl-row" key={model.name} href={localeRoute(lang, modelPath(model.slug))}>
+      {models.map((model, i) => {
+        const Row = model.slug === here ? "div" : "a";
+        return (
+        <Row
+          className="hl-row"
+          key={model.name}
+          href={model.slug === here ? undefined : localeRoute(lang, modelPath(model.slug))}
+        >
           <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
           <b>{model.name}</b>
           <span className="hl-desc">
@@ -405,8 +437,9 @@ function ModelList({ lang, models }: { lang: Lang; models: readonly ChamberModel
               </span>
             )}
           </span>
-        </a>
-      ))}
+        </Row>
+        );
+      })}
     </div>
   );
 }
@@ -485,13 +518,21 @@ function resolve(lang: Lang, view: ChamberView): {
       // its siblings, and a reader who arrived from a search result has no
       // other route to them. Every model under one slug shares a type, so the
       // first is as good as any.
+      //
+      // Except where the type index leads nowhere but here — the shielded room
+      // is the only model of its form, and the seven reverberation chambers
+      // share this one page. There the step is not a step: the breadcrumb read
+      // "Shielded Room › Shielded Room".
       const type = models[0].type;
+      const typeIsThisPage = modelsByType(type).every((m) => m.slug === view.slug);
       return {
         label,
         title: label,
         description,
         path,
-        trail: [root, { name: typeMeta[lang][type].label, path: typePath(type) }, { name: label, path }],
+        trail: typeIsThisPage
+          ? [root, { name: label, path }]
+          : [root, { name: typeMeta[lang][type].label, path: typePath(type) }, { name: label, path }],
         models,
         body: modelBody[lang][view.slug],
       };

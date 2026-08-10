@@ -2309,10 +2309,23 @@ const S = {
   ko: { product: "대표 적용 규격", verification: "검증 규격", emission: "방출 (EMI)", immunity: "내성 (EMS)" },
 } as const;
 
-/** The standards pair, which is the same list for most of the commercial SAC
- *  range — the head office varies it only where the chamber reaches vehicle
- *  scale. */
-const sacStandards = (lang: Lang, emission: readonly string[], immunity: readonly string[]) => [
+/**
+ * The two standards blocks a model page carries.
+ *
+ * The verification pair defaults to the one the whole semi-anechoic range
+ * shares — a chamber validated as a CISPR 16-1-4 / ANSI C63.4 test site, with
+ * immunity to IEC/EN 61000-4-3. The fully anechoic and compact chambers verify
+ * differently and pass their own.
+ */
+const standardsPair = (
+  lang: Lang,
+  emission: readonly string[],
+  immunity: readonly string[],
+  verification: { e: readonly string[]; i: readonly string[] } = {
+    e: ["CISPR 16-1-4", "and/or ANSI C63.4"],
+    i: ["IEC/EN 61000-4-3"],
+  },
+) => [
   {
     title: S[lang].product,
     columns: [
@@ -2323,8 +2336,8 @@ const sacStandards = (lang: Lang, emission: readonly string[], immunity: readonl
   {
     title: S[lang].verification,
     columns: [
-      { head: S[lang].emission, items: ["CISPR 16-1-4", "and/or ANSI C63.4"] },
-      { head: S[lang].immunity, items: ["IEC/EN 61000-4-3"] },
+      { head: S[lang].emission, items: verification.e },
+      { head: S[lang].immunity, items: verification.i },
     ],
   },
 ];
@@ -2367,7 +2380,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards("ko", sacProductEmission, sacProductImmunity),
+      standards: standardsPair("ko", sacProductEmission, sacProductImmunity),
       groups: [
         { title: G.ko.features, items: [
           "3.0 m 측정 거리와 ø1.2 m ~ ø2.0 m Quiet Zone을 위한 비용 효율적인 고성능 솔루션",
@@ -2415,7 +2428,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards("ko", sacProductEmission, sacProductImmunity),
+      standards: standardsPair("ko", sacProductEmission, sacProductImmunity),
       groups: [
         { title: G.ko.features, items: [
           "3.0 m·5.0 m 측정 거리와 ø2.0 m ~ ø3.0 m Quiet Zone을 위한 효율적인 고성능 솔루션",
@@ -2463,7 +2476,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards("ko", sacProductEmission, sacProductImmunity),
+      standards: standardsPair("ko", sacProductEmission, sacProductImmunity),
       groups: [
         { title: G.ko.features, items: [
           "전통적인 정방형 설계",
@@ -2513,7 +2526,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards(
+      standards: standardsPair(
         "ko",
         ["CISPR 11", "CISPR 12", "CISPR 14", "CISPR 15", "CISPR 25", "CISPR 32", "MIL-STD 461"],
         ["IEC/EN 61000-4-3", "ISO 11451", "ISO 11452", "MIL-STD 461"],
@@ -2565,7 +2578,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards("ko", sacProductEmission, sacProductImmunity),
+      standards: standardsPair("ko", sacProductEmission, sacProductImmunity),
       groups: [
         { title: G.ko.features, items: [
           "10.0 m · 5.0 m · 3.0 m 시험 거리, Quiet Zone ø3.0 m",
@@ -2612,7 +2625,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards("ko", sacProductEmission, sacProductImmunity),
+      standards: standardsPair("ko", sacProductEmission, sacProductImmunity),
       groups: [
         { title: G.ko.features, items: [
           "Quiet Zone ø3.0 m의 다축 챔버",
@@ -2663,7 +2676,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards(
+      standards: standardsPair(
         "ko",
         ["CISPR 11", "CISPR 12", "CISPR 14", "CISPR 15", "CISPR 25", "CISPR 32", "MIL-STD 461"],
         ["IEC/EN 61000-4-3", "ISO 11451", "ISO 11452", "MIL-STD 461 RS101 · RS102 · RS103"],
@@ -2717,7 +2730,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards(
+      standards: standardsPair(
         "ko",
         ["CISPR 11", "CISPR 12", "CISPR 14", "CISPR 15", "CISPR 25", "CISPR 32", "MIL-STD 461"],
         ["IEC/EN 61000-4-3", "ISO 11451", "ISO 11452", "MIL-STD 461 RS101 · RS102 · RS103"],
@@ -2742,6 +2755,1005 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           "EN 13501-1 class B 난연 등급(대체 사양)",
         ] },
         { title: G.ko.performance, items: sacPerformanceKo("26") },
+      ],
+    },
+
+    "fac-3": {
+      lead: [
+        "FAC-3는 3.0 m 측정 거리에서 테이블탑 피시험체를 시험하는 Frankonia의 콤팩트한 완전무향실입니다. Quiet Zone은 ø1.5 m (H = 1.5 m)입니다.",
+        "접지면이 없는 시험장으로서 CISPR 16-1-4를 근거로 자유공간 조건의 측정을 위해 설계되었습니다. 바닥 반사가 없으므로 높이 스캔이 필요하지 않습니다.",
+      ],
+      figure: {
+        src: "/chambers/models/fac-3-2.webp", w: 1600, h: 1067,
+        alt: "완전무향실 내부. 벽·천장뿐 아니라 바닥까지 흰 피라미드 흡수체로 덮여 있고, 정면 벽은 검은 페라이트 면입니다. 그 앞 삼각대 위에 붉은 혼 안테나가 놓여 있고, 앞쪽에는 격자 무늬의 흰 시험 테이블이 있습니다.",
+        caption: "바닥에도 흡수체가 깔립니다. 반사면이 없다는 것이 반무향실과 갈라지는 지점이고, 높이 스캔이 사라지는 이유입니다.",
+      },
+      overview: [
+        { label: "방출 (EMI)", value: "CISPR 16-1-4" },
+        { label: "내성 (EMS)", value: "IEC/EN 61000-4-3" },
+        { label: "측정 거리", value: "3.0 m" },
+        { label: "Quiet Zone", value: "ø1.5 m (H = 1.5 m)" },
+        { label: "턴테이블", value: "ø1.5 m" },
+        { label: "하중", value: "2,000 kg" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "주파수 범위 9 kHz / 30 MHz ~ 18 GHz, 40 GHz는 옵션입니다. Ferrite · H1000 · H600 조합의 Frankosorb® 하이브리드 라이닝.",
+          head: ["구성", "외형 치수 (L × W × H)", "Quiet Zone"],
+          rows: [
+            ["FAC-3", "8,705 × 4,655 × 3,750 mm", "ø1.5 m\n3.0 m 측정 거리 (H = 1.5 m) · 테이블탑 제품"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "ko",
+        ["CISPR 14 등", "ETSI"],
+        ["IEC/EN 61000-4-3"],
+        { e: ["CISPR 16-1-4", "IEC/EN 61000-4-22"], i: ["IEC/EN 61000-4-3", "IEC/EN 61000-4-22"] },
+      ),
+      groups: [
+        { title: G.ko.features, items: [
+          "테이블탑 피시험체를 위한 시험장",
+          "CISPR 16-1-4 · IEC/EN 61000-4-22 · ETSI 기준 방출 정식 인증",
+          "IEC/EN 61000-4-3 기준 내성 정식 인증",
+          "자유공간 측정을 위한 비용 효율적인 해법",
+          "진화한 Frankosorb® 흡수체 라이닝의 콤팩트한 챔버 설계",
+          "이중 시험 축 옵션",
+        ] },
+        { title: G.ko.absorbers, items: absorbersKo("Ferrite · H1000 · H600") },
+        { title: G.ko.performance, items: [
+          "CISPR 16-1-4 기준 방출(EMI) 정식 인증",
+          "FS NSA 편차 ±3.5 dB (30 MHz ~ 1 GHz)",
+          "SVSWR 편차 +5.5 dB (1 GHz ~ 18 GHz)",
+          "IEC/EN 61000-4-3 기준 내성(EMS) 정식 인증",
+          "FU 편차 0/+6 dB, 16개 측정점의 75 % (30/80 MHz ~ 18 GHz)",
+          "IEC/EN 61000-4-22 기준 내성·방출 정식 인증 — SdB c ≤ 1.8 dB",
+        ] },
+      ],
+    },
+
+    "fac-3-l": {
+      lead: [
+        "FAC-3 L은 3.0 m 측정 거리의 완전무향실 확장형으로, 테이블탑뿐 아니라 거치형 피시험체까지 수용합니다. Quiet Zone은 ø1.5 m (H = 2.0 m)입니다.",
+        "접지면이 없는 시험장으로서 CISPR 16-1-4를 근거로 자유공간 조건의 측정을 위해 설계되었으며, FAM 또는 FBM 안테나 마스트를 이용한 높이 스캔이 가능합니다.",
+      ],
+      figure: {
+        src: "/chambers/models/fac-3-l-2.webp", w: 1600, h: 1067,
+        alt: "완전무향실 내부. 벽·천장·바닥이 모두 흰 피라미드 흡수체로 덮여 있고, 중앙에 붉은 부품이 달린 흰 안테나 마스트가 서 있습니다. 앞쪽 바닥에는 회색 격자 구조물이 놓여 있습니다.",
+        caption: "마스트가 있는 완전무향실. 바닥 반사가 없어도 높이 스캔을 할 수 있다는 것이 L 구성이 더한 것입니다.",
+      },
+      overview: [
+        { label: "방출 (EMI)", value: "CISPR 16-1-4" },
+        { label: "내성 (EMS)", value: "IEC/EN 61000-4-3" },
+        { label: "측정 거리", value: "3.0 m" },
+        { label: "Quiet Zone", value: "ø1.5 m (H = 2.0 m)" },
+        { label: "턴테이블", value: "ø1.5 m" },
+        { label: "하중", value: "2,000 kg" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "주파수 범위 9 kHz / 30 MHz ~ 18 GHz, 40 GHz는 옵션입니다. Ferrite · H1000 · H600 조합의 Frankosorb® 하이브리드 라이닝.",
+          head: ["구성", "외형 치수 (L × W × H)", "Quiet Zone"],
+          rows: [
+            ["FAC-3 L", "9,380 × 5,780 × 6,000 mm", "ø1.5 m\n3.0 m 측정 거리 (H = 2.0 m) · 거치형과 테이블탑 제품, 높이 스캔"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "ko",
+        ["CISPR 14", "CISPR 15", "CISPR 32", "ETSI"],
+        ["IEC/EN 61000-4-3"],
+        { e: ["CISPR 16-1-4", "IEC/EN 61000-4-22"], i: ["IEC/EN 61000-4-3", "IEC/EN 61000-4-22"] },
+      ),
+      groups: [
+        { title: G.ko.features, items: [
+          "테이블탑과 거치형 피시험체를 위한 시험장 (높이 스캔 포함)",
+          "CISPR 16-1-4 · IEC/EN 61000-4-22 · ETSI 기준 방출 정식 인증",
+          "IEC/EN 61000-4-3 기준 내성 정식 인증",
+          "자유공간 측정을 위한 비용 효율적인 해법",
+          "진화한 Frankosorb® 흡수체 라이닝의 콤팩트한 챔버 설계",
+          "이중 시험 축 옵션",
+        ] },
+        { title: G.ko.absorbers, items: absorbersKo("Ferrite · H1000 · H600") },
+        { title: G.ko.performance, items: [
+          "CISPR 16-1-4 기준 방출(EMI) 정식 인증",
+          "FS NSA 편차 ±3.5 dB (30 MHz ~ 1 GHz)",
+          "SVSWR 편차 +5.5 dB (1 GHz ~ 18 GHz)",
+          "IEC/EN 61000-4-3 기준 내성(EMS) 정식 인증",
+          "FU 편차 0/+6 dB, 16개 측정점의 75 % (30/80 MHz ~ 18 GHz)",
+          "IEC/EN 61000-4-22 기준 내성·방출 정식 인증 — SdB c ≤ 1.8 dB",
+        ] },
+      ],
+    },
+
+    "sac-3-fac-3-transformer": {
+      lead: [
+        "SAC-3/FAC-3 Transformer는 3.0 m 측정 거리에서 반무향과 완전무향 조건을 모두 제공하는 정식 인증 EMC 솔루션입니다.",
+        "접지면이 있는 조건과, 최적화된 바닥 흡수체 개조 키트를 쓴 테이블탑 피시험체용 FAR 조건 양쪽에 대응합니다. 전통적인 정방형 설계로 방출과 내성 모두 정식 인증 수준입니다.",
+      ],
+      figure: {
+        src: "/chambers/models/sac-3-fac-3-transformer-1.webp", w: 1600, h: 1067,
+        alt: "챔버 내부 정면. 정면 벽 전체가 사각 페라이트 타일 격자이고, 좌우 벽과 천장은 흰 피라미드 흡수체입니다. 바닥은 반사 접지면입니다.",
+        caption: "지금은 접지면이 드러난 반무향 구성입니다. 바닥에 흡수체를 깔면 같은 방이 완전무향 시험장이 됩니다.",
+      },
+      overview: [
+        { label: "방출 (EMI)", value: "CISPR 16-1-4" },
+        { label: "내성 (EMS)", value: "IEC/EN 61000-4-3" },
+        { label: "측정 거리", value: "3.0 m" },
+        { label: "Quiet Zone", value: "ø2.0 m / ø1.5 m" },
+        { label: "주파수 범위", value: "30 MHz – 18 GHz" },
+        { label: "하중", value: "5,000 kg" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "주파수 범위 9 kHz / 30 MHz ~ 18 GHz, 40 GHz는 옵션입니다. Ferrite · H1000 · H600 조합의 Frankosorb® 하이브리드 라이닝.",
+          head: ["구성", "외형 치수 (L × W × H)", "Quiet Zone"],
+          rows: [
+            ["SAC-3 / FAC-3 Transformer", "9,680 × 6,530 × 6,000 mm", "SAC 구성 — ø2.0 m, 3.0 m 측정 거리 (H = 2.5 m)\nFAC 구성 — ø1.5 m, 3.0 m 측정 거리 (H = 1.5 m)"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "ko",
+        sacProductEmission,
+        sacProductImmunity,
+        { e: ["CISPR 16-1-4", "및/또는 ANSI C63.4", "IEC/EN 61000-4-22"], i: ["IEC/EN 61000-4-3", "IEC/EN 61000-4-22"] },
+      ),
+      groups: [
+        { title: G.ko.features, items: [
+          "3.0 m 시험 거리를 위한 비용 효율적인 고성능 솔루션",
+          "SAC 구성 — 거치형 제품을 위한 ø2.0 m Quiet Zone",
+          "FAC 구성 — 테이블탑 제품을 위한 ø1.5 m Quiet Zone",
+          "CISPR 16-1-4 · ANSI C63.4 · IEC/EN 61000-4-22 · ETSI 기준 방출 정식 인증",
+          "CISPR 25 · MIL-STD 461 정식 인증",
+          "IEC/EN 61000-4-3 기준 내성 정식 인증",
+          "E-Drive 확장 가능 (부하기, BlueBox, 배터리 시험 시스템)",
+          "진화한 흡수체 라이닝의 콤팩트한 챔버 설계",
+          "수명이 긴 Frankosorb® 흡수체로 얻는 뛰어난 성능",
+          "자동차·군수 규격 시험에도 사용 가능",
+          "턴키 솔루션",
+        ] },
+        { title: G.ko.absorbers, items: absorbersKo("Ferrite · H1000 · H600") },
+        { title: "성능과 인증 — SAC(반무향) 구성", items: sacPerformanceKo() },
+        { title: "성능과 인증 — FAC(완전무향) 구성", items: [
+          "CISPR 16-1-4 기준 방출(EMI) 정식 인증",
+          "FS NSA 편차 ±3.5 dB (30 MHz ~ 1 GHz)",
+          "SVSWR 편차 +5.5 dB (1 GHz ~ 18 GHz)",
+          "IEC/EN 61000-4-3 기준 내성(EMS) 정식 인증",
+          "FU 편차 0/+6 dB, 16개 측정점의 75 % (30/80 MHz ~ 18 GHz)",
+        ] },
+      ],
+    },
+
+    chc: {
+      lead: [
+        "CHC는 3.0 m 측정 거리에서 ø1.2 m Quiet Zone을 제공하는 컴팩트 하이브리드 챔버입니다. 사전 인증 방출 시험과 정식 인증 내성 시험을 한 방에서 수행하기에 알맞습니다.",
+        "확장형 CHC L에는 흡수체를 붙인 칸막이벽이 들어갑니다. RF 전력 증폭기와 안테나, 바닥 흡수체를 챔버 안에 두고 쓸 수 있습니다.",
+      ],
+      figure: {
+        src: "/chambers/models/chc-2.webp", w: 1600, h: 1067,
+        alt: "컴팩트 하이브리드 챔버 내부. 좌우 벽과 천장의 피라미드 흡수체가 원근으로 모이고, 정면 검은 페라이트 벽 앞에 노란 지주에 달린 붉은 혼 안테나가 서 있습니다. 앞쪽 바닥에는 바닥 흡수체가 놓여 있습니다.",
+        caption: "3.0 m 거리를 이 크기 안에 넣은 챔버입니다. 방출은 사전 인증, 내성은 정식 인증 — 그 조합이 크기를 결정합니다.",
+      },
+      overview: [
+        { label: "방출 (EMI)", value: "사전 인증" },
+        { label: "내성 (EMS)", value: "IEC/EN 61000-4-3" },
+        { label: "측정 거리", value: "3.0 m" },
+        { label: "Quiet Zone", value: "ø1.2 m" },
+        { label: "주파수 범위", value: "30 MHz – 18 GHz" },
+        { label: "하중", value: "2,000 kg" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "주파수 범위 9 kHz / 30 MHz ~ 18 GHz, 40 GHz는 옵션입니다. Ferrite · H450 또는 H600 조합의 Frankosorb® 하이브리드 라이닝.",
+          head: ["구성", "외형 치수 (L × W × H)", "Quiet Zone과 특징"],
+          rows: [
+            ["CHC", "7,355 × 3,755 × 3,300 mm", "ø1.2 m\n3.0 m 측정 거리"],
+            ["CHC L", "8,255 × 3,755 × 3,300 mm", "ø1.2 m\n3.0 m 측정 거리 · 증폭기 등을 챔버 안에 보관"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "ko",
+        ["30 MHz ~ 1 GHz 사전 인증"],
+        ["IEC/EN 61000-4-3"],
+        { e: ["CISPR 16-1-4"], i: ["IEC/EN 61000-4-3"] },
+      ),
+      groups: [
+        { title: G.ko.features, items: [
+          "CISPR 16-1-4 기준 30 MHz ~ 1 GHz 사전 인증 방출",
+          "IEC/EN 61000-4-3 기준 내성 정식 인증 — 비용을 아끼는 구성",
+          "흡수체를 붙인 칸막이벽 옵션(CHC L)으로 증폭기·안테나·바닥 흡수체를 챔버 안에 보관",
+        ] },
+        { title: G.ko.absorbers, items: absorbersKo("Ferrite · H450 또는 H600") },
+        { title: G.ko.performance, items: [
+          "CISPR 16-1-4 기준 방출(EMI) 사전 인증",
+          "NSA 편차 ±4.0 dB (30 MHz ~ 1 GHz), 높이 스캔 제한",
+          "IEC/EN 61000-4-3 기준 내성(EMS) 정식 인증",
+          "FU 편차 0/+6 dB, 16개 측정점의 75 % (30/80 MHz ~ 18 GHz)",
+        ] },
+      ],
+    },
+
+    "chc-plus": {
+      lead: [
+        "CHC Plus는 컴팩트 하이브리드 챔버의 확장 구성으로, 1 GHz부터 18 GHz까지의 방출 측정을 정식 인증 수준으로 수행합니다.",
+        "3.0 m 측정 거리와 ø1.2 m Quiet Zone은 CHC와 같습니다. 달라지는 것은 1 GHz 위쪽의 방출 측정입니다.",
+      ],
+      figure: {
+        src: "/chambers/models/chc-plus-2.webp", w: 1600, h: 1067,
+        alt: "컴팩트 챔버 내부. 바닥에 매립된 은색 턴테이블의 덮개가 열려 케이블 커넥터 패널이 드러나 있고, 둘레에 노란 검정 안전 표시가 있습니다. 벽면은 피라미드 흡수체입니다.",
+        caption: "바닥 아래로 배선이 지나갑니다. 챔버가 작을수록 배선을 어디로 빼는지가 설계의 문제가 됩니다.",
+      },
+      overview: [
+        { label: "방출 (EMI)", value: "1 GHz 이상 정식 인증" },
+        { label: "내성 (EMS)", value: "IEC/EN 61000-4-3" },
+        { label: "측정 거리", value: "3.0 m" },
+        { label: "Quiet Zone", value: "ø1.2 m" },
+        { label: "턴테이블", value: "ø1.2 m / ø2.0 m" },
+        { label: "하중", value: "2,000 kg" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "주파수 범위 9 kHz / 30 MHz ~ 18 GHz, 40 GHz는 옵션입니다. Ferrite · H450 또는 H600 조합의 Frankosorb® 하이브리드 라이닝.",
+          head: ["구성", "외형 치수 (L × W × H)", "Quiet Zone과 특징"],
+          rows: [
+            ["CHC Plus", "7,355 × 3,755 × 3,300 mm", "ø1.2 m\n3.0 m 측정 거리 · 1 GHz 이상 정식 인증 방출"],
+            ["CHC Plus L", "7,580 × 4,655 × 4,350 mm", "ø1.2 m\n3.0 m 측정 거리 · 턴테이블 ø2.0 m, 1 GHz 이상 정식 인증 방출"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "ko",
+        ["30 MHz ~ 1 GHz 사전 인증", "1 GHz ~ 18 GHz 정식 인증"],
+        ["IEC/EN 61000-4-3"],
+        { e: ["CISPR 16-1-4"], i: ["IEC/EN 61000-4-3"] },
+      ),
+      groups: [
+        { title: G.ko.features, items: [
+          "CISPR 16-1-4 기준 30 MHz ~ 1 GHz 사전 인증 방출",
+          "1 GHz ~ 18/40 GHz 정식 인증 방출",
+          "IEC/EN 61000-4-3 기준 내성 정식 인증 — 비용을 아끼는 구성",
+        ] },
+        { title: G.ko.absorbers, items: absorbersKo("Ferrite · H450 또는 H600") },
+        { title: G.ko.performance, items: [
+          "CISPR 16-1-4 기준 방출(EMI) 사전 인증",
+          "NSA 편차 ±4.0 dB (30 MHz ~ 1 GHz), 높이 스캔 제한",
+          "CISPR 16-1-4 기준 방출(EMI) 인증",
+          "SVSWR 편차 +6.0 dB (1 GHz ~ 18 GHz)",
+          "IEC/EN 61000-4-3 기준 내성(EMS) 정식 인증",
+          "FU 편차 0/+6 dB, 16개 측정점의 75 % (30/80 MHz ~ 18 GHz)",
+        ] },
+      ],
+    },
+
+    ctc: {
+      lead: [
+        "CTC는 산업용 제품의 내성 시험에 집중하는 정식 인증 부품 시험 챔버입니다. 여기에 자동차 부품의 방출·내성 시험과 군수 시험이 함께 붙습니다.",
+        "1.0 m 시험 거리에서 CISPR 25 · ISO 11452 · MIL-STD 461 · DO-160을, 3.0 m 측정 거리에서 IEC/EN 61000-4-3을 정식 인증 수준으로 수행합니다.",
+      ],
+      figure: {
+        src: "/chambers/models/ctc-1.webp", w: 1600, h: 1200,
+        alt: "부품 시험 챔버 내부. 정면 벽이 사각 격자의 흡수체 면이고 좌우와 천장은 피라미드 흡수체입니다. 중앙에 목재 시험대가 놓여 있고, 바닥에는 노란 배치 표시선이 그어져 있습니다.",
+        caption: "목재 시험대와 바닥의 배치선. CISPR 25가 요구하는 것은 챔버만이 아니라 이 배치입니다.",
+      },
+      overview: [
+        { label: "방출 (EMI)", value: "CISPR 25" },
+        { label: "내성 (EMS)", value: "ISO 11452" },
+        { label: "측정 거리", value: "1.0 m · 3.0 m" },
+        { label: "군수 규격", value: "MIL-STD 461 · DO-160" },
+        { label: "주파수 범위", value: "9 kHz – 18 GHz" },
+        { label: "하중", value: "2,000 kg" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "주파수 범위 9 kHz ~ 18 GHz, 40 GHz는 옵션입니다. Ferrite · H450 또는 H600 조합의 Frankosorb® 하이브리드 라이닝.",
+          head: ["구성", "외형 치수 (L × W × H)", "시험 조건"],
+          rows: [
+            ["CTC", "8,480 × 5,485 × 3,750 mm", "IEC 61000-4-3 기준 내성 정식 인증\nCISPR 25 · ISO 11452 · MIL-STD 461 · DO-160 정식 인증\n테이블 배치와 거치형 배치"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "ko",
+        ["CISPR 25", "MIL-STD 461 / DO-160"],
+        ["ISO 11452", "MIL-STD 461 / DO-160", "IEC/EN 61000-4-3"],
+        { e: ["CISPR 25", "MIL-STD 461 / DO-160"], i: ["IEC/EN 61000-4-3"] },
+      ),
+      groups: [
+        { title: G.ko.features, items: [
+          "IEC/EN 61000-4-3 기준 내성 정식 인증 — 비용을 아끼는 구성",
+          "CISPR 25 · ISO 11452 정식 인증",
+          "MIL-STD 461 · DO-160 정식 인증",
+        ] },
+        { title: G.ko.absorbers, items: absorbersKo("Ferrite · H450 또는 H600") },
+        { title: G.ko.performance, items: [
+          "IEC 61000-4-3 기준 내성(EMS) 정식 인증",
+          "CISPR 25 · ISO 11452 기준 자동차 부품 시험 정식 인증",
+          "MIL-STD 461 · DO-160 기준 군수·항공 시험 정식 인증",
+        ] },
+      ],
+    },
+
+    actc: {
+      lead: [
+        "ACTC는 1.0 m 측정 거리의 자동차 부품 시험 챔버입니다. CISPR 25와 ISO 11452에 따른 자동차 부품 시험을 정식 인증 수준으로 수행합니다.",
+        "흡수체 사이에 상시 접속용 플러그인 컨택트 스트립을 설치해 시험 테이블과 차폐체의 전기적 연결을 확보하고, CISPR 25가 요구하는 시험 테이블을 포함합니다.",
+      ],
+      figure: {
+        src: "/chambers/models/actc-1.webp", w: 1600, h: 1068,
+        alt: "자동차 부품 시험 챔버 내부. 벽과 천장이 피라미드 흡수체로 덮여 있고, 중앙에 목재 시험대와 금속 접지판이 놓여 있습니다. 왼쪽에는 붉은 계측 함체와 삼각대가 서 있습니다.",
+        caption: "부품 시험은 챔버보다 배치가 규격입니다. 시험 테이블과 접지 연결이 CISPR 25가 정하는 대상입니다.",
+      },
+      overview: [
+        { label: "방출 (EMI)", value: "CISPR 25" },
+        { label: "내성 (EMS)", value: "ISO 11452" },
+        { label: "측정 거리", value: "1.0 m" },
+        { label: "배치", value: "테이블 시험" },
+        { label: "주파수 범위", value: "26 MHz – 18 GHz" },
+        { label: "하중", value: "10,000 kg" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "주파수 범위 150 kHz / 26 MHz ~ 18 GHz, 40 GHz는 옵션입니다. Ferrite · H450 조합의 Frankosorb® 하이브리드 라이닝.",
+          head: ["구성", "외형 치수 (L × W × H)", "시험 조건"],
+          rows: [
+            ["ACTC", "6,380 × 5,480 × 3,750 mm", "CISPR 25 부품 시험\n1.0 m 측정 거리"],
+            ["ACTC L", "11,480 × 6,580 × 4,500 mm", "CISPR 25 부품 시험과 차량 시험\n1.0 m 측정 거리"],
+          ],
+        },
+      ],
+      standards: [
+        {
+          title: S.ko.verification,
+          columns: [
+            { head: S.ko.emission, items: ["CISPR 25"] },
+            { head: S.ko.immunity, items: ["ISO 11452"] },
+          ],
+        },
+      ],
+      groups: [
+        { title: G.ko.features, items: [
+          "ACTC — 부품에 대해 CISPR 25 · ISO 11452 정식 인증",
+          "ACTC L — 부품과 차량 시험이 가능한 크기, CISPR 25 · ISO 11452 정식 인증",
+          "자동차 부품 시험을 위한 콤팩트한 챔버 솔루션",
+          "E-Drive 확장 가능 (부하기, BlueBox, 배터리 시험 시스템)",
+          "수명이 긴 Frankosorb® 하이브리드 흡수체의 진화한 최적 라이닝",
+        ] },
+        { title: G.ko.absorbers, items: absorbersKo("Ferrite · H450") },
+        { title: "성능과 인증 — ACTC", items: [
+          "CISPR 25 기준 방출(EMI) 정식 인증",
+          "ISO 11452 기준 내성(EMS) 정식 인증",
+          "IEC/EN 61000-4-3 기준 내성(EMS) 인증",
+          "1.0 m 측정 거리에서 균일 전계 0.5 × 0.5 m",
+          "FU 편차 0/+6 dB, 100 % (26/80 MHz ~ 18 GHz)",
+        ] },
+        { title: "성능과 인증 — ACTC L", items: [
+          "CISPR 25 기준 방출(EMI) 정식 인증",
+          "ISO 11452 기준 내성(EMS) 정식 인증",
+          "IEC/EN 61000-4-3 기준 내성(EMS) 정식 인증",
+          "3.0 m 측정 거리에서 균일 전계 1.5 × 1.5 m",
+          "FU 편차 0/+6 dB, 16개 측정점의 75 % (26/80 MHz ~ 18 GHz)",
+        ] },
+      ],
+    },
+
+    ucc: {
+      lead: [
+        "UCC는 1.0 m 측정 거리의 초소형 하이브리드 솔루션입니다. 사전 인증 방사 방출·내성 시험, 전도 시험, 그리고 CISPR 25 방식의 자동차 부품 사전 인증 시험을 위해 설계되었습니다.",
+        "사전 인증 시험에서 GTEM 셀을 대신할 수 있고, 전 분야의 연구·학술 목적에도 쓰입니다.",
+      ],
+      figure: {
+        src: "/chambers/models/ucc-2.webp", w: 1600, h: 1200,
+        alt: "초소형 하이브리드 챔버 내부. 흰 지지 프레임 위에 구리색 접지판을 올린 시험 테이블이 놓여 있고, 벽면은 가까이에서 피라미드 흡수체가 보입니다. 바닥에는 매립 패널이 있습니다.",
+        caption: "구리 접지판과 그 위의 배치. GTEM 셀을 대신한다는 말은 이 배치를 그대로 쓸 수 있다는 뜻입니다.",
+      },
+      overview: [
+        { label: "방출 (EMI)", value: "CISPR 25 사전 인증" },
+        { label: "내성 (EMS)", value: "ISO 11452 사전 인증" },
+        { label: "측정 거리", value: "1.0 m" },
+        { label: "배치", value: "테이블 시험" },
+        { label: "주파수 범위", value: "26 MHz – 18 GHz" },
+        { label: "대체 대상", value: "GTEM 셀" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "주파수 범위 150 kHz / 26 MHz ~ 18 GHz, 40 GHz는 옵션입니다. Ferrite · H450 조합의 Frankosorb® 하이브리드 라이닝.",
+          head: ["구성", "외형 치수 (L × W × H)", "시험 조건"],
+          rows: [
+            ["UCC", "4,580 × 3,080 × 2,550 mm", "사전 인증 부품 시험\n1.0 m 측정 거리"],
+          ],
+        },
+      ],
+      groups: [
+        { title: G.ko.features, items: [
+          "CISPR 25 · ISO 11452 기준 부품 사전 인증 (GTEM 셀의 대안)",
+          "자동차 부품 시험을 위한 콤팩트한 챔버 솔루션",
+          "E-Drive 확장 가능 (부하기, BlueBox, 배터리 시험 시스템)",
+          "수명이 긴 Frankosorb® 하이브리드 흡수체의 진화한 최적 라이닝",
+        ] },
+        { title: G.ko.absorbers, items: absorbersKo("Ferrite · H450") },
+        { title: G.ko.performance, items: [
+          "CISPR 25 기준 방출(EMI) 사전 인증",
+          "ISO 11452 기준 내성(EMS) 사전 인증",
+        ] },
+      ],
+    },
+
+    avtc: {
+      lead: [
+        "AVTC는 3.0 m 또는 5.0 m 측정 거리에서 상용 제품 시험용 Quiet Zone ø4.0 m를 제공하면서 자동차 부품과 차량 시험에 초점을 맞춘 무향실입니다.",
+        "CISPR 12에 따른 차량 방사 방출, CISPR 25에 따른 부품 방출, CISPR 16-1-4 · ANSI C63.4에 따른 상용 제품 시험에 대응하며, IEC/EN 61000-4-3 · ISO 11451 · ISO 11452 방사 내성에도 대응합니다.",
+      ],
+      figure: {
+        src: "/chambers/models/avtc-4.webp", w: 1600, h: 1067,
+        alt: "차량 시험 챔버 내부. 벽과 천장이 피라미드 흡수체로 덮여 있고, 바닥 접지면에는 대형 턴테이블의 원과 매립 그레이팅이 보입니다. 챔버 안은 비어 있습니다.",
+        caption: "바닥에 남은 원이 턴테이블입니다. 차량을 올리는 지름이 곧 이 챔버의 크기를 정합니다.",
+      },
+      overview: [
+        { label: "방출 (EMI)", value: "CISPR 16-1-4" },
+        { label: "내성 (EMS)", value: "IEC/EN 61000-4-3" },
+        { label: "측정 거리", value: "3.0 m · 5.0 m" },
+        { label: "Quiet Zone", value: "최대 ø4.0 m" },
+        { label: "ECE R10", value: "다이나모미터 3.0 m" },
+        { label: "하중", value: "30,000 kg" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "주파수 범위 9 kHz / 150 kHz ~ 18 GHz, 40 GHz는 옵션입니다. Ferrite · H1000 · H600 조합의 Frankosorb® 하이브리드 라이닝.",
+          head: ["구성", "외형 치수 (L × W × H)", "Quiet Zone과 턴테이블"],
+          rows: [
+            ["AVTC", "11,480 × 9,380 × 6,000 mm", "ø3.0 m, 3.0 m 측정 거리 (H = 2.5 m)\n턴테이블 최대 ø5.0 m"],
+            ["AVTC L", "14,780 × 11,480 × 6,300 mm", "ø3.0 m, 3.0 m·5.0 m 측정 거리 (H = 2.5 m)\n턴테이블 최대 ø6.0 m"],
+            ["AVTC XL", "16,280 × 12,680 × 6,300 mm", "ø4.0 m, 3.0 m·5.0 m 측정 거리 (H = 2.5 m)\n다이나모미터 내장 ø7.0 m"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "ko",
+        ["CISPR 11", "CISPR 12", "CISPR 14", "CISPR 15", "CISPR 25", "CISPR 32", "MIL-STD 461", "ECE R10.5"],
+        ["IEC/EN 61000-4-3", "ISO 11451", "ISO 11452", "MIL-STD 461 RS101 · RS102 · RS103", "ECE R10.5"],
+      ),
+      groups: [
+        { title: G.ko.features, items: [
+          "진화한 Frankosorb® 하이브리드 흡수체 라이닝",
+          "자동차 부품·차량 시험과 상용 시험을 한 솔루션에",
+          "CISPR 16-1-4 · ANSI C63.4 기준 방출 정식 인증",
+          "IEC/EN 61000-4-3 기준 내성 정식 인증",
+          "CISPR 25 · CISPR 12 · ISO 11452 · ISO 11451 정식 인증",
+          "3.0 m 시험 거리까지 내장형 또는 이동식 다이나모미터로 ECE R10 대응",
+          "3.0 m 또는 5.0 m 시험 거리를 위한 비용 효율적인 고성능 솔루션",
+          "시험 배치를 빠르게 바꾸는 바닥 흡수체 보드",
+          "EDTC 구성품으로 확장 가능 (부하기, BlueBox 등)",
+          "어떤 EMC 시험에도 맞추는 맞춤 제작",
+          "상용·군수 규격 시험에도 사용 가능",
+        ] },
+        { title: G.ko.absorbers, items: absorbersKo("Ferrite · H1000 · H600") },
+        { title: G.ko.performance, items: [
+          ...sacPerformanceKo("26"),
+          "CISPR 25 · CISPR 12 기준 방출(EMI) 정식 인증",
+          "ISO 11452 · ISO 11451 기준 내성(EMS) 정식 인증",
+          "다이나모미터를 갖춘 3.0 m 시험 거리에서 ECE R10 대응",
+        ] },
+      ],
+    },
+
+    "sac-10-v": {
+      lead: [
+        "SAC-10V는 10.0 m 측정 거리에서 여러 크기의 Quiet Zone을 제공하며, 다이나모미터를 내장한 차량 전체 시험에 전용으로 쓰이는 맞춤형 정식 인증 챔버입니다.",
+        "고객 요구에 맞춘 제작 폭이 넓어 크기와 구성을 조정할 수 있습니다. 하이브리드 라이닝과 롱피라미드 라이닝 두 계열이 있고, 두 방식은 같은 성능을 냅니다.",
+      ],
+      figure: {
+        src: "/chambers/models/sac-10-v-5.webp", w: 1600, h: 1067,
+        alt: "대형 차량 시험 챔버 내부. 바닥 턴테이블 위에 검은 세단 한 대가 서 있고 배기 호스가 연결되어 있습니다. 천장 가까이 대형 안테나 붐 구조물이 지나가고, 벽과 천장은 피라미드 흡수체입니다.",
+        caption: "차량 한 대가 턴테이블 위에 올라간 상태. 배기 호스와 다이나모미터가 함께 들어가는 것이 ECE R10 시험의 조건입니다.",
+      },
+      overview: [
+        { label: "방출 (EMI)", value: "CISPR 16-1-4" },
+        { label: "내성 (EMS)", value: "IEC/EN 61000-4-3" },
+        { label: "측정 거리", value: "최대 10.0 m" },
+        { label: "Quiet Zone", value: "ø6.0 m" },
+        { label: "ECE R10.5", value: "10.0 m 정식 인증" },
+        { label: "하중", value: "80,000 kg" },
+      ],
+      tables: [
+        {
+          title: "하이브리드 흡수체 구성",
+          note: "주파수 범위 9 kHz / 150 kHz ~ 18 GHz, 40 GHz는 옵션입니다. 최적화된 Frankosorb® 하이브리드 라이닝.",
+          head: ["구성", "외형 치수 (L × W × H)", "Quiet Zone과 시험 구역"],
+          rows: [
+            ["SAC-10VC-6/H", "23,030 × 14,480 × 6,300 mm", "ø6.0 m, 5.0 m 측정 거리 (H = 2.5 m)\n차량 시험용 10.0 m 측정 거리 대응 준비"],
+            ["SAC-10V-6/H", "22,580 × 15,680 × 8,700 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)"],
+            ["SAC-10V-6/H (SL12)", "24,380 × 16,580 × 9,000 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)\n최대 12 m 길이 차량의 중하중 시험 구역"],
+            ["SAC-10V-6/H (SL18)", "26,780 × 18,080 × 9,000 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)\n최대 18 m 길이 차량의 중하중 시험 구역"],
+          ],
+        },
+        {
+          title: "롱피라미드 흡수체 구성",
+          note: "주파수 범위 9 kHz / 150 kHz ~ 18 GHz, 40 GHz는 옵션입니다. P2400 Frankosorb® 롱피라미드 전면 라이닝.",
+          head: ["구성", "외형 치수 (L × W × H)", "Quiet Zone과 시험 구역"],
+          rows: [
+            ["SAC-10V-6/P", "26,480 × 20,180 × 9,000 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)"],
+            ["SAC-10V-6/P (SL12)", "26,480 × 20,180 × 10,500 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)\n최대 12 m 길이 차량의 중하중 시험 구역"],
+            ["SAC-10V-6/P (SL18)", "30,080 × 20,180 × 10,500 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)\n최대 18 m 길이 차량의 중하중 시험 구역"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "ko",
+        ["CISPR 11", "CISPR 12", "CISPR 14", "CISPR 15", "CISPR 25", "CISPR 32", "MIL-STD 461", "ECE R10.5"],
+        ["IEC/EN 61000-4-3", "ISO 11451", "ISO 11452", "MIL-STD 461 RS101 · RS102 · RS103", "ECE R10.5"],
+      ),
+      groups: [
+        { title: G.ko.features, items: [
+          "SAC-10V-6/H — 최적화된 진화형 Frankosorb® 하이브리드 흡수체 라이닝",
+          "SAC-10V-6/P — P2400 Frankosorb® 롱피라미드 전면 라이닝",
+          "CISPR 16-1-4 · ANSI C63.4 기준 방출 정식 인증",
+          "IEC/EN 61000-4-3 기준 내성 정식 인증",
+          "CISPR 25 · CISPR 12 · CISPR 36 · ISO 11452 · ISO 11451 정식 인증",
+          "10.0 m 시험 거리에서 내장형 다이나모미터로 ECE R10 대응",
+          "차량 크기와 중량, 어떤 시험에도 맞추는 맞춤 제작",
+          "범위를 벗어나는 EMC 시험 환경에 특화",
+          "상용·군수 규격 시험에도 사용 가능",
+        ] },
+        { title: G.ko.absorbers, items: [
+          "장기 안정성이 검증된 고성능 나노 박막 기술",
+          "EN 13501-1 class A2 - s1 d0 불연 등급",
+          "EN 13501-1 class B 난연 등급(대체 사양)",
+        ] },
+        { title: G.ko.performance, items: [
+          "CISPR 16-1-4 · ANSI C63.4 기준 방출(EMI) 정식 인증",
+          "CISPR 25 · CISPR 12 기준 방출(EMI) 정식 인증",
+          "IEC/EN 61000-4-3 기준 내성(EMS) 정식 인증",
+          "ISO 11452 · ISO 11451 기준 내성(EMS) 정식 인증",
+          "다이나모미터를 갖춘 10.0 m 시험 거리에서 ECE R10 대응",
+        ] },
+      ],
+    },
+
+    "edtc-sa": {
+      lead: [
+        "E-Drive 시험 솔루션은 하이브리드·전기·연료전지·배터리 구동계의 부품과 설비를 위한 Frankonia의 전용 시험장입니다. CISPR 25와 ISO 11452에 따른 방사 시험에 뛰어난 조건을 제공합니다.",
+        "EDTC-SA는 고정축 외부 부하기 한 대를 전제로 제작하는 챔버 구성입니다. 제동·구동·회전 방향·속도 조절·토크 제어와 그 조합을 포함한 동적 시험에 쓰입니다.",
+      ],
+      figure: {
+        src: "/chambers/models/edtc-3.webp", w: 1600, h: 1067,
+        alt: "구동계 시험 챔버 내부. 중앙의 흰 받침대 위에 전동기가 설치되어 있고 굵은 케이블 두 가닥이 연결되어 있습니다. 왼쪽 벽은 페라이트 타일, 오른쪽은 피라미드 흡수체입니다.",
+        caption: "시험 대상은 모터 자체입니다. 부하기는 챔버 밖에 두고 축만 차폐를 통과해 들어옵니다.",
+      },
+      overview: [
+        { label: "적용 규격", value: "CISPR 25 · ISO 11452" },
+        { label: "부하기", value: "외부 · 고정축" },
+        { label: "측정 거리", value: "1.0 m" },
+        { label: "배치", value: "벽면 앞 테이블" },
+        { label: "주파수 범위", value: "150 kHz – 18 GHz" },
+        { label: "하중", value: "5,000 kg" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "주파수 범위 9 kHz / 150 kHz ~ 18 GHz, 40 GHz는 옵션입니다. 최적화된 Frankosorb® 하이브리드 흡수체 라이닝.",
+          head: ["구성", "외형 치수 (L × W × H)", "부하기"],
+          rows: [
+            ["EDTC-SA", "7,880 × 5,480 × 3,750 mm", "고정축 외부 부하기 1대\n예) 1 × 250 kW, 3,000 RPM, 3,000 Nm"],
+          ],
+        },
+        {
+          title: "외부 부하기",
+          note: "챔버가 아니라 챔버에 들어가는 장비입니다. 부하기는 고객이 선호하는 공급사의 것을 그대로 쓸 수 있습니다.",
+          head: ["", "EDTC-250", "EDTC-500"],
+          rows: [
+            ["출력", "1 × 250 kW", "2 × 250 kW"],
+            ["회전 속도", "3,000 RPM", "3,000 RPM"],
+            ["토크", "3,000 Nm", "3,000 Nm"],
+          ],
+        },
+      ],
+      groups: [
+        { title: G.ko.features, items: [
+          "CISPR 25 · ISO 11452 정식 인증",
+          "최적화된 Frankosorb® 하이브리드 흡수체 라이닝",
+          "부품 단위 또는 시스템 단위 시험",
+          "배터리 시험과의 조합",
+          "기존 챔버를 위한 통합 키트",
+          "피시험체용 전원과 수냉 시스템 옵션",
+          "CISPR 25에 맞춘 모터 어댑터·접지·결선",
+          "진동이 전달되지 않는 독립 기초(플로팅 슬래브)",
+          "시험 준비에 대한 컨설팅과 확장 서비스",
+        ] },
+        { title: G.ko.absorbers, items: absorbersKo("Ferrite · H450 또는 H600") },
+        { title: G.ko.performance, items: [
+          "CISPR 25 기준 방사 방출 시험",
+          "ISO 11452 기준 방사 내성 시험",
+        ] },
+      ],
+    },
+
+    "edtc-ax": {
+      lead: [
+        "EDTC-AX는 구동계 유닛의 e-액슬 시험을 위해 정의된 챔버 구성으로, 고정축 외부 부하기 두 대를 전제로 제작합니다.",
+        "특허받은 이 구성은 전기 구동계의 동적 구동 시험에 쓰이며, 고객이 선호하는 다이나모미터 공급사와 맞물립니다. Frankonia는 챔버 안의 올바른 EMC 배치에 집중해 시험 테이블과 접지 구상, 90° 앵글 기어박스를 제공합니다.",
+      ],
+      figure: {
+        src: "/chambers/models/edtc-ax-0.webp", w: 1600, h: 1067,
+        alt: "구동계 시험 챔버 내부. 앞쪽에 구리색 접지 테이블이 있고, 중앙의 흰 프레임 위에 초록색 전동기와 검은 커플링이 설치되어 있습니다. 왼쪽 벽에는 축이 통과하는 은색 함체가 있습니다.",
+        caption: "왼쪽 벽의 함체가 차폐된 샤프트 관통부입니다. 부하기를 밖에 두고도 챔버가 차폐를 유지하는 지점입니다.",
+      },
+      overview: [
+        { label: "적용 규격", value: "CISPR 25 · ISO 11452" },
+        { label: "부하기", value: "외부 2대 · 고정축" },
+        { label: "출력 범위", value: "예) 2 × 250 kW" },
+        { label: "측정 거리", value: "1.0 m" },
+        { label: "주파수 범위", value: "150 kHz – 18 GHz" },
+        { label: "하중", value: "5,000 kg" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "주파수 범위 9 kHz / 150 kHz ~ 18 GHz, 40 GHz는 옵션입니다. 최적화된 Frankosorb® 하이브리드 흡수체 라이닝.",
+          head: ["구성", "외형 치수 (L × W × H)", "부하기"],
+          rows: [
+            ["EDTC-AX", "9,080 × 6,080 × 3,750 mm", "고정축 외부 부하기 2대\n예) 2 × 250 kW, 3,000 RPM, 3,000 Nm"],
+          ],
+        },
+      ],
+      groups: [
+        { title: G.ko.features, items: [
+          "e-액슬 배치를 위한 특허 구성",
+          "CISPR 25 · ISO 11452 정식 인증",
+          "최적화된 Frankosorb® 하이브리드 흡수체 라이닝",
+          "차폐된 샤프트, 피시험체 위치 결정, 접지, 시험 테이블 제공",
+          "90° 앵글 기어박스 — 어떤 다이나모미터에도 대응",
+          "CISPR 25에 맞춘 모터 어댑터·접지·결선",
+          "진동이 전달되지 않는 독립 기초(플로팅 슬래브)",
+        ] },
+        { title: G.ko.absorbers, items: absorbersKo("Ferrite · H450 또는 H600") },
+        { title: G.ko.performance, items: [
+          "CISPR 25 기준 방사 방출 시험",
+          "ISO 11452 기준 방사 내성 시험",
+        ] },
+      ],
+    },
+
+    "edtc-bb": {
+      lead: [
+        "EDTC-BB는 이동식 부하기 EMC-BlueBox를 포함하는 챔버 구성으로, 차폐된 공간 안에서 전기 구동계의 동적 EMC 시험을 수행합니다.",
+        "BlueBox는 4상한 운전을 하므로 피시험체가 받는 어떤 부하 상황도 재현할 수 있습니다. 고정축 외부 부하기와 마찬가지로 제동·구동·회전 방향·속도 조절·토크 제어와 그 조합을 포함합니다.",
+      ],
+      figure: {
+        src: "/chambers/models/edtc-bb-0.webp", w: 1600, h: 1067,
+        alt: "구동계 시험 챔버 내부. 긴 흰 시험대 위에 축으로 연결된 초록색 전동기가 놓여 있고, 오른쪽 끝에 청색 장비가 함께 설치되어 있습니다. 바닥에는 노란 안전 표시가 있습니다.",
+        caption: "부하기가 챔버 안으로 들어옵니다. 차폐를 뚫는 축이 없다는 것이 BlueBox 구성이 바꾸는 조건입니다.",
+      },
+      overview: [
+        { label: "적용 규격", value: "CISPR 25 · ISO 11452" },
+        { label: "부하기", value: "이동식 · 전기 구동" },
+        { label: "최대 출력", value: "120 kW" },
+        { label: "측정 거리", value: "1.0 m" },
+        { label: "주파수 범위", value: "30 MHz – 18 GHz" },
+        { label: "하중", value: "5,000 kg" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "주파수 범위 9 kHz / 30 MHz ~ 18 GHz, 40 GHz는 옵션입니다. 최적화된 Frankosorb® 하이브리드 흡수체 라이닝.",
+          head: ["구성", "외형 치수 (L × W × H)", "부하기"],
+          rows: [
+            ["EDTC-BB", "7,880 × 6,380 × 3,750 mm", "이동식 부하기 EMC-BlueBox, 최대 120 kW"],
+            ["EDTC-BB (턴테이블 포함)", "10,880 × 6,980 × 3,900 mm", "이동식 부하기 EMC-BlueBox, 최대 120 kW\n360° 스캔용 턴테이블"],
+          ],
+        },
+        {
+          title: "EMC-BlueBox 이동식 부하기",
+          note: "챔버가 아니라 챔버에 들어가는 장비입니다. 중량·적재·외형은 본사 제품 페이지 기준입니다.",
+          head: ["", "BlueBox-30", "BlueBox-40", "BlueBox-65", "BlueBox-120"],
+          rows: [
+            ["출력", "30 kW", "40 kW", "63 kW", "120 kW"],
+            ["최대 회전 속도", "11,000 RPM", "9,000 RPM", "6,500 RPM", "6,000 RPM"],
+            ["토크", "82 Nm", "140 Nm", "240 Nm", "470 Nm"],
+            ["중량", "1,100 kg", "1,200 kg", "1,700 kg", "2,500 kg"],
+            ["적재", "800 kg", "800 kg", "1,000 kg", "1,400 kg"],
+            ["외형", "2.0 × 1.3 × 1.3 m", "2.2 × 1.3 × 1.3 m", "2.5 × 1.4 × 1.3 m", "2.8 × 1.6 × 1.3 m"],
+          ],
+        },
+      ],
+      groups: [
+        { title: G.ko.features, items: [
+          "4상한 운전 — 어떤 부하 상황도 재현",
+          "CISPR 25 · ISO 11452 정식 인증",
+          "최적화된 Frankosorb® 하이브리드 흡수체 라이닝",
+          "이동식이라 어떤 피시험체에도 맞춰 배치",
+          "턴테이블 위에 올리면 360° 시험 범위",
+          "배터리 시험과의 조합",
+          "기존 챔버를 위한 통합 키트",
+          "EMC 엔지니어라면 누구나 쓸 수 있는 조작",
+        ] },
+        { title: G.ko.absorbers, items: absorbersKo("Ferrite · H450 또는 H600") },
+        { title: G.ko.performance, items: [
+          "CISPR 25 기준 방사 방출 시험",
+          "ISO 11452 기준 방사 내성 시험",
+        ] },
+      ],
+    },
+
+    "mil-chc": {
+      lead: [
+        "MIL CHC는 MIL-STD 461과 DO-160에 따른 부품 시험을 위한 컴팩트 하이브리드 챔버입니다. Frankosorb® 하이브리드 흡수체 배치로 라이닝합니다.",
+        "1.0 m 측정 거리에서 경량 피시험체의 방사 방출·내성 시험을 정식 인증 수준으로 수행합니다. DO-160을 만족하려면 흡수체 라이닝 때문에 챔버가 조금 더 길어집니다.",
+      ],
+      figure: {
+        src: "/chambers/models/mil-chc-2.webp", w: 1600, h: 1067,
+        alt: "군용 컴팩트 하이브리드 챔버 내부. 벽과 천장이 피라미드 흡수체로 덮여 있고, 삼각대 위 붉은 안테나를 한 사람이 조정하고 있습니다. 오른쪽에 시험대가 놓여 있고 왼쪽 벽 상단에 aselsan 로고가 붙어 있습니다.",
+        caption: "1.0 m 측정 거리는 사람이 안테나에 손이 닿는 거리입니다. 군용 부품 시험이 이 크기에서 이루어집니다.",
+      },
+      overview: [
+        { label: "방출 (EMI)", value: "MIL-STD 461 · DO-160" },
+        { label: "내성 (EMS)", value: "MIL-STD 461 · DO-160" },
+        { label: "측정 거리", value: "1.0 m" },
+        { label: "배치", value: "테이블 시험" },
+        { label: "주파수 범위", value: "30 MHz – 40 GHz" },
+        { label: "라이닝", value: "하이브리드" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "Frankosorb® 하이브리드 흡수체 라이닝. DO-160 구성은 흡수체 라이닝 때문에 길이가 늘어납니다.",
+          head: ["구성", "외형 치수 (L × W × H)", "주파수 범위와 라이닝"],
+          rows: [
+            ["MIL CHC", "4,880 × 4,880 × 3,000 mm", "9 kHz / 30 MHz ~ 40 GHz\n하이브리드 흡수체 라이닝"],
+            ["MIL CHC / DO-160", "5,330 × 4,880 × 3,000 mm", "9 kHz / 30 MHz ~ 40 GHz\n하이브리드 흡수체 라이닝"],
+          ],
+        },
+      ],
+      groups: [
+        { title: G.ko.features, items: [
+          "MIL-STD 461 · DO-160 기준 부품 시험 정식 인증",
+          "군용 용도의 콤팩트한 챔버 설계",
+          "수명이 긴 Frankosorb® 흡수체의 진화한 라이닝",
+        ] },
+        { title: G.ko.absorbers, items: [
+          "Frankosorb® 숏피라미드 · 롱피라미드 또는 하이브리드 흡수체 라이닝",
+          "장기 안정성이 검증된 고성능 나노 박막 기술",
+          "EN 13501-1 class A2 - s1 d0 불연 등급",
+          "EN 13501-1 class B 난연 등급(대체 사양)",
+        ] },
+        { title: G.ko.performance, items: [
+          "MIL-STD 461 · DO-160 기준 방출(EMI)과 내성(EMS) 정식 인증, 30 MHz / 80 MHz ~ 40 GHz",
+          "수직 입사 흡수율 — 80 MHz ~ 250 MHz 6 dB (규격 요구 수준)",
+          "수직 입사 흡수율 — 250 MHz 이상 10 dB (규격 요구 수준)",
+        ] },
+      ],
+    },
+
+    "mil-std-chamber": {
+      lead: [
+        "MIL-STD Chamber는 MIL-STD 461에 따라 1.0 m 측정 거리에서 대형 피시험체와 차량의 방사 방출·내성 시험을 수행하는 대형 챔버입니다.",
+        "대형·고중량 피시험체의 군용 시험을 위해 고객 요구에 맞춰 전면 맞춤 제작합니다.",
+      ],
+      figure: {
+        src: "/chambers/models/mil-std-chamber-0.webp", w: 1250, h: 875,
+        alt: "군용 대형 챔버의 절개 렌더. 붉은 철골 구조가 셸을 감싸고 내부 벽면은 흰 흡수체로 덮여 있으며, 중앙 바닥에 전차 한 대가 놓여 있습니다. 왼쪽에 진입 램프가 있습니다.",
+        caption: "치수를 정해 두지 않은 이유가 이 그림에 있습니다. 무엇이 들어오느냐가 챔버의 크기를 정합니다.",
+      },
+      overview: [
+        { label: "방출 (EMI)", value: "MIL-STD 461 · DO-160" },
+        { label: "내성 (EMS)", value: "MIL-STD 461 · DO-160" },
+        { label: "측정 거리", value: "1.0 m" },
+        { label: "시험 대상", value: "차량 · 대형 피시험체" },
+        { label: "주파수 범위", value: "80 MHz – 40 GHz" },
+        { label: "하중", value: "80,000 kg" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "치수는 피시험체의 종류와 크기에 따라 정합니다. 특수 턴테이블과 설비 통합이 가능합니다.",
+          head: ["구성", "외형 치수 (L × W × H)", "주파수 범위와 라이닝"],
+          rows: [
+            ["MIL-STD Chamber", "맞춤 제작", "9 kHz / 80 MHz ~ 40 GHz\n숏피라미드 흡수체 · 군용 규격 대응"],
+          ],
+        },
+      ],
+      groups: [
+        { title: G.ko.features, items: [
+          "MIL-STD 461 · DO-160 정식 인증",
+          "흡수체 대역 80 MHz ~ 40 GHz",
+          "대형·고중량 피시험체를 위한 고성능 솔루션",
+          "고객 요구에 맞춘 전면 맞춤 제작",
+        ] },
+        { title: G.ko.absorbers, items: [
+          "Frankosorb® 숏피라미드 흡수체 라이닝",
+          "장기 안정성이 검증된 고성능 나노 박막 기술",
+          "EN 13501-1 class A2 - s1 d0 불연 등급",
+          "EN 13501-1 class B 난연 등급(대체 사양)",
+        ] },
+        { title: G.ko.performance, items: [
+          "MIL-STD 461 · DO-160 기준 방출(EMI)과 내성(EMS) 정식 인증, 30 MHz / 80 MHz ~ 40 GHz",
+          "수직 입사 흡수율 — 80 MHz ~ 250 MHz 6 dB (규격 요구 수준)",
+          "수직 입사 흡수율 — 250 MHz 이상 10 dB (규격 요구 수준)",
+        ] },
+      ],
+    },
+
+    "mil-std-chamber-advanced": {
+      lead: [
+        "MIL-STD Chamber Advanced는 MIL-STD 461에 따른 대형 피시험체 시험을 수행하면서, 상용 또는 자동차 시험장 요건까지 함께 만족하는 군용 챔버입니다.",
+        "Frankonia 고유의 Frankosorb® 롱피라미드 또는 하이브리드 흡수체 기술이 MIL-STD 461 요구와 CISPR 16-1-4 · ANSI C63.4의 상용 요구, 그리고 차량·자동차 부품 시험을 한 챔버에서 성립시킵니다.",
+      ],
+      figure: {
+        src: "/chambers/models/mil-std-chamber-advanced-3.webp", w: 1478, h: 1108,
+        alt: "대형 무향실 내부에 2층 관광버스 한 대가 서 있습니다. 벽과 천장은 피라미드 흡수체로 덮여 있고, 오른쪽에 대형 로그페리오딕 안테나가 세워져 있으며 바닥에는 노란 표시선이 그어져 있습니다.",
+        caption: "군용 규격으로 지은 챔버에 관광버스가 들어와 있습니다. 상용 시험장 요건을 함께 만족한다는 말의 뜻이 이것입니다.",
+      },
+      overview: [
+        { label: "군용 규격", value: "MIL-STD 461 · DO-160" },
+        { label: "상용 규격", value: "CISPR 16-1-4" },
+        { label: "측정 거리", value: "1.0 m · 최대 10.0 m" },
+        { label: "Quiet Zone", value: "예) ø6.0 m" },
+        { label: "주파수 범위", value: "26 MHz – 40 GHz" },
+        { label: "하중", value: "80,000 kg" },
+      ],
+      tables: [
+        {
+          title: "구성",
+          note: "치수는 피시험체의 종류와 크기에 따라 정합니다. MIL-STD 461은 1.0 m, 상용 용도는 최대 10.0 m 측정 거리입니다.",
+          head: ["구성", "외형 치수 (L × W × H)", "주파수 범위와 라이닝"],
+          rows: [
+            ["MIL-STD Advanced Pyramid", "맞춤 제작", "9 kHz / 26 MHz ~ 40 GHz\n롱피라미드 흡수체 · 군용·산업·자동차 대응"],
+            ["MIL-STD Advanced Hybrid", "맞춤 제작", "9 kHz / 30 MHz ~ 40 GHz\n하이브리드 흡수체 라이닝 · 군용·산업·자동차 대응"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "ko",
+        ["MIL-STD 461", "DO-160", "CISPR 11", "CISPR 12", "CISPR 14", "CISPR 15", "CISPR 25", "CISPR 32"],
+        ["MIL-STD 461 RS101 · RS102 · RS103", "DO-160", "IEC/EN 61000-4-3", "ISO 11451", "ISO 11452", "ECE R10"],
+      ),
+      groups: [
+        { title: G.ko.features, items: [
+          "MIL-STD 461 · DO-160 정식 인증",
+          "상용·자동차 규격의 방출·내성 정식 인증",
+          "흡수체 대역 30 MHz ~ 40 GHz",
+          "대형·고중량 피시험체를 위한 진화형 고성능 솔루션",
+          "고객 요구에 맞춘 전면 맞춤 제작",
+        ] },
+        { title: G.ko.absorbers, items: [
+          "Frankosorb® 롱피라미드 또는 하이브리드 흡수체 라이닝",
+          "장기 안정성이 검증된 고성능 나노 박막 기술",
+          "EN 13501-1 class A2 - s1 d0 불연 등급",
+          "EN 13501-1 class B 난연 등급(대체 사양)",
+        ] },
+        { title: "성능과 인증 — 군용", items: [
+          "MIL-STD 461 · DO-160 기준 방출(EMI)과 내성(EMS) 정식 인증, 30 MHz / 80 MHz ~ 40 GHz",
+          "수직 입사 흡수율 — 80 MHz ~ 250 MHz 6 dB (규격 요구 수준)",
+          "수직 입사 흡수율 — 250 MHz 이상 10 dB (규격 요구 수준)",
+        ] },
+        { title: "성능과 인증 — 상용", items: sacPerformanceKo("26") },
+      ],
+    },
+
+    rvc: {
+      lead: [
+        "RVC 잔향실은 Frankonia의 모듈형 구조 시스템을 바탕으로 설계됩니다. 사전 제작된 고품질 차폐 패널(>8 MS/m)이 유연성과 성능을 보장합니다.",
+        "차폐 패널은 평면이 안쪽으로 오도록 뒤집어 설치할 수도, 안쪽에서 체결하는 일반 PAN 방식으로 설치할 수도 있습니다. 후자는 나중에 흡수체 라이닝 같은 개조를 열어 둡니다.",
+      ],
+      close:
+        "Frankonia는 여러 스터러 설계와 개념을 제공하며, 고객이 가진 스터러 설계를 그대로 반영해 새 RVC에 구현하거나 기존 챔버를 개조하기도 합니다.",
+      figure: {
+        src: "/chambers/models/reverberation-solutions-0.webp", w: 1600, h: 1067,
+        alt: "잔향실 내부. 벽과 천장이 금속 차폐 패널이고 흡수체가 없습니다. 천장의 대형 스터러가 회전 중이라 흐릿하게 찍혔고, 바닥 턴테이블 위에는 청색 승용차가 서 있습니다.",
+        caption: "흡수체가 없는 것이 이 방의 원리입니다. 반사를 없애는 대신 스터러로 장을 휘저어 균일하게 만듭니다.",
+      },
+      overview: [
+        { label: "적용 규격", value: "IEC/EN 61000-4-21" },
+        { label: "자동차 규격", value: "ISO 11452-11 · 11451-5" },
+        { label: "최저 사용 주파수", value: "80 – 200 MHz" },
+        { label: "최대 작업 체적", value: "8.0 × 5.0 × 3.0 m" },
+        { label: "주파수 범위", value: "10 kHz – 18 GHz" },
+        { label: "모델", value: "7종" },
+      ],
+      tables: [
+        {
+          title: "Commercial & Industrial RVC",
+          note: "주파수 범위 10 kHz ~ 18 GHz, 40 GHz는 옵션입니다. 작업 체적에서 벽까지의 거리는 400 mm(λ/4) 이상입니다.",
+          head: ["모델", "외형 치수 (L × W × H)", "작업 체적 · LUF · 스터러 · 대상"],
+          rows: [
+            ["RVC e1", "7,580 × 5,630 × 4,200 mm", "3.3 × 3.5 × 2.6 m · LUF 200 MHz\nZ-폴드 스터러 1대(수직)\n소·중형 ISM 및 멀티미디어 제품"],
+            ["RVC e2", "11,280 × 7,280 × 4,950 mm", "5.5 × 4.0 × 2.6 m · LUF 80 MHz\nZ-폴드 스터러 2대(수직·수평)\n대형 ISM 및 멀티미디어 제품"],
+          ],
+        },
+        {
+          title: "Automotive RVC",
+          note: "주파수 범위 10 kHz ~ 18 GHz, 40 GHz는 옵션입니다. L · XL · XXL은 맞춤 치수입니다.",
+          head: ["모델", "외형 치수 (L × W × H)", "작업 체적 · LUF · 스터러 · 대상"],
+          rows: [
+            ["RVC S", "5,330 × 3,380 × 3,300 mm", "2.5 × 1.0 × 1.5 m · LUF 200 MHz\nZ-폴드 스터러 1대(수직)\n군수·자동차 부품"],
+            ["RVC M", "7,580 × 5,630 × 4,200 mm", "3.3 × 3.5 × 2.6 m · LUF 200 MHz\nZ-폴드 스터러 1대(수직)\n대형 군수·자동차 부품"],
+            ["RVC L", "13,880 × 11,480 × 6,300 mm (맞춤)", "8.0 × 5.0 × 3.0 m · LUF 80 MHz\nZ-폴드 스터러 2대(수직·수평)\n차량"],
+            ["RVC XL", "15,530 × 11,480 × 6,600 mm (맞춤)", "8.0 × 5.0 × 3.0 m · LUF 80 MHz\n대형 디스크 스터러 ø9.0 m 1대, 디스크 스터러 ø4.0 m 2대\n차량"],
+            ["RVC XXL", "17,480 × 13,580 × 6,600 mm (맞춤)", "8.0 × 5.0 × 3.0 m · LUF 80 MHz\n대형 디스크 스터러 ø12.0 m 1대, 디스크 스터러 ø4.0 m 2대\n대형 차량"],
+          ],
+        },
+      ],
+      groups: [
+        { title: "특징과 인증", items: [
+          "Frankosorb® 하이브리드 흡수체와 일반 PAN 차폐로 RVC를 개조하거나, 기존 EMC 챔버를 RVC로 전환",
+          "소형 제품부터 차량까지 아우르는 비용 효율적인 고성능 솔루션",
+          "IEC/EN 61000-4-21 · ISO 11452-11 기준 내성 인증",
+          "ISO 11451-5 기준 내성·방출 인증 (고속 스터링)",
+          "기계류 지침(2006/42/EC)에 따른 안전 통합",
+        ] },
+        { title: "Frankonia 스터러", items: [
+          "일반 Z-폴드 스터러 — 예) ø1.8 m에서 최대 30 RPM",
+          "성능형 Z-폴드 스터러 — 예) ø2.8 m에서 최대 60 RPM",
+          "디스크형 스터러 — 예) ø4.0 m에서 최대 120 RPM",
+          "튜브형 스터러 — 예) ø2.0 m에서 최대 240 RPM",
+          "대형 디스크 스터러 — 예) ø12.0 m에서 최대 10 RPM",
+        ] },
+      ],
+    },
+
+    "shielded-room": {
+      lead: [
+        "Frankonia의 차폐룸과 무향실은 모듈형 구조 시스템을 바탕으로 설계됩니다. 사전 제작된 고품질 차폐 패널이 치수 선택의 폭을 보장하고, 모든 PAN 타입 모듈은 일반 건물 출입문으로 반입할 수 있습니다.",
+        "표준 모듈은 도전성 메시 개스킷을 끼운 뒤 안쪽에서 75 mm 간격으로 볼트 체결합니다. 덕분에 모체 건물 벽에 바짝 붙여 설치할 수 있고, 짧은 체결 간격과 규정 토크로 조인 볼트가 오랜 시간 차폐 성능을 유지합니다.",
+      ],
+      figure: {
+        src: "/chambers/models/shielded-room-7.webp", w: 1600, h: 1067,
+        alt: "공장 홀에서 본 차폐실 정면. 회색 차폐 패널 벽체에 붉은 프레임의 대형 차폐문 두 짝이 나란히 달려 있고, 경고 라벨이 붙어 있습니다. 상부로 덕트와 케이블 트레이가 지납니다.",
+        caption: "차폐는 벽만의 문제가 아닙니다. 문·통기구·필터가 벽과 같은 성능을 내야 이 수치가 성립합니다.",
+      },
+      overview: [
+        { label: "크기", value: "제한 없음" },
+        { label: "차폐 규격", value: "EN 50147-1 · IEEE-299" },
+        { label: "최대 차폐량", value: "120 dB" },
+        { label: "주파수 범위", value: "10 kHz – 40 GHz" },
+        { label: "패널", value: "2.0 mm 아연도강판" },
+        { label: "하중", value: "제한 없음" },
+      ],
+      tables: [
+        {
+          title: "보증 차폐 성능",
+          note: "EN 50147-1 또는 IEEE-299(옵션) 기준입니다. 관통 부품·허니콤·문과 게이트·필터 모두 같은 성능을 냅니다.",
+          head: ["주파수", "차폐량", "전자기장"],
+          rows: [
+            ["10 kHz", "90 dB", "자계"],
+            ["100 kHz", "100 dB", "자계"],
+            ["1 MHz", "110 dB", "자계"],
+            ["100 MHz", "120 dB", "평면파"],
+            ["400 MHz", "120 dB", "평면파"],
+            ["1 GHz", "110 dB", "평면파"],
+            ["18 GHz", "100 dB", "마이크로파"],
+            ["40 GHz", "100 dB", "마이크로파"],
+          ],
+        },
+      ],
+      groups: [
+        { title: G.ko.features, items: [
+          "2.0 mm 두께 아연도강판의 PAN 타입 차폐 모듈",
+          "모듈형 사전 제작 표준",
+          "자립 구조 또는 내진 조건에 맞춘 강구조",
+          "안쪽에서 체결하는 방식",
+          "역방향 설치 가능 (평면이 안쪽)",
+          "벽과 천장의 내부 마감 가능",
+          "이중 바닥 시스템 또는 용접 바닥 시스템",
+          "오래 유지되는 차폐 감쇠 특성",
+          "접착 없음, 용접 없음",
+          "손상 없이 해체 가능 — 개조와 유지보수가 쉽습니다",
+          "전체 이전이나 이후의 개조가 언제든 가능합니다",
+          "어떤 크기의 차폐도 구현 가능",
+          "ISO 354 기준 흡음률 w = 0.65 (MH)의 음향 패널",
+          "Frankosorb® 흡수체에 최적화된 구조",
+          "턴키 솔루션",
+        ] },
       ],
     },
   },
@@ -2780,7 +3792,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards("en", sacProductEmission, sacProductImmunity),
+      standards: standardsPair("en", sacProductEmission, sacProductImmunity),
       groups: [
         { title: G.en.features, items: [
           "Cost-effective high-performance solution for a 3.0 m measuring distance and QZ from ø1.2 m of up to ø2.0 m",
@@ -2828,7 +3840,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards("en", sacProductEmission, sacProductImmunity),
+      standards: standardsPair("en", sacProductEmission, sacProductImmunity),
       groups: [
         { title: G.en.features, items: [
           "Efficient high-performance solution for a 3.0 m and 5.0 m measuring distance and QZ from ø2.0 m of up to ø3.0 m",
@@ -2876,7 +3888,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards("en", sacProductEmission, sacProductImmunity),
+      standards: standardsPair("en", sacProductEmission, sacProductImmunity),
       groups: [
         { title: G.en.features, items: [
           "Traditional square design",
@@ -2926,7 +3938,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards(
+      standards: standardsPair(
         "en",
         ["CISPR 11", "CISPR 12", "CISPR 14", "CISPR 15", "CISPR 25", "CISPR 32", "MIL-STD 461"],
         ["IEC/EN 61000-4-3", "ISO 11451", "ISO 11452", "MIL-STD 461"],
@@ -2978,7 +3990,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards("en", sacProductEmission, sacProductImmunity),
+      standards: standardsPair("en", sacProductEmission, sacProductImmunity),
       groups: [
         { title: G.en.features, items: [
           "10.0 m, 5.0 m and 3.0 m test distance with a Quiet Zone of ø3.0 m",
@@ -3025,7 +4037,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards("en", sacProductEmission, sacProductImmunity),
+      standards: standardsPair("en", sacProductEmission, sacProductImmunity),
       groups: [
         { title: G.en.features, items: [
           "Multiple test axes chamber with a Quiet Zone of ø3.0 m",
@@ -3076,7 +4088,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards(
+      standards: standardsPair(
         "en",
         ["CISPR 11", "CISPR 12", "CISPR 14", "CISPR 15", "CISPR 25", "CISPR 32", "MIL-STD 461"],
         ["IEC/EN 61000-4-3", "ISO 11451", "ISO 11452", "MIL-STD 461 RS101, RS102, RS103"],
@@ -3130,7 +4142,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           ],
         },
       ],
-      standards: sacStandards(
+      standards: standardsPair(
         "en",
         ["CISPR 11", "CISPR 12", "CISPR 14", "CISPR 15", "CISPR 25", "CISPR 32", "MIL-STD 461"],
         ["IEC/EN 61000-4-3", "ISO 11451", "ISO 11452", "MIL-STD 461 RS101, RS102, RS103"],
@@ -3155,6 +4167,1005 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           "Hardly inflammable acc. to EN 13501-1 class B (alternative)",
         ] },
         { title: G.en.performance, items: sacPerformanceEn("26") },
+      ],
+    },
+
+    "fac-3": {
+      lead: [
+        "The FAC-3 is Frankonia's compact fully anechoic chamber at 3.0 m measuring distance for EMC tests on table-top positioned EUT's with a Quiet Zone (QZ) of ø1.5 m (H = 1.5 m).",
+        "It is designed for measurements under free-space conditions based on CISPR 16-1-4 as a test site without ground plane. Without the reflections from the floor, a height scan is no longer necessary.",
+      ],
+      figure: {
+        src: "/chambers/models/fac-3-2.webp", w: 1600, h: 1067,
+        alt: "Inside a fully anechoic chamber. Pyramid absorbers cover the walls, the ceiling and the floor; the end wall is dark ferrite. A red horn antenna stands on a tripod in front of it, with a white gridded test table in the foreground.",
+        caption: "The floor is lined too. Having no reflecting surface is what separates this from a semi-anechoic chamber — and why the height scan disappears.",
+      },
+      overview: [
+        { label: "Emission (EMI)", value: "CISPR 16-1-4" },
+        { label: "Immunity (EMS)", value: "IEC/EN 61000-4-3" },
+        { label: "Test distance", value: "3.0 m" },
+        { label: "Quiet zone", value: "ø1.5 m (H = 1.5 m)" },
+        { label: "Turntable", value: "ø1.5 m" },
+        { label: "Load capacity", value: "2,000 kg" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "Frequency range 9 kHz / 30 MHz to 18 GHz, 40 GHz as an option. Frankosorb® hybrid lining with Ferrite, H1000 and H600.",
+          head: ["Configuration", "External dimension (L × W × H)", "Quiet zone"],
+          rows: [
+            ["FAC-3", "8,705 × 4,655 × 3,750 mm", "ø1.5 m\nat 3.0 m test distance (H = 1.5 m) · table-top products"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "en",
+        ["e.g., CISPR 14", "ETSI"],
+        ["IEC/EN 61000-4-3"],
+        { e: ["CISPR 16-1-4", "IEC/EN 61000-4-22"], i: ["IEC/EN 61000-4-3", "IEC/EN 61000-4-22"] },
+      ),
+      groups: [
+        { title: G.en.features, items: [
+          "Test site for table-top EUT's",
+          "Full compliant EMI acc. to CISPR 16-1-4, IEC/EN 61000-4-22, and ETSI",
+          "Full compliant EMS acc. to IEC/EN 61000-4-3",
+          "Cost-effective solution for free-space measurements",
+          "Compact chamber design with advanced Frankosorb® absorber lining",
+          "Double test axis option",
+        ] },
+        { title: G.en.absorbers, items: absorbersEn("Ferrite, H1000 and H600") },
+        { title: G.en.performance, items: [
+          "Full compliant emission (EMI) according to CISPR 16-1-4",
+          "Deviation FS NSA ±3.5 dB (30 MHz to 1 GHz)",
+          "Deviation SVSWR +5.5 dB (1 GHz to 18 GHz)",
+          "Full compliant immunity (EMS) according to IEC/EN 61000-4-3",
+          "Deviation FU 0/+6 dB at 75 % of 16 measuring points (30/80 MHz to 18 GHz)",
+          "Full compliant immunity (EMS) and emission (EMI) according to IEC/EN 61000-4-22 — Deviation SdB c ≤ 1.8 dB",
+        ] },
+      ],
+    },
+
+    "fac-3-l": {
+      lead: [
+        "The FAC-3 L is the extended version of Frankonia's fully anechoic chamber at 3.0 m measuring distance with a Quiet Zone (QZ) of ø1.5 m (H = 2.0 m), for EMC tests on table-top positioned as well as on floor-standing EUT's.",
+        "It is designed for measurements under free-space conditions based on CISPR 16-1-4 as a test site without ground plane, and offers in addition a height scan possibility using a FAM or FBM antenna mast.",
+      ],
+      figure: {
+        src: "/chambers/models/fac-3-l-2.webp", w: 1600, h: 1067,
+        alt: "Inside a fully anechoic chamber. Walls, ceiling and floor are all lined with white pyramid absorbers, and a white antenna mast with red fittings stands in the middle. A grey grid structure lies on the floor in the foreground.",
+        caption: "A fully anechoic chamber with a mast. Being able to scan in height without a reflecting floor is what the L configuration adds.",
+      },
+      overview: [
+        { label: "Emission (EMI)", value: "CISPR 16-1-4" },
+        { label: "Immunity (EMS)", value: "IEC/EN 61000-4-3" },
+        { label: "Test distance", value: "3.0 m" },
+        { label: "Quiet zone", value: "ø1.5 m (H = 2.0 m)" },
+        { label: "Turntable", value: "ø1.5 m" },
+        { label: "Load capacity", value: "2,000 kg" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "Frequency range 9 kHz / 30 MHz to 18 GHz, 40 GHz as an option. Frankosorb® hybrid lining with Ferrite, H1000 and H600.",
+          head: ["Configuration", "External dimension (L × W × H)", "Quiet zone"],
+          rows: [
+            ["FAC-3 L", "9,380 × 5,780 × 6,000 mm", "ø1.5 m\nat 3.0 m test distance (H = 2.0 m) · floor-standing and table-top products, with height scan"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "en",
+        ["CISPR 14", "CISPR 15", "CISPR 32", "ETSI"],
+        ["IEC/EN 61000-4-3"],
+        { e: ["CISPR 16-1-4", "IEC/EN 61000-4-22"], i: ["IEC/EN 61000-4-3", "IEC/EN 61000-4-22"] },
+      ),
+      groups: [
+        { title: G.en.features, items: [
+          "Test site for table-top and floor-standing EUT's (with height scan)",
+          "Full compliant EMI acc. to CISPR 16-1-4, IEC/EN 61000-4-22, and ETSI",
+          "Full compliant EMS acc. to IEC/EN 61000-4-3",
+          "Cost-effective solution for free-space measurements",
+          "Compact chamber design with advanced Frankosorb® absorber lining",
+          "Double test axis option",
+        ] },
+        { title: G.en.absorbers, items: absorbersEn("Ferrite, H1000 and H600") },
+        { title: G.en.performance, items: [
+          "Full compliant emission (EMI) according to CISPR 16-1-4",
+          "Deviation FS NSA ±3.5 dB (30 MHz to 1 GHz)",
+          "Deviation SVSWR +5.5 dB (1 GHz to 18 GHz)",
+          "Full compliant immunity (EMS) according to IEC/EN 61000-4-3",
+          "Deviation FU 0/+6 dB at 75 % of 16 measuring points (30/80 MHz to 18 GHz)",
+          "Full compliant immunity (EMS) and emission (EMI) according to IEC/EN 61000-4-22 — Deviation SdB c ≤ 1.8 dB",
+        ] },
+      ],
+    },
+
+    "sac-3-fac-3-transformer": {
+      lead: [
+        "Frankonia's SAC-3/FAC-3 Transformer is a full compliant EMC solution at 3.0 m measuring distance offering semi as well as fully conditions.",
+        "This special solution focuses on conditions with ground plane, as well as FAR conditions for table-top EUT tests with an optimized floor absorber modification kit. The SAC-3/FAC-3 Transformer is adapted to full compliant emission and immunity testing with a traditional square design.",
+      ],
+      figure: {
+        src: "/chambers/models/sac-3-fac-3-transformer-1.webp", w: 1600, h: 1067,
+        alt: "A chamber seen head on. The end wall is a grid of square ferrite tiles; the side walls and ceiling are white pyramid absorber. The floor is a bare reflecting ground plane.",
+        caption: "Here the ground plane is exposed — the semi-anechoic setup. Lay the floor absorbers and the same room becomes a free-space test site.",
+      },
+      overview: [
+        { label: "Emission (EMI)", value: "CISPR 16-1-4" },
+        { label: "Immunity (EMS)", value: "IEC/EN 61000-4-3" },
+        { label: "Test distance", value: "3.0 m" },
+        { label: "Quiet zone", value: "ø2.0 m / ø1.5 m" },
+        { label: "Frequency range", value: "30 MHz – 18 GHz" },
+        { label: "Load capacity", value: "5,000 kg" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "Frequency range 9 kHz / 30 MHz to 18 GHz, 40 GHz as an option. Frankosorb® hybrid lining with Ferrite, H1000 and H600.",
+          head: ["Configuration", "External dimension (L × W × H)", "Quiet zone"],
+          rows: [
+            ["SAC-3 / FAC-3 Transformer", "9,680 × 6,530 × 6,000 mm", "SAC setup — ø2.0 m at 3.0 m test distance (H = 2.5 m)\nFAC setup — ø1.5 m at 3.0 m test distance (H = 1.5 m)"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "en",
+        sacProductEmission,
+        sacProductImmunity,
+        { e: ["CISPR 16-1-4", "and/or ANSI C63.4", "IEC/EN 61000-4-22"], i: ["IEC/EN 61000-4-3", "IEC/EN 61000-4-22"] },
+      ),
+      groups: [
+        { title: G.en.features, items: [
+          "Cost-effective and high-performance solution for a 3.0 m test distance",
+          "SAC setup: QZ of ø2.0 m for floor standing products",
+          "FAC setup: QZ of ø1.5 m for table-top products",
+          "Full compliant EMI acc. to CISPR 16-1-4, ANSI C63.4, IEC/EN 61000-4-22, ETSI",
+          "Full compliant acc. to CISPR 25 and MIL-STD 461",
+          "Full compliant EMS acc. to IEC/EN 61000-4-3",
+          "Upgradeable for E-Drive (load machine, BlueBox, battery test system)",
+          "Compact chamber design with advanced absorber lining",
+          "Outstanding performance with long-lasting Frankosorb® absorbers",
+          "Usable for automotive and military standard tests",
+          "Turnkey solution",
+        ] },
+        { title: G.en.absorbers, items: absorbersEn("Ferrite, H1000 and H600") },
+        { title: "Performance & Compliance — SAC (semi) configuration", items: sacPerformanceEn() },
+        { title: "Performance & Compliance — FAC (fully) configuration", items: [
+          "Full compliant emission (EMI) according to CISPR 16-1-4",
+          "Deviation FS NSA ±3.5 dB (30 MHz to 1 GHz)",
+          "Deviation SVSWR +5.5 dB (1 GHz to 18 GHz)",
+          "Full compliant immunity (EMS) according to IEC/EN 61000-4-3",
+          "Deviation FU 0/+6 dB at 75 % of 16 measuring points (30/80 MHz to 18 GHz)",
+        ] },
+      ],
+    },
+
+    chc: {
+      lead: [
+        "The CHC is Frankonia's compact hybrid chamber solution at 3.0 m measuring distance with a Quiet Zone (QZ) of ø1.2 m. It is an optimal solution for both pre-compliance emission tests and full compliant immunity tests at 3.0 m measuring distance.",
+        "The extended version CHC L includes an absorber-lined partition wall that offers the feature to house and store RF power amplifiers, antennas, or floor absorbers inside the chamber.",
+      ],
+      figure: {
+        src: "/chambers/models/chc-2.webp", w: 1600, h: 1067,
+        alt: "Inside a compact hybrid chamber. The pyramid absorbers of the side walls and ceiling converge towards a dark ferrite end wall, where a red horn antenna sits on a yellow post. Floor absorbers lie in the foreground.",
+        caption: "A 3.0 m distance fitted into this footprint. Pre-compliance for emission and full compliance for immunity is the trade that sets the size.",
+      },
+      overview: [
+        { label: "Emission (EMI)", value: "Pre-compliant" },
+        { label: "Immunity (EMS)", value: "IEC/EN 61000-4-3" },
+        { label: "Test distance", value: "3.0 m" },
+        { label: "Quiet zone", value: "ø1.2 m" },
+        { label: "Frequency range", value: "30 MHz – 18 GHz" },
+        { label: "Load capacity", value: "2,000 kg" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "Frequency range 9 kHz / 30 MHz to 18 GHz, 40 GHz as an option. Frankosorb® hybrid lining with Ferrite, H450 or H600.",
+          head: ["Configuration", "External dimension (L × W × H)", "Quiet zone and feature"],
+          rows: [
+            ["CHC", "7,355 × 3,755 × 3,300 mm", "ø1.2 m\nat 3.0 m test distance"],
+            ["CHC L", "8,255 × 3,755 × 3,300 mm", "ø1.2 m\nat 3.0 m test distance · e.g., amplifier can be stored in the chamber"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "en",
+        ["Pre-compliance from 30 MHz to 1 GHz"],
+        ["IEC/EN 61000-4-3"],
+        { e: ["CISPR 16-1-4"], i: ["IEC/EN 61000-4-3"] },
+      ),
+      groups: [
+        { title: G.en.features, items: [
+          "Pre-compliant EMI from 30 MHz to 1 GHz acc. to CISPR 16-1-4",
+          "Full compliant and cost saving solution for EMS acc. to IEC/EN 61000-4-3",
+          "Absorber-lined partition wall (CHC L) to house RF power amplifiers, antennas and floor absorbers inside the chamber",
+        ] },
+        { title: G.en.absorbers, items: absorbersEn("Ferrite, H450 or H600") },
+        { title: G.en.performance, items: [
+          "Pre-compliant emission (EMI) according to CISPR 16-1-4",
+          "Deviation NSA ±4.0 dB (30 MHz to 1 GHz) with limited height scan",
+          "Full compliant immunity (EMS) according to IEC/EN 61000-4-3",
+          "Deviation FU 0/+6 dB at 75 % of 16 measuring points (30/80 MHz to 18 GHz)",
+        ] },
+      ],
+    },
+
+    "chc-plus": {
+      lead: [
+        "The CHC Plus version is the advanced setup of the compact hybrid chamber, and allows compliant emission measurements from 1 GHz to 18 GHz.",
+        "The 3.0 m measuring distance and the ø1.2 m Quiet Zone are those of the CHC. What changes is the emission measurement above 1 GHz.",
+      ],
+      figure: {
+        src: "/chambers/models/chc-plus-2.webp", w: 1600, h: 1067,
+        alt: "Inside a compact chamber. The cover of a turntable set into the floor stands open, showing the cable connector panel underneath, with yellow and black safety markings around it. The walls are lined with pyramid absorbers.",
+        caption: "The cabling runs under the floor. The smaller the chamber, the more where the cables leave becomes a design question.",
+      },
+      overview: [
+        { label: "Emission (EMI)", value: "Compliant above 1 GHz" },
+        { label: "Immunity (EMS)", value: "IEC/EN 61000-4-3" },
+        { label: "Test distance", value: "3.0 m" },
+        { label: "Quiet zone", value: "ø1.2 m" },
+        { label: "Turntable", value: "ø1.2 m / ø2.0 m" },
+        { label: "Load capacity", value: "2,000 kg" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "Frequency range 9 kHz / 30 MHz to 18 GHz, 40 GHz as an option. Frankosorb® hybrid lining with Ferrite, H450 or H600.",
+          head: ["Configuration", "External dimension (L × W × H)", "Quiet zone and feature"],
+          rows: [
+            ["CHC Plus", "7,355 × 3,755 × 3,300 mm", "ø1.2 m\nat 3.0 m test distance · compliant emission >1 GHz"],
+            ["CHC Plus L", "7,580 × 4,655 × 4,350 mm", "ø1.2 m\nat 3.0 m test distance · turntable ø2.0 m, compliant emission >1 GHz"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "en",
+        ["Pre-compliant from 30 MHz to 1 GHz", "Full compliant from 1 GHz to 18 GHz"],
+        ["IEC/EN 61000-4-3"],
+        { e: ["CISPR 16-1-4"], i: ["IEC/EN 61000-4-3"] },
+      ),
+      groups: [
+        { title: G.en.features, items: [
+          "Pre-compliant EMI from 30 MHz to 1 GHz acc. to CISPR 16-1-4",
+          "Compliant EMI from 1 GHz to 18/40 GHz",
+          "Full compliant and cost saving solution for EMS acc. to IEC/EN 61000-4-3",
+        ] },
+        { title: G.en.absorbers, items: absorbersEn("Ferrite, H450 or H600") },
+        { title: G.en.performance, items: [
+          "Pre-compliant emission (EMI) according to CISPR 16-1-4",
+          "Deviation NSA ±4.0 dB (30 MHz to 1 GHz) with limited height scan",
+          "Compliant emission (EMI) according to CISPR 16-1-4",
+          "Deviation SVSWR +6.0 dB (1 GHz to 18 GHz)",
+          "Full compliant immunity (EMS) according to IEC/EN 61000-4-3",
+          "Deviation FU 0/+6 dB at 75 % of 16 measuring points (30/80 MHz to 18 GHz)",
+        ] },
+      ],
+    },
+
+    ctc: {
+      lead: [
+        "The CTC is Frankonia's full compliant component test chamber that entirely focuses on immunity testing for industrial products, paired with automotive component EMI and EMS, as well as military tests.",
+        "It is full compliant to CISPR 25, ISO 11452, MIL-STD 461 and DO-160 at 1.0 m test distance, and to IEC/EN 61000-4-3 at a 3.0 m measuring distance.",
+      ],
+      figure: {
+        src: "/chambers/models/ctc-1.webp", w: 1600, h: 1200,
+        alt: "Inside a component test chamber. The end wall is a square grid of absorber, the side walls and ceiling are pyramid absorber, and a wooden test bench stands in the middle. Yellow setup lines are marked on the floor.",
+        caption: "The wooden bench and the lines on the floor. What CISPR 25 prescribes is not only the chamber but this layout.",
+      },
+      overview: [
+        { label: "Emission (EMI)", value: "CISPR 25" },
+        { label: "Immunity (EMS)", value: "ISO 11452" },
+        { label: "Test distance", value: "1.0 m · 3.0 m" },
+        { label: "Military", value: "MIL-STD 461 · DO-160" },
+        { label: "Frequency range", value: "9 kHz – 18 GHz" },
+        { label: "Load capacity", value: "2,000 kg" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "Frequency range 9 kHz to 18 GHz, 40 GHz as an option. Frankosorb® hybrid lining with Ferrite, H450 or H600.",
+          head: ["Configuration", "External dimension (L × W × H)", "Test condition"],
+          rows: [
+            ["CTC", "8,480 × 5,485 × 3,750 mm", "Full compliant immunity testing per IEC 61000-4-3\nFull compliant to CISPR 25, ISO 11452, MIL-STD 461 and DO-160\nTable setup and floor standing"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "en",
+        ["CISPR 25", "MIL-STD 461 / DO-160"],
+        ["ISO 11452", "MIL-STD 461 / DO-160", "IEC/EN 61000-4-3"],
+        { e: ["CISPR 25", "MIL-STD 461 / DO-160"], i: ["IEC/EN 61000-4-3"] },
+      ),
+      groups: [
+        { title: G.en.features, items: [
+          "Full compliant and cost saving solution for EMS acc. to IEC/EN 61000-4-3",
+          "Full compliant with CISPR 25 and ISO 11452",
+          "Full compliant with MIL-STD 461 and DO-160",
+        ] },
+        { title: G.en.absorbers, items: absorbersEn("Ferrite, H450 or H600") },
+        { title: G.en.performance, items: [
+          "Full compliant immunity (EMS) according to IEC 61000-4-3",
+          "Full compliant automotive component testing according to CISPR 25 and ISO 11452",
+          "Full compliant military and airborne testing according to MIL-STD 461 and DO-160",
+        ] },
+      ],
+    },
+
+    actc: {
+      lead: [
+        "The ACTC is Frankonia's automotive component testing chamber solution at 1.0 m measuring distance. This chamber solution is adapted to full compliant tests of automotive components according to CISPR 25 and ISO 11452.",
+        "A permanent plug-in contact strip is installed between the absorbers to ensure the electrical connection of the test table to the shielding, and includes the test table as required by CISPR 25.",
+      ],
+      figure: {
+        src: "/chambers/models/actc-1.webp", w: 1600, h: 1068,
+        alt: "Inside an automotive component testing chamber. Walls and ceiling are lined with pyramid absorbers, a wooden test bench with a metal ground plane stands in the middle, and a red instrument case and a tripod stand at the left.",
+        caption: "In component testing the layout is the standard, not just the chamber. The test table and its bond to the shielding are what CISPR 25 prescribes.",
+      },
+      overview: [
+        { label: "Emission (EMI)", value: "CISPR 25" },
+        { label: "Immunity (EMS)", value: "ISO 11452" },
+        { label: "Test distance", value: "1.0 m" },
+        { label: "Setup", value: "Table setup" },
+        { label: "Frequency range", value: "26 MHz – 18 GHz" },
+        { label: "Load capacity", value: "10,000 kg" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "Frequency range 150 kHz / 26 MHz to 18 GHz, 40 GHz as an option. Frankosorb® hybrid lining with Ferrite and H450.",
+          head: ["Configuration", "External dimension (L × W × H)", "Test condition"],
+          rows: [
+            ["ACTC", "6,380 × 5,480 × 3,750 mm", "CISPR 25 component level\nat 1.0 m test distance"],
+            ["ACTC L", "11,480 × 6,580 × 4,500 mm", "CISPR 25 component level and vehicle\nat 1.0 m test distance"],
+          ],
+        },
+      ],
+      standards: [
+        {
+          title: S.en.verification,
+          columns: [
+            { head: S.en.emission, items: ["CISPR 25"] },
+            { head: S.en.immunity, items: ["ISO 11452"] },
+          ],
+        },
+      ],
+      groups: [
+        { title: G.en.features, items: [
+          "ACTC: Full compliant per CISPR 25 and ISO 11452 for components",
+          "ACTC L: Full compliant per CISPR 25 and ISO 11452 for components and large enough for tests on vehicles",
+          "Compact chamber solution for automotive component testing",
+          "Upgradeable for E-Drive (load machine, BlueBox, battery test system)",
+          "Advanced and optimized lining with long-lasting Frankosorb® hybrid absorbers",
+        ] },
+        { title: G.en.absorbers, items: absorbersEn("Ferrite and H450") },
+        { title: "Performance & Compliance — ACTC", items: [
+          "Full compliant emission (EMI) according to CISPR 25",
+          "Full compliant immunity (EMS) according to ISO 11452",
+          "Compliant immunity (EMS) according to IEC/EN 61000-4-3",
+          "Uniform field 0.5 × 0.5 m at 1.0 m measuring distance",
+          "Deviation FU 0/+6 dB at 100 % (26/80 MHz to 18 GHz)",
+        ] },
+        { title: "Performance & Compliance — ACTC L", items: [
+          "Full compliant emission (EMI) according to CISPR 25",
+          "Full compliant immunity (EMS) according to ISO 11452",
+          "Full compliant immunity (EMS) according to IEC/EN 61000-4-3",
+          "Uniform field 1.5 × 1.5 m at 3.0 m measuring distance",
+          "Deviation FU 0/+6 dB at 75 % of 16 measuring points (26/80 MHz to 18 GHz)",
+        ] },
+      ],
+    },
+
+    ucc: {
+      lead: [
+        "The UCC is Frankonia's ultra-compact hybrid solution at 1.0 m measuring distance. The chamber is designed for pre-compliance radiated emission and immunity tests, conducted tests, and pre-compliance tests for automotive components as per the CISPR 25 method.",
+        "It is an alternative solution for the GTEM cell for pre-compliance testing as well as for research and scientific purposes in all sectors.",
+      ],
+      figure: {
+        src: "/chambers/models/ucc-2.webp", w: 1600, h: 1200,
+        alt: "Inside an ultra-compact hybrid chamber. A test table with a copper ground plane rests on a white frame, the pyramid absorbers of the wall are close behind it, and a service panel is set into the floor.",
+        caption: "The copper ground plane and the layout on it. Replacing a GTEM cell means keeping exactly this setup.",
+      },
+      overview: [
+        { label: "Emission (EMI)", value: "CISPR 25 pre-compliance" },
+        { label: "Immunity (EMS)", value: "ISO 11452 pre-compliance" },
+        { label: "Test distance", value: "1.0 m" },
+        { label: "Setup", value: "Table setup" },
+        { label: "Frequency range", value: "26 MHz – 18 GHz" },
+        { label: "Replaces", value: "GTEM cell" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "Frequency range 150 kHz / 26 MHz to 18 GHz, 40 GHz as an option. Frankosorb® hybrid lining with Ferrite and H450.",
+          head: ["Configuration", "External dimension (L × W × H)", "Test condition"],
+          rows: [
+            ["UCC", "4,580 × 3,080 × 2,550 mm", "Pre-compliant component level\nat 1.0 m test distance"],
+          ],
+        },
+      ],
+      groups: [
+        { title: G.en.features, items: [
+          "UCC: Pre-compliant per CISPR 25 and ISO 11452 (alternative to GTEM cell)",
+          "Compact chamber solution for automotive component testing",
+          "Upgradeable for E-Drive (load machine, BlueBox, battery test system)",
+          "Advanced and optimized lining with long-lasting Frankosorb® hybrid absorbers",
+        ] },
+        { title: G.en.absorbers, items: absorbersEn("Ferrite and H450") },
+        { title: G.en.performance, items: [
+          "Pre-compliant emission (EMI) according to CISPR 25",
+          "Pre-compliant immunity (EMS) according to ISO 11452",
+        ] },
+      ],
+    },
+
+    avtc: {
+      lead: [
+        "The AVTC is Frankonia's automotive anechoic chamber solution at 3.0 m or 5.0 m measuring distance offering a Quiet Zone (QZ) of ø4.0 m for commercial testing combined with a focus on automotive component and vehicle tests.",
+        "It is adapted for radiated emissions on vehicles acc. to CISPR 12 and components acc. to CISPR 25 as well as for commercial product tests acc. to CISPR 16-1-4 and ANSI C63.4. Furthermore, it is adapted to radiated immunity acc. to IEC/EN 61000-4-3, ISO 11451 and ISO 11452.",
+      ],
+      figure: {
+        src: "/chambers/models/avtc-4.webp", w: 1600, h: 1067,
+        alt: "Inside a vehicle testing chamber. Walls and ceiling are lined with pyramid absorbers, and the circle of a large turntable with a recessed grating is set into the reflecting floor. The chamber is empty.",
+        caption: "The circle left in the floor is the turntable. The diameter a vehicle has to stand on is what sets the size of this chamber.",
+      },
+      overview: [
+        { label: "Emission (EMI)", value: "CISPR 16-1-4" },
+        { label: "Immunity (EMS)", value: "IEC/EN 61000-4-3" },
+        { label: "Test distance", value: "3.0 m · 5.0 m" },
+        { label: "Quiet zone", value: "up to ø4.0 m" },
+        { label: "ECE R10", value: "dynamometer at 3.0 m" },
+        { label: "Load capacity", value: "30,000 kg" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "Frequency range 9 kHz / 150 kHz to 18 GHz, 40 GHz as an option. Frankosorb® hybrid lining with Ferrite, H1000 and H600.",
+          head: ["Configuration", "External dimension (L × W × H)", "Quiet zone and turntable"],
+          rows: [
+            ["AVTC", "11,480 × 9,380 × 6,000 mm", "ø3.0 m at 3.0 m test distance (H = 2.5 m)\ne.g., with turntable up to ø5.0 m"],
+            ["AVTC L", "14,780 × 11,480 × 6,300 mm", "ø3.0 m at 3.0 m and 5.0 m test distance (H = 2.5 m)\ne.g., with turntable up to ø6.0 m"],
+            ["AVTC XL", "16,280 × 12,680 × 6,300 mm", "ø4.0 m at 3.0 m and 5.0 m test distance (H = 2.5 m)\ne.g., with integrated dynamometer ø7.0 m"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "en",
+        ["CISPR 11", "CISPR 12", "CISPR 14", "CISPR 15", "CISPR 25", "CISPR 32", "MIL-STD 461", "ECE R10.5"],
+        ["IEC/EN 61000-4-3", "ISO 11451", "ISO 11452", "MIL-STD 461 RS101, RS102, RS103", "ECE R10.5"],
+      ),
+      groups: [
+        { title: G.en.features, items: [
+          "Advanced Frankosorb® hybrid absorber lining",
+          "Automotive component & vehicle and commercial tests in a single solution",
+          "Full compliant EMI acc. to CISPR 16-1-4 and ANSI C63.4",
+          "Full compliant EMS acc. to IEC/EN 61000-4-3",
+          "Full compliant with CISPR 25, CISPR 12, ISO 11452 and ISO 11451",
+          "ECE R10 with integrated or mobile dynamometer up to 3.0 m test distance",
+          "Cost-effective and high-performance solution for 3.0 m or 5.0 m test distance",
+          "Floor absorber board for an efficient and fast modification of the test setup",
+          "Upgradeable with EDTC components (load machine, BlueBox, etc.)",
+          "Highly customizable solution for any kind of EMC testing",
+          "Usable for commercial and military standard tests",
+        ] },
+        { title: G.en.absorbers, items: absorbersEn("Ferrite, H1000 and H600") },
+        { title: G.en.performance, items: [
+          ...sacPerformanceEn("26"),
+          "Full compliant emission (EMI) according to CISPR 25 and CISPR 12",
+          "Full compliant immunity (EMS) according to ISO 11452 and ISO 11451",
+          "ECE R10 at 3.0 m test distance with dynamometer",
+        ] },
+      ],
+    },
+
+    "sac-10-v": {
+      lead: [
+        "The SAC-10V is Frankonia's full compliant and customizable EMC testing solution at 10.0 m measuring distance, offering various sizes of Quiet Zone and dedicated to automotive full vehicle testing with an integrated dynamometer.",
+        "Due to the high grade of customization reflecting the demands of our customers, this semi-anechoic chamber is adaptable in size and offers several configuration possibilities. Identical performance can be offered using hybrid or long-pyramid absorbers.",
+      ],
+      figure: {
+        src: "/chambers/models/sac-10-v-5.webp", w: 1600, h: 1067,
+        alt: "Inside a large vehicle testing chamber. A black saloon car stands on the floor turntable with an exhaust hose connected to it, a large antenna boom structure runs below the ceiling, and walls and ceiling are lined with pyramid absorbers.",
+        caption: "One vehicle on the turntable. That the exhaust extraction and the dynamometer come in with it is what an ECE R10 test requires.",
+      },
+      overview: [
+        { label: "Emission (EMI)", value: "CISPR 16-1-4" },
+        { label: "Immunity (EMS)", value: "IEC/EN 61000-4-3" },
+        { label: "Test distance", value: "up to 10.0 m" },
+        { label: "Quiet zone", value: "ø6.0 m" },
+        { label: "ECE R10.5", value: "full compliant at 10.0 m" },
+        { label: "Load capacity", value: "80,000 kg" },
+      ],
+      tables: [
+        {
+          title: "Hybrid absorber solution",
+          note: "Frequency range 9 kHz / 150 kHz to 18 GHz, 40 GHz as an option. Optimized Frankosorb® hybrid absorber lining.",
+          head: ["Configuration", "External dimension (L × W × H)", "Quiet zone and test zone"],
+          rows: [
+            ["SAC-10VC-6/H", "23,030 × 14,480 × 6,300 mm", "ø6.0 m at 5.0 m test distance (H = 2.5 m)\nPrepared for a 10.0 m test distance for vehicle tests"],
+            ["SAC-10V-6/H", "22,580 × 15,680 × 8,700 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)"],
+            ["SAC-10V-6/H (SL12)", "24,380 × 16,580 × 9,000 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 12 m long vehicles"],
+            ["SAC-10V-6/H (SL18)", "26,780 × 18,080 × 9,000 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 18 m long vehicles"],
+          ],
+        },
+        {
+          title: "Pyramid absorber solution",
+          note: "Frequency range 9 kHz / 150 kHz to 18 GHz, 40 GHz as an option. Full lining with Frankosorb® long-pyramid P2400 absorbers.",
+          head: ["Configuration", "External dimension (L × W × H)", "Quiet zone and test zone"],
+          rows: [
+            ["SAC-10V-6/P", "26,480 × 20,180 × 9,000 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)"],
+            ["SAC-10V-6/P (SL12)", "26,480 × 20,180 × 10,500 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 12 m long vehicles"],
+            ["SAC-10V-6/P (SL18)", "30,080 × 20,180 × 10,500 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 18 m long vehicles"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "en",
+        ["CISPR 11", "CISPR 12", "CISPR 14", "CISPR 15", "CISPR 25", "CISPR 32", "MIL-STD 461", "ECE R10.5"],
+        ["IEC/EN 61000-4-3", "ISO 11451", "ISO 11452", "MIL-STD 461 RS101, RS102, RS103", "ECE R10.5"],
+      ),
+      groups: [
+        { title: G.en.features, items: [
+          "SAC-10V-6/H: Optimized and advanced Frankosorb® hybrid absorber lining",
+          "SAC-10V-6/P: Full lining with Frankosorb® long-pyramid P2400 absorbers",
+          "Full compliant EMI acc. to CISPR 16-1-4 and ANSI C63.4",
+          "Full compliant EMS acc. to IEC/EN 61000-4-3",
+          "Full compliant with CISPR 25, CISPR 12, CISPR 36, ISO 11452 and ISO 11451",
+          "ECE R10 with integrated dynamometer at 10.0 m test distance",
+          "Highly customizable for any kind of testing, vehicle sizes and weights",
+          "Specialized for 'out-of-the-range' EMC test environments",
+          "Usable for commercial and military standard tests",
+        ] },
+        { title: G.en.absorbers, items: [
+          "High-performance nano thin-film technology with proven long-term stability",
+          "Non-combustible acc. to EN 13501-1 class A2 - s1 d0",
+          "Hardly inflammable acc. to EN 13501-1 class B (alternative)",
+        ] },
+        { title: G.en.performance, items: [
+          "Full compliant emission (EMI) according to CISPR 16-1-4 and ANSI C63.4",
+          "Full compliant emission (EMI) according to CISPR 25 and CISPR 12",
+          "Full compliant immunity (EMS) according to IEC/EN 61000-4-3",
+          "Full compliant immunity (EMS) according to ISO 11452 and ISO 11451",
+          "ECE R10 at 10.0 m test distance with dynamometer",
+        ] },
+      ],
+    },
+
+    "edtc-sa": {
+      lead: [
+        "E-Drive Test Solutions are Frankonia's dedicated test sites for powertrain components and facilities related to hybrid, electric, fuel cell and battery drive systems. They offer superior conditions for radiation testing according to CISPR 25 and ISO 11452.",
+        "The EDTC-SA is the chamber solution that is specifically prepared for a single external load machine with fixed shaft. It includes braking, driving, direction of rotation, speed regulation, torque control and a mix out of this range.",
+      ],
+      figure: {
+        src: "/chambers/models/edtc-3.webp", w: 1600, h: 1067,
+        alt: "Inside an e-drive test chamber. An electric motor is mounted on a white plinth in the middle with two heavy cables running to it. The left wall is ferrite tile, the right is pyramid absorber.",
+        caption: "The motor itself is the EUT. The load machine stays outside and only the shaft crosses the shielding.",
+      },
+      overview: [
+        { label: "Compliance", value: "CISPR 25 · ISO 11452" },
+        { label: "Load machine", value: "External, fixed shaft" },
+        { label: "Test distance", value: "1.0 m" },
+        { label: "Setup", value: "Table in front of wall" },
+        { label: "Frequency range", value: "150 kHz – 18 GHz" },
+        { label: "Load capacity", value: "5,000 kg" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "Frequency range 9 kHz / 150 kHz to 18 GHz, 40 GHz as an option. Optimized Frankosorb® hybrid absorber lining.",
+          head: ["Configuration", "External dimension (L × W × H)", "Load machine"],
+          rows: [
+            ["EDTC-SA", "7,880 × 5,480 × 3,750 mm", "For the fixed-shaft version with one external load machine\ne.g., 1 × 250 kW with 3,000 RPM and 3,000 Nm"],
+          ],
+        },
+        {
+          title: "External load machines",
+          note: "Equipment that goes into the chamber rather than the chamber itself. The load machine can be the one your preferred dynamometer supplier builds.",
+          head: ["", "EDTC-250", "EDTC-500"],
+          rows: [
+            ["Power", "1 × 250 kW", "2 × 250 kW"],
+            ["Speed", "3,000 RPM", "3,000 RPM"],
+            ["Torque", "3,000 Nm", "3,000 Nm"],
+          ],
+        },
+      ],
+      groups: [
+        { title: G.en.features, items: [
+          "Fully compliant with CISPR 25 and ISO 11452",
+          "Optimized Frankosorb® hybrid absorber lining",
+          "Component or system test level",
+          "Combination with battery tests",
+          "Integration kit for existing chambers",
+          "Optional EUT e-motor power source and water cooling system",
+          "Motor adapter, grounding and connection per CISPR 25",
+          "Vibration-free and non-interacting solid basement (floating slab)",
+          "Extended services in consultancy and test readiness guidance",
+        ] },
+        { title: G.en.absorbers, items: absorbersEn("Ferrite, H450 or H600") },
+        { title: G.en.performance, items: [
+          "Radiated emission testing according to CISPR 25",
+          "Radiated immunity testing according to ISO 11452",
+        ] },
+      ],
+    },
+
+    "edtc-ax": {
+      lead: [
+        "The EDTC-AX is the chamber setup that is defined for e-axle tests on powertrain units and is prepared for two external load machines with fixed shaft.",
+        "The patented system can be used for dynamic drive tests of electrical powertrain units and matches with your preferred dynamometer supplier. Frankonia focuses on the proper EMC setup inside an EMC chamber and provides adapted test tables, grounding conception and 90° angle gear boxes.",
+      ],
+      figure: {
+        src: "/chambers/models/edtc-ax-0.webp", w: 1600, h: 1067,
+        alt: "Inside an e-drive test chamber. A copper ground plane table stands in the foreground and a green electric motor with a black coupling is mounted on a white frame behind it. A metal housing where the shaft passes through sits in the left wall.",
+        caption: "The housing in the left wall is the shielded shaft feed-through. It is the point at which the chamber stays shielded with the load machine outside it.",
+      },
+      overview: [
+        { label: "Compliance", value: "CISPR 25 · ISO 11452" },
+        { label: "Load machines", value: "Two, fixed shaft" },
+        { label: "Power range", value: "e.g., 2 × 250 kW" },
+        { label: "Test distance", value: "1.0 m" },
+        { label: "Frequency range", value: "150 kHz – 18 GHz" },
+        { label: "Load capacity", value: "5,000 kg" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "Frequency range 9 kHz / 150 kHz to 18 GHz, 40 GHz as an option. Optimized Frankosorb® hybrid absorber lining.",
+          head: ["Configuration", "External dimension (L × W × H)", "Load machines"],
+          rows: [
+            ["EDTC-AX", "9,080 × 6,080 × 3,750 mm", "For the fixed-shaft version with two external load machines\ne.g., 2 × 250 kW with 3,000 RPM and 3,000 Nm"],
+          ],
+        },
+      ],
+      groups: [
+        { title: G.en.features, items: [
+          "Patented setup for the e-axle configuration",
+          "Fully compliant with CISPR 25 and ISO 11452",
+          "Optimized Frankosorb® hybrid absorber lining",
+          "Shielded shaft, proper DUT positioning, grounding and test tables provided",
+          "90° angle gear boxes — open to any dynamometer",
+          "Motor adapter, grounding and connection per CISPR 25",
+          "Vibration-free and non-interacting solid basement (floating slab)",
+        ] },
+        { title: G.en.absorbers, items: absorbersEn("Ferrite, H450 or H600") },
+        { title: G.en.performance, items: [
+          "Radiated emission testing according to CISPR 25",
+          "Radiated immunity testing according to ISO 11452",
+        ] },
+      ],
+    },
+
+    "edtc-bb": {
+      lead: [
+        "The EDTC-BB is the adapted chamber solution that includes the EMC-BlueBox mobile load machine for dynamic EMC tests of electrical powertrain units in a shielded enclosure.",
+        "The BlueBox works in a four-quadrant operation; any EUT stress situation can be simulated. Similar to the external load machine with a fixed shaft, it includes braking, driving, direction of rotation, speed regulation, torque control and a mix out of this range.",
+      ],
+      figure: {
+        src: "/chambers/models/edtc-bb-0.webp", w: 1600, h: 1067,
+        alt: "Inside an e-drive test chamber. A green electric motor sits on a long white bench, connected along a shaft to a blue unit at the far end. Yellow markings run along the floor.",
+        caption: "Here the load machine comes into the chamber. Having no shaft through the shielding is what the BlueBox setup changes.",
+      },
+      overview: [
+        { label: "Compliance", value: "CISPR 25 · ISO 11452" },
+        { label: "Load machine", value: "Mobile, electrical" },
+        { label: "Maximum power", value: "120 kW" },
+        { label: "Test distance", value: "1.0 m" },
+        { label: "Frequency range", value: "30 MHz – 18 GHz" },
+        { label: "Load capacity", value: "5,000 kg" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "Frequency range 9 kHz / 30 MHz to 18 GHz, 40 GHz as an option. Optimized Frankosorb® hybrid absorber lining.",
+          head: ["Configuration", "External dimension (L × W × H)", "Load machine"],
+          rows: [
+            ["EDTC-BB", "7,880 × 6,380 × 3,750 mm", "For the mobile load machine EMC-BlueBox up to 120 kW"],
+            ["EDTC-BB with turntable", "10,880 × 6,980 × 3,900 mm", "For the mobile load machine EMC-BlueBox up to 120 kW\nwith turntable for 360° scan"],
+          ],
+        },
+        {
+          title: "EMC-BlueBox mobile load machine",
+          note: "Equipment that goes into the chamber rather than the chamber itself. Weight, payload and dimensions are as the head office publishes them.",
+          head: ["", "BlueBox-30", "BlueBox-40", "BlueBox-65", "BlueBox-120"],
+          rows: [
+            ["Power", "30 kW", "40 kW", "63 kW", "120 kW"],
+            ["Speed max.", "11,000 RPM", "9,000 RPM", "6,500 RPM", "6,000 RPM"],
+            ["Torque", "82 Nm", "140 Nm", "240 Nm", "470 Nm"],
+            ["Weight", "1,100 kg", "1,200 kg", "1,700 kg", "2,500 kg"],
+            ["Payload", "800 kg", "800 kg", "1,000 kg", "1,400 kg"],
+            ["Dimensions", "2.0 × 1.3 × 1.3 m", "2.2 × 1.3 × 1.3 m", "2.5 × 1.4 × 1.3 m", "2.8 × 1.6 × 1.3 m"],
+          ],
+        },
+      ],
+      groups: [
+        { title: G.en.features, items: [
+          "Four-quadrant operation — any EUT stress situation can be simulated",
+          "Fully compliant with CISPR 25 and ISO 11452",
+          "Optimized Frankosorb® hybrid absorber lining",
+          "Mobile, flexible and adjustable to any kind of EUT",
+          "360° view when placed on a turntable (extended testing range)",
+          "Combination with battery tests",
+          "Integration kit for existing chambers",
+          "Easy to use for every EMC expert",
+        ] },
+        { title: G.en.absorbers, items: absorbersEn("Ferrite, H450 or H600") },
+        { title: G.en.performance, items: [
+          "Radiated emission testing according to CISPR 25",
+          "Radiated immunity testing according to ISO 11452",
+        ] },
+      ],
+    },
+
+    "mil-chc": {
+      lead: [
+        "The MIL CHC is Frankonia's Compact Hybrid Chamber, lined with a Frankosorb® hybrid absorber layout, for MIL-STD 461 and DO-160 component testing.",
+        "It is adapted for full compliant radiated emission and immunity tests of lightweight EUT's at 1.0 m test distance. To meet DO-160 the chamber is slightly longer, because of the absorber lining.",
+      ],
+      figure: {
+        src: "/chambers/models/mil-chc-2.webp", w: 1600, h: 1067,
+        alt: "Inside a compact hybrid chamber for military component testing. Walls and ceiling are lined with pyramid absorbers, one person is adjusting a red antenna on a tripod, a test bench stands to the right, and an aselsan logo is fixed high on the left wall.",
+        caption: "A 1.0 m measuring distance is a distance you can reach across. Military component testing happens at this size.",
+      },
+      overview: [
+        { label: "Emission (EMI)", value: "MIL-STD 461 · DO-160" },
+        { label: "Immunity (EMS)", value: "MIL-STD 461 · DO-160" },
+        { label: "Test distance", value: "1.0 m" },
+        { label: "Setup", value: "Table setup" },
+        { label: "Frequency range", value: "30 MHz – 40 GHz" },
+        { label: "Lining", value: "Hybrid" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "Frankosorb® hybrid absorber lining. The DO-160 configuration is longer because of the absorber lining.",
+          head: ["Configuration", "External dimension (L × W × H)", "Frequency range and lining"],
+          rows: [
+            ["MIL CHC", "4,880 × 4,880 × 3,000 mm", "9 kHz / 30 MHz to 40 GHz\nwith hybrid absorber lining"],
+            ["MIL CHC / DO-160", "5,330 × 4,880 × 3,000 mm", "9 kHz / 30 MHz to 40 GHz\nwith hybrid absorber lining"],
+          ],
+        },
+      ],
+      groups: [
+        { title: G.en.features, items: [
+          "Full compliant for components acc. to MIL-STD 461 and DO-160",
+          "Compact chamber design for military applications",
+          "Advanced lining with long-lasting Frankosorb® absorbers",
+        ] },
+        { title: G.en.absorbers, items: [
+          "Frankosorb® short-pyramid, long-pyramid or hybrid absorber lining",
+          "High-performance nano thin-film technology with proven long-term stability",
+          "Non-combustible acc. to EN 13501-1 class A2 - s1 d0",
+          "Hardly inflammable acc. to EN 13501-1 class B (alternative)",
+        ] },
+        { title: G.en.performance, items: [
+          "Full compliant emission (EMI) and immunity (EMS) acc. to MIL-STD 461 and DO-160, 30 MHz / 80 MHz to 40 GHz",
+          "Absorption at normal incidence: 80 MHz to 250 MHz 6 dB, as per standard requirements",
+          "Absorption at normal incidence: above 250 MHz 10 dB, as per standard requirements",
+        ] },
+      ],
+    },
+
+    "mil-std-chamber": {
+      lead: [
+        "The MIL-STD Chamber is Frankonia's large chamber solution at 1.0 m measuring distance according to MIL-STD 461, adapted for radiated emission and immunity tests for large EUT's or vehicles.",
+        "It can be fully customized according to customers' requirements for military testing of large and heavyweight EUT's.",
+      ],
+      figure: {
+        src: "/chambers/models/mil-std-chamber-0.webp", w: 1250, h: 875,
+        alt: "A cutaway render of a large military chamber. A red steel structure frames the shell, the inner walls are lined with white absorbers, and a tank stands on the floor in the middle. An access ramp leads in from the left.",
+        caption: "This picture is why no dimensions are given. What has to come in is what sets the size of the chamber.",
+      },
+      overview: [
+        { label: "Emission (EMI)", value: "MIL-STD 461 · DO-160" },
+        { label: "Immunity (EMS)", value: "MIL-STD 461 · DO-160" },
+        { label: "Test distance", value: "1.0 m" },
+        { label: "EUT", value: "Vehicles, large EUT's" },
+        { label: "Frequency range", value: "80 MHz – 40 GHz" },
+        { label: "Load capacity", value: "80,000 kg" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "The size is defined according to the EUT type and size. Special turntable systems and integrations are possible.",
+          head: ["Configuration", "External dimension (L × W × H)", "Frequency range and lining"],
+          rows: [
+            ["MIL-STD Chamber", "Custom size", "9 kHz / 80 MHz to 40 GHz\nwith short-pyramid absorbers · military compliance"],
+          ],
+        },
+      ],
+      groups: [
+        { title: G.en.features, items: [
+          "Full compliant acc. to MIL-STD 461 and DO-160",
+          "Frequency of absorbers: 80 MHz to 40 GHz",
+          "High performance solution for large and heavyweight EUT's",
+          "Fully customized according to customers' requirements",
+        ] },
+        { title: G.en.absorbers, items: [
+          "Frankosorb® short-pyramid absorber lining",
+          "High-performance nano thin-film technology with proven long-term stability",
+          "Non-combustible acc. to EN 13501-1 class A2 - s1 d0",
+          "Hardly inflammable acc. to EN 13501-1 class B (alternative)",
+        ] },
+        { title: G.en.performance, items: [
+          "Full compliant emission (EMI) and immunity (EMS) acc. to MIL-STD 461 and DO-160, 30 MHz / 80 MHz to 40 GHz",
+          "Absorption at normal incidence: 80 MHz to 250 MHz 6 dB, as per standard requirements",
+          "Absorption at normal incidence: above 250 MHz 10 dB, as per standard requirements",
+        ] },
+      ],
+    },
+
+    "mil-std-chamber-advanced": {
+      lead: [
+        "The MIL-STD Advanced Chamber is Frankonia's military chamber solution acc. to MIL-STD 461 for large EUT's, and is compliant with commercial or automotive test site requirements.",
+        "Frankonia's unique Frankosorb® long-pyramid or hybrid absorber technology offers the possibility to combine MIL-STD 461 test requirements with commercial test requirements as per CISPR 16-1-4 and ANSI C63.4, as well as vehicle and automotive component tests.",
+      ],
+      figure: {
+        src: "/chambers/models/mil-std-chamber-advanced-3.webp", w: 1478, h: 1108,
+        alt: "A double-deck coach stands inside a large anechoic chamber. Walls and ceiling are lined with pyramid absorbers, a large log-periodic antenna stands at the right, and yellow lines are marked on the floor.",
+        caption: "A coach, inside a chamber built to a military standard. That is what also meeting the commercial test site requirement looks like.",
+      },
+      overview: [
+        { label: "Military", value: "MIL-STD 461 · DO-160" },
+        { label: "Commercial", value: "CISPR 16-1-4" },
+        { label: "Test distance", value: "1.0 m · up to 10.0 m" },
+        { label: "Quiet zone", value: "e.g. ø6.0 m" },
+        { label: "Frequency range", value: "26 MHz – 40 GHz" },
+        { label: "Load capacity", value: "80,000 kg" },
+      ],
+      tables: [
+        {
+          title: "Configurations",
+          note: "The size is defined according to the EUT type and size. 1.0 m for MIL-STD 461; up to 10.0 m for commercial applications.",
+          head: ["Configuration", "External dimension (L × W × H)", "Frequency range and lining"],
+          rows: [
+            ["MIL-STD Advanced Pyramid", "Custom size", "9 kHz / 26 MHz to 40 GHz\nwith long-pyramid absorbers · military, industrial and automotive compliance"],
+            ["MIL-STD Advanced Hybrid", "Custom size", "9 kHz / 30 MHz to 40 GHz\nwith hybrid absorber lining · military, industrial and automotive compliance"],
+          ],
+        },
+      ],
+      standards: standardsPair(
+        "en",
+        ["MIL-STD 461", "DO-160", "CISPR 11", "CISPR 12", "CISPR 14", "CISPR 15", "CISPR 25", "CISPR 32"],
+        ["MIL-STD 461 RS101, RS102, RS103", "DO-160", "IEC/EN 61000-4-3", "ISO 11451", "ISO 11452", "ECE R10"],
+      ),
+      groups: [
+        { title: G.en.features, items: [
+          "Full compliant acc. to MIL-STD 461 and DO-160",
+          "Full compliant EMI/EMS for commercial and automotive standards",
+          "Frequency of absorbers: 30 MHz to 40 GHz",
+          "Advanced high-performance solution for large and heavyweight EUT's",
+          "Fully customized according to customers' requirements",
+        ] },
+        { title: G.en.absorbers, items: [
+          "Frankosorb® long-pyramid or hybrid absorber lining",
+          "High-performance nano thin-film technology with proven long-term stability",
+          "Non-combustible acc. to EN 13501-1 class A2 - s1 d0",
+          "Hardly inflammable acc. to EN 13501-1 class B (alternative)",
+        ] },
+        { title: "Performance & Compliance — military", items: [
+          "Full compliant emission (EMI) and immunity (EMS) acc. to MIL-STD 461 and DO-160, 30 MHz / 80 MHz to 40 GHz",
+          "Absorption at normal incidence: 80 MHz to 250 MHz 6 dB, as per standard requirements",
+          "Absorption at normal incidence: above 250 MHz 10 dB, as per standard requirements",
+        ] },
+        { title: "Performance & Compliance — commercial", items: sacPerformanceEn("26") },
+      ],
+    },
+
+    rvc: {
+      lead: [
+        "The RVC Chambers are designed based on Frankonia's modular construction system. Prefabricated high-quality shielding panels (>8 MS/m) guarantee a maximum of flexibility and performance.",
+        "The shielding panels can be installed reverse (flat surface inside) or as regular PAN shielding with mounting from the inside, which allows future upgrades, e.g., absorber lining.",
+      ],
+      close:
+        "Frankonia offers various stirrer designs and concepts, and maintains its role as a solution provider by adapting our customers' stirrer designs, which we then implement in new RVC chambers or in converting old ones.",
+      figure: {
+        src: "/chambers/models/reverberation-solutions-0.webp", w: 1600, h: 1067,
+        alt: "Inside a reverberation chamber. Walls and ceiling are bare metal shielding panels with no absorber at all. The large ceiling stirrer is blurred mid-rotation, and a blue car stands on the floor turntable.",
+        caption: "That there is no absorber is the principle of this room. Instead of removing the reflections, a stirrer keeps stirring the field until it is uniform.",
+      },
+      overview: [
+        { label: "Compliance", value: "IEC/EN 61000-4-21" },
+        { label: "Automotive", value: "ISO 11452-11 · 11451-5" },
+        { label: "Lowest usable freq.", value: "80 – 200 MHz" },
+        { label: "Max. working volume", value: "8.0 × 5.0 × 3.0 m" },
+        { label: "Frequency range", value: "10 kHz – 18 GHz" },
+        { label: "Models", value: "Seven" },
+      ],
+      tables: [
+        {
+          title: "Commercial & Industrial RVC",
+          note: "Frequency range 10 kHz to 18 GHz, 40 GHz as an option. Working volume to wall and similar >400 mm (λ/4).",
+          head: ["Model", "External dimension (L × W × H)", "Working volume, LUF, stirrer and products"],
+          rows: [
+            ["RVC e1", "7,580 × 5,630 × 4,200 mm", "3.3 × 3.5 × 2.6 m · LUF 200 MHz\n1× Z-Fold stirrer (vertical)\nSmall or medium size ISM & multimedia"],
+            ["RVC e2", "11,280 × 7,280 × 4,950 mm", "5.5 × 4.0 × 2.6 m · LUF 80 MHz\n2× Z-Fold stirrer (vertical and horizontal)\nLarge ISM & multimedia"],
+          ],
+        },
+        {
+          title: "Automotive RVC",
+          note: "Frequency range 10 kHz to 18 GHz, 40 GHz as an option. The L, XL and XXL are custom sizes.",
+          head: ["Model", "External dimension (L × W × H)", "Working volume, LUF, stirrer and products"],
+          rows: [
+            ["RVC S", "5,330 × 3,380 × 3,300 mm", "2.5 × 1.0 × 1.5 m · LUF 200 MHz\n1× Z-Fold stirrer (vertical)\nComponents for military or automotive"],
+            ["RVC M", "7,580 × 5,630 × 4,200 mm", "3.3 × 3.5 × 2.6 m · LUF 200 MHz\n1× Z-Fold stirrer (vertical)\nLarge components for military or automotive"],
+            ["RVC L", "13,880 × 11,480 × 6,300 mm (custom)", "8.0 × 5.0 × 3.0 m · LUF 80 MHz\n2× Z-Fold stirrer (vertical and horizontal)\nVehicles"],
+            ["RVC XL", "15,530 × 11,480 × 6,600 mm (custom)", "8.0 × 5.0 × 3.0 m · LUF 80 MHz\n1× large-disc stirrer ø9.0 m, 2× disc stirrer ø4.0 m\nVehicles"],
+            ["RVC XXL", "17,480 × 13,580 × 6,600 mm (custom)", "8.0 × 5.0 × 3.0 m · LUF 80 MHz\n1× large-disc stirrer ø12.0 m, 2× disc stirrer ø4.0 m\nLarge vehicles"],
+          ],
+        },
+      ],
+      groups: [
+        { title: "Features & Compliance", items: [
+          "Retrofit of a RVC with Frankosorb® hybrid absorbers and regular PAN shielding, or converting old EMC chambers to RVC chambers",
+          "Cost-effective and performance solution for small products up to vehicles",
+          "Immunity compliance according to IEC/EN 61000-4-21 and ISO 11452-11",
+          "Immunity and emission compliance according to ISO 11451-5 (fast stirring)",
+          "Full safety integration per Machinery Directive (2006/42/EC)",
+        ] },
+        { title: "Frankonia stirrers", items: [
+          "Regular Z-Fold stirrers with up to 30 RPM at e.g. ø1.8 m",
+          "Performance Z-Fold stirrers with up to 60 RPM at e.g. ø2.8 m",
+          "Disc-style stirrers with up to 120 RPM at e.g. ø4.0 m",
+          "Tube-style stirrers with up to 240 RPM at e.g. ø2.0 m",
+          "Large-disc stirrers with up to 10 RPM at e.g. ø12.0 m",
+        ] },
+      ],
+    },
+
+    "shielded-room": {
+      lead: [
+        "Frankonia shielded rooms and anechoic chambers are designed based on a modular construction system. Prefabricated high quality shielding panels guarantee a maximum of flexibility regarding possible dimensions, and all PAN type modules allow an easy handling and entry via standard building doors.",
+        "The standard modules are bolted from inside every 75 mm with high conductivity mesh gasket inserted for sealing the joints of the panels. This facilitates an installation close to the walls of the parent building, and the short screwing distance with a predefined torque guarantees long life shielding attenuation characteristics.",
+      ],
+      figure: {
+        src: "/chambers/models/shielded-room-7.webp", w: 1600, h: 1067,
+        alt: "A shielded room seen from the factory hall. Two large RF doors in red frames sit side by side in a grey shielding panel wall, carrying warning labels, with ducting and cable trays running overhead.",
+        caption: "Shielding is not only a question of the wall. The doors, the vents and the filters have to reach the same figure before the number below means anything.",
+      },
+      overview: [
+        { label: "Size", value: "Any size" },
+        { label: "Shielding standard", value: "EN 50147-1 · IEEE-299" },
+        { label: "Max. attenuation", value: "120 dB" },
+        { label: "Frequency range", value: "10 kHz – 40 GHz" },
+        { label: "Panel", value: "2.0 mm galvanized steel" },
+        { label: "Load capacity", value: "Any loading" },
+      ],
+      tables: [
+        {
+          title: "Guaranteed performance",
+          note: "Acc. to EN 50147-1 or IEEE-299 (option). Equal performance for any kind of feed-through component, honeycomb, door, gate or filter.",
+          head: ["Frequency", "Attenuation", "Field"],
+          rows: [
+            ["10 kHz", "90 dB", "Magnetic field"],
+            ["100 kHz", "100 dB", "Magnetic field"],
+            ["1 MHz", "110 dB", "Magnetic field"],
+            ["100 MHz", "120 dB", "Plane wave"],
+            ["400 MHz", "120 dB", "Plane wave"],
+            ["1 GHz", "110 dB", "Plane wave"],
+            ["18 GHz", "100 dB", "Microwave"],
+            ["40 GHz", "100 dB", "Microwave"],
+          ],
+        },
+      ],
+      groups: [
+        { title: G.en.features, items: [
+          "PAN Type shielding modules made of 2.0 mm thick galvanized steel",
+          "Modular and prefabricated standard",
+          "Self-supporting stability or with static steel structure for any seismic condition",
+          "Mounted from the inside",
+          "Reverse installation possible (flat surface inside)",
+          "Interior finishing (walls and ceiling) possible",
+          "Raised floor systems, or welded floor systems",
+          "Long life shielding attenuation characteristics",
+          "No glue, no welding",
+          "Dismountable without any damage, easy modifications and maintenance",
+          "A complete transfer or future modification is possible",
+          "Any size of shielding is possible",
+          "Acoustic panels with absorption per ISO 354 w = 0.65 (MH)",
+          "Perfectly adapted for Frankosorb® absorbers",
+          "Turnkey solution",
+        ] },
       ],
     },
   },

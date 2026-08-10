@@ -60,10 +60,12 @@ export default function NavDrawer({
         aria-label={labels.nav}
         hidden={!open}
         // The links inside are server-rendered and cannot carry an onClick of
-        // their own, so the close is delegated. It is only needed for the
-        // same-page anchors — a link to another page unmounts the drawer by
-        // navigating — but leaving #contact open would cover what it scrolled
-        // to, which is the one case a reader would actually notice.
+        // their own, so the close is delegated. A link to another page unmounts
+        // the drawer by navigating and would not need this; it stays for the
+        // same-page anchors, which would otherwise leave the panel covering
+        // whatever it just scrolled to. Contact was the last anchor in this
+        // list and is a page now, but the guard costs one line and the next
+        // anchor added here would silently need it.
         onClick={(event) => {
           if ((event.target as HTMLElement).closest("a")) setOpen(false);
         }}

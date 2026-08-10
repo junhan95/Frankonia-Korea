@@ -44,6 +44,7 @@ Career는 GNB에서 내려 Company 드롭다운으로 돌아갔다. 그 자리�
 | Anechoic Chambers | 15 | 개요 + 산업 5 + 챔버 형태 6 + 기술 4 (FrankoSorb · 차폐 게이트 · 자동화 · 서비스) + References | 골격 |
 | EMC Test Systems | 17 | 개요 + 산업 5 + 시험 종류 4 + 제품군 6 + 규격 인덱스 | 골격 |
 | CyberShield | 1 | 제품 페이지 전문을 이 사이트의 헤더·푸터 안에서 렌더 | 완성 |
+| Contact | 1 | 사업장 5곳(독일 2 · 중국 · 인도 · 한국)의 주소·메일·전화 + 문의에 담을 세 가지 | 완성(폼 없음) |
 | Downloads | 1 | 카탈로그·포토북·인증서 허브 | 골격 |
 | Legal | 2 | Imprint(TMG §5) · Privacy Policy(GDPR 제13조) | 완성 |
 
@@ -267,8 +268,16 @@ python deploy/deploy.py
   제품 사진이 들어갔다 — 앰프 사진만 본사 웹에 없어 2019 Selection Book 18쪽에서
   잘라 왔고, 경위는 [`docs/source/test-systems-assets.md`](docs/source/test-systems-assets.md).
 - **Downloads에 파일이 없다.** 내비게이션 세 곳이 이 페이지를 가리킨다.
-- **Contact가 페이지가 아니라 앵커다.** 기획서 §3.7의 견적·기술 문의 폼은 아직 없고,
-  랜딩의 `#contact` 밴드에서 `mailto:`로 연결된다.
+- ~~**Contact가 페이지가 아니라 앵커다.**~~ 2026-08-11 절반 해소. `/contact`가 생겼고
+  헤더·모바일 드로어·푸터·상단 CTA·히어로·전 페이지 마감 밴드가 전부 이 페이지를
+  가리킨다. 본사가 자기 Contact 페이지에 싣는 4개 법인에 **한국 사업장(Frankonia Korea
+  EMC Solutions)** 을 더한 다섯 곳의 주소·메일·전화가 한 목록에 있다. 남은 것은
+  **기획서 §3.7의 서버 폼** — 정적 export라 Server Action·Resend·Turnstile을 쓸 수
+  없으므로, 폼을 넣으려면 외부 폼 엔드포인트를 붙이거나 호스팅을 옮겨야 한다.
+  현재는 전부 `mailto:`/`tel:` 링크다.
+- **한국 사업장 주소가 없다.** `/contact`의 한국 행은 메일과 전화만 싣고 주소 자리에는
+  "주소 준비 중"을 인쇄한다 (`app/contact-sections.ts`의 `address: null`). 주소가 확정되면
+  그 한 필드만 채우면 된다.
 - **모델 상세 페이지가 없다.** 27 + 36개 모델은 인덱스에 이름과 사양 요약까지만
   나오고, 각자의 페이지는 아직 없다 (기획서 §3.5).
 - **페이지당 JS 186KB(gzip)는 거의 전부 프레임워크다.** 헤더에서 딸려 오던 내비

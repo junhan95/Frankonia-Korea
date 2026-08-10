@@ -8,6 +8,12 @@
 챔버 브랜치는 개요·산업군·형식·기술 16페이지가 이미 카탈로그 본문으로 차 있다.
 없는 것은 **모델 한 종을 펼쳐 보는 자리**뿐이고, 이 문서는 그것을 여는 계획이다.
 
+> **2026-08-11 실행 완료 — Phase B·C.** 26개 모델 페이지가 두 로케일로 들어갔다
+> (`/chambers/model/*`, 52 라우트). 라우트 78 → **130**, `npm test` 18개 전부 통과.
+> 모델 목록의 모든 행이 링크가 됐고, 사진은 26장(4.0 MB)으로 추려 나머지 72장을 지웠다.
+>
+> 구현하며 정한 것 다섯 가지는 §9에 적었다. 남은 것은 §5의 C2·C3(MyChamber 연결)뿐이다.
+>
 > **2026-08-11 실행 완료 — Phase A.** 원장 두 건
 > ([chambers-models.md](source/chambers-models.md) · [chambers-model-assets.md](source/chambers-model-assets.md)),
 > 사진 98장(`public/chambers/models/`, 14 MB), `ChamberModel.slug` 26종.
@@ -320,3 +326,39 @@ cd landing-page && node ../.claude/skills/frankonia-subpage/serve-out.mjs 4399
 
 원본에 없는 수치·성능·규격은 만들어 넣지 않는다. 본사가 "guaranteed"라고 쓴 것만
 보증으로 옮기고, 쓰지 않은 것은 옮기지 않는다.
+
+---
+
+## 9. 구현하며 정한 것 (Phase B, 2026-08-11)
+
+### ① 반복 블록을 상수로 뺐다
+
+카탈로그는 모델마다 흡수체 4줄과 SAC 성능 6줄을 **글자 그대로 반복**한다. 모델마다
+달라지는 것은 페라이트 조합과 FU 괄호의 26/80 MHz 여부뿐이다. 그래서
+`absorbersEn/Ko(lining)` · `sacPerformanceEn/Ko(fu)` · `standardsPair(lang, …)`로
+한 번만 쓴다. 26페이지에 같은 문장을 스물여섯 번 적을 이유가 없다.
+
+### ② 한눈에 밴드의 값은 짧게
+
+`.bd b`가 24px 굵은 글씨라 "CISPR 16-1-4 · ANSI C63.4"가 두 줄로 깨졌다. 배지는
+`CISPR 16-1-4`까지만 싣고, ANSI C63.4는 바로 아래 검증 규격 밴드와 특징 목록이
+온전히 말한다. **배지는 6개로 맞춘다** — `.badges-wide`가 3열이라 3+3으로 채워진다.
+4개면 `.badges-four`가 한 줄로 낸다. 5개는 마지막 줄이 비어 이가 빠진다.
+
+### ③ 모델 페이지는 자기 자신을 링크하지 않는다
+
+RVC 페이지에는 모델 목록 7행이 그대로 남는다(같은 슬러그를 공유하므로). 그 행들이
+자기 페이지를 가리키고 있었다. `ModelList`가 `here`를 받아 해당 행만 `<div>`로 낸다.
+
+### ④ 형식 인덱스가 이 모델뿐이면 브레드크럼에서 뺀다
+
+`Frankonia › Anechoic Chambers › Shielded Room › Shielded Room`으로 같은 이름이
+두 번 나왔다. 형식의 모든 모델이 이 슬러그를 쓰면(차폐룸 1종, RVC 7종) 그 단계는
+단계가 아니므로 뺀다. 나머지 24개는 3단 그대로다.
+
+### ⑤ `CheckColumn`의 `head`를 문자열도 받게 했다
+
+회사 페이지는 "Frankonia **stands for**"처럼 제목을 둘로 쪼개 뒤쪽에 굵기를 준다.
+규격 2단의 제목은 "Emission" 한 단어라 `["", "Emission"]`이 더 나쁜 표현이었다.
+`string | [string, string]` 둘 다 받는다. 체크 글리프는 `Groups`의 것과 다른데,
+합치는 것은 회사 페이지의 시각 변경이므로 **이관에서는 손대지 않았다**.

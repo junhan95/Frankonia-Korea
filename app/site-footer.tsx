@@ -1,12 +1,12 @@
 import { chambersPath } from "./chamber-sections";
 import { legalPath } from "./legal-sections";
 import { companySections, sectionMeta, sectionPath } from "./company-sections";
+import { contactPath } from "./contact-sections";
 import { testSystemsPath } from "./test-system-sections";
 import { localeRoute, type Lang } from "./site-config";
 
-/** Shared dark footer. Anchors resolve against the locale's landing page. */
+/** Shared dark footer. */
 export default function SiteFooter({ lang, t }: { lang: Lang; t: FooterCopy }) {
-  const home = localeRoute(lang);
   return (
     <footer>
       <div className="wrap">
@@ -40,7 +40,7 @@ export default function SiteFooter({ lang, t }: { lang: Lang; t: FooterCopy }) {
             <h5>{t.ftLink}</h5>
             <ul>
               <li><a href="https://frankonia-solutions.com/" target="_blank" rel="noopener">{t.ftHq}</a></li>
-              <li><a href={`${home}#contact`}>{t.ftContact}</a></li>
+              <li><a href={localeRoute(lang, contactPath)}>{t.ftContact}</a></li>
               {/* Both were promised by the footer long before they existed —
                   the privacy entry pointed at `#`, which on 84 pages is a link
                   that does nothing. */}
