@@ -21,9 +21,31 @@ import { asset, cyberShieldUrl, localeRoute, type Lang } from "./site-config";
  * fresh, so the two read as one voice — the six product lines keep their
  * headings and their order, the attenuation figures and the standards list are
  * quoted as the product site states them, and nothing here says more than the
- * page it summarises. Which band condenses which section, and the ten figures
- * that have to be checked against the product site when it changes, are in
+ * page it summarises. Which band condenses which section, and the figures that
+ * have to be checked against the product site when it changes, are in
  * docs/source/cybershield.md — read the ledger before editing any copy here.
+ *
+ * The band order is the product site's argument, not a shorter list of its
+ * topics (2026-08-12, head office: 원본 페이지의 이야기 흐름을 따른다). That
+ * page is built as five acts, and the acts only work in sequence:
+ *
+ *   1  belief    — the practice we reject: shielding that is welded, fixed and
+ *                  permanent. This spends the industry's own symbol of trust,
+ *                  and has to be paid back in act 5.
+ *   2  why       — the gap, stated in the reader's own terms (`0 dB` against a
+ *      threat       signal that never enters the network), then the four routes
+ *                   the exposure actually arrives by.
+ *   3  audit     — one question the reader usually cannot answer: what is your
+ *                  shielding effectiveness today, in decibels?
+ *   4  answer    — the short answer first, then the room, then what is in it.
+ *      system
+ *   5  verify    — the measurement that replaces the permanence act 1 removed.
+ *
+ * Ecosystem and applications follow, because they are what a reader who has
+ * been persuaded reads next; the hand-over band closes. Moving `verify` behind
+ * `ecosystem` would leave a reader working through component detail while
+ * still wondering whether bolts hold as well as welds, which is the objection
+ * act 1 opened — the order is load-bearing, so keep it.
  *
  * Every outbound link goes through `cyberShieldUrl`, which carries the reader's
  * locale — the product site serves English from its root and Korean from /ko/.
@@ -43,30 +65,64 @@ const copy = {
     eyebrow: "CYBERSHIELD",
     title: "AI 데이터센터를 보호하고, 신호를 경계 안에 가두십시오.",
     intro:
-      "CyberShield는 미션 크리티컬 데이터 인프라 주변에 측정 가능한 전자기 보안 경계를 구축합니다. 설계부터 통합, 현장 검증까지 하나의 완전한 시스템으로 제공합니다.",
+      "차폐실은 언제나 건물에서 고정된 부분이었습니다. CyberShield는 다릅니다. 시설에 맞춰 구성되고, 운영 중에 조립되며, 현장 측정으로 성능이 입증되는 전자기 보안 경계입니다.",
 
-    valueKicker: "CYBERSHIELD의 핵심 가치",
-    valueTitle: "설계부터 시공, 측정까지 하나의 책임으로 묶인 단일 경계.",
-    valueBody:
-      "차폐 구조와 도어, 필터, 환기 도파관, 모든 관통부를 하나의 연속된 경계로 설계하고, 운영을 멈추지 않는 무용접 방식으로 시공한 뒤, EN 50147-1 / IEEE 299에 따라 현장에서 측정해 문서로 인도합니다. 마지막에 남는 것은 약속이 아니라 측정값입니다.",
     openSite: "CyberShield 사이트 열기",
     talk: "상담 문의",
-    metrics: [
-      ["현장 측정 검증", "설치 후 차폐 성능을 현장에서 측정합니다 — 추정이 아닌 증거"],
-      ["무용접 모듈 조립", "화기 작업 없는 볼트 체결 — 운영 중인 시설과 병행 시공"],
-      ["확장·이전 가능", "손상 없이 해체해 확장·변경·이전에 재사용"],
+
+    beliefKicker: "차폐를 바라보는 우리의 관점",
+    beliefTitle: "지금까지는 건물이 차폐실에 맞춰야 했습니다.",
+    beliefLabels: ["기존의 방식", "우리의 관점"],
+    beliefStatusQuo:
+      "차폐실이 존재해온 내내, 시설이 차폐에 맞춰야 했습니다. 기존 차폐는 용접으로 고정되고, 설계 단계에서 확정되며, 완공된 날부터 바뀌지 않습니다. 건물은 그 방을 중심으로 계획되고, 공사는 그 방 때문에 멈춥니다. 그리고 랙 구성이 바뀌거나 전력 밀도가 올라가거나 시설이 한계에 이르렀을 때, 그 방은 따라가지 못합니다. 가장 빠르게 변하는 인프라 안에서 보호 설비만 가장 움직이지 않는 부분으로 남습니다.",
+    beliefBelief:
+      "우리는 반대여야 한다고 생각합니다. 시설이 방에 맞추는 것이 아니라, 방이 시설에 맞춰야 합니다. 그래서 CyberShield는 표준 출입문을 통과하는 사전 제작 강판 모듈로 만들어집니다. 내부에서 조립하고, 기존 벽에 가깝게 세우며, 볼트로 체결합니다. 용접도 접착도, 되돌릴 수 없는 작업도 없습니다. 확장하고, 다시 구성하고, 다른 현장으로 통째로 옮긴 뒤 다시 측정할 수 있습니다. 성능은 그대로 두고, 영구 고정만 걷어냈습니다.",
+
+    audienceKicker: "CYBERSHIELD가 지키는 현장",
+    audienceTitle: "차폐 경계가 반드시 유지되어야 하는 세 가지 환경.",
+    audience: [
+      ["하이퍼스케일 클라우드 · AI 데이터센터", "AI 연산 클러스터, 양자 하드웨어, 핵심 가용 영역을 RF 조작과 고출력 전자기 위협으로부터 차폐합니다."],
+      ["코로케이션 · 엔터프라이즈 데이터센터", "엄격한 거버넌스 요건을 가진 기업 고객에게 인증된 차폐 구역을 측정 가능한 프리미엄 보안 등급으로 제공합니다."],
+      ["국방 · 정부 · 금융기관", "소버린 클라우드, 지휘통제 센터, 고빈도 거래 플랫폼처럼 기밀성을 가정에 맡길 수 없는 환경을 지원합니다."],
     ],
 
-    threatKicker: "소프트웨어만으로 제공할 수 없는 보안 계층",
-    threatTitle: "모든 위협이 네트워크를 통해 들어오지는 않습니다.",
+    whyKicker: "소프트웨어를 넘어선 보안",
+    whyTitle: "AI 데이터센터의 보안은 이제 소프트웨어에서 끝나지 않습니다.",
+    whyBody:
+      "방화벽과 암호화, 제로 트러스트는 네트워크를 통해 들어오는 위협을 막습니다. 그러나 AI 데이터센터가 품는 자산의 가치가 커지면서, 네트워크를 거치지 않고 물리 공간과 전자기 결합으로 접근하는 경로까지 검토 대상이 되었습니다. 이제 소프트웨어 보안과 물리적 보안은 함께 설계되어야 합니다.",
+    whyMetric: "0 dB",
+    whyMetricLabel: "네트워크를 거치지 않는 신호에 대해 방화벽과 암호화, 제로 트러스트가 제공하는 감쇠량.",
+    assets: [
+      ["국가적 전략자산", "AI 컴퓨팅 역량은 이미 국가 경쟁력의 기반으로 다뤄집니다. 모델 가중치와 학습 데이터, 소버린 워크로드는 기업 자산인 동시에 국가적 보호 대상이며, 바로 그 점이 표적이 되는 이유이기도 합니다."],
+      ["EMC·EMP에 취약한 구조", "고밀도 GPU 랙은 수십 킬로와트를 스위칭 전자장비로 공급받고, 400G·800G 인터커넥트는 밀리볼트 단위의 잡음 여유로 동작합니다. 전력 밀도가 올라갈수록 방사는 강해지고 내성 여유는 줄어듭니다. 일반 전산실 기준으로 설계된 보호로는 이 조건을 감당하지 못합니다."],
+      ["외부 전파 방호", "데이터센터는 대개 산업 지역과 송신 시설, 교통 인프라 인근에 세워집니다. 주변 전파 환경은 통제할 수 없고 갈수록 혼잡해집니다. 의도적 전자기 간섭 장비는 상용 부품으로도 구성할 수 있어, IEC 61000-4-36이 별도의 시험 규격으로 존재합니다."],
+    ],
+
+    threatKicker: "노출이 도달하는 경로",
+    threatTitle: "같은 자산에 이르는 네 갈래 경로. 어느 것도 방화벽을 지나지 않습니다.",
     threatBody:
-      "암호화와 제로 트러스트는 디지털 영역을 보호합니다. CyberShield는 시설 경계에서 발생하는 물리적·전자기적 노출을 통제합니다.",
+      "모두 물리 공간이나 전자기 결합을 통해 연산 하드웨어에 도달합니다. 그리고 모두 시설 경계에서 차단됩니다.",
     impactLabel: "잠재 영향",
     threats: [
       ["전자기 정보 방사", "네트워크에 접촉하지 않고도 비의도적 전자기 신호를 통해 민감한 처리 활동이 노출될 수 있습니다.", "기밀성 노출"],
       ["의도적 전자기 간섭", "국소 고출력 RF 또는 전자기 에너지는 전자장비, 제어 및 통신을 교란할 수 있습니다.", "서비스 중단"],
-      ["EMP / HEMP 노출", "방사 및 전도성 펄스 영향은 중요 시스템과 업무 연속성 체계를 위협할 수 있습니다.", "업무 연속성 위험"],
+      ["EMP / HEMP 노출", "방사 및 전도성 펄스 영향은 중요 시스템과 업무 연속성 체계를 위협할 수 있습니다. E1 펄스는 2.5 ns 만에 상승합니다 — 낙뢰 기준 서지 보호기가 반응하기 전입니다.", "업무 연속성 위험"],
       ["경계 구성요소 취약점", "도어, 환기, 전원, 데이터, 냉각 및 설비 관통부가 차폐 경계의 가장 약한 경로가 될 수 있습니다.", "보호 성능 저하"],
+    ],
+
+    auditTitle: "지금 이 시설의 차폐 성능은 몇 dB입니까?",
+    auditBody:
+      "그 답이 측정값이 아니라 사양서 수치라면, 그 숫자는 검증된 것이 아닙니다. 차폐 경계의 성능은 가장 취약한 관통부가 결정하고, 취약한 관통부는 문제가 드러나는 날까지 보이지 않습니다.",
+    auditLink: "CyberShield의 측정 방식 보기",
+
+    answerKicker: "짧은 답",
+    answerTitle: "설계부터 시공, 측정까지 하나의 책임으로 묶인 단일 경계.",
+    answerBody:
+      "차폐 구조와 도어, 필터, 환기 도파관, 모든 관통부를 하나의 연속된 경계로 설계하고, 운영을 멈추지 않는 무용접 방식으로 시공한 뒤, EN 50147-1 / IEEE 299에 따라 현장에서 측정해 문서로 인도합니다. 마지막에 남는 것은 약속이 아니라 측정값입니다.",
+    metrics: [
+      ["현장 측정 검증", "설치 후 차폐 성능을 현장에서 측정합니다 — 추정이 아닌 증거"],
+      ["무용접 모듈 조립", "화기 작업 없는 볼트 체결 — 운영 중인 시설과 병행 시공"],
+      ["확장·이전 가능", "손상 없이 해체해 확장·변경·이전에 재사용"],
     ],
 
     systemKicker: "모듈형 PAN 차폐 시스템",
@@ -82,20 +138,6 @@ const copy = {
     cutawayAlt: "구조, 도어, 필터, 덕트, 전력실을 포함한 CyberShield 차폐 데이터홀 단면도",
     cutawayCaption:
       "차폐 경계를 이루는 21가지 솔루션. CyberShield 사이트에서 항목을 선택하면 각각의 역할과 필요성을 확인할 수 있습니다.",
-
-    ecoKicker: "하나의 연속된 차폐 경계",
-    ecoTitle: "여섯 개의 제품군, 누설 없는 하나의 차폐 경계.",
-    ecoBody:
-      "모든 구성요소를 동일한 차폐 외피의 일부로 설계합니다. 접합부, 도어, 관통부에서 성능이 손실되지 않습니다.",
-    eco: [
-      "벽체·천장·바닥을 구성하는 2.0 mm 아연도금 강판 PAN 모듈 시스템.",
-      "고하중 슬라이딩·힌지 RF 도어, 고차폐 RF 윈도우 및 출입 모니터링 연동.",
-      "고성능 전원 라인 필터, 광케이블 도파관 관통부 및 RF 신호 억제 장치.",
-      "허니콤 환기 패널, 흡음 패널(ISO 354), 액체냉각·설비용 차폐 도파관.",
-      "EN 50147-1 / IEEE 299 차폐 성능 측정, 누설 탐지, SE 시험 및 규격 문서화.",
-      "예방 정비, 재교정 및 주기적 재인증 서비스.",
-    ],
-    ecoGo: "CyberShield 사이트에서 제품군 전체 보기",
 
     verifyKicker: "추정이 아닌 검증",
     verifyTitle: "약속이 아니라 측정으로 증명합니다.",
@@ -120,6 +162,20 @@ const copy = {
     ],
     attenuationNote:
       "표준 PAN 타입 시스템의 보증 성능 범위입니다. 프로젝트에 적용되는 범위는 사양서와 현장 인수 시험을 통해 확정됩니다.",
+
+    ecoKicker: "하나의 연속된 차폐 경계",
+    ecoTitle: "여섯 개의 제품군, 누설 없는 하나의 차폐 경계.",
+    ecoBody:
+      "모든 구성요소를 동일한 차폐 외피의 일부로 설계합니다. 접합부, 도어, 관통부에서 성능이 손실되지 않습니다.",
+    eco: [
+      "벽체·천장·바닥을 구성하는 2.0 mm 아연도금 강판 PAN 모듈 시스템.",
+      "고하중 슬라이딩·힌지 RF 도어, 고차폐 RF 윈도우 및 출입 모니터링 연동.",
+      "고성능 전원 라인 필터, 광케이블 도파관 관통부 및 RF 신호 억제 장치.",
+      "허니콤 환기 패널, 흡음 패널(ISO 354), 액체냉각·설비용 차폐 도파관.",
+      "EN 50147-1 / IEEE 299 차폐 성능 측정, 누설 탐지, SE 시험 및 규격 문서화.",
+      "예방 정비, 재교정 및 주기적 재인증 서비스.",
+    ],
+    ecoGo: "CyberShield 사이트에서 제품군 전체 보기",
 
     appKicker: "차폐실 구성 방식",
     appTitle: "하나의 플랫폼, 네 가지 미션 프로파일.",
@@ -147,30 +203,64 @@ const copy = {
     eyebrow: "CYBERSHIELD",
     title: "Protect the AI data centre. Contain the signal.",
     intro:
-      "CyberShield creates a measurable electromagnetic security boundary around mission-critical data infrastructure — engineered, integrated and verified as one complete system.",
+      "Shielded rooms have always been the fixed part of a building. CyberShield is not — a measurable electromagnetic boundary that adapts to your facility, assembles alongside live operations and is proven by measurement on site.",
 
-    valueKicker: "WHAT CYBERSHIELD ADDS",
-    valueTitle: "One boundary — designed, built and measured under a single responsibility.",
-    valueBody:
-      "Shielding structure, doors, filters, ventilation waveguides and every penetration are engineered as one continuous boundary, assembled weld-free alongside live operations, then measured on site to EN 50147-1 / IEEE 299 and handed over as documented evidence. What you keep at the end is a measurement, not an assurance.",
     openSite: "Open the CyberShield site",
     talk: "Talk to a specialist",
-    metrics: [
-      ["Verified on site", "Shielding performance is measured after installation — not assumed"],
-      ["Weld-free assembly", "Bolted modules installed alongside live operations, no hot work"],
-      ["Built to change", "Dismount, expand or relocate the room without damage"],
+
+    beliefKicker: "HOW WE THINK ABOUT SHIELDING",
+    beliefTitle: "For decades, the building has had to serve the shield.",
+    beliefLabels: ["The status quo", "What we believe"],
+    beliefStatusQuo:
+      "For as long as shielded rooms have existed, the facility has had to accommodate the shield. Conventional shielding is welded into place, fixed at design stage and permanent from the day it is finished. The building is planned around it. Construction stops for it. And when racks change, power density rises or the site outgrows itself, the room cannot follow. Protection ends up being the least flexible part of the fastest-moving infrastructure there is.",
+    beliefBelief:
+      "We believe it should be the other way around: the room adapts to the facility, not the facility to the room. So we build ours from prefabricated steel modules that pass through a standard building door, assemble from the inside, sit close to existing walls and bolt together — no welding, no glue, nothing irreversible. The room can be extended, reconfigured or relocated entirely, then measured again. Full protection, none of the permanence.",
+
+    audienceKicker: "WHO CYBERSHIELD IS BUILT FOR",
+    audienceTitle: "Three environments where the boundary has to hold.",
+    audience: [
+      ["Hyperscale cloud & AI centres", "Core AI compute clusters, quantum hardware and critical availability zones, shielded against RF tampering and high-power electromagnetic threats."],
+      ["Colocation & enterprise data centres", "A certified shielded vault offered as a premium, measurable security tier for enterprise customers under strict governance requirements."],
+      ["Defence, government & financial institutions", "Sovereign cloud deployments, command centres and high-frequency trading platforms where confidentiality cannot be left to assumption."],
     ],
 
-    threatKicker: "THE SECURITY LAYER SOFTWARE CANNOT PROVIDE",
-    threatTitle: "Not every threat enters through the network.",
+    whyKicker: "SECURITY BEYOND SOFTWARE",
+    whyTitle: "AI data centre security no longer ends at the software layer.",
+    whyBody:
+      "Firewalls, encryption and zero trust stop what arrives over the network. As the value held inside an AI data centre grows, the paths that never touch the network — through physical space and through electromagnetic coupling — have become a real part of the assessment. Software security and physical security now have to be designed together.",
+    whyMetric: "0 dB",
+    whyMetricLabel: "The attenuation firewalls, encryption and zero trust provide against a signal that never enters the network.",
+    assets: [
+      ["A national strategic asset", "AI compute is already treated as national capability. Model weights, training data and sovereign workloads are corporate property and a matter of state interest at once — which is exactly what makes them worth targeting."],
+      ["EMC and EMP exposed by design", "Dense GPU racks take tens of kilowatts through switching electronics, and 400G/800G interconnects work to noise budgets measured in millivolts. As power density rises, emission goes up and immunity headroom comes down. Protection sized for a conventional server room does not cover this."],
+      ["Protection from what is outside", "Data centres sit near industry, transmitters and transport infrastructure. The ambient RF environment is not yours to control and only gets busier. Intentional interference can be assembled from commercially available parts — which is why IEC 61000-4-36 exists as a test standard in its own right."],
+    ],
+
+    threatKicker: "HOW THE EXPOSURE ARRIVES",
+    threatTitle: "Four routes to the same asset — none of them across a firewall.",
     threatBody:
-      "Encryption and zero-trust protect the digital domain. CyberShield addresses physical and electromagnetic exposure at the facility boundary.",
+      "Each one reaches processing hardware through physical space or through electromagnetic coupling. Each one is closed at the facility boundary.",
     impactLabel: "Potential impact",
     threats: [
       ["Compromising emanations", "Sensitive processing activity can be exposed through unintended electromagnetic signals — without touching the network.", "Confidentiality exposed"],
       ["Intentional interference", "Localized high-power RF or electromagnetic energy can disrupt electronics, controls and communications.", "Service interruption"],
-      ["EMP / HEMP exposure", "Radiated and conducted pulse effects can challenge critical systems and continuity architectures.", "Mission continuity risk"],
+      ["EMP / HEMP exposure", "Radiated and conducted pulse effects can challenge critical systems and continuity architectures. The E1 pulse rises in 2.5 ns — before surge protection rated for lightning has reacted.", "Mission continuity risk"],
       ["Boundary vulnerabilities", "Doors, ventilation, power, data, cooling and utility penetrations can become the weakest path through the shield.", "Protection degraded"],
+    ],
+
+    auditTitle: "What is the shielding effectiveness of your facility — today, in decibels?",
+    auditBody:
+      "If the answer is a specification rather than a measurement, the number is unverified. A boundary is only as good as its weakest penetration, and a weak penetration stays invisible until the day it matters.",
+    auditLink: "See how CyberShield rooms are measured",
+
+    answerKicker: "THE SHORT ANSWER",
+    answerTitle: "One boundary — designed, built and measured under a single responsibility.",
+    answerBody:
+      "Shielding structure, doors, filters, ventilation waveguides and every penetration are engineered as one continuous boundary, assembled weld-free alongside live operations, then measured on site to EN 50147-1 / IEEE 299 and handed over as documented evidence. What you keep at the end is a measurement, not an assurance.",
+    metrics: [
+      ["Verified on site", "Shielding performance is measured after installation — not assumed"],
+      ["Weld-free assembly", "Bolted modules installed alongside live operations, no hot work"],
+      ["Built to change", "Dismount, expand or relocate the room without damage"],
     ],
 
     systemKicker: "MODULAR PAN SHIELDING SYSTEM",
@@ -186,20 +276,6 @@ const copy = {
     cutawayAlt: "Cutaway view of a CyberShield shielded data hall with its structure, doors, filters, ducts and power room",
     cutawayCaption:
       "Twenty-one engineered solutions make up the shielding boundary. Pick any one on the CyberShield site to see what it does and why it is there.",
-
-    ecoKicker: "ONE CONTINUOUS BARRIER",
-    ecoTitle: "Six product lines. One zero-leak boundary.",
-    ecoBody:
-      "Every component is engineered as part of the same shielding envelope, so performance is not lost at the joints, the doors or the penetrations.",
-    eco: [
-      "Prefabricated 2.0 mm galvanized steel PAN module system for walls, ceilings and floors.",
-      "Heavy-duty sliding and hinged RF doors, high-attenuation RF windows and integrated access monitoring.",
-      "High-performance power line filters, fibre-optic waveguide penetrations and RF signal suppressors.",
-      "Honeycomb ventilation panels, acoustic panels (ISO 354) and shielded waveguides for liquid cooling and utilities.",
-      "EN 50147-1 / IEEE 299 shielding measurement, leak detection, SE testing and compliance documentation.",
-      "Preventive maintenance, recalibration and periodic re-certification services.",
-    ],
-    ecoGo: "See every product line on the CyberShield site",
 
     verifyKicker: "VERIFIED, NOT ASSUMED",
     verifyTitle: "Performance you don't have to take on faith.",
@@ -224,6 +300,20 @@ const copy = {
     ],
     attenuationNote:
       "Values describe the guaranteed performance envelope of the standard PAN type system. The scope that applies to your project is confirmed in the specification and by on-site acceptance testing.",
+
+    ecoKicker: "ONE CONTINUOUS BARRIER",
+    ecoTitle: "Six product lines. One zero-leak boundary.",
+    ecoBody:
+      "Every component is engineered as part of the same shielding envelope, so performance is not lost at the joints, the doors or the penetrations.",
+    eco: [
+      "Prefabricated 2.0 mm galvanized steel PAN module system for walls, ceilings and floors.",
+      "Heavy-duty sliding and hinged RF doors, high-attenuation RF windows and integrated access monitoring.",
+      "High-performance power line filters, fibre-optic waveguide penetrations and RF signal suppressors.",
+      "Honeycomb ventilation panels, acoustic panels (ISO 354) and shielded waveguides for liquid cooling and utilities.",
+      "EN 50147-1 / IEEE 299 shielding measurement, leak detection, SE testing and compliance documentation.",
+      "Preventive maintenance, recalibration and periodic re-certification services.",
+    ],
+    ecoGo: "See every product line on the CyberShield site",
 
     appKicker: "HOW THE ROOM IS CONFIGURED",
     appTitle: "One platform. Four mission profiles.",
@@ -257,12 +347,6 @@ const copy = {
  * way in; it reads the same in both locales and stays out of the copy table.
  * `shot` names the photograph the product site uses for that line.
  */
-/** What every link to the product site carries, so all four sites of it agree.
- *  Spread rather than repeated: a card row that opened in this window while the
- *  button above it opened a tab would be the kind of inconsistency nobody
- *  notices in review. */
-const outbound = { target: "_blank", rel: "noopener" } as const;
-
 const lines = [
   { name: "Structure", spec: "2.0 mm DX 52 D+Z · 75 mm bolt pitch", shot: "structure" },
   { name: "Access", spec: "Sliding · Hinged · RF Window", shot: "access" },
@@ -272,10 +356,20 @@ const lines = [
   { name: "Lifecycle", spec: "Maintenance · Re-certification", shot: "lifecycle" },
 ] as const;
 
+/** What every link to the product site carries, so all five sites of it agree.
+ *  Spread rather than repeated: a card row that opened in this window while the
+ *  button above it opened a tab would be the kind of inconsistency nobody
+ *  notices in review. */
+const outbound = { target: "_blank", rel: "noopener" } as const;
+
+/** The band the audit question sends the reader to, and the only in-page anchor
+ *  on this route. Act 3 asks for a number; this is where the page answers with
+ *  one, and a question with no way to the answer is just a rhetorical jab. */
+const verifyAnchor = "verify";
+
 export default function CyberShieldPage({ lang }: { lang: Lang }) {
   const t = copy[lang];
-  /* One value, read in five places below: the locale-aware product site URL.
-     No target attribute anywhere — same window, by the brief. */
+  /* One value, read in five places below: the locale-aware product site URL. */
   const site = cyberShieldUrl(lang);
 
   return (
@@ -283,15 +377,17 @@ export default function CyberShieldPage({ lang }: { lang: Lang }) {
       <StructuredData lang={lang} page="cybershield" description={pageDescription(lang, "cybershield")} />
 
       <PageShell lang={lang} eyebrow={t.eyebrow} title={t.title} intro={t.intro}>
-        {/* What the product is, and the way out to it — above everything a
-            reader would have to scroll past to find it. */}
-        <section>
+        {/* The way out to the product site, above everything a reader would
+            have to scroll past to find it.
+            The product site's four-credential proof strip used to sit under
+            these buttons; taken out on 2026-08-12 (head office). The credits
+            are on the company pages and in the footer, and four boxes between
+            the head and the argument delayed act 1 without adding to it.
+            Buttons only now, so the band takes a shorter top padding than the
+            120px every argument band below it keeps — otherwise two buttons
+            sit in 196px of air under the head. */}
+        <section style={{ paddingTop: "56px" }}>
           <div className="wrap">
-            <div className="sec-head">
-              <span className="kicker">{t.valueKicker}</span>
-              <h2>{t.valueTitle}</h2>
-              <p>{t.valueBody}</p>
-            </div>
             <div className="btns">
               <a className="btn btn-red" href={site} {...outbound}>
                 {t.openSite}<span aria-hidden="true">↗</span>
@@ -300,21 +396,89 @@ export default function CyberShieldPage({ lang }: { lang: Lang }) {
                 {t.talk}<span aria-hidden="true">→</span>
               </a>
             </div>
-            <div className="badges badges-wide" style={{ marginTop: "56px" }}>
-              {t.metrics.map(([b, s]) => (
-                <div className="bd" key={b}>
-                  <b>{b}</b>
-                  <span>{s}</span>
+          </div>
+        </section>
+
+        {/* Act 1. The layout is the argument: the practice we reject on the
+            left under a grey rule, what we build instead on the right under a
+            primary one. Nothing here explains that it is a reversal — it is
+            read rather than announced. */}
+        <section className="alt">
+          <div className="wrap">
+            <div className="sec-head">
+              <span className="kicker">{t.beliefKicker}</span>
+              <h2>{t.beliefTitle}</h2>
+            </div>
+            <div className="belief">
+              <div>
+                <h3>{t.beliefLabels[0]}</h3>
+                <p>{t.beliefStatusQuo}</p>
+              </div>
+              <div>
+                <h3>{t.beliefLabels[1]}</h3>
+                <p>{t.beliefBelief}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Self-identification, between the reversal and the gap: a reader who
+            has not placed themselves in one of these three reads the next two
+            bands as somebody else's problem. */}
+        <section>
+          <div className="wrap">
+            <div className="sec-head">
+              <span className="kicker">{t.audienceKicker}</span>
+              <h2>{t.audienceTitle}</h2>
+            </div>
+            <div className="line-grid three">
+              {t.audience.map(([name, body], i) => (
+                <div className="num-col" key={name}>
+                  <span className="num">{String(i + 1).padStart(2, "0")}</span>
+                  <h4>{name}</h4>
+                  <p>{body}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Why the boundary is needed. The red index slot carries the impact
-            rather than a number: which of four exposures a card describes is
-            the useful thing to read there, and the cards have no order. */}
+        {/* Act 2, first half — the gap, stated in the reader's own terms. The
+            `0 dB` badge is the spine of the whole page: it opens in the same
+            unit the verify band closes in, so the reader works out the size of
+            the gap themselves and the page never has to call it large. */}
         <section className="alt">
+          <div className="wrap trust">
+            <div>
+              <span className="kicker">{t.whyKicker}</span>
+              <h2>{t.whyTitle}</h2>
+              <p>{t.whyBody}</p>
+            </div>
+            <div className="badges badges-one">
+              <div className="bd">
+                <b>{t.whyMetric}</b>
+                <span>{t.whyMetricLabel}</span>
+              </div>
+            </div>
+          </div>
+          <div className="wrap" style={{ marginTop: "72px" }}>
+            <div className="line-grid three">
+              {t.assets.map(([name, body], i) => (
+                <div className="num-col" key={name}>
+                  <span className="num">{String(i + 1).padStart(2, "0")}</span>
+                  <h4>{name}</h4>
+                  <p>{body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Act 2, second half — the four routes. The red index slot carries the
+            impact rather than a number: which of four exposures a card
+            describes is the useful thing to read there, and the cards have no
+            order. */}
+        <section>
           <div className="wrap">
             <div className="sec-head">
               <span className="kicker">{t.threatKicker}</span>
@@ -333,11 +497,49 @@ export default function CyberShieldPage({ lang }: { lang: Lang }) {
           </div>
         </section>
 
+        {/* Act 3 — one question, and then the page gets out of the way. No
+            kicker and no card grid: the empty band is the point, and the only
+            thing on it besides the question is the way to the answer. */}
+        <section className="alt">
+          <div className="wrap">
+            <div className="statement">
+              <p>{t.auditTitle}</p>
+            </div>
+            <div className="prose" style={{ marginTop: "34px" }}>
+              <p>{t.auditBody}</p>
+            </div>
+            <a className="go sec-go" href={`#${verifyAnchor}`}>
+              {t.auditLink}<span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </section>
+
+        {/* Act 4 — the answer, once and short, before anything expands on it.
+            Its last sentence takes the question above head-on, so the two bands
+            have to stay adjacent. */}
+        <section>
+          <div className="wrap">
+            <div className="sec-head">
+              <span className="kicker">{t.answerKicker}</span>
+              <h2>{t.answerTitle}</h2>
+              <p>{t.answerBody}</p>
+            </div>
+            <div className="badges badges-wide">
+              {t.metrics.map(([b, s]) => (
+                <div className="bd" key={b}>
+                  <b>{b}</b>
+                  <span>{s}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* What is built. The cutaway is the product site's own render; the
             interactive version of it is one of the reasons to follow the link,
             so the caption says where it lives rather than leaving a picture
             that looks clickable and is not. */}
-        <section>
+        <section className="alt">
           <div className="wrap">
             <div className="sec-head">
               <span className="kicker">{t.systemKicker}</span>
@@ -365,6 +567,43 @@ export default function CyberShieldPage({ lang }: { lang: Lang }) {
               />
               <figcaption>{t.cutawayCaption}</figcaption>
             </figure>
+          </div>
+        </section>
+
+        {/* Act 5 — the measurement, and the standards it is taken against.
+            This is what act 1 promised to pay back, so it comes before the
+            component detail below: a reader still wondering whether bolts hold
+            as well as welds reads six product lines as six places to doubt. */}
+        <section id={verifyAnchor}>
+          <div className="wrap trust">
+            <div>
+              <span className="kicker">{t.verifyKicker}</span>
+              <h2>{t.verifyTitle}</h2>
+              {t.verifyBody.map((p) => <p key={p}>{p}</p>)}
+            </div>
+            <div className="badges badges-compact">
+              {t.attenuation.map(([b, s]) => (
+                <div className="bd" key={b}>
+                  <b>{b}</b>
+                  <span>{s}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="wrap" style={{ marginTop: "72px" }}>
+            <h3 className="sub-head"><b>{t.standardsTitle}</b></h3>
+            <div className="hairline-list">
+              {/* `--name`: these are document designations with slashes and
+                  hyphens in them, far longer than the short labels the row's
+                  nowrap default is written for. */}
+              {t.standards.map(([name, note]) => (
+                <div className="hl-row hl-row--name" key={name}>
+                  <b>{name}</b>
+                  <span className="hl-desc">{note}</span>
+                </div>
+              ))}
+            </div>
+            <p className="cs-note">{t.attenuationNote}</p>
           </div>
         </section>
 
@@ -407,42 +646,8 @@ export default function CyberShieldPage({ lang }: { lang: Lang }) {
           </div>
         </section>
 
-        {/* The measurement, and the standards it is taken against. */}
-        <section>
-          <div className="wrap trust">
-            <div>
-              <span className="kicker">{t.verifyKicker}</span>
-              <h2>{t.verifyTitle}</h2>
-              {t.verifyBody.map((p) => <p key={p}>{p}</p>)}
-            </div>
-            <div className="badges badges-compact">
-              {t.attenuation.map(([b, s]) => (
-                <div className="bd" key={b}>
-                  <b>{b}</b>
-                  <span>{s}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="wrap" style={{ marginTop: "72px" }}>
-            <h3 className="sub-head"><b>{t.standardsTitle}</b></h3>
-            <div className="hairline-list">
-              {/* `--name`: these are document designations with slashes and
-                  hyphens in them, far longer than the short labels the row's
-                  nowrap default is written for. */}
-              {t.standards.map(([name, note]) => (
-                <div className="hl-row hl-row--name" key={name}>
-                  <b>{name}</b>
-                  <span className="hl-desc">{note}</span>
-                </div>
-              ))}
-            </div>
-            <p className="cs-note">{t.attenuationNote}</p>
-          </div>
-        </section>
-
         {/* How the same platform is configured for four kinds of project. */}
-        <section className="alt">
+        <section>
           <div className="wrap">
             <div className="sec-head">
               <span className="kicker">{t.appKicker}</span>
@@ -462,7 +667,7 @@ export default function CyberShieldPage({ lang }: { lang: Lang }) {
 
         {/* The hand-over. A summary that does not say what it left out asks the
             reader to guess whether following the link is worth it. */}
-        <section>
+        <section className="alt">
           <div className="wrap">
             <div className="sec-head">
               <span className="kicker">{t.fullKicker}</span>

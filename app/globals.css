@@ -621,6 +621,11 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
 /* Four across, matching the hero's own metric band, for the head office's
    at-a-glance figures. */
 .badges-four { grid-template-columns: repeat(4, 1fr); }
+/* One badge, full width of its column. The CyberShield page opens its gap
+   argument on a single metric (`0 dB`) beside the paragraph that earns it; in
+   the two-column `.trust` grid a lone `.bd` would otherwise sit in a half-empty
+   row of the default two. */
+.badges-one { grid-template-columns: 1fr; }
 /* The model pages' "at a glance" strip.
    Same grid, smaller type. The landing page's badges carry headline metrics —
    `95%`, `1991`, `100%` — and 24px/800 is the right size for a number that is
@@ -796,6 +801,29 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
 .statement { max-width: 900px; }
 .statement::before { content: ""; display: block; width: 64px; height: 3px; background: var(--primary); margin-bottom: 34px; }
 .statement p { font-size: clamp(26px, 2.8vw, 38px); font-weight: 300; line-height: 1.28; letter-spacing: 0; }
+
+/* Belief — the CyberShield page's opening argument, where the layout carries
+   the point rather than describing it: the practice being rejected on the left
+   under a neutral rule, what replaces it on the right under a primary one, at
+   equal width so the reader reads a reversal and not a rebuttal.
+   Two columns of running prose, which is why it takes its own grid instead of
+   `.check-cols` — that one pairs label rows, and its `h3` is a 24px heading
+   where these are micro-caps in the kicker's voice. */
+.belief { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 6vw; max-width: 1200px; }
+.belief > div { border-top: 3px solid var(--mute); padding-top: 26px; }
+.belief > div + div { border-top-color: var(--primary); }
+/* 13px/800, the size the red index labels (`.num-col .num`) already use on the
+   soft band — the smallest the site sets --primary at, and this band should not
+   become a new smallest. */
+.belief h3 { color: var(--body-dark); font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 18px; }
+.belief > div + div h3 { color: var(--primary); }
+/* The status quo is quoted, not asserted, so it sits back a tone; what we
+   believe is the page's own voice and comes forward. The step is --body-dark
+   to --ink rather than --body-text to --body-dark: this band is `.alt`, and
+   --body-text on --canvas-soft is 3.6:1, under the AA floor for a paragraph
+   this long. */
+.belief p { color: var(--body-dark); font-size: 16.5px; line-height: 1.7; }
+.belief > div + div p { color: var(--ink); }
 
 /* ===== MyChamber =====
    The questionnaire, its result cards and the enquiry form. Built from the
@@ -994,6 +1022,9 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
      so they fit long after the card grids stop fitting — but the gap loses the
      6vw it only needed to separate two full prose columns. */
   .check-cols { gap: 20px 40px; }
+  /* Same reasoning for the belief columns, which are two full prose columns
+     and lose the 6vw they only needed to keep them apart. */
+  .belief { gap: 20px 40px; }
   /* Four values in a row need ~240px each for their four statements to stay
      readable; below 1100 that is no longer there. */
   .value-grid { grid-template-columns: 1fr 1fr; }
@@ -1043,6 +1074,9 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
   .trust-shot { margin-top: 45px; }
   .trust-shot img { height: 220px; object-fit: cover; }
   .check-cols { grid-template-columns: 1fr; gap: 50px; }
+  /* Stacked, the two columns are read one after the other rather than against
+     each other, so the rules do the work the side-by-side layout was doing. */
+  .belief { grid-template-columns: 1fr; gap: 44px; }
   .sub-head, .check-col h3 { font-size: 22px; }
   .value-grid, .figure-row { grid-template-columns: 1fr; }
   /* The table keeps its 620px measure and scrolls inside `.spec-wrap` rather
