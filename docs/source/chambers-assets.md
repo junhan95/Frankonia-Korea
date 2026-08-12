@@ -198,3 +198,62 @@ WordPress `-1024x1024` 류 접미사가 붙은 것은 축소본이므로 **접�
 
 `.trust-shot`은 `.wrap` 전체 폭(최대 1400px)이므로 1513px 원본이 감당한다. 2.74:1이라
 두 열(카피·배지) 어느 쪽에도 들어가지 않고 그 아래를 가로지른다.
+
+---
+
+## 9. 랜딩 3개 밴드용 13장 (2026-08-12)
+
+랜딩 페이지가 차폐 표준·흡수체·자동화 세 밴드를 갖게 되면서 카드 18장이 그림을 요구했다.
+기존 자산 5장(`topic-frankosorb`, `overview-absorber`, `overview-shielding`,
+`topic-automation`, `type-rvc-stirrer`)으로 5칸을 채우고, 나머지 13칸을 아래로 메웠다.
+변환 규약 동일 — `sharp`, webp `quality: 82`, `withoutEnlargement: true`.
+
+### 9.1 CyberShield 밴드에서 넘어온 6장 (복사)
+
+`#cybershield-solutions` 밴드가 `#shielding`으로 바뀌면서 그 밴드가 쓰던
+`public/cybershield/images/ecosystem/` 6장이 비었다. 찍힌 것은 전부 Frankonia 차폐실이지
+CyberShield 전용 설비가 아니므로 그대로 쓴다. **다만 경로는 옮겼다** — CyberShield가
+아니라고 명시한 섹션에서 `/cybershield/` 경로를 읽는 것은 마크업이 거짓말을 하는 것이다.
+원본은 CyberShield 페이지가 계속 쓰므로 이동이 아니라 복사다.
+
+| 프로젝트 경로 | 원본 | 크기 | 무엇이 찍혔나 | 카드 |
+|---|---|---|---|---|
+| `std-pan-modules.webp` | `cybershield/…/structure.webp` | 1000×667 · 47KB | 공장 홀의 차폐실 외벽. 회색 PAN 패널을 붉은 철골 기둥이 일정 간격으로 잡고 있고, 우측으로 같은 벽이 계속 이어진다 | PAN Modules |
+| `std-steel-structure.webp` | `cybershield/…/lifecycle.webp` | 1000×667 · 68KB | 홀에 늘어선 차폐실 여러 동. 상부에 접근 발판과 계단, 그 위를 지나는 붉은 철골 트러스와 덕트 | Steel Structure |
+| `std-doors-gates.webp` | `cybershield/…/access.webp` | 1000×667 · 37KB | 차폐실 정면의 양문형 RF 차폐문 2짝. 붉은 프레임, 경고 라벨, 좌측 제어반 | Doors & Gates |
+| `std-electrical.webp` | `cybershield/…/connectivity.webp` | 1000×667 · 31KB | 차폐 경계의 배전·필터반. 흰 함체 여러 대와 개방된 전원 필터 뱅크, 상단 표시등 | Electrical & Filters |
+| `std-ventilation.webp` | `cybershield/…/air.webp` | 1000×667 · 37KB | 차폐벽에 매입된 정사각형 허니콤 도파관 패널 근접. 프레임을 두른 볼트 열 | Ventilation & Detection |
+| `std-fitout.webp` | `cybershield/…/validation.webp` | 1000×667 · 41KB | 제어실 내부. 긴 책상 위 계측기와 모니터, 의자, 우측에 차폐실 출입문 | Laboratory Fit-out |
+
+### 9.2 본사 발표자료에서 자른 7장
+
+출처는 **`00_Sales Materials/2 - Presentations/Frankonia Anechoic Chamber Solutions.pptx`**
+(본사 원본, 118장, 2025-10-16). 흡수체 절(슬라이드 80–93), 자동화 절(102–104),
+잔향실 절(61–67)의 슬라이드에 박혀 있던 원본 이미지를 `ppt/media`에서 그대로 꺼냈다 —
+슬라이드를 렌더한 것이 아니라 배치 전 원본이므로 텍스트도 로고도 얹혀 있지 않다.
+
+"무엇이 찍혔나"는 다른 절과 마찬가지로 **파일을 직접 열어 보고** 적었다.
+
+| 프로젝트 경로 | 원본 (슬라이드) | 원본 크기 | 변환 후 | 무엇이 찍혔나 | 카드 |
+|---|---|---|---|---|---|
+| `absorber-hybrid.webp` | `image145.jpeg` (s.85 하이브리드) | 1265×578 · 174KB | 1265×578 · 41KB | 흰 단피라미드 흡수체 벽면 사선 근접. 피라미드 사이사이에 회색 페라이트 타일이 격자로 박혀 있다 | Hybrid (H) Series |
+| `absorber-hf.webp` | `image152.jpg` (s.90 HF) | 4032×3024 · 5.4MB | 1600×1200 · 233KB | 안테나 챔버 코너. 좌측은 촘촘한 회색 피라미드, 우측은 길고 흰 피라미드가 소실점으로 수렴하며 끝단에 흰 큐브가 점점이 박혀 있다 | Antenna (HF) Series |
+| `absorber-a2.webp` | `image134.jpeg` (s.80 절 표지) | 2469×1328 · 1.2MB | 1600×861 · 182KB | 대형 무향실 벽면 전경. 흰 장피라미드가 벽 전체를 덮고 상단 검은 띠, 바닥에 턴테이블 원호가 보인다 | Non-combustible A2 |
+| `absorber-clean.webp` | `image148.jpeg` (s.88 피라미드) | 1265×577 · 181KB | 1265×577 · 39KB | 흰 흡수체 근접. 쐐기와 피라미드가 교차하는 면, 그림자로 형상이 또렷하다 | Clean & Safe |
+| `automation-mast.webp` | `image186.jpeg` (s.102 절 표지) | 2880×1548 · 1.6MB | 1600×860 · 187KB | 무향실 내부. 회색 피라미드 흡수체 벽·천장, 바닥 중앙에 흰 유전체 시험대, 우측에 흰 안테나 마스트와 케이블 | Antenna Masts |
+| `stirrer-zfold.webp` | `image113.JPG` (s.63 RVC) | 4032×3024 · 2.6MB | 1600×1200 · 162KB | 잔향실 내부. 금속 차폐 패널이 전면을 덮고, 좌측에 붉은 흡수체를 얹은 시험대, 우측 벽 앞에 은색 Z-폴드 스터러가 서 있다 | Z-Fold Stirrer |
+| `stirrer-zfold-highspeed.webp` | `image114.jpeg` (s.64 RVC) | 901×1201 · 254KB | 901×1201 · 52KB | Z-폴드 스터러 근접, 세로. 나선으로 접힌 은색 금속판이 바닥에서 천장까지 이어지고 우측에 케이블 다발 | High-speed Z-Fold |
+
+**세로 1장 주의.** `stirrer-zfold-highspeed.webp`만 세로(0.75:1)다. `.lc-shot`이 3:2에
+`object-fit: cover`이므로 위아래가 크게 잘린다 — 스터러가 화면 중앙을 세로로 관통하는
+구도라 중앙 크롭으로도 형상은 남지만, 가로 대체본이 생기면 바꾸는 편이 낫다.
+
+### 9.3 받았지만 쓰지 않은 것
+
+| 원본 | 이유 |
+|---|---|
+| `image141.jpeg`, `image146.jpeg`, `image188.jpeg`, `image115.jpeg`, `image112.jpg` | 전부 좋은 사진이지만 **차량(벤츠)이 정면에 찍혀 있다.** 랜딩의 챔버 행이 이미 차량 사진 3장을 쓰고 있어 아래쪽 밴드까지 차량이 이어지면 페이지가 자동차 사이트로 읽힌다. 모델 상세 페이지 후보 |
+| `image142.tif`, `image147.tif`, `image150.jpeg`, `image151.jpeg`, `image144.jpeg` | 흡수체 클립인·레일 구조 제품 렌더(흰 배경). 카드 6장을 전부 사진으로 맞췄으므로 쓰지 않았다. `/chambers/frankosorb` 본문에서 구조를 설명할 때의 자료 |
+| `image149.png` (6.8MB), `image116.jpeg` | 각각 로봇 팔이 있는 붉은 무향실, 검은 텐트형 구조물. 이 사이트가 파는 제품이 아니다 |
+| `image187.jpeg` | 매립형 턴테이블이 보이는 챔버 내부. `topic-automation.webp`가 같은 대상을 더 또렷하게 담고 있고 이미 저장소에 있다. 예비 |
+| `image191.jpeg` | 붉은 프레임의 슬라이딩 게이트 정면. `overview-shielding.webp`가 게이트와 램프를 함께 보여 준다. 예비 |

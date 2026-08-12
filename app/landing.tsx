@@ -1,4 +1,4 @@
-import { chambersPath, industryPath, typePath } from "./chamber-sections";
+import { chambersPath, industryPath, topicPath, typePath } from "./chamber-sections";
 import { sectionPath } from "./company-sections";
 import {
   testProductPath,
@@ -89,18 +89,42 @@ const copy = {
       "RF 파워미터와 릴레이 스위칭 유닛. DC~12.4GHz, 18/40GHz까지 확장.",
       "시험 체인을 한 케이스에 담은 완성 시스템 — 전도 내성, 파워 신호, 자기장, GTEM.",
     ],
-    csK: "CYBERSHIELD",
-    csH: "여섯 개의 제품군, 누설 없는 하나의 차폐 경계",
-    csP: "차폐 성능은 가장 약한 지점에서 결정됩니다. 벽체와 도어, 전원·신호 관통부, 환기 개구부를 하나의 차폐 외피로 함께 설계해 접합부에서 성능이 새지 않게 하고, 시공 후 현장에서 측정해 확인합니다.",
-    cs: [
-      "벽체·천장·바닥을 이루는 2.0 mm 아연도금 강판 PAN 모듈. 자립형 강구조에 75 mm 간격으로 볼트 체결해, 화기 작업 없이 운영 중인 시설과 병행 시공합니다.",
-      "사람과 장비가 경계를 통과하는 지점의 슬라이딩·힌지식 RF 도어와 고차폐 윈도우. 전주형 3중 접점 구조로 20,000회 개폐까지 성능을 유지합니다.",
-      "전원·신호·데이터 라인이 경계를 지나는 지점의 필터와 광케이블 도파관. 관통부를 그 벽체와 동일한 차폐 수준으로 맞추고, 매체 관통부는 DN200까지 지원합니다.",
-      "환기와 액체냉각 배관이 지나는 개구부의 허니콤 도파관. 공기와 냉각수는 통과시키고 RF는 차단하며, 흡음 인레이 패널이 ISO 354 기준으로 소음까지 잡습니다.",
-      "EN 50147-1 / IEEE 299에 따른 현장 차폐 성능 측정과 누설 탐지. 10 kHz에서 90 dB, 100–400 MHz에서 120 dB, 40 GHz까지 100 dB 이상을 보장합니다.",
-      "예방 정비, 재교정, 주기적 재인증. 접착도 용접도 없어 손상 없이 해체할 수 있고, 증설·이전 후 다시 측정해 성능을 확인합니다.",
+    stK: "MODULAR & PRE-FABRICATED SHIELDING STANDARDS",
+    stH: "1987년부터 지켜 온 하나의 공법 — 용접도, 접착도 하지 않습니다",
+    stP: "이 사이트의 모든 챔버와 차폐룸이 같은 사전 제작 모듈 표준 위에 지어집니다. 벽체와 도어, 관통부, 환기 개구부를 하나의 차폐 외피로 함께 설계해 접합부에서 성능이 새지 않게 하고, 모든 이음을 볼트로 체결하므로 나중에 바꾸고 늘리고 옮길 수 있습니다.",
+    st: [
+      "2.0 mm 아연도금 강판 PAN 모듈을 고전도 메시 개스킷 위로 75 mm 간격, 규정 토크로 안쪽에서 체결합니다. 모듈이 일반 건물 출입문을 통과하므로 어떤 크기로도 구현하고, 기존 벽에 바짝 붙여 세울 수 있습니다.",
+      "차폐가 스스로를 지탱하므로 건물에 추가 하중을 주지 않습니다. 현지 내진 조건이 요구되면 정적 철골 구조를 더하고, 안쪽 면이 평평하도록 역방향으로 설치할 수도 있습니다.",
+      "단문형(SLD), 양문형(DLD), 슬라이딩 도어(SSD), 슬라이딩 게이트(SG). 수동·공압·전동 래칭을 갖추고, 어떤 크기든 같은 모듈 표준으로 사전 제작합니다.",
+      "외부에서 접근하는 배전반과 현지 규격에 맞춘 배선, LED·비상·방폭 조명. AC·DC 필터와 신호·데이터 필터, 광 변환기, 안전 매트릭스와 상위 PLC — 기계류 지침 2006/42/EC에 따른 CE 적합이 기본입니다.",
+      "허니콤과 냉각·배기 계통이 공기는 통과시키고 RF는 막습니다. 가스·연기 샘플링 네트워크와 ATEX 적합 분석기, 누액 감지, 스프링클러 등 소화 솔루션까지 차폐 경계 안에서 함께 설계됩니다.",
+      "고정형·이동형 HD 카메라와 음향·녹화 시스템, 접지면을 갖춘 CISPR 25·MIL 시험대(FGT)와 CISPR 32 투명 시험대(FTT). 시험실이 실제로 돌아가는 데 필요한 것들입니다.",
     ],
-    csGo: "CyberShield 자세히 보기",
+    stGo: "차폐·도어 자세히 보기",
+    abK: "FRANKOSORB® ABSORBERS",
+    abH: "카본이 없고, 타지 않고, 35년 동안 늙지 않는 흡수체",
+    abP: "Frankonia가 쾰른 대학, TU Braunschweig EMC 연구소와 함께 개발한 나노 박막 흡수체입니다. 1991년 1세대 이후 오작동도 결함도 성능 저하도 없었고 교체 보수가 필요하지 않았습니다. 흡수 성능만이 아니라 불연 등급과 청정도까지 함께 만족하는 것이 이 기술의 자리입니다.",
+    ab: [
+      "단피라미드 P600·P900은 80 MHz부터, 장피라미드 P2000·P2200·P2400은 26 MHz부터 18/40 GHz까지를 단독으로 덮습니다. 페라이트를 따로 두지 않아도 되므로 그 자체가 비용 절감입니다. 레일에 걸어 한 개씩 떼어낼 수 있습니다.",
+      "페라이트 타일(30 MHz~1 GHz)과 단피라미드를 겹쳐 30 MHz~18/40 GHz를 덮습니다. 600 × 600 mm 페라이트 패널을 공장에서 사전 제작해 하부 구조에 나사로 고정하며, 흡수체 길이가 짧은 만큼 챔버를 더 작게 지을 수 있습니다.",
+      "안테나·OTA 챔버를 위해 개발한 A2 불연 계열. 쐐기형 HFK600-A2는 400 MHz부터, 장피라미드 P1400HF-A2는 70 MHz부터 40 GHz 이상까지 덮습니다. IEEE 1128에 따라 1 GHz 이하는 동축 선로, 그 이상은 아치법으로 여러 입사각에서 시험합니다.",
+      "DIN EN 13501-1 A2 - s1 d0 불연 등급. 연속 1 kW/m²·600 V/m, 순간 2.0 kW/m²·850 V/m까지 견딥니다. 불연 흡수체를 쓰면 스프링클러나 소화 설비를 따로 두지 않아도 됩니다.",
+      "노화도 처짐도 없고 성능이 떨어지지 않습니다 — 35년 이상 입증된 장기 안정성. 제조 공정이 개체 간 동일한 성능을 보장하고, 중공 구조가 높은 흡수 성능과 빠른 방열을 함께 확보합니다. 흰색 마감이라 별도 커버 없이도 조도가 확보됩니다.",
+      "가열되어도 유독 가스가 나오지 않고, 분진과 카본 더스트가 없으며, 용제도 접착제도 쓰지 않습니다. 99% 재활용 가능, 비흡습성, ISO 14644-1 클린룸 등급 — 물청소가 되고 표면이 바이러스·세균에 강합니다.",
+    ],
+    abGo: "Frankosorb® 흡수체 자세히 보기",
+    auK: "AUTOMATION & STIRRERS",
+    auH: "챔버 안에서 움직이는 것은 전부 자체 설계입니다",
+    auP: "턴테이블과 안테나 마스트, 자동 게이트, 그리고 잔향실 스터러 — Frankonia R&D 부서가 직접 설계하고 생산합니다. 기계류 지침 2006/42/EC에 따른 안전 평가와 고속 회전을 위한 동·정하중 계산까지 같은 팀에서 나옵니다.",
+    au: [
+      "ø1.2 m부터 ø12.0 m까지, 최대 80톤. 이중바닥에 매립되고 도전성 접지 링이 챔버 접지면과의 접촉을 유지합니다. 에너지 체인과 데이터·전기·유체용 로터리 조인트, 배기·냉각 계통, 다이나모미터를 함께 넣습니다.",
+      "FAM은 CISPR 16-1-4 표준 마스트, FBM은 여기에 ANSI C63.4 적합 틸트를 더합니다 — 소프트웨어가 안테나 기준점과 거리, 피시험체 크기로 틸트 각도를 계산하고 시험 절차를 감시합니다. 반사를 줄이려 유리섬유와 플라스틱으로 만듭니다.",
+      "슬라이딩 게이트는 공압 래칭으로 열고 닫는 과정 전체가 자동입니다. 자동 램프와 단차 없는 진입 플랫폼, 그리고 현장 조건에 맞춘 맞춤 진입 솔루션까지 차폐 경계와 함께 설계합니다.",
+      "잔향실의 핵심 장치. ø1.8 m Z-폴드 스터러가 최대 30 RPM으로 경계 조건을 계속 바꾸어, 한 바퀴 동안 내부 전계를 통계적으로 균일하게 만듭니다. RVC S·M과 e1의 표준 구성입니다.",
+      "차량 시험용. 챔버 안의 차량이 전계 균일도를 크게 흔들기 때문에 스터러가 그만큼 빨라야 합니다. ø2.8 m를 최대 60 RPM, 0.8° 스텝으로 돌려 한 바퀴에 450개 위치를 얻습니다 — 빠를수록 통계적 불확도가 줄어듭니다.",
+      "대형 차량 잔향실용. 디스크형은 ø4.0 m를 120 RPM, 튜브형은 ø2.0 m를 240 RPM으로 돌리고, ø9.0~12.0 m 대형 디스크가 사용 가능 최저 주파수(LUF)를 끌어내립니다. 각도 정확도 0.1°, 위치 정확도 ±0.1°.",
+    ],
+    auGo: "자동화 장비 자세히 보기",
     trK: "WHY FRANKONIA",
     trH1: "직접 만들기에",
     trH2: "끝까지 책임집니다",
@@ -206,18 +230,42 @@ const copy = {
       "RF power meters and the relay switching unit. DC to 12.4 GHz, extendable to 18 or 40 GHz.",
       "A whole test chain in one case — conducted immunity, power signal, magnetic field, GTEM.",
     ],
-    csK: "CYBERSHIELD",
-    csH: "Six product lines, one zero-leak boundary",
-    csP: "A shielded room is only as good as its weakest point. Walls, doors, cable penetrations and ventilation openings are engineered as one envelope, so nothing is lost at the joints — then measured on site to prove it.",
-    cs: [
-      "2.0 mm galvanized steel PAN modules for walls, ceilings and floors, bolted every 75 mm onto a self-supporting steel structure. No hot work, so the room goes up beside live operations.",
-      "Sliding and hinged RF doors and high-attenuation windows where people and equipment cross the boundary. A circumferential triple contact system holds performance for 20,000 opening cycles.",
-      "Power line filters, RF signal suppressors and fibre-optic waveguides where cabling crosses the wall — filtered to the same attenuation as the wall itself, up to DN200 media penetrations.",
-      "Honeycomb waveguides at ventilation and liquid-cooling penetrations: air and coolant pass, RF does not. Acoustic inlay panels absorb to ISO 354, αw = 0.65.",
-      "Shielding effectiveness measured on site to EN 50147-1 / IEEE 299, with leak detection and documentation — ≥ 90 dB at 10 kHz, ≥ 120 dB at 100–400 MHz, ≥ 100 dB to 40 GHz.",
-      "Preventive maintenance, recalibration and periodic re-certification. Nothing is glued or welded, so the room can be dismantled, extended or relocated, then measured again.",
+    stK: "MODULAR & PRE-FABRICATED SHIELDING STANDARDS",
+    stH: "One standard since 1987 — nothing welded, nothing glued",
+    stP: "Every chamber and shielded room on this site is built on the same prefabricated modular standard. Walls, doors, penetrations and ventilation openings are engineered as one envelope so nothing is lost at the joints — and because every joint is bolted, the room can be modified, extended or moved later.",
+    st: [
+      "2.0 mm galvanized steel PAN modules, bolted from the inside every 75 mm to a defined torque onto a high-conductivity mesh gasket. The modules pass through a standard building door, so the shielding can be any size and can stand close to an existing wall.",
+      "The shielding carries itself, so the parent building takes no additional structural load. A static steel structure is added where local seismic conditions ask for one, and reverse installation leaves a flat surface inside.",
+      "Single-leaf (SLD), double-leaf (DLD), sliding doors (SSD) and sliding gates (SG), with manual, pneumatic or electrical latching support — prefabricated to the same modular standard at any size.",
+      "A distribution unit reachable from outside, cabling to local standards, LED, emergency and explosion-protection lighting. AC and DC filters, signal and data filters, optic converters, a safety matrix and a higher-level PLC — CE conformity to Machinery Directive 2006/42/EC as standard.",
+      "Honeycombs and the cooling and exhaust systems pass air but not RF. A gas and smoke air-sampling network, an ATEX-compliant analyser, liquid detection and extinguishing solutions such as sprinklers are all designed inside the shielding boundary.",
+      "Fixed and mobile HD camera systems, audio and recording systems, CISPR 25 and MIL test tables (FGT) with a ground plane, and CISPR 32 transparent test tables (FTT) — what the laboratory needs to actually run.",
     ],
-    csGo: "Explore CyberShield",
+    stGo: "Shielding & Gates in detail",
+    abK: "FRANKOSORB® ABSORBERS",
+    abH: "Carbon-free, non-combustible, and no older after 35 years",
+    abP: "Frankosorb® is a nano thin-film absorber developed with the University of Cologne and the EMC institute at TU Braunschweig. Since the first generation in 1991 it has run without malfunction, defect or loss of performance, and has never needed refurbishing. What sets it apart is not absorption alone but absorption together with a fire class and a cleanliness class.",
+    ab: [
+      "The short pyramids P600 and P900 start at 80 MHz and the long pyramids P2000, P2200 and P2400 at 26 MHz, each covering up to 18/40 GHz on its own. No ferrite is needed alongside them, which is a cost saver in itself. Everything hangs into rails and comes out piece by piece.",
+      "Ferrite tiles (30 MHz to 1 GHz) under short pyramids cover 30 MHz to 18/40 GHz. The 600 × 600 mm ferrite panels are prefabricated in the factory and screwed onto a substructure, and because the absorber is shorter the chamber can be smaller.",
+      "The A2 non-combustible family developed for antenna and OTA chambers. The HFK600-A2 wedge starts at 400 MHz and the P1400HF-A2 long pyramid at 70 MHz, both to beyond 40 GHz. Tested per IEEE 1128 — in a coaxial line below 1 GHz, in an arch above it, at several angles of incidence.",
+      "Non-combustible to DIN EN 13501-1 class A2 - s1 d0, handling 1 kW/m² or 600 V/m continuous and 2.0 kW/m² or 850 V/m intermediate. With non-combustible absorbers no sprinkler or fire extinguishing system is necessary.",
+      "No ageing, no drooping, no loss of performance — stability proven over more than 35 years. The manufacturing process guarantees identical performance from one absorber to the next, and the hollow body pairs high absorption with fast cooling. The white finish holds the illumination level without covers.",
+      "No toxic gases if an absorber heats up, no dirt and no carbon dust, solvent-free and free of glue. Recyclable at 99%, non-hygroscopic, clean room classification to ISO 14644-1 — washable, with a virus and bacteria resistant surface.",
+    ],
+    abGo: "Frankosorb® absorbers in detail",
+    auK: "AUTOMATION & STIRRERS",
+    auH: "Everything that moves inside the chamber is our own design",
+    auP: "Turntables, antenna masts, automatic gates and reverberation stirrers are designed and built in Frankonia's own R&D department — including the risk assessment under Machinery Directive 2006/42/EC and the dynamic and static calculations that fast stirring asks for.",
+    au: [
+      "From ø1.2 m to ø12.0 m, up to 80 tons. Integrated flush into the raised floor and surrounded by a conductivity grounding ring that keeps contact with the chamber's ground plane. Energy chains, rotary joints for data, electrics or fluids, exhaust and cooling systems and dynamometers go in with it.",
+      "The FAM is the standard mast to CISPR 16-1-4; the FBM adds a tilt function compliant with ANSI C63.4, its software calculating the tilt angle from the antenna reference point, the distance and the size of the EUT while it monitors the test. Both are built from fibreglass and plastics to keep reflecting material to a minimum.",
+      "A sliding gate opens and closes fully automatically with pneumatic latching support. Automatic ramps, platforms with a flush entrance and customised entrance solutions are designed together with the shielding boundary.",
+      "The instrument that makes a reverberation chamber work. A ø1.8 m Z-fold stirrer at up to 30 RPM keeps changing the boundary conditions so that the field inside becomes statistically uniform over one turn — the standard fit for the RVC S, M and e1.",
+      "For vehicle testing. A vehicle inside the working volume disturbs field uniformity badly, so the stirrer has to be that much faster: ø2.8 m at up to 60 RPM in 0.8° steps gives 450 positions per turn, and the faster it turns the lower the statistical uncertainty.",
+      "For large vehicle reverberation chambers. Disc-style turns ø4.0 m at 120 RPM and tube-style ø2.0 m at 240 RPM, while a ø9.0 to 12.0 m large disc pulls the lowest usable frequency down. Angle accuracy 0.1°, positioning accuracy ±0.1°.",
+    ],
+    auGo: "Automation in detail",
     trK: "WHY FRANKONIA",
     trH1: "We make it,",
     trH2: "so we stand behind it",
@@ -355,33 +403,84 @@ const equipCards = [
     shot: { src: "/test-systems/images/system-mts-800.webp", w: 1400, h: 782, kind: "plate" } },
 ] as const;
 
-/* CyberShield gets its own band below the test-system line-up: it is a
-   shielding solution, not measurement equipment, so it does not belong in the
-   EMC Test Systems grid. The band closes with the link into /cybershield,
-   where the full page lives.
+/* Three bands stand below the test-system line-up, and together they are the
+   part of the company the two rows above do not reach: how the room is built,
+   what lines it, and what moves inside it.
 
-   The cards are the product page's own six lines — Structure, Access,
-   Connectivity, Air & Waveguides, Validation, Lifecycle — rather than the four
-   this band used to name (panels, doors, filters, waveguides). Those four were
-   a re-cut of the same catalogue that dropped the two the rest of the site
-   leans on hardest: the measurement that turns the shielding claim into
-   evidence, and the fact that a bolted room can be taken apart and moved. A
-   visitor who follows the link now meets the same six headings in the same
-   order instead of having to re-map four onto six.
+   The first replaces the CyberShield band that used to sit here. That band
+   named the six CyberShield product lines — Structure, Access, Connectivity,
+   Air & Waveguides, Validation, Lifecycle — and sent all six cards to
+   /cybershield. On a data-centre page that is the right cut; on this one it
+   put a sub-brand's catalogue in the middle of the corporate site while the
+   thing the sub-brand is an application of — the prefabricated modular
+   standard every chamber on these pages is built on — appeared nowhere. The
+   head office calls that standard "Modular and prefabricated standards" in its
+   own Trusted Solutions list, and the cards are the six groups of
+   /chambers/shielding-gates, so a visitor who follows one meets the same six
+   headings on the page it opens. CyberShield keeps its card in the solutions
+   row at the top of this page, which is where a sub-brand belongs.
 
-   `shot` is each line's own photograph from the CyberShield ecosystem grid, so
-   the card and the section it opens show the same thing — the argument the
-   chamber and solution cards above already make, that a photograph of the
-   thing beats a drawing of it. All six are photographs, so unlike the chamber
-   row none needs the `kind` split or the icon fallback. `models` stays in
-   figures and standards, which read the same in both locales. */
-const cyberCards = [
-  { name: "Structure", models: "2.0 mm DX 52 D+Z · 75 mm bolt pitch", shot: "structure" },
-  { name: "Access", models: "Sliding · Hinged · RF Window", shot: "access" },
-  { name: "Connectivity", models: "Power · Signal · Data · DN200", shot: "connectivity" },
-  { name: "Air & Waveguides", models: "Honeycomb · ISO 354 αw 0.65", shot: "air" },
-  { name: "Validation", models: "EN 50147-1 · IEEE 299", shot: "validation" },
-  { name: "Lifecycle", models: "Maintenance · Re-certification", shot: "lifecycle" },
+   Absorbers and stirrers had the same problem in a worse form: Frankosorb® is
+   the company's oldest differentiator and appeared on this page as one bullet
+   in a chamber card, and /chambers/frankosorb, /chambers/automation and the
+   RVC stirrer table were reachable only from the header dropdown. These two
+   bands are the landing page's first link to any of them.
+
+   `path` is per card rather than per band because the six do not all live on
+   one page — the gate card belongs to shielding-gates and the three stirrer
+   cards to the RVC type page, and sending a reader to the automation page for
+   a stirrer would be the "re-map six onto four" problem again.
+
+   `shot` is each card's photograph, as on the chamber and equipment rows
+   above. The six the shielding band uses are the ones the CyberShield band
+   left behind, copied under `std-` names because a path reading /cybershield/
+   under a section that is explicitly not CyberShield would be a lie in the
+   markup. The seven that came out of the head office deck are in the asset
+   ledger. `models` stays in figures and standards, which read the same in both
+   locales. */
+const standardCards = [
+  { name: "PAN Modules", models: "2.0 mm DX 52 D+Z · 75 mm bolt pitch",
+    shot: "std-pan-modules", w: 1000, h: 667, path: typePath("shielded-room") },
+  { name: "Steel Structure", models: "Self-supporting · Seismic",
+    shot: "std-steel-structure", w: 1000, h: 667, path: typePath("shielded-room") },
+  { name: "Doors & Gates", models: "SLD · DLD · SSD · SG",
+    shot: "std-doors-gates", w: 1000, h: 667, path: topicPath("shielding-gates") },
+  { name: "Electrical & Filters", models: "AC/DC · Signal · Data · PLC",
+    shot: "std-electrical", w: 1000, h: 667, path: topicPath("shielding-gates") },
+  { name: "Ventilation & Detection", models: "Honeycomb · ATEX · Sprinkler",
+    shot: "std-ventilation", w: 1000, h: 667, path: topicPath("shielding-gates") },
+  { name: "Laboratory Fit-out", models: "HD camera · FGT · FTT",
+    shot: "std-fitout", w: 1000, h: 667, path: topicPath("shielding-gates") },
+] as const;
+
+const absorberCards = [
+  { name: "Pyramid (P) Series", models: "P600 · P900 · P2000 · P2200 · P2400",
+    shot: "topic-frankosorb", w: 1280, h: 533 },
+  { name: "Hybrid (H) Series", models: "H450 · H600 · H1000 · H1300 Turbine",
+    shot: "absorber-hybrid", w: 1265, h: 578 },
+  { name: "Antenna (HF) Series", models: "HFK600-A2 · P1070HF-A2 · P1400HF-A2",
+    shot: "absorber-hf", w: 1600, h: 1200 },
+  { name: "Non-combustible A2", models: "DIN EN 13501-1 A2 - s1 d0 · 2.0 kW/m²",
+    shot: "absorber-a2", w: 1600, h: 861 },
+  { name: "No Ageing", models: "35+ years · identical performance",
+    shot: "overview-absorber", w: 900, h: 556 },
+  { name: "Clean & Safe", models: "Carbon-free · 99% recyclable · ISO 14644-1",
+    shot: "absorber-clean", w: 1265, h: 577 },
+] as const;
+
+const automationCards = [
+  { name: "Turntables — FTM", models: "ø1.2–12.0 m · up to 80 t",
+    shot: "topic-automation", w: 1600, h: 1067, path: topicPath("automation") },
+  { name: "Antenna Masts — FAM · FBM · FSM", models: "CISPR 16-1-4 · ANSI C63.4",
+    shot: "automation-mast", w: 1600, h: 860, path: topicPath("automation") },
+  { name: "Gates & Access", models: "Automatic ramps · Flush platforms",
+    shot: "overview-shielding", w: 900, h: 556, path: topicPath("shielding-gates") },
+  { name: "Z-Fold Stirrer", models: "ø1.8 m · up to 30 RPM",
+    shot: "stirrer-zfold", w: 1600, h: 1200, path: typePath("rvc") },
+  { name: "High-speed Z-Fold", models: "ø2.8 m · up to 60 RPM · 0.8° step",
+    shot: "stirrer-zfold-highspeed", w: 901, h: 1201, path: typePath("rvc") },
+  { name: "Disc & Tube Stirrers", models: "ø4.0 m 120 RPM · ø2.0 m 240 RPM",
+    shot: "type-rvc-stirrer", w: 1122, h: 591, path: typePath("rvc") },
 ] as const;
 
 /** The chrome slice of the copy object, shared with every other page, so the
@@ -410,6 +509,67 @@ const heroSlides = [
   { src: "/chambers/images/type-sac-dome.webp", w: 1600, h: 1095 },
   { src: "/chambers/images/type-fac-freespace.webp", w: 1600, h: 1095 },
 ];
+
+/* The three bands below the equipment row are the same object — a section
+   head, six linked cards three across, and one link out to the branch page —
+   so they are one component rather than three copies of the markup that would
+   then drift apart. Three across is what makes six read as two full rows;
+   four across would strand the last two in a half-empty one.
+ *
+ *  `path` on a card wins over `goPath`, which is the band's own destination
+ *  and the fallback for cards that do not name one. */
+type BandCard = {
+  readonly name: string;
+  readonly models: string;
+  readonly shot: string;
+  readonly w: number;
+  readonly h: number;
+  readonly path?: string;
+};
+
+function CardBand({
+  lang, id, alt, kicker, title, body, cards, bodies, go, goPath,
+}: {
+  lang: Lang;
+  id: string;
+  alt?: boolean;
+  kicker: string;
+  title: string;
+  body: string;
+  cards: readonly BandCard[];
+  bodies: readonly string[];
+  go: string;
+  goPath: string;
+}) {
+  return (
+    <section className={alt ? "alt" : undefined} id={id}>
+      <div className="wrap">
+        <div className="sec-head">
+          <span className="kicker">{kicker}</span>
+          <h2>{title}</h2>
+          <p>{body}</p>
+        </div>
+        <div className="line-grid three">
+          {cards.map((c, i) => (
+            <a className="lc" key={c.name} href={localeRoute(lang, c.path ?? goPath)}>
+              {/* Decorative, as on the chamber and equipment rows: the h4
+                  under the band names the card, and the page it opens
+                  describes the same photograph for a screen reader. */}
+              <div className="lc-shot lc-shot--photo">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={asset(`/chambers/images/${c.shot}.webp`)} alt="" width={c.w} height={c.h} loading="lazy" decoding="async" />
+              </div>
+              <h4>{c.name}</h4>
+              <p>{bodies[i]}</p>
+              <div className="models">{c.models}</div>
+            </a>
+          ))}
+        </div>
+        <a className="go sec-go" href={localeRoute(lang, goPath)}>{go}<span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  );
+}
 
 export default function Landing({ lang }: { lang: Lang }) {
   const t = copy[lang];
@@ -625,44 +785,26 @@ export default function Landing({ lang }: { lang: Lang }) {
         </div>
       </section>
 
-      <section className="alt" id="cybershield-solutions">
-        <div className="wrap">
-          <div className="sec-head">
-            <span className="kicker">{t.csK}</span>
-            <h2>{t.csH}</h2>
-            <p>{t.csP}</p>
-          </div>
-          {/* Three across, so six cards make two full rows — four across would
-              leave the last two stranded in a half-empty one. */}
-          <div className="line-grid three">
-            {cyberCards.map((c, i) => (
-              /* Every card lifted and turned its heading red on hover while
-                 being a plain <div>, which is a promise this page should not
-                 make twice; they are links now, like the chamber cards.
+      <CardBand
+        lang={lang} id="shielding" alt
+        kicker={t.stK} title={t.stH} body={t.stP}
+        cards={standardCards} bodies={t.st}
+        go={t.stGo} goPath={topicPath("shielding-gates")}
+      />
 
-                 To /cybershield, not to its `#ecosystem` grid, tempting as the
-                 deeper target is. A cold load of that page at a fragment past
-                 the first screen lands on blank canvas — `#audience` near the
-                 top arrives correctly, `#solution` and `#ecosystem` do not —
-                 and the six headings are the first thing the page shows on the
-                 way down anyway. */
-              <a className="lc" key={c.name} href={cs}>
-                <div className="lc-shot lc-shot--photo">
-                  {/* Decorative, as on the chamber cards: the heading beside it
-                      names the line, and the product page describes the same
-                      photograph for a screen reader. */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={asset(`/cybershield/images/ecosystem/${c.shot}.webp`)} alt="" width={1000} height={667} loading="lazy" decoding="async" />
-                </div>
-                <h4>{c.name}</h4>
-                <p>{t.cs[i]}</p>
-                <div className="models">{c.models}</div>
-              </a>
-            ))}
-          </div>
-          <a className="go sec-go" href={cs}>{t.csGo}<span aria-hidden="true">→</span></a>
-        </div>
-      </section>
+      <CardBand
+        lang={lang} id="absorbers"
+        kicker={t.abK} title={t.abH} body={t.abP}
+        cards={absorberCards} bodies={t.ab}
+        go={t.abGo} goPath={topicPath("frankosorb")}
+      />
+
+      <CardBand
+        lang={lang} id="automation" alt
+        kicker={t.auK} title={t.auH} body={t.auP}
+        cards={automationCards} bodies={t.au}
+        go={t.auGo} goPath={topicPath("automation")}
+      />
 
       <section id="why">
         <div className="wrap">
