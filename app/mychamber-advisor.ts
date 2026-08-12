@@ -1577,15 +1577,21 @@ function evaluate(entry: CatalogueEntry, a: Answers, lang: Lang): Recommendation
 
   // The floor. A chamber built one way cannot be used the other way, so a
   // mismatch is a heavy penalty; the Transformer answers "both" and nothing
-  // else does.
+  // else does. It also answers "sac" and "fac" — it converts, after all — but
+  // behind the chambers built for exactly that floor: a reader who needs one
+  // condition should not be steered to the convertible room first, and the
+  // matrix keeps the Transformer a leaf of its own for the same reason.
   const ground = fit.ground ?? "sac";
   if (decided(a.ground)) {
     if (a.ground === "both") {
       score += ground === "both" ? 30 : -20;
       if (ground === "both") reasons.push(t.groundBoth);
-    } else if (ground === a.ground || ground === "both") {
-      score += 18;
+    } else if (ground === a.ground) {
+      score += 20;
       reasons.push(t.ground(groundLabel[lang][a.ground]));
+    } else if (ground === "both") {
+      score += 8;
+      reasons.push(t.groundBoth);
     } else {
       score -= 22;
     }

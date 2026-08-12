@@ -1,5 +1,5 @@
 import { CheckColumn, CheckList } from "./page-parts";
-import PageShell from "./page-shell";
+import PageShell, { type HeadShot } from "./page-shell";
 import StructuredData from "./structured-data";
 import { sectionMeta, type CompanySection } from "./company-sections";
 import { asset, contactEmail, headOfficeUrl, jobsEmail, type Lang } from "./site-config";
@@ -606,13 +606,23 @@ export default function CompanyPage({
   );
 }
 
+/* The head band of Philosophy, which is where the Company menu opens.
+   The drone shot of Großenseebach: five buildings, the solar roofs and the
+   village behind them. The page's own subject is what the company is rather
+   than what it makes, and this is the only photograph on the site that shows
+   that. Framed a shade above centre: the entrance and the solar roofs take the
+   half of the band the scrim clears, and the village holds the top edge. */
+const philosophyShot: HeadShot = {
+  src: "/company/images/hq-aerial.webp", w: 1513, h: 553, at: "50% 48%",
+};
+
 function CompanyBody({ lang, section }: { lang: Lang; section: CompanySection }) {
   const t = copy[lang];
 
   if (section === "philosophy") {
     const p = t.philosophy;
     return (
-      <PageShell lang={lang} eyebrow={p.eyebrow} title={p.title} intro={p.intro}>
+      <PageShell lang={lang} eyebrow={p.eyebrow} title={p.title} intro={p.intro} shot={philosophyShot}>
         {/* Copy left, photograph right — the source page's own two-column
             opening, on this site's existing `.trust` split. */}
         <section>

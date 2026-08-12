@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { industryLabel, industries } from "./industries";
 import { Groups, Lead, Tables } from "./page-parts";
-import PageShell from "./page-shell";
+import PageShell, { type HeadShot } from "./page-shell";
 import StructuredData, { type TrailStep } from "./structured-data";
 import { contactEmail, localeRoute, type Lang } from "./site-config";
 import { chambersPath, industryPath as chamberIndustryPath,
@@ -102,6 +102,23 @@ const copy = {
   },
 } as const;
 
+/* The head band of the test-systems index, which is where the EMC Test Systems
+   menu opens.
+
+   It is a chamber photograph, on a branch that has thirteen images of its own,
+   and that is a deliberate choice rather than an oversight. Every asset under
+   `public/test-systems/` is a product cutout on white — the head office
+   photographs instruments against a studio backdrop, which is right for a
+   `.figure` on canvas and unusable full-bleed behind white type. `automation-
+   mast` is the one photograph in the repository that shows this branch's
+   equipment doing its job: the mast, the log-periodic antenna and the DUT on
+   the turntable are the radiated setup the amplifiers and receivers below drive.
+   Its mast also stands at about 80% of the frame, which is the part of the band
+   the scrim clears — see the note on `.hero::after` in globals.css. */
+const overviewShot: HeadShot = {
+  src: "/chambers/images/automation-mast.webp", w: 1600, h: 860, at: "50% 45%",
+};
+
 export default function TestSystemPage({ lang, view }: { lang: Lang; view: TestSystemView }) {
   const t = copy[lang];
   const { label, title, description, path, trail, body } = resolve(lang, view);
@@ -125,7 +142,14 @@ export default function TestSystemPage({ lang, view }: { lang: Lang; view: TestS
   return (
     <>
       <StructuredData lang={lang} page="path" path={path} trail={trail} description={description} />
-      <PageShell lang={lang} eyebrow={t.eyebrow} title={title} intro={description}>
+      <PageShell
+        lang={lang}
+        eyebrow={t.eyebrow}
+        title={title}
+        intro={description}
+        /* The index only, as on the chamber branch. */
+        shot={view.kind === "overview" ? overviewShot : undefined}
+      >
         {bands.map((band, i) => (
           <section key={band.key} className={i % 2 === 1 ? "alt" : undefined}>
             <div className="wrap">{band.node}</div>

@@ -37,7 +37,7 @@ import {
 } from "./chamber-sections";
 import { industryLabel } from "./industries";
 import { CheckColumn, Groups, Lead, Tables } from "./page-parts";
-import PageShell from "./page-shell";
+import PageShell, { type HeadShot } from "./page-shell";
 import StructuredData, { type TrailStep } from "./structured-data";
 import { asset, contactEmail, localeRoute, plural, type Lang } from "./site-config";
 
@@ -123,6 +123,17 @@ const copy = {
   },
 } as const;
 
+/* The head band of the chambers index, which is where the Anechoic Chambers
+   menu opens.
+   The SAC-10 Hybrid panorama from Kösching: a 4:1 frame of one room from wall
+   to wall, which is the shape a band this shallow wants — a photograph framed
+   for a page loses most of its height here. It also answers the question the
+   index asks, which is what all twenty-seven of these are. Framed above centre:
+   the absorber ceiling and the far corner, not the floor. */
+const overviewShot: HeadShot = {
+  src: "/chambers/images/pano-sac-10-hybrid.webp", w: 2000, h: 500, at: "50% 38%",
+};
+
 export default function ChamberPage({ lang, view }: { lang: Lang; view: ChamberView }) {
   const t = copy[lang];
   const { label, title, description, path, trail, models, body } = resolve(lang, view);
@@ -186,6 +197,11 @@ export default function ChamberPage({ lang, view }: { lang: Lang; view: ChamberV
         eyebrow={view.kind === "downloads" ? t.eyebrowDownloads : t.eyebrow}
         title={title}
         intro={description}
+        /* The index only. Every page below it — a type, an industry, a model —
+           opens its own subject with a plate a few hundred pixels down, and a
+           photograph in the head as well would be two chambers before a
+           sentence. */
+        shot={view.kind === "overview" ? overviewShot : undefined}
       >
         {bands.map((band, i) => (
           <section key={band.key} className={i % 2 === 1 ? "alt" : undefined}>

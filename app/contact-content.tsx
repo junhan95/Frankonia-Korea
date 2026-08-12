@@ -1,4 +1,4 @@
-import PageShell from "./page-shell";
+import PageShell, { type HeadShot } from "./page-shell";
 import StructuredData from "./structured-data";
 import { contactMeta, contactPath, offices } from "./contact-sections";
 import { downloadsPath } from "./chamber-sections";
@@ -93,6 +93,15 @@ const copy = {
   },
 } as const;
 
+/* The head band. The trade-fair stand rather than the head office building:
+   this page is five addresses and the people at them, and the stand is the one
+   photograph on the site with a conversation in it. The logo wall and the
+   product plinths sit right of centre, which is the half of the band the scrim
+   clears. Framed above centre to keep the hall's ceiling rig out of it. */
+const contactShot: HeadShot = {
+  src: "/company/images/events-trade-fair-booth.webp", w: 1600, h: 1200, at: "50% 40%",
+};
+
 export default function ContactPage({ lang }: { lang: Lang }) {
   const t = copy[lang];
   const { label, description } = contactMeta[lang];
@@ -103,6 +112,7 @@ export default function ContactPage({ lang }: { lang: Lang }) {
       eyebrow={t.eyebrow}
       title={t.title}
       intro={t.intro}
+      shot={contactShot}
       /* The shared band's primary button points at this page, which from this
          page is a link to itself. The two next steps take its place: the
          questionnaire for a reader who does not have a model name yet, and the

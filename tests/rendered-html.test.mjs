@@ -213,7 +213,14 @@ test("CyberShield summarises, and hands the reader to the product site", () => {
       !html.includes('class="cs-hero"') && !html.includes('class="cs '),
       `${route}: the ported product page is back`,
     );
-    assert.ok(html.includes('class="page-head"'), `${route}: not built on the shared page head`);
+    // The class, not the whole attribute: the head band takes a `--photo`
+    // modifier on the first page of each nav branch, and this one is such a
+    // page. What the assertion is for is that the summary is built on the
+    // shared head rather than carrying a hero of its own.
+    assert.ok(
+      /class="page-head(?: |")/.test(html),
+      `${route}: not built on the shared page head`,
+    );
 
     // The link out is the point of the page, so it has to be on it — and it
     // has to carry the reader's locale, because the product site serves

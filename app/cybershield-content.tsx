@@ -1,4 +1,4 @@
-import PageShell from "./page-shell";
+import PageShell, { type HeadShot } from "./page-shell";
 import StructuredData from "./structured-data";
 import { CheckList } from "./page-parts";
 import { contactPath } from "./contact-sections";
@@ -367,6 +367,15 @@ const outbound = { target: "_blank", rel: "noopener" } as const;
  *  one, and a question with no way to the answer is just a rhetorical jab. */
 const verifyAnchor = "verify";
 
+/* The head band. CyberShield is one page, so its first page is its only one.
+   The aerial of the data centre — the building this whole page is about, and
+   the only frame of it that is not a cutaway render on white. It is a square
+   1024, so the band takes a horizontal strip out of the middle: the hall and
+   its roof, framed just above centre to keep the approach road out. */
+const shieldShot: HeadShot = {
+  src: "/cybershield/images/facility-aerial.webp", w: 1024, h: 1024, at: "50% 44%",
+};
+
 export default function CyberShieldPage({ lang }: { lang: Lang }) {
   const t = copy[lang];
   /* One value, read in five places below: the locale-aware product site URL. */
@@ -376,7 +385,7 @@ export default function CyberShieldPage({ lang }: { lang: Lang }) {
     <>
       <StructuredData lang={lang} page="cybershield" description={pageDescription(lang, "cybershield")} />
 
-      <PageShell lang={lang} eyebrow={t.eyebrow} title={t.title} intro={t.intro}>
+      <PageShell lang={lang} eyebrow={t.eyebrow} title={t.title} intro={t.intro} shot={shieldShot}>
         {/* The way out to the product site, above everything a reader would
             have to scroll past to find it.
             The product site's four-credential proof strip used to sit under

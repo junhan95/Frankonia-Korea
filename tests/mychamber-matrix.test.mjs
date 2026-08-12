@@ -88,6 +88,28 @@ const CASES = [
   { path: "Commercial · full compliance FAC · table-top",
     answers: { industries: ["commercial"], dut: "component", tests: ["ri", "re"], level: "3m", family: undefined },
     among: ["SAC-3 Plus", "SAC-3 Square", "FAC-3"] },
+  // The FAC branch asked for by name — the floor answer is what reaches it.
+  // The 2026 catalogue confirms the three leaves: FAC-3 for table-top EUTs,
+  // FAC-3 L with the height scan for floor-standing ones, and the Transformer
+  // where one room has to serve both floor conditions.
+  { path: "Commercial · full compliance FAC · free space, table-top",
+    answers: { industries: ["commercial"], dut: "component", tests: ["ri", "re"], level: "3m", ground: "fac" },
+    among: ["FAC-3", "FAC-3 L"] },
+  { path: "Commercial · full compliance FAC · free space, floor-standing",
+    answers: { industries: ["commercial"], dut: "equipment", tests: ["ri", "re"], level: "3m", ground: "fac" },
+    expect: "FAC-3 L" },
+  { path: "Commercial · SAC-3/FAC-3 Transformer · both floor conditions",
+    answers: { industries: ["commercial"], dut: "equipment", tests: ["ri", "re"], level: "3m", ground: "both" },
+    expect: "SAC-3 / FAC-3 Transformer" },
+  // The matrix's "Special" leaf, confirmed by the catalogue as the SAC-10
+  // Plus and its Triton configuration — one polygonal shell, wired for a
+  // single axis or for three. The shell answer is what asks for each.
+  { path: "Commercial · full compliance SAC · 10 m · Special · single axis",
+    answers: { industries: ["commercial"], dut: "vehicle", tests: ["ce", "re"], level: "10m", qz: "3m", shell: "compact" },
+    expect: "SAC-10 Plus" },
+  { path: "Commercial · full compliance SAC · 10 m · Special · three axes",
+    answers: { industries: ["commercial"], dut: "vehicle", tests: ["ce", "re"], level: "10m", qz: "3m", shell: "multi" },
+    expect: "SAC-10 Plus Triton" },
 
   /* ---- Military --------------------------------------------------- */
   { path: "Military · components · hybrid",
