@@ -6,15 +6,18 @@
 
 [frankonia-solutions.com](https://frankonia-solutions.com/) 의 콘텐츠를 기준으로
 정보 구조와 디자인을 다시 짠 **본사 사이트 리뉴얼 제안**이다.
-English · 한국어 두 개 로케일, 로케일당 44페이지를 정적 HTML로 프리렌더한다.
+English · 한국어 두 개 로케일, 로케일당 66페이지를 정적 HTML로 프리렌더한다.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.2-000000?logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-19.2-149ECA?logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)
 ![Static export](https://img.shields.io/badge/output-static%20export-2ea44f)
-![Pages](https://img.shields.io/badge/pages-88-25282B)
+![Pages](https://img.shields.io/badge/pages-132-25282B)
 
-### [English](https://junhan95.github.io/Frankonia-Korea/) · [한국어](https://junhan95.github.io/Frankonia-Korea/ko/)
+### [English](http://www.frankonia-korea.com/) · [한국어](http://www.frankonia-korea.com/ko/)
+
+<sub>스테이징: [English](https://junhan95.github.io/Frankonia-Korea/) · [한국어](https://junhan95.github.io/Frankonia-Korea/ko/)<br>
+라이브 링크가 `http`인 것은 인증서 발급 전이기 때문이다 — Open items 참조</sub>
 
 </div>
 
@@ -24,13 +27,17 @@ English · 한국어 두 개 로케일, 로케일당 44페이지를 정적 HTML�
 
 리뉴얼 시안의 소스와 기획 문서를 담은 레포지토리. 별도의 한국 지사 사이트가 아니라
 **본사 웹사이트를 다시 만든 것**이므로, 카피·섹션·구조는 모두 본사 기준의 글로벌
-브랜드 내러티브를 따른다. 빌드 결과는 정적 HTML이라 서버가 필요 없고, 현재는
-GitHub Pages(스테이징)에서 서빙되며 검토가 끝나면 정식 도메인으로 이전한다.
+브랜드 내러티브를 따른다. 빌드 결과는 정적 HTML이라 서버가 필요 없다.
+
+2026-08-12에 **www.frankonia-korea.com 으로 1차 배포**했다. 검색엔진에는 아직 열지
+않은 소프트 런칭이다 — Chambers · Test Systems 32페이지의 본문과 Downloads가 비어
+있고, 빈 페이지를 색인시키는 것은 나중에 되돌리기 어렵기 때문이다. GitHub Pages는
+스테이징으로 계속 쓴다.
 
 ## The site
 
 여섯 개 GNB — Company · Anechoic Chambers · EMC Test Systems · CyberShield ·
-Contact · **MyChamber**. 로케일당 45페이지, 합계 90페이지.
+Contact · **MyChamber**. 로케일당 66페이지, 합계 132페이지.
 
 Career는 GNB에서 내려 Company 드롭다운으로 돌아갔다. 그 자리는 챔버를 사러 온
 사람에게 더 값이 나가는 자리이고, 이 사이트가 할 일은 사양을 견적으로 옮기는
@@ -206,7 +213,7 @@ npm test
 ```
 
 `npm test`는 정적 export를 먼저 만든 뒤 **실제로 생성된 HTML에** 16개 항목을
-검사한다 — 88페이지 전수로 스테이징 `noindex`가 붙어 있는지, 루트가 영어이고
+검사한다 — 132페이지 전수로 스테이징 `noindex`가 붙어 있는지, 루트가 영어이고
 한국어가 `/ko` 아래에 있는지, `<html lang>`이 경로의 로케일과 맞는지, canonical · hreflang · `og:image`가 맞는지, sitemap이
 디스크 위의 페이지 목록과 정확히 일치하는지, 그리고 export에 없는 파일을 가리키는
 내부 링크가 하나도 없는지. 검사 항목은 전부 한 번씩 실제로 깨졌던 것들이다.
@@ -265,8 +272,8 @@ mockup/
 lint → 정적 빌드 → 렌더된 HTML 테스트를 거쳐 `out/`을 GitHub Pages에 배포한다. 테스트가
 깨지면 배포되지 않는다. 수동 단계는 없다.
 
-**Production.** `.env.example`을 `.env`로 복사해 SFTP 자격증명을 채우고, 접속할
-서버의 호스트 키를 한 번 기록한 뒤:
+**Production.** `.env.example`을 `.env`로 복사해 SFTP 자격증명과 문서 루트를 채우고,
+접속할 서버의 호스트 키를 한 번 기록한 뒤:
 
 ```bash
 ssh-keyscan -p 22 <SFTP_HOST> >> deploy/known_hosts
@@ -277,6 +284,14 @@ pip install paramiko
 python deploy/deploy.py
 ```
 
+**문서 루트는 짐작하지 말고 확인한다.** 이 호스팅은 SFTP 계정 **하나가 두 도메인을
+함께** 서빙하고, 계정 루트에 도메인별 디렉터리가 하나씩 있다 — 이 사이트는 `/korea`,
+제품 사이트는 `/cybershield`. 흔히 기대하는 `/public_html`은 **없다**. 업로드는 없는
+디렉터리를 만들면서 진행하므로, 경로가 틀리면 1,724개 파일을 정상적으로 올렸다고
+보고하면서 도메인은 예전 내용을 계속 서빙한다 — 실패했다는 신호가 어디에도 안 남는다.
+그래서 `upload.py`는 문서 루트가 없으면 **계정에 실제로 있는 디렉터리를 출력하고
+중단한다.**
+
 업로드는 **호스트 키가 확인되지 않으면 아무것도 보내지 않고 중단한다** — 기록된 키와
 다르면 서버 재구축인지 중간자인지 확인하기 전에는 진행하지 않는다. `known_hosts`를
 둘 수 없는 환경(CI)에서는 `SFTP_HOST_FINGERPRINT`에 지문을 고정하면 된다. 어느
@@ -284,27 +299,58 @@ python deploy/deploy.py
 읽어낸 값은 아무것도 증명하지 못한다. 자격증명은 키(`SFTP_KEY`)를 권장하고,
 비밀번호(`SFTP_PASS`)는 그것만 허용하는 호스트를 위해 남겨 두었다.
 
-빌드(base path 없음, `NEXT_PUBLIC_INDEXABLE=1`)와 업로드를 한 번에 수행하며, 빌드가
-실패하면 업로드하지 않는다. 업로드는 스테이징용 빌드가 섞여 들어가는 것을 막고
-(`/Frankonia-Korea/_next/` 또는 `noindex`가 보이면 중단), 사이트 파일을 먼저 올린 뒤
-[`deploy/htaccess`](deploy/htaccess)를 마지막에 올린다 — 정규 호스트 301, CSP · HSTS ·
-`X-Content-Type-Options` 등 보안 헤더, 자산별 캐시 정책이 여기 들어 있다. GitHub Pages는
-헤더를 설정할 수 없으므로 이 파일은 정식 도메인에서만 효력이 있다.
+빌드(base path 없음)와 업로드를 한 번에 수행하며, 빌드가 실패하면 업로드하지 않는다.
+업로드 전에 세 가지를 확인하고, 하나라도 걸리면 아무것도 보내지 않는다:
+
+| 검사 | 걸리는 경우 |
+| --- | --- |
+| 스테이징 빌드 혼입 | `/Frankonia-Korea/_next/`가 보이면 중단 — 링크가 전부 깨진다 |
+| 인덱싱 차단 | `noindex`가 보이면 중단. **소프트 런칭이라면 `ALLOW_NOINDEX=1`** 로 의도임을 밝힌다 |
+| 문서 루트 | `SFTP_REMOTE`가 서버에 없으면 중단하고 실제 목록을 출력 |
+
+사이트 파일을 먼저 올린 뒤 [`deploy/htaccess`](deploy/htaccess)를 마지막에 올린다 —
+정규 호스트 301, CSP · HSTS · `X-Content-Type-Options` 등 보안 헤더, 자산별 캐시 정책,
+그리고 라우트 부모 경로(`/company/`, `/chambers/type/` 등 13개)를 404로 돌리는 규칙이
+여기 들어 있다. 그 경로들은 자식만 export되어 index가 없는 디렉터리로 남고, 그대로 두면
+아파치가 사이트 404 대신 맨 403을 답한다. GitHub Pages는 헤더를 설정할 수 없으므로 이
+파일은 정식 도메인에서만 효력이 있다.
+
+기존 `.htaccess`는 매 배포마다 `.htaccess.bak-<타임스탬프>`로 백업된다. 정리 단계는
+빌드가 더 이상 만들지 않는 파일을 지우되, 숨김 파일과 40개 미만 업로드는 건드리지
+않는다 — 깨진 빌드가 문서 루트를 비우지 못하게 하는 안전장치다.
 
 ## Open items
 
-정식 오픈 전에 반드시 처리해야 하는 것들. 순서는 대략 급한 순이다.
+사이트는 떠 있지만 검색엔진에는 닫혀 있다. 여기를 비우는 것이 곧 정식 오픈이다.
+순서는 대략 급한 순이다.
+
+- **SSL 인증서가 아직 없다.** 도메인이 내미는 것은 호스팅의 `*.your-server.de`
+  와일드카드라, `https://www.frankonia-korea.com` 은 인증서 경고가 뜬다. 그래서
+  **`www` + `http`만 동작한다** — apex(`frankonia-korea.com`)는 `deploy/htaccess`의
+  정규 호스트 규칙이 `https://www...`로 301하는데 그쪽이 막혀 있어 막다른 길이다.
+  konsoleH에서 `frankonia-korea.com`과 `www` 둘 다 담은 인증서를 발급하면 재배포
+  없이 해소된다. 제품 사이트가 쓰는 것(Hetzner 제공 DigiCert DV, apex + www)과 같은
+  종류면 된다. **링크를 공유할 때는 그때까지 `www`를 붙일 것.**
+- **검색엔진에 닫혀 있다.** `.env`의 `NEXT_PUBLIC_INDEXABLE=0` + `ALLOW_NOINDEX=1`이
+  `robots.txt` 전면 차단과 전 페이지 `noindex`를 만든다. 아래 콘텐츠 항목들이 채워지면
+  두 줄을 되돌리고 재배포하는 것이 마지막 단계다.
 
 - **법적 고지 두 페이지가 법률 검토를 받지 않았다.** `/imprint`와 `/privacy`는 있다 —
   임프린트는 본사 원문을 그대로 옮겼고(19개 항목 기계 대조, 불일치 0), 개인정보처리방침은
   본사 문안을 복사하는 대신 **이 사이트가 실제로 하는 일을 측정해서** 썼다(본사 방침은
   쿠키·분석·뉴스레터·서버 폼을 전제하는데 이 사이트엔 넷 다 없다 — 그대로 옮기면 허위
-  기재가 된다). 다만 법률 자문을 받은 문서는 아니므로 정식 도메인 이전 전 본사 법무
-  확인이 필요하고, **서버 로그 보존 기간**과 **호스팅 수탁자 표기**는 아직 비어 있다.
+  기재가 된다). 다만 법률 자문을 받은 문서는 아니고, **서버 로그 보존 기간**과
+  **호스팅 수탁자 표기**는 아직 비어 있다. 두 페이지는 이미 정식 도메인에 올라가 있으므로
+  — 검색엔진에는 닫혀 있어도 URL을 아는 사람은 읽을 수 있다 — 본사 법무 확인은
+  인덱싱을 열기 전이 아니라 **지금** 받아야 하는 항목이다.
   경위는 [`docs/source/legal.md`](docs/source/legal.md).
-- **HSTS `includeSubDomains`가 2년으로 걸려 있다.** [`deploy/htaccess`](deploy/htaccess).
-  HTTP로만 서비스되는 서브도메인이 하나라도 있으면 배포 즉시 끊기고, 브라우저에
-  캐시되므로 되돌릴 수 없다. 정식 도메인 배포 전 서브도메인을 전수 확인해야 한다.
+- ~~**HSTS `includeSubDomains`가 2년으로 걸려 있다.**~~ 2026-08-12 확인 완료.
+  [`deploy/htaccess`](deploy/htaccess)는 그대로 두었다 — 해석되는 서브도메인이 없고
+  (MX는 `www436.your-server.de`로, 다른 도메인이다), 제품 사이트가 같은 호스트에서
+  같은 값으로 이미 돌고 있다. 다만 지금은 인증서가 없어 HSTS가 **적용되지 않는 상태**
+  이기도 하다 — 브라우저는 인증서가 유효하지 않은 연결에서 온 HSTS를 무시한다.
+  인증서가 나오면 그때부터 실제로 걸리므로, **자동 갱신이 켜져 있는지 확인할 것.**
+  2년짜리 HSTS 아래에서 인증서 만료는 클릭으로 넘어갈 수 없는 장애가 된다.
 - **Chambers · Test Systems 32페이지의 본문이 비어 있다.** 위 표의 "골격" — 분류와
   모델 목록은 서 있고 사양·설명·사진이 아직 없다. `docs/source/`에 Company를 정리한
   것과 같은 방식으로 본사 원본을 페이지별로 옮기는 작업이 남았다.
@@ -318,6 +364,9 @@ python deploy/deploy.py
   제품 사진이 들어갔다 — 앰프 사진만 본사 웹에 없어 2019 Selection Book 18쪽에서
   잘라 왔고, 경위는 [`docs/source/test-systems-assets.md`](docs/source/test-systems-assets.md).
 - **Downloads에 파일이 없다.** 내비게이션 세 곳이 이 페이지를 가리킨다.
+- **404 페이지가 Next 기본값이다.** "404: This page could not be found." 한 줄뿐이고
+  사이트의 헤더도 푸터도 없다. 정식 도메인에서는 라우트 부모 경로 13개까지 이 페이지로
+  오므로(위 Deployment 참조) 예전보다 눈에 띈다 — 최소한 헤더와 홈 링크는 있어야 한다.
 - ~~**Contact가 페이지가 아니라 앵커다.**~~ 2026-08-11 절반 해소. `/contact`가 생겼고
   헤더·모바일 드로어·푸터·상단 CTA·히어로·전 페이지 마감 밴드가 전부 이 페이지를
   가리킨다. 본사가 자기 Contact 페이지에 싣는 4개 법인에 **한국 사업장(Frankonia Korea
@@ -345,9 +394,12 @@ python deploy/deploy.py
 - 제품 정보는 [frankonia-solutions.com](https://frankonia-solutions.com/)의 공개 자료를
   기반으로 하며, 사양·인증 범위는 프로젝트 구성에 따라 달라진다. 페이지별 원문 출처는
   `docs/source/`에 기록되어 있다.
-- 스테이징(깃허브 페이지) 단계에서는 검색엔진 인덱싱을 막아 두었다
-  (`NEXT_PUBLIC_INDEXABLE`, `app/site-config.ts` 참조). 정식 도메인 오픈 시 해제한다.
-  `noindex`는 접근 제어가 아니다 — 스테이징 URL 자체는 공개되어 있다.
+- 검색엔진 인덱싱은 스테이징과 정식 도메인 양쪽에서 막아 두었다
+  (`NEXT_PUBLIC_INDEXABLE`, `app/site-config.ts` 참조). 스테이징은 GitHub Pages의
+  개인 서브도메인에 랭킹 신호가 쌓이는 것을 막기 위해서고, 정식 도메인은 콘텐츠가
+  덜 찼기 때문이다. `noindex`는 접근 제어가 아니다 — 두 URL 다 공개되어 있다.
+- 배포 이력과 서버 쪽 사실관계(문서 루트, 리다이렉트 스텁, 인증서)는 이 문서의
+  Deployment · Open items 절이 기준이다. 서버 상태를 바꾼 뒤에는 여기도 같이 고친다.
 
 ---
 
