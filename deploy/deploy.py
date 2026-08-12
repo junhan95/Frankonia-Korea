@@ -20,6 +20,14 @@ import shutil
 import subprocess
 import sys
 
+# Same reason as the block at the top of upload.py: the messages here carry em
+# dashes and the console is cp949.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEPLOY = os.path.dirname(os.path.abspath(__file__))
 

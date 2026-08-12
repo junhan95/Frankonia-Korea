@@ -34,6 +34,20 @@ import time
 
 import paramiko
 
+# Every message below is written with an em dash, and the Windows console this
+# is launched from is cp949, which cannot encode one. On 2026-08-12 that raised
+# UnicodeEncodeError on the "host key verified" line — after the connection was
+# open and one line before the first file would have gone up, which is the worst
+# possible place for a print statement to end a deploy. Force UTF-8 on the
+# streams rather than rewriting the prose in ASCII; `errors="replace"` means a
+# console that still cannot render a glyph prints a placeholder instead of
+# aborting the upload.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):  # not a TextIOWrapper, or already detached
+        pass
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOCAL = os.path.join(ROOT, "out")
 HTACCESS = os.path.join(ROOT, "deploy", "htaccess")
