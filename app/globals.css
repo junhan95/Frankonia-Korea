@@ -862,6 +862,15 @@ h2[tabindex]:focus-visible { outline: 2px solid var(--primary); outline-offset: 
    voice rather than the Korean heading exception. */
 .mc-card h3 { font-size: 26px; font-weight: 700; line-height: 1.2; margin: 16px 0 8px; }
 .mc-desc { max-width: 640px; color: var(--body-dark); font-size: 15px; line-height: 1.6; }
+/* The pinned-down configuration. Carries the primary rule `.callout` and
+   `.mc-caveat` use, because it is the same kind of aside — one fact set off
+   from the running description, not a second heading. */
+.mc-variant { margin-top: 20px; padding: 14px 18px; border-left: 3px solid var(--primary); background: var(--canvas-soft); border-radius: var(--radius); }
+.mc-card--top .mc-variant { background: var(--canvas-soft); }
+.mc-variant-label { display: block; margin-bottom: 6px; color: var(--primary); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.mc-variant b { font-size: 17px; font-weight: 700; }
+.mc-variant span:not(.mc-variant-label) { display: block; margin-top: 4px; color: var(--body-dark); font-size: 13.5px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+
 .mc-spec { margin-top: 22px; border-top: 1px solid var(--line); }
 .mc-spec > div { display: grid; grid-template-columns: 140px 1fr; gap: 14px; padding: 11px 2px; border-bottom: 1px solid var(--line); }
 .mc-spec dt { color: var(--body-text); font-size: 13px; font-weight: 700; }

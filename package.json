@@ -11,7 +11,7 @@
     "build:static": "node scripts/build-static.mjs",
     "start": "next start",
     "lint": "eslint .",
-    "test": "npm run build:static && node --test tests/rendered-html.test.mjs"
+    "test": "npm run build:static && node --experimental-strip-types --import ./tests/register-ts.mjs --test tests/rendered-html.test.mjs tests/mychamber-matrix.test.mjs"
   },
   "dependencies": {
     "next": "16.2.6",

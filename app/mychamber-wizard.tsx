@@ -6,6 +6,7 @@ import {
   emptyAnswers,
   prune,
   recommend,
+  visibleOptions,
   visibleQuestions,
   type Answers,
   type CatalogueEntry,
@@ -54,6 +55,7 @@ const copy = {
     rankTop: "추천",
     rankAlt: (n: number) => `대안 ${n}`,
     why: "이 챔버인 이유",
+    variant: "선택하신 조건에 맞는 구성",
     specSize: "외형 치수",
     specNote: "측정 조건",
     specRange: "주파수 범위",
@@ -122,6 +124,7 @@ const copy = {
     rankTop: "Recommended",
     rankAlt: (n: number) => `Alternative ${n}`,
     why: "Why this chamber",
+    variant: "The configuration your answers point at",
     specSize: "External dimension",
     specNote: "Test conditions",
     specRange: "Frequency range",
@@ -349,7 +352,7 @@ export default function MyChamberWizard({
         <div className="mc-opts" role="group" aria-labelledby={`mc-q-${question.id}`}>
           <p className="mc-mode">{question.multi ? t.multi : t.single}</p>
           <div className="mc-opt-grid">
-            {question.options.map((option) => {
+            {visibleOptions(question, answers).map((option) => {
               const on = selectedIds(answers, question).includes(option.id);
               return (
                 <label className={on ? "mc-opt on" : "mc-opt"} key={option.id}>
@@ -431,6 +434,20 @@ function ResultCard({
             matches against the catalogue, the drawings and the quotation. */}
         <h3>{entry.name}</h3>
         <p className="mc-desc">{entry.desc}</p>
+
+        {/* The exact configuration, where the absorber and quiet-zone answers
+            pinned one down. It comes before the model's own specification
+            because it is the more specific answer of the two — and the two are
+            not in conflict: the row below describes the model, this describes
+            the build of it a quotation would be written for. */}
+        {result.variant && (
+          <div className="mc-variant">
+            <span className="mc-variant-label">{t.variant}</span>
+            <b>{result.variant.name}</b>
+            <span>{result.variant.size}</span>
+            <span>{result.variant.note}</span>
+          </div>
+        )}
 
         {entry.spec && (
           <dl className="mc-spec">
@@ -609,8 +626,14 @@ const selectedIds = (a: Answers, q: Question): readonly string[] => {
     case "tests": return a.tests;
     case "standards": return effectiveStandards(a);
     case "dut": return a.dut ? [a.dut] : [];
-    case "distance": return a.distance ? [a.distance] : [];
+    case "level": return a.level ? [a.level] : [];
     case "family": return a.family ? [a.family] : [];
+    case "luf": return a.luf ? [a.luf] : [];
+    case "stirrer": return a.stirrer ? [a.stirrer] : [];
+    case "ground": return a.ground ? [a.ground] : [];
+    case "shell": return a.shell ? [a.shell] : [];
+    case "absorber": return a.absorber ? [a.absorber] : [];
+    case "qz": return a.qz ? [a.qz] : [];
     case "drive": return a.drive ? [a.drive] : [];
   }
 };
@@ -628,8 +651,14 @@ function apply(a: Answers, id: QuestionId, value: string): Answers {
     // on `Answers.standards`.
     case "standards": return { ...a, standards: toggle(effectiveStandards(a), value) as Answers["standards"] };
     case "dut": return { ...a, dut: value as Answers["dut"] };
-    case "distance": return { ...a, distance: value as Answers["distance"] };
+    case "level": return { ...a, level: value as Answers["level"] };
     case "family": return { ...a, family: value as Answers["family"] };
+    case "luf": return { ...a, luf: value as Answers["luf"] };
+    case "stirrer": return { ...a, stirrer: value as Answers["stirrer"] };
+    case "ground": return { ...a, ground: value as Answers["ground"] };
+    case "shell": return { ...a, shell: value as Answers["shell"] };
+    case "absorber": return { ...a, absorber: value as Answers["absorber"] };
+    case "qz": return { ...a, qz: value as Answers["qz"] };
     case "drive": return { ...a, drive: value as Answers["drive"] };
   }
 }
@@ -660,6 +689,9 @@ function mailBody(
 
   if (pick) {
     lines.push(`[${t.mailPick}]`, `${pick.entry.name} — ${pick.entry.desc}`);
+    if (pick.variant) {
+      lines.push(`${t.variant}: ${pick.variant.name} — ${pick.variant.size} · ${pick.variant.note}`);
+    }
     if (pick.entry.spec) {
       lines.push(`${t.specSize}: ${pick.entry.spec.size}`);
       if (pick.entry.spec.note) lines.push(`${t.specNote}: ${pick.entry.spec.note}`);
