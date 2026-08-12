@@ -138,9 +138,19 @@ def main() -> int:
             print("rebuild with an empty base path — see .env.example — then rerun")
             return 1
         if 'name="robots" content="noindex' in html:
-            print("out/ was built with indexing held back (NEXT_PUBLIC_INDEXABLE unset)")
-            print("rebuild with NEXT_PUBLIC_INDEXABLE=1, then rerun")
-            return 1
+            # Nearly always a forgotten variable: a production upload that no
+            # search engine may read is not what the person running this wants.
+            # A soft launch is the exception, so it gets a way to say so — and
+            # says it loudly, because a site left this way stays invisible.
+            if os.environ.get("ALLOW_NOINDEX") != "1":
+                print("out/ was built with indexing held back (NEXT_PUBLIC_INDEXABLE unset)")
+                print("rebuild with NEXT_PUBLIC_INDEXABLE=1, then rerun")
+                print("if the soft launch is deliberate, set ALLOW_NOINDEX=1")
+                return 1
+            print("NOTE: uploading a noindex build (ALLOW_NOINDEX=1).")
+            print("      robots.txt disallows everything and every page carries")
+            print("      noindex. Nothing will be indexed until you rebuild with")
+            print("      NEXT_PUBLIC_INDEXABLE=1 and redeploy.")
 
     missing = [k for k in ("SFTP_HOST", "SFTP_USER") if not os.environ.get(k)]
     if missing:
@@ -183,6 +193,24 @@ def main() -> int:
     sftp = client.open_sftp()
     sftp.get_channel().settimeout(120)
     print(f"connected to {host} — host key verified")
+
+    # The document root has to be one the web server already serves. Every
+    # directory below it is created on demand, so a mistyped root would be
+    # created too, and the upload would report success while the domain went on
+    # serving whatever was there before — the failure gives no sign of itself.
+    try:
+        sftp.stat(REMOTE)
+    except IOError:
+        print(f"the document root {REMOTE} does not exist on {host}")
+        print("this account serves one directory per domain off its root;")
+        print("check SFTP_REMOTE against what is actually there:")
+        try:
+            for name in sorted(sftp.listdir(".")):
+                print(f"    /{name}")
+        except IOError:
+            pass
+        client.close()
+        return 1
 
     stamp = time.strftime("%Y%m%d-%H%M%S")
     backup = f"{REMOTE}/.htaccess.bak-{stamp}"
