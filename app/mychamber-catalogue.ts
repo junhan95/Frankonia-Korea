@@ -37,10 +37,21 @@ const shots = {
   commercial: { src: "/chambers/images/industry-commercial.webp", w: 900, h: 636 },
   powertrain: { src: "/chambers/images/industry-powertrain-edtc.webp", w: 900, h: 600 },
   rvc: { src: "/chambers/images/type-rvc-reverberation.webp", w: 900, h: 600 },
+  rvcZfold: { src: "/chambers/images/stirrer-zfold.webp", w: 1600, h: 1200 },
 } as const;
 
-const shotFor = (model: ChamberModel) =>
-  model.type === "rvc" ? shots.rvc : shots[model.industry];
+/**
+ * Reverberation chambers split by how they stir the field, and the photograph
+ * has to follow. `type-rvc-reverberation.webp` shows the large disc stirrer
+ * turning in the ceiling, which only the XL and XXL sizes have — every other
+ * RVC stirs with a Z-fold standing against the wall, so those get the Z-fold
+ * photograph instead. Read off `spec.note`, the one place the catalogue states
+ * which stirrer a model carries; the note is locale-independent English.
+ */
+const shotFor = (model: ChamberModel) => {
+  if (model.type !== "rvc") return shots[model.industry];
+  return model.spec?.note?.includes("disc stirrer") ? shots.rvc : shots.rvcZfold;
+};
 
 /**
  * Every model must be indexed. A chamber added to the catalogue without a

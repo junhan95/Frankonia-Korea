@@ -241,7 +241,7 @@ CyberShield 전용 설비가 아니므로 그대로 쓴다. **다만 경로는 �
 | `absorber-a2.webp` | `image134.jpeg` (s.80 절 표지) | 2469×1328 · 1.2MB | 1600×861 · 182KB | 대형 무향실 벽면 전경. 흰 장피라미드가 벽 전체를 덮고 상단 검은 띠, 바닥에 턴테이블 원호가 보인다 | Non-combustible A2 |
 | `absorber-clean.webp` | `image148.jpeg` (s.88 피라미드) | 1265×577 · 181KB | 1265×577 · 39KB | 흰 흡수체 근접. 쐐기와 피라미드가 교차하는 면, 그림자로 형상이 또렷하다 | Clean & Safe |
 | `automation-mast.webp` | `image186.jpeg` (s.102 절 표지) | 2880×1548 · 1.6MB | 1600×860 · 187KB | 무향실 내부. 회색 피라미드 흡수체 벽·천장, 바닥 중앙에 흰 유전체 시험대, 우측에 흰 안테나 마스트와 케이블 | Antenna Masts |
-| `stirrer-zfold.webp` | `image113.JPG` (s.63 RVC) | 4032×3024 · 2.6MB | 1600×1200 · 162KB | 잔향실 내부. 금속 차폐 패널이 전면을 덮고, 좌측에 붉은 흡수체를 얹은 시험대, 우측 벽 앞에 은색 Z-폴드 스터러가 서 있다 | Z-Fold Stirrer |
+| `stirrer-zfold.webp` | `image113.JPG` (s.63 RVC) | 4032×3024 · 2.6MB | 1600×1200 · 162KB | 잔향실 내부. 금속 차폐 패널이 전면을 덮고, 좌측에 붉은 흡수체를 얹은 시험대, 우측 벽 앞에 은색 Z-폴드 스터러가 서 있다 | Z-Fold Stirrer · MyChamber 결과 카드(Z-폴드 RVC) |
 | `stirrer-zfold-highspeed.webp` | `image114.jpeg` (s.64 RVC) | 901×1201 · 254KB | 901×1201 · 52KB | Z-폴드 스터러 근접, 세로. 나선으로 접힌 은색 금속판이 바닥에서 천장까지 이어지고 우측에 케이블 다발 | High-speed Z-Fold |
 
 **세로 1장 주의.** `stirrer-zfold-highspeed.webp`만 세로(0.75:1)다. `.lc-shot`이 3:2에
