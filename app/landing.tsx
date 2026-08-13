@@ -81,7 +81,7 @@ const copy = {
       "라인업 전체가 출발하는 지점. 2.0mm 아연도금 강판 PAN 모듈을 메시 개스킷 위로 75mm 간격 볼트 체결해 어떤 크기로도 구현합니다 — EN 50147-1 기준 10kHz 90dB, 100~400MHz 120dB. 같은 패널이 Frankosorb® 흡수체의 바탕이므로 나중에 무향실로 바꿀 수 있습니다.",
     ],
     eqH: "EMC 시험장비",
-    eqP: "여섯 개 제품군 99종. 방출 측정부터 전도·방사 내성, 자기장 시험까지 IEC 61000-4 · CISPR · ISO 11452 · MIL-STD-461 구성에 그대로 들어갑니다.",
+    eqP: "방출 측정부터 전도·방사 내성, 자기장 시험까지 IEC 61000-4 · CISPR · ISO 11452 · MIL-STD-461 구성에 그대로 들어가는 계측 장비를 공급합니다. 아래 통합 시험 시스템은 그중 가장 짧은 길입니다 — 여러 장비를 랙에 쌓아 구성하는 대신, 한 대가 시험을 그대로 수행합니다.",
     eq: [
       "10kHz~1GHz 고체소자 앰프 36종(최대 12kW)과 500MHz~40GHz 광대역 WBA 34종.",
       "광대역 ALX, 스택 로그페리오딕 MAX, 혼 HAX, 로드 SAX와 루프 LAX — 9kHz~40GHz.",
@@ -222,7 +222,7 @@ const copy = {
       "Where the whole line-up starts. 2.0 mm galvanized steel PAN modules bolted every 75 mm onto a mesh gasket, at any size the room has to be — 90 dB at 10 kHz and 120 dB at 100–400 MHz to EN 50147-1. The same panel carries Frankosorb® absorbers, so a shielded room can become an anechoic chamber later.",
     ],
     eqH: "EMC Test Systems",
-    eqP: "Six product families, ninety-nine models — from emission measurement to conducted, radiated and magnetic field immunity, built into IEC 61000-4, CISPR, ISO 11452 and MIL-STD-461 setups.",
+    eqP: "Instruments for emission measurement and for conducted, radiated and magnetic field immunity, built into IEC 61000-4, CISPR, ISO 11452 and MIL-STD-461 setups. The integrated systems below are the shortest way in — one instrument that runs the test itself, rather than a rack assembled from several.",
     eq: [
       "Thirty-six solid-state amplifiers from 10 kHz to 1 GHz, up to 12 kW, and thirty-four WBA wideband models to 40 GHz.",
       "The broadband ALX, the stacked log-periodic MAX, the HAX horns, the SAX rod and the LAX loop — 9 kHz to 40 GHz.",
@@ -399,25 +399,51 @@ const chamberCards = [
    the amplifier rack is a product cut-out on white with its own margins, and
    cropping one to 3:2 would take the horn off an antenna or the connector off
    a probe — those are fitted whole. The rack is a photograph and fills its
-   band. */
+   band.
+
+   `show` is which of the six the row prints today, and the answer is
+   Integrated Systems alone — the same cut the header bar makes, and for the
+   same reason: that is the one family whose page carries a body, and a card is
+   a promise about what is on the other side of it. The other five stay
+   declared, with their picture, their model line and their paragraph in both
+   locales, so putting them back when the copy lands is one word per card. They
+   are not deleted and not stranded: `/test-systems/` still lists all six as
+   rows, and every family still has its page. See the note on `testItems` in
+   site-header.tsx.
+
+   `eqP`, the band's lead, was rewritten with the same cut. It counted the row
+   — "Six product families, ninety-nine models" — and a lead that counts six
+   over one card is a caption for a row that is not there. It now states the
+   range the branch covers, which is what the standards line was always doing,
+   and hands the reader to the card that is there. If the count goes back with
+   the cards, count it again first: ninety-nine was already out of date when it
+   came out — `testModels` now holds 181 across these six families (200 with
+   emission and coupling, which the row has never carried), the amplifier
+   matrix alone having grown to 139. */
 const equipCards = [
   { name: "RF Power Amplifiers", models: "FLL · VLL · VLC · FLH · WBA", path: testProductPath("amplifier"),
+    show: false,
     shot: { src: "/test-systems/images/amplifier-rack.webp", w: 900, h: 600, kind: "photo" } },
   /* The HAX horn rather than the ALX that heads the antenna page: the ALX is
      thin silver rod against a transparent ground and all but disappears at
      card size, while the horn holds its shape. */
   { name: "Antennas", models: "ALX · MAX · HAX · SAX-10 · LAX-10", path: testProductPath("antenna"),
+    show: false,
     shot: { src: "/test-systems/images/antenna-hax-18.webp", w: 1200, h: 900, kind: "plate" } },
   { name: "Field Strength Meters", models: "EFS-10 · 100 · 300 · 500 · Laser", path: testProductPath("efs"),
+    show: false,
     shot: { src: "/test-systems/images/efs-probe.webp", w: 360, h: 595, kind: "plate" } },
   { name: "Pre-Amplifiers", models: "FPA-2 · 6A · 6B · 18 · 26 · 40", path: testProductPath("preamp"),
+    show: false,
     shot: { src: "/test-systems/images/preamp-fpa.webp", w: 1200, h: 920, kind: "plate" } },
   { name: "Meters & Switching", models: "PMS 1084 · 1084 B · RSU", path: testProductPath("meter"),
+    show: false,
     shot: { src: "/test-systems/images/meter-rsu.webp", w: 1600, h: 669, kind: "plate" } },
   /* The CIT-100's own plate, now that the family is the CIT series alone: the
      MTS-800 stood here while this card named four products, and a card whose
      caption reads CIT should not be showing a magnetic field system. */
   { name: "Integrated Systems", models: "CIT-100 · CIT-1000", path: testProductPath("system"),
+    show: true,
     shot: { src: "/test-systems/images/system-cit-100.webp", w: 1600, h: 609, kind: "plate" } },
 ] as const;
 
@@ -792,23 +818,30 @@ export default function Landing({ lang }: { lang: Lang }) {
             <p>{t.eqP}</p>
           </div>
           <div className="line-grid three">
-            {equipCards.map((c, i) => (
-              <SiteLink className="lc" key={c.name} href={localeRoute(lang, c.path)}>
-                {/* Decorative, as on the chamber row above: the h4 under the
-                    band names the family, and a screen reader reading "a horn
-                    antenna on a mounting tube" before the word Antennas puts a
-                    caption in front of the sentence it illustrates. The
-                    instruments are described where they carry their own page,
-                    and in the asset ledger. */}
-                <div className={`lc-shot lc-shot--${c.shot.kind}`}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={asset(c.shot.src)} alt="" width={c.shot.w} height={c.shot.h} loading="lazy" decoding="async" />
-                </div>
-                <h4>{c.name}</h4>
-                <p>{t.eq[i]}</p>
-                <div className="models">{c.models}</div>
-              </SiteLink>
-            ))}
+            {/* Paired with its index before the filter, not after: `t.eq` is
+                written against the full six and a card that moved up when the
+                one above it was hidden would take the paragraph of a family it
+                is not. See the note on `show` in `equipCards`. */}
+            {equipCards
+              .map((c, i) => ({ c, i }))
+              .filter(({ c }) => c.show)
+              .map(({ c, i }) => (
+                <SiteLink className="lc" key={c.name} href={localeRoute(lang, c.path)}>
+                  {/* Decorative, as on the chamber row above: the h4 under the
+                      band names the family, and a screen reader reading "a horn
+                      antenna on a mounting tube" before the word Antennas puts a
+                      caption in front of the sentence it illustrates. The
+                      instruments are described where they carry their own page,
+                      and in the asset ledger. */}
+                  <div className={`lc-shot lc-shot--${c.shot.kind}`}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={asset(c.shot.src)} alt="" width={c.shot.w} height={c.shot.h} loading="lazy" decoding="async" />
+                  </div>
+                  <h4>{c.name}</h4>
+                  <p>{t.eq[i]}</p>
+                  <div className="models">{c.models}</div>
+                </SiteLink>
+              ))}
           </div>
         </div>
       </section>
