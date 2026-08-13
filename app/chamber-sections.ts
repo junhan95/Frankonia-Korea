@@ -1,6 +1,6 @@
 import { industries, type Industry } from "./industries";
 import type { PageBody } from "./page-body";
-import { plural, type Lang } from "./site-config";
+import type { Lang } from "./site-config";
 
 /**
  * The Anechoic Chambers branch of the navigation, and the model data both of
@@ -299,31 +299,37 @@ export const typeMeta = {
   ko: {
     sac: {
       label: "반무향 챔버 SAC",
+      note: "접지면 위 방출·내성 정식 인증 — 3·5·10 m",
       description:
         "반무향 EMC 챔버 12종. 3m·5m·10m 측정거리의 SAC 전 계열과 차량용 대형 챔버를 한자리에서 비교합니다.",
     },
     fac: {
       label: "완전무향 챔버 FAC",
+      note: "접지면 없는 자유공간 조건",
       description:
         "완전무향 EMC 챔버 3종. 테이블탑 FAC-3, 플로어스탠딩 FAC-3 L, 반무향·완전무향 변환형 Transformer.",
     },
     chc: {
       label: "컴팩트 챔버 CHC",
+      note: "좁은 공간에서의 사전 인증",
       description:
         "사전 인증(pre-compliance)용 3m 컴팩트 챔버 3종. CHC, CHC Plus, 군수용 MIL CHC.",
     },
     component: {
       label: "부품·구동계 챔버",
+      note: "부품과 구동계, 챔버 밖 계측",
       description:
         "부품 단위 시험 챔버 6종. 전장부품용 ACTC·UCC·CTC와 전기차 구동계용 EDTC 시리즈.",
     },
     rvc: {
       label: "잔향실 RVC",
+      note: "흡수체 없이 만드는 통계적 전자기장",
       description:
         "잔향실 7종. 상용·산업용 RVC e1·e2와 차량·부품용 RVC S~XXL — IEC/EN 61000-4-21, ISO 11452-11 대응, Frankonia 스터러 기반.",
     },
     "shielded-room": {
       label: "차폐룸",
+      note: "해체와 이전이 가능한 차폐 공간",
       description:
         "모듈형 조립식 표준 차폐룸. 현장 조립·해체와 이전 후 재사용이 가능한 구조입니다.",
     },
@@ -331,31 +337,37 @@ export const typeMeta = {
   en: {
     sac: {
       label: "Semi-Anechoic SAC",
+      note: "Full compliant over a ground plane — 3, 5 and 10 m",
       description:
         "Twelve semi-anechoic EMC chambers — the full SAC range at 3m, 5m and 10m measurement distance, plus the vehicle-scale chambers.",
     },
     fac: {
       label: "Fully Anechoic FAC",
+      note: "Free-space conditions, no ground plane",
       description:
         "Three fully anechoic EMC chambers: table-top FAC-3, floor-standing FAC-3 L, and the transformable SAC-3 / FAC-3 combination.",
     },
     chc: {
       label: "Compact CHC",
+      note: "Pre-compliance where the floor area is tight",
       description:
         "Three 3m compact chambers for pre-compliance testing: CHC, CHC Plus and the military MIL CHC.",
     },
     component: {
       label: "Component & E-Drive",
+      note: "Components and drivetrains, instruments outside",
       description:
         "Six component-level chambers — ACTC, UCC and CTC for automotive components, and the EDTC series for electric drivetrains.",
     },
     rvc: {
       label: "Reverberation RVC",
+      note: "A statistical field, made without absorbers",
       description:
         "Seven reverberation chambers: RVC e1 and e2 for industry, RVC S to XXL for components and vehicles — to IEC/EN 61000-4-21 and ISO 11452-11, with Frankonia performance stirrers.",
     },
     "shielded-room": {
       label: "Shielded Room",
+      note: "Shielding you can dismantle and move",
       description:
         "Modular, pre-fabricated standard shielded room — assembled and dismantled on site, and reusable after relocation.",
     },
@@ -514,21 +526,18 @@ export const downloadsMeta = {
   },
 } as const satisfies Record<Lang, { label: string; description: string }>;
 
-/** Column headings and utility-row labels for the Chambers mega dropdown. */
+/** Column headings for the Chambers mega dropdown. The captions under each
+ *  link come from the industry's and the type's own meta. */
 export const chamberNavCopy = {
   ko: {
     byIndustry: "산업군별",
     byType: "챔버 형식별",
     technology: "기술 · 서비스",
-    models: (n: number) => `${n}종`,
-    allModels: (n: number) => `전체 라인업 ${n}종`,
   },
   en: {
     byIndustry: "By Industry",
     byType: "By Chamber Type",
     technology: "Technology & Services",
-    models: (n: number) => plural(n, "model"),
-    allModels: (n: number) => `All ${plural(n, "model")}`,
   },
 } as const;
 

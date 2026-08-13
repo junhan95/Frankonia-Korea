@@ -58,6 +58,8 @@ const copy = {
     browse: "찾아보기",
     byTest: "시험 항목별",
     byProduct: "제품군별",
+    byStandard: "규격별",
+    standardsCount: (n: number) => `${n}건`,
     standardsKicker: "STANDARDS",
     equipmentKicker: "EQUIPMENT",
     equipmentTitle: "시험 구성 장비",
@@ -82,6 +84,8 @@ const copy = {
     browse: "Browse",
     byTest: "By Test",
     byProduct: "By Product",
+    byStandard: "By Standard",
+    standardsCount: (n: number) => `${n} standards`,
     standardsKicker: "STANDARDS",
     equipmentKicker: "EQUIPMENT",
     equipmentTitle: "What the setup is built from",
@@ -194,6 +198,23 @@ function Axes({ lang }: { lang: Lang }) {
             <span className="hl-desc">{modelCount(t, modelsByProduct(product).length)}</span>
           </a>
         ))}
+      </div>
+
+      {/* A third way in, and the only one the dropdown no longer offers: the
+          standards index used to hang in the menu's utility row and came out of
+          it with the rest of that row. It is one row rather than a column
+          because it is one page — a reader who arrives holding a standard
+          designation rather than a product name needs the door to exist, not to
+          be wide. */}
+      <div className="sec-head" style={{ marginTop: "72px" }}>
+        <h2>{t.byStandard}</h2>
+      </div>
+      <div className="hairline-list">
+        <a className="hl-row" href={localeRoute(lang, testStandardsPath)}>
+          <span className="hl-idx">01</span>
+          <b>{testStandardsMeta[lang].label}</b>
+          <span className="hl-desc">{t.standardsCount(testStandards.length)}</span>
+        </a>
       </div>
     </>
   );

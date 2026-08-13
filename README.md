@@ -243,6 +243,8 @@ app/
   landing.tsx        # 랜딩 페이지 전체와 로케일별 카피
   chamber-sections.ts     # 챔버 27개 모델 · 산업/형태/기술 축 · 라우트 표
   chamber-content.tsx     # Chambers branch 15페이지 + Downloads 허브
+  model-accordion.tsx     # 모델 목록의 펼침 행과 사진 갤러리 — 클라이언트, 패널 내용은 export HTML 안에 있다
+  chamber-gallery.ts      # 모델당 추가 도판 2장과 로케일별 alt (원장 chambers-model-assets.md §6)
   test-system-sections.ts # 제품 36개 · 규격 24개 · 산업/시험/제품군 축
   test-system-content.tsx # Test Systems branch 17페이지
   mychamber-sections.ts   # MyChamber 라우트 + 라벨 (헤더가 읽는 것은 이것뿐)

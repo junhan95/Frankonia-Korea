@@ -4,6 +4,7 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { stagingEnv } from "../scripts/staging-env.mjs";
+import { galleryFiles } from "../app/chamber-gallery.ts";
 
 /**
  * Assertions against the real static export, because every regression this
@@ -294,6 +295,129 @@ test("the questionnaire is in the exported HTML, not assembled by script", () =>
       assert.ok(page.html.includes(option), `${route}: the ${option} option is missing`);
     }
   }
+});
+
+test("a model row opens onto its figures, and still leads to the model page", () => {
+  // The row used to be a link and is now a button, which is the change that
+  // could quietly strand the model pages: nothing else on an index reaches
+  // them. It could also have taken the panel out of the export — collapsed is a
+  // CSS state here, not an absent element, and both a crawler and a reader
+  // whose bundle has not landed have to find the figures in the file.
+  const withRows = pages.filter((p) => p.html.includes('aria-controls="panel-'));
+  // Eleven per locale, all of them on the chamber branch — the four industry
+  // indexes, the six chamber-type indexes and the RVC page, which lists its
+  // seven siblings. The EMC Test Systems branch still prints plain rows.
+  assert.equal(withRows.length, 22, `${withRows.length} pages carry an opening model list, expected 22`);
+
+  for (const { route, html } of withRows) {
+    const panels = [...html.matchAll(/aria-controls="(panel-[^"]+)"/g)].map((m) => m[1]);
+    assert.equal(new Set(panels).size, panels.length, `${route}: two rows control one panel`);
+    for (const id of panels) {
+      assert.ok(html.includes(`id="${id}"`), `${route}: ${id} is controlled but not in the export`);
+    }
+    // Every row ships closed. An accordion that ships open is twelve plates.
+    assert.doesNotMatch(
+      html,
+      /hl-row--toggle[^>]*aria-expanded="true"/,
+      `${route}: a model row is open before anyone clicked it`,
+    );
+    // `inert` is what keeps a folded panel out of the tab order, now that
+    // `display: none` no longer does it.
+    assert.match(html, /class="hl-panel-clip" inert=""/, `${route}: a folded panel is still focusable`);
+    assert.ok(html.includes('class="hl-figures"'), `${route}: no summary figures in any panel`);
+    assert.ok(html.includes('class="hl-lead"'), `${route}: no panel says what the model is`);
+    const ko = localeOf(route) === "ko";
+    // A chamber has a page of its own and the panel is the only way an index
+    // reaches it, which is the link this test exists to protect.
+    assert.ok(
+      html.includes(ko ? "모델 상세 보기" : "View the model page"),
+      `${route}: no panel offers the model page`,
+    );
+    // The enquiry arrives naming the chamber it is about. A quote button that
+    // opens an empty mail is the failure this checks for.
+    assert.ok(
+      html.includes(ko ? "견적 문의" : "Request a quote"),
+      `${route}: no panel offers a quotation`,
+    );
+    assert.match(
+      html,
+      new RegExp(`href="mailto:[^"]+\\?subject=${encodeURIComponent(ko ? "[견적 문의] " : "[Quote request] ")}`),
+      `${route}: the quote button does not name a model`,
+    );
+  }
+
+  // The list in the screenshot this was built from: twelve semi-anechoic
+  // chambers, each still one click from its own page.
+  const sac = pages.find((p) => p.route === "/chambers/type/sac/");
+  assert.equal(
+    [...sac.html.matchAll(/aria-controls="panel-/g)].length,
+    12,
+    "/chambers/type/sac/: the model count changed",
+  );
+  for (const slug of ["sac-10-v", "avtc", "mil-std-chamber", "sac-3-plus", "sac-10-plus-triton"]) {
+    assert.ok(
+      sac.html.includes(`href="${BASE}/chambers/model/${slug}/"`),
+      `/chambers/type/sac/: ${slug} lost its link to the model page`,
+    );
+  }
+});
+
+test("every gallery plate the panels name is actually shipped", async () => {
+  // The gallery table is written by hand against files converted out of band.
+  // A typo in a filename is invisible until someone opens the row and gets a
+  // broken frame — the export is the only place that can say whether the file
+  // is there.
+  assert.ok(galleryFiles.length >= 48, `only ${galleryFiles.length} gallery plates are declared`);
+  for (const src of new Set(galleryFiles)) {
+    assert.ok(
+      await exists(path.join(OUT, src.replace(/^\//, ""))),
+      `${src} is in the gallery table but not in the export`,
+    );
+  }
+});
+
+test("a model row with more than one plate carries the gallery controls", () => {
+  // The picture is a button and the two chevrons beside it are buttons. If the
+  // markup ships without them the panel still shows a photograph, which is why
+  // this is worth asserting rather than trusting to the eye.
+  for (const route of ["/chambers/type/sac/", "/ko/chambers/type/sac/"]) {
+    const { html } = pages.find((p) => p.route === route);
+    for (const cls of ["hl-frame", "hl-step hl-step--prev", "hl-step hl-step--next", "hl-count"]) {
+      assert.ok(html.includes(`class="${cls}"`), `${route}: the gallery is missing ${cls}`);
+    }
+    // Twelve rows, each opening on its own first plate — and only the first,
+    // because the rest are mounted when a reader steps to them.
+    const frames = [...html.matchAll(/class="hl-frame"/g)].length;
+    assert.equal(frames, 12, `${route}: ${frames} galleries, expected one per model`);
+  }
+});
+
+test("a gallery frame that is hidden is actually hidden", async () => {
+  // This one shipped. `.hl-shot img { display: block }` outweighs the user
+  // agent's `[hidden] { display: none }` — one class beats none — so every
+  // frame rendered at once, stacked, and `overflow: hidden` cropped the pile
+  // to the first. The counter stepped and the picture did not, which no
+  // assertion about the markup could have caught: the `hidden` attribute was
+  // there the whole time. So the assertion is about the stylesheet.
+  // Wherever the build decides to put them — Next has moved stylesheets
+  // between `static/css` and `static/chunks` across versions, and a test that
+  // pins the folder fails for a reason that has nothing to do with the rule.
+  const sheets = [];
+  const walk = async (dir) => {
+    for (const entry of await readdir(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) await walk(full);
+      else if (entry.name.endsWith(".css")) sheets.push(full);
+    }
+  };
+  await walk(path.join(OUT, "_next"));
+  assert.ok(sheets.length > 0, "the export ships no stylesheet at all");
+  const css = (await Promise.all(sheets.map((f) => readFile(f, "utf8")))).join("");
+  assert.match(
+    css,
+    /\.hl-shot img\[hidden\]\s*\{\s*display:\s*none\s*\}/,
+    "the gallery's [hidden] override is not in the built stylesheet",
+  );
 });
 
 test("every page is held out of the index on the staging URL", () => {

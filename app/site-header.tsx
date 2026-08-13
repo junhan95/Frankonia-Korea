@@ -2,14 +2,12 @@ import type { CSSProperties } from "react";
 import {
   chamberIndustries,
   chamberIndustryMeta,
-  chamberModels,
   chamberNavCopy,
   chamberTopics,
   chamberTypes,
   chambersPath,
   downloadsPath,
   industryPath,
-  modelsByType,
   topicMeta,
   topicPath,
   typeMeta,
@@ -22,17 +20,13 @@ import LangSwitch from "./lang-switch";
 import { mychamberMeta, mychamberPath } from "./mychamber-sections";
 import NavDrawer from "./nav-drawer";
 import {
-  modelsByProduct,
   testCategories,
   testCategoryMeta,
   testCategoryPath,
-  testModels,
   testNavCopy,
   testProductMeta,
   testProductPath,
   testProducts,
-  testStandards,
-  testStandardsPath,
   testSystemsPath,
 } from "./test-system-sections";
 import { asset, localeRoute, type Lang } from "./site-config";
@@ -60,8 +54,10 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
   // form — over the same 27 products. Both axes are listed side by side rather
   // than nested, so neither is hidden behind a hover and the panel stays two
   // levels deep. The captions differ on purpose: the industry column names
-  // representative models, the type column counts them, which is what tells a
-  // reader at a glance that the two columns are not the same list twice.
+  // representative models, the type column says what the form is for. A count
+  // used to sit there, and "12 models" answered a question nobody standing in
+  // this menu is asking — the reader is choosing between forms of chamber, and
+  // how many of each we build does not help them choose.
   const cn = chamberNavCopy[lang];
   const chamberGroups: NavGroup[] = [
     {
@@ -77,7 +73,7 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
       links: chamberTypes.map((ty) => ({
         label: typeMeta[lang][ty].label,
         href: localeRoute(lang, typePath(ty)),
-        note: cn.models(modelsByType(ty).length),
+        note: typeMeta[lang][ty].note,
       })),
     },
     {
@@ -93,12 +89,11 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     },
   ];
 
+  // Proof and paper, and nothing that the bar above already offers: the branch
+  // label is the link to the model index, and MyChamber has its own marked slot
+  // two items along. Both sat here first — a second door a hand's width from
+  // the first reads as two different rooms until you have opened them.
   const chamberUtils: NavLink[] = [
-    { label: cn.allModels(chamberModels.length), href: localeRoute(lang, chambersPath) },
-    // The reader who opened this panel to find out which of twenty-seven
-    // models is theirs is exactly the reader MyChamber is for, so the entry
-    // is here as well as in the bar.
-    { label: mychamberMeta[lang].label, href: localeRoute(lang, mychamberPath) },
     { label: topicMeta[lang].references.label, href: localeRoute(lang, topicPath("references")) },
     { label: t.navSubs.contact.catalog, href: localeRoute(lang, downloadsPath) },
   ];
@@ -124,22 +119,23 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     },
     {
       title: tn.byProduct,
-      links: testProducts.map((p) => {
-        const count = modelsByProduct(p).length;
-        return {
-          label: testProductMeta[lang][p].label,
-          href: localeRoute(lang, testProductPath(p)),
-          // Antennas carry no count: the head office's antenna page lists no
-          // model, and a "0 models" caption would read as an error.
-          note: count > 0 ? tn.models(count) : undefined,
-        };
-      }),
+      // What the instrument is for, as in the chamber panel's type column. The
+      // caption used to be a model count, which told a reader how deep the
+      // amplifier range goes and nothing about whether an amplifier is the
+      // thing they came for.
+      links: testProducts.map((p) => ({
+        label: testProductMeta[lang][p].label,
+        href: localeRoute(lang, testProductPath(p)),
+        note: testProductMeta[lang][p].note,
+      })),
     },
   ];
 
+  // The utility row carries the catalogues alone. It used to open with an "All
+  // n products" link and a standards count; the branch label in the bar is
+  // itself the link to that index, and the standards index moved onto it as a
+  // third way in — see the By Standard band in test-system-content.
   const testUtils: NavLink[] = [
-    { label: tn.allProducts(testModels.length), href: localeRoute(lang, testSystemsPath) },
-    { label: tn.standards(testStandards.length), href: localeRoute(lang, testStandardsPath) },
     { label: t.navSubs.contact.catalog, href: localeRoute(lang, downloadsPath) },
   ];
 

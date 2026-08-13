@@ -24,14 +24,25 @@ import type { Lang } from "./site-config";
  *  with the magnetic field system pulled out of "Radiated" where it hid. */
 export const testCategories = ["emission", "conducted", "radiated", "magnetic"] as const;
 
-/** Product family. */
+/**
+ * Product family, in the order every list of them prints — the dropdown
+ * column, the index, and the equipment list on a test page.
+ *
+ * Integrated systems lead. The five families under them are components of a
+ * setup the buyer assembles; CIT-100, PSG-300, MTS-800 and the GTEM cells are
+ * the setup, bought whole. A reader who can use one should meet it before the
+ * parts list, and a reader who cannot loses one line to reach the amplifiers.
+ * The rest keep the signal chain's own order: what drives the field, what
+ * radiates it, what measures it, what conditions the measurement, what routes
+ * it.
+ */
 export const testProducts = [
+  "system",
   "amplifier",
   "antenna",
   "efs",
   "preamp",
   "meter",
-  "system",
 ] as const;
 
 export type TestCategory = (typeof testCategories)[number];
@@ -271,15 +282,20 @@ export const standardsByIndustry = (industry: Industry) =>
   testStandards.filter((s) => s.industry === industry);
 
 /** Which product families a test discipline is built from. Curated, not
- *  derived: it is the equipment list for a setup, not a category membership. */
+ *  derived: it is the equipment list for a setup, not a category membership.
+ *  A set, though — the order it prints in comes from `testProducts`. */
 const categoryProducts: Record<TestCategory, readonly TestProduct[]> = {
-  emission: ["preamp", "antenna", "meter"],
+  emission: ["antenna", "preamp", "meter"],
   conducted: ["system", "amplifier", "meter"],
   radiated: ["amplifier", "antenna", "efs", "meter"],
   magnetic: ["system"],
 };
 
-export const productsOfCategory = (category: TestCategory) => categoryProducts[category];
+/** Sorted rather than printed as written, so the equipment list on a test page
+ *  reads in the same order as the menu column and the index — one order for
+ *  the branch, and editing the table above cannot put it out of step. */
+export const productsOfCategory = (category: TestCategory) =>
+  testProducts.filter((p) => categoryProducts[category].includes(p));
 
 type Entry = { label: string; description: string; note?: string };
 
@@ -342,31 +358,37 @@ export const testProductMeta = {
   ko: {
     amplifier: {
       label: "RF 파워앰프",
+      note: "내성 시험 구동용 고체소자·광대역 — 최대 12kW",
       description:
         "RF 파워앰프 70종 — 10kHz~1GHz 고체소자 앰프 36종(최대 12kW)과 500MHz~40GHz 광대역 WBA 34종.",
     },
     antenna: {
       label: "안테나",
+      note: "방출과 내성, 송신과 수신 양쪽",
       description:
         "방출·내성 시험용 안테나 10종 — 광대역 ALX, 스택 로그페리오딕 MAX, 혼 HAX, 액티브 로드 SAX-10과 루프 LAX-10. 9kHz부터 40GHz까지.",
     },
     efs: {
       label: "전계강도계 EFS",
+      note: "챔버 안 전계 측정 — 광파이버 전송",
       description:
         "EFS-10·100·300·500과 EFS-Laser — 10kHz~26.5GHz, 0.14~1500 V/m, 광파이버 전송.",
     },
     preamp: {
       label: "프리앰프 FPA",
+      note: "수신기 앞단에서 방출 신호 증폭",
       description:
         "방출 측정용 광대역 프리앰프 6종 — FPA-2·6A·6B·18·26·40, 9kHz~40GHz, 이득 28~35dB.",
     },
     meter: {
       label: "파워미터·스위칭",
+      note: "진행·반사 전력 측정과 RF 경로 전환",
       description:
         "PMS 1084·1084B RF 파워미터와 RSU RF 릴레이 스위칭 유닛 — DC~12.4GHz, 18/40GHz 확장.",
     },
     system: {
       label: "통합 시험 시스템",
+      note: "랙 또는 셀 하나로 완결되는 시험 구성",
       description:
         "CIT-100 컴팩트 내성 시험 시스템, PSG-300·300A 파워 신호 발생기, MTS-800 자기장 시험 시스템, GTEM 셀.",
     },
@@ -374,31 +396,37 @@ export const testProductMeta = {
   en: {
     amplifier: {
       label: "RF Power Amplifiers",
+      note: "Immunity drive, solid-state and wideband — to 12 kW",
       description:
         "Seventy RF power amplifiers — thirty-six solid-state models from 10 kHz to 1 GHz, up to 12 kW, and thirty-four WBA wideband models from 500 MHz to 40 GHz.",
     },
     antenna: {
       label: "Antennas",
+      note: "Transmit and receive, emission and immunity",
       description:
         "Ten antennas for emission and immunity testing — the broadband ALX, the stacked log-periodic MAX, the HAX horns, and the SAX-10 rod and LAX-10 loop, covering 9 kHz to 40 GHz.",
     },
     efs: {
       label: "Field Strength Meters",
+      note: "Reads the field inside the chamber, over fibre",
       description:
         "EFS-10, 100, 300 and 500 plus the EFS-Laser — 10 kHz to 26.5 GHz, 0.14 to 1500 V/m, over a fibre optic link.",
     },
     preamp: {
       label: "Pre-Amplifiers",
+      note: "Lifts the emission signal ahead of the receiver",
       description:
         "Six broadband pre-amplifiers for emission measurement — FPA-2, 6A, 6B, 18, 26 and 40, from 9 kHz to 40 GHz with 28 to 35 dB gain.",
     },
     meter: {
       label: "Meters & Switching",
+      note: "Forward and reflected power, and the RF paths between",
       description:
         "PMS 1084 and 1084 B RF power meters and the RSU relay switching unit — DC to 12.4 GHz, extendable to 18 or 40 GHz.",
     },
     system: {
       label: "Integrated Systems",
+      note: "A whole test in one rack or cell",
       description:
         "The CIT-100 compact immunity test system, PSG-300 and 300A power signal generators, the MTS-800 magnetic field test system and GTEM cells.",
     },
@@ -1603,21 +1631,16 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
   },
 };
 
-/** Column headings and utility-row labels for the Test Systems mega dropdown. */
+/** Column headings for the Test Systems mega dropdown. The captions under each
+ *  link come from the test category's and the product family's own meta. */
 export const testNavCopy = {
   ko: {
     byTest: "시험 항목별",
     byProduct: "제품군별",
-    models: (n: number) => `${n}종`,
-    allProducts: (n: number) => `전체 제품 ${n}종`,
-    standards: (n: number) => `규격별 찾기 ${n}건`,
   },
   en: {
     byTest: "By Test",
     byProduct: "By Product",
-    models: (n: number) => `${n} models`,
-    allProducts: (n: number) => `All ${n} products`,
-    standards: (n: number) => `${n} standards`,
   },
 } as const;
 

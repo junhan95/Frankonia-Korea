@@ -35,7 +35,9 @@ import {
   type ModelBody,
   type TopicBody,
 } from "./chamber-sections";
+import { modelGallery } from "./chamber-gallery";
 import { industryLabel } from "./industries";
+import ModelAccordion, { type AccordionRow } from "./model-accordion";
 import { CheckColumn, Groups, Lead, Tables } from "./page-parts";
 import PageShell, { type HeadShot } from "./page-shell";
 import StructuredData, { type TrailStep } from "./structured-data";
@@ -91,6 +93,16 @@ const copy = {
      */
     specsNote: "Frankonia 표준 구성입니다. 치수는 외형 기준으로, 챔버 자체의 크기이며 내부 유효 공간이 아닙니다. 설치 공간과 적용 규격에 맞춰 치수와 구성을 조정할 수 있으며, 상세 도면과 견적은 문의해 주시면 안내해 드립니다.",
     overview: "한눈에",
+    /** In the panel a row opens. Not "자세히" — the reader is already looking at
+     *  the detail, and what the link adds is the model's own page. */
+    modelMore: "모델 상세 보기",
+    /** Beside it. The mail opens with the model already in the subject, so the
+     *  reader is not asked to name again what they just picked out of twelve. */
+    modelQuote: "견적 문의",
+    modelQuoteSubject: (name: string) => `[견적 문의] ${name}`,
+    galleryPrev: "이전 사진",
+    galleryNext: "다음 사진",
+    galleryFrame: "사진 {at} / {of} — 눌러서 다음 사진",
     standardsKicker: "적용 규격",
     stubTitle: "자료를 보내 드립니다",
     stubBody:
@@ -114,6 +126,12 @@ const copy = {
     specsNote:
       "Frankonia standard configurations. The dimensions are external — the size of the chamber itself, not the usable volume inside it. Both size and layout can be adapted to your site and to the standards you test against; contact us for a drawing and a quotation.",
     overview: "At a glance",
+    modelMore: "View the model page",
+    modelQuote: "Request a quote",
+    modelQuoteSubject: (name: string) => `[Quote request] ${name}`,
+    galleryPrev: "Previous picture",
+    galleryNext: "Next picture",
+    galleryFrame: "Picture {at} of {of} — press for the next",
     standardsKicker: "Standards",
     stubTitle: "Documents on request",
     stubBody:
@@ -238,11 +256,17 @@ function Axes({ lang }: { lang: Lang }) {
         <h2>{t.byType}</h2>
       </div>
       <div className="hairline-list">
+        {/* What the form is for, the same line the dropdown carries. The count
+            that used to sit here is on the page the row opens — and six rows
+            reading "12 models · 3 models · 3 models" told a reader nothing
+            about which of the six was theirs. The industry rows above keep
+            their counts: those are the same 27 chambers divided up, so how
+            many fall into each is the thing that differs. */}
         {chamberTypes.map((type, i) => (
           <a className="hl-row" key={type} href={localeRoute(lang, typePath(type))}>
             <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
             <b>{typeMeta[lang][type].label}</b>
-            <span className="hl-desc">{t.modelCount(modelsByType(type).length)}</span>
+            <span className="hl-desc">{typeMeta[lang][type].note}</span>
           </a>
         ))}
       </div>
@@ -406,15 +430,19 @@ function Stub({ lang, label }: { lang: Lang; label: string }) {
  * Model names stay in the head office's spelling — see the note on
  * ChamberModel.
  *
- * Each row links to its model page. `lang` is threaded down for that: the row
- * is the only place on an index page where a reader can get from a designation
- * to the figures behind it, and until the model pages existed it went nowhere.
- * The seven reverberation chambers all point at the same page, which is where
- * both sources tabulate them together.
+ * A row opens rather than navigates: the plate and the "at a glance" pairs from
+ * the model's own page slide out under it, and the link to that page is the one
+ * control inside the panel. `lang` is threaded down for both halves — the panel
+ * reads the locale's `modelBody`, and the link the locale's route.
  *
- * `here` is the slug of the page the list is on, and its rows render as plain
- * `div`s. Only the RVC page has any — seven models under one slug — and seven
- * links back to the page you are reading is worse than no link at all.
+ * `here` is the slug of the page the list is on, and those rows carry no link.
+ * Only the RVC page has any — seven models under one slug — and seven links
+ * back to the page you are reading is worse than no link at all. They still
+ * open: the seven differ in exactly the figures the panel shows.
+ *
+ * The catalogue figures under the descriptor are deliberately not translated.
+ * They are measurements and standard designations, and both have to match the
+ * quotation and the drawings a reader compares them against.
  */
 function ModelList({
   lang,
@@ -425,38 +453,40 @@ function ModelList({
   models: readonly ChamberModel[];
   here?: string;
 }) {
+  const rows: AccordionRow[] = models.map((model, i) => {
+    // The panel's contents are the model page's own opening plate and summary
+    // strip, read from the same table that page renders. Nothing is authored
+    // twice, and a model whose page has neither degrades to the plain row.
+    const body = modelBody[lang][model.slug];
+    return {
+      // The name, not the slug: seven reverberation chambers share a slug, and
+      // two rows with one `id` would be two panels with one `aria-controls`.
+      id: `${i + 1}-${model.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`,
+      name: model.name,
+      desc: model.desc,
+      spec: model.spec &&
+        [model.spec.size, model.spec.note, model.spec.range].filter((v): v is string => !!v),
+      // The model page's own plate first, then the gallery extras. Both come
+      // from the head office's page for this model; only the first has a
+      // caption, and the panel does not print captions.
+      shots: body?.figure ? [body.figure, ...modelGallery(lang, model.slug)] : undefined,
+      lead: body?.lead[0],
+      facts: body?.overview,
+      href: model.slug === here ? undefined : localeRoute(lang, modelPath(model.slug)),
+      quoteHref: `mailto:${contactEmail}?subject=${encodeURIComponent(
+        copy[lang].modelQuoteSubject(model.name),
+      )}`,
+    };
+  });
+
+  const t = copy[lang];
   return (
-    <div className="hairline-list">
-      {models.map((model, i) => {
-        const Row = model.slug === here ? "div" : "a";
-        return (
-        <Row
-          className="hl-row"
-          key={model.name}
-          href={model.slug === here ? undefined : localeRoute(lang, modelPath(model.slug))}
-        >
-          <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
-          <b>{model.name}</b>
-          <span className="hl-desc">
-            {model.desc}
-            {/* Catalogue figures, on their own line under the descriptor. The
-                size and the frequency range are deliberately not translated:
-                they are measurements and a standard designation, and both have
-                to match the quotation and the drawings a reader compares them
-                against. Rows without a spec render exactly as before — the
-                data arrives model by model, and a page shows what it has. */}
-            {model.spec && (
-              <span className="hl-spec">
-                <span>{model.spec.size}</span>
-                {model.spec.note && <span>{model.spec.note}</span>}
-                {model.spec.range && <span>{model.spec.range}</span>}
-              </span>
-            )}
-          </span>
-        </Row>
-        );
-      })}
-    </div>
+    <ModelAccordion
+      rows={rows}
+      more={t.modelMore}
+      quote={t.modelQuote}
+      gallery={{ prev: t.galleryPrev, next: t.galleryNext, frame: t.galleryFrame }}
+    />
   );
 }
 
