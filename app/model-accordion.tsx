@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { asset } from "./site-config";
+import CartAdd from "./cart-add";
+import type { CartSeed } from "./cart-store";
+import { asset, type Lang } from "./site-config";
+import SiteLink from "./site-link";
 
 /**
  * The model list, with a panel under each row.
@@ -20,10 +23,11 @@ import { asset } from "./site-config";
  * Three things this file is careful about, because they are the ones an
  * accordion usually gets wrong:
  *
- * - **The way to the model page survives.** The row used to be the only link to
- *   it. A row that toggles instead of navigating would strand twenty-seven
- *   pages, so the panel carries the link, as the one control inside it that is
- *   not "close".
+ * - **The link to the model page is optional, and off.** The row used to be the
+ *   only way there; then the panel carried it, as the one control inside it
+ *   that was not "close". Neither branch asks for it today — see `more` — so
+ *   the panel's controls are the enquiry and the basket, and the model pages
+ *   are reached from a MyCart line or from the sitemap.
  * - **The panel is in the exported HTML.** It is collapsed by CSS, not dropped
  *   from the tree, so the figures are in the file a crawler reads and the
  *   rendered-HTML tests can see them. `inert` keeps the closed panel out of the
@@ -58,27 +62,39 @@ export type AccordionRow = {
   lead?: string;
   /** The model page's "at a glance" pairs. */
   facts?: readonly { label: string; value: string }[];
-  /** The model page. Absent on the page that is already there — the RVC index
-   *  lists itself, and seven links back to the page you are reading is worse
-   *  than none. */
+  /** The model page. Read by the plain-row fallback below, and by the panel's
+   *  link when `more` is given — which it is not today. Absent on the page that
+   *  is already there: the RVC index lists itself, and a row linking to the
+   *  page you are reading is worse than a row that does not. */
   href?: string;
   /** The enquiry, already addressed to this model. A reader who has opened one
    *  row out of twelve has made the choice the contact page would otherwise ask
    *  them to type out again. */
   quoteHref?: string;
+  /** This model as MyCart holds it. The enquiry above asks about one model
+   *  now; this puts it aside for the reader who is specifying a laboratory and
+   *  will ask about six at once. Assembled by the caller, which is the side of
+   *  the boundary that has the catalogue. */
+  cart?: CartSeed;
 };
 
 export default function ModelAccordion({
+  lang,
   rows,
   more,
   quote,
   gallery,
 }: {
+  /** Only the basket button needs it — every other label on this component is
+   *  handed in already translated. */
+  lang: Lang;
   rows: readonly AccordionRow[];
-  /** Label on the panel's link to the model page. Optional, because a branch
-   *  can have no model pages to link to: every instrument in EMC Test Systems
-   *  is described on its family's page and nowhere else, so no row there
-   *  carries an `href` and there is no label to give. */
+  /** Label on the panel's link to the model page, and the switch that draws it:
+   *  no label, no button, even on a row that has an `href`. Optional in the
+   *  first place because a branch can have no model pages to link to — every
+   *  instrument in EMC Test Systems is described on its family's page and
+   *  nowhere else. The chamber branch has such pages and deliberately omits the
+   *  label anyway; see the call in `chamber-content`. */
   more?: string;
   /** Label on the panel's enquiry button. */
   quote: string;
@@ -293,21 +309,28 @@ export default function ModelAccordion({
                         ))}
                       </dl>
                     )}
-                    {/* The model page first, the enquiry second — but the
-                        enquiry takes the red fill, because it is the one of the
-                        two that the page exists for. */}
+                    {/* The enquiry takes the red fill: it is what the page
+                        exists for. The model page would come before it if a
+                        caller asked for it, which none does today. */}
                     <div className="btns hl-actions">
                       {row.href && more && (
-                        <a className="btn btn-outline" href={row.href}>
+                        <SiteLink className="btn btn-outline" href={row.href}>
                           {more}
                           <span aria-hidden="true">→</span>
-                        </a>
+                        </SiteLink>
                       )}
                       {row.quoteHref && (
                         <a className="btn btn-red" href={row.quoteHref}>
                           {quote}
                           <span aria-hidden="true">→</span>
                         </a>
+                      )}
+                      {/* Last of the three, and the quietest: the enquiry
+                          beside it is what this page is for, and the basket is
+                          what a reader reaches for when they are not ready to
+                          send one yet. */}
+                      {row.cart && (
+                        <CartAdd lang={lang} item={row.cart} className="btn btn-outline" />
                       )}
                     </div>
                   </div>

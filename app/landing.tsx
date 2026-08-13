@@ -10,6 +10,7 @@ import ContactBand, { type BandCopy } from "./contact-band";
 import SiteHeader, { type HeaderCopy } from "./site-header";
 import SiteFooter, { type FooterCopy } from "./site-footer";
 import StructuredData from "./structured-data";
+import SiteLink from "./site-link";
 
 /* All copy lives here, keyed by locale — the KO / EN pages render from the
    same tree. Chamber category order is fixed by the site map:
@@ -87,7 +88,7 @@ const copy = {
       "광파이버로 읽어 내는 전계강도계. 10kHz~26.5GHz, 0.14~1500 V/m.",
       "방출 측정용 광대역 프리앰프. 9kHz~40GHz, 이득 28~35dB, 잡음지수 2dB부터.",
       "RF 파워미터와 릴레이 스위칭 유닛. DC~12.4GHz, 18/40GHz까지 확장.",
-      "시험 체인을 한 케이스에 담은 완성 시스템 — 전도 내성, 파워 신호, 자기장, GTEM.",
+      "전도 RF 내성 시험 체인을 19″ 케이스 하나에 담은 CIT 시리즈. 4kHz~1.2GHz.",
     ],
     stK: "MODULAR & PRE-FABRICATED SHIELDING STANDARDS",
     stH: "1987년부터 지켜 온 하나의 공법 — 용접도, 접착도 하지 않습니다",
@@ -228,7 +229,7 @@ const copy = {
       "Field strength read back over a fibre optic link. 10 kHz to 26.5 GHz, 0.14 to 1500 V/m.",
       "Broadband pre-amplifiers for emission measurement. 9 kHz to 40 GHz, 28 to 35 dB gain, noise figure from 2 dB.",
       "RF power meters and the relay switching unit. DC to 12.4 GHz, extendable to 18 or 40 GHz.",
-      "A whole test chain in one case — conducted immunity, power signal, magnetic field, GTEM.",
+      "The CIT series — a whole conducted RF immunity chain in one 19″ case, 4 kHz to 1.2 GHz.",
     ],
     stK: "MODULAR & PRE-FABRICATED SHIELDING STANDARDS",
     stH: "One standard since 1987 — nothing welded, nothing glued",
@@ -413,8 +414,11 @@ const equipCards = [
     shot: { src: "/test-systems/images/preamp-fpa.webp", w: 1200, h: 920, kind: "plate" } },
   { name: "Meters & Switching", models: "PMS 1084 · 1084 B · RSU", path: testProductPath("meter"),
     shot: { src: "/test-systems/images/meter-rsu.webp", w: 1600, h: 669, kind: "plate" } },
-  { name: "Integrated Systems", models: "CIT-100 · PSG-300 · MTS-800 · GTEM", path: testProductPath("system"),
-    shot: { src: "/test-systems/images/system-mts-800.webp", w: 1400, h: 782, kind: "plate" } },
+  /* The CIT-100's own plate, now that the family is the CIT series alone: the
+     MTS-800 stood here while this card named four products, and a card whose
+     caption reads CIT should not be showing a magnetic field system. */
+  { name: "Integrated Systems", models: "CIT-100 · CIT-1000", path: testProductPath("system"),
+    shot: { src: "/test-systems/images/system-cit-100.webp", w: 1600, h: 609, kind: "plate" } },
 ] as const;
 
 /* Three bands stand below the test-system line-up, and together they are the
@@ -565,7 +569,7 @@ function CardBand({
         </div>
         <div className="line-grid three">
           {cards.map((c, i) => (
-            <a className="lc" key={c.name} href={localeRoute(lang, c.path ?? goPath)}>
+            <SiteLink className="lc" key={c.name} href={localeRoute(lang, c.path ?? goPath)}>
               {/* Decorative, as on the chamber and equipment rows: the h4
                   under the band names the card, and the page it opens
                   describes the same photograph for a screen reader. */}
@@ -576,10 +580,10 @@ function CardBand({
               <h4>{c.name}</h4>
               <p>{bodies[i]}</p>
               <div className="models">{c.models}</div>
-            </a>
+            </SiteLink>
           ))}
         </div>
-        <a className="go sec-go" href={localeRoute(lang, goPath)}>{go}<span aria-hidden="true">→</span></a>
+        <SiteLink className="go sec-go" href={localeRoute(lang, goPath)}>{go}<span aria-hidden="true">→</span></SiteLink>
       </div>
     </section>
   );
@@ -624,9 +628,18 @@ export default function Landing({ lang }: { lang: Lang }) {
             would only put a caption in front of the sentence they illustrate.
             <img> rather than CSS backgrounds so the first frame is in the HTML
             the browser parses first: it is the largest thing on the page and
-            wants to start downloading before the stylesheet resolves. The
-            other three are marked low so they queue behind it rather than
-            competing with it for the same connection.
+            wants to start downloading before the stylesheet resolves.
+
+            The other three are 610 KB between them and nobody sees any of it
+            for seven seconds — each slide holds for nine (see `hero-cycle` in
+            globals.css), and until its turn comes it waits underneath this one,
+            fully covered. So they are marked low *and* lazy: `low` orders them
+            behind the frame that is actually on screen, and `lazy` keeps them
+            out of the preload scanner's first batch, where they were competing
+            with the largest paint on the page, the stylesheet and the fonts for
+            the same few connections. Lazy does not risk a blank slide — they
+            are in the viewport, so the first layout starts them, which is six
+            seconds of headroom.
 
             The wrapper is what keeps the scrim on top. The slides carry
             z-index to order the cross-dissolve (see `.hero-media` in
@@ -644,6 +657,7 @@ export default function Landing({ lang }: { lang: Lang }) {
               width={slide.w}
               height={slide.h}
               fetchPriority={i === 0 ? "high" : "low"}
+              loading={i === 0 ? "eager" : "lazy"}
               decoding="async"
             />
           ))}
@@ -663,7 +677,7 @@ export default function Landing({ lang }: { lang: Lang }) {
                 the reader who presses "견적·기술 상담" in the hero is asking who
                 to write to, and scrolling them past six sections to a mail
                 link was the long way round to a worse answer. */}
-            <a className="btn btn-ghost" href={localeRoute(lang, contactPath)}>{t.heroB2}</a>
+            <SiteLink className="btn btn-ghost" href={localeRoute(lang, contactPath)}>{t.heroB2}</SiteLink>
           </div>
         </div>
         <div className="wrap hero-stats">
@@ -710,7 +724,7 @@ export default function Landing({ lang }: { lang: Lang }) {
                     destination because the link is now the card: "자세히 보기"
                     on its own tells a screen-reader user nothing about which
                     of the three cards they are on. */}
-                <a className="go go--card" href={localeRoute(lang, chambersPath)} aria-label={`${t.c1h} — ${t.more}`}>{t.more}<span aria-hidden="true">→</span></a>
+                <SiteLink className="go go--card" href={localeRoute(lang, chambersPath)} aria-label={`${t.c1h} — ${t.more}`}>{t.more}<span aria-hidden="true">→</span></SiteLink>
               </div>
             </div>
             <div className="sol">
@@ -722,7 +736,7 @@ export default function Landing({ lang }: { lang: Lang }) {
                 <h3>{t.c2h} <span className="sub-label">{t.c2sub}</span></h3>
                 <p>{t.c2p}</p>
                 <ul>{t.c2list.map((li) => <li key={li}>{li}</li>)}</ul>
-                <a className="go go--card" href={localeRoute(lang, testSystemsPath)} aria-label={`${t.c2h} — ${t.more}`}>{t.more}<span aria-hidden="true">→</span></a>
+                <SiteLink className="go go--card" href={localeRoute(lang, testSystemsPath)} aria-label={`${t.c2h} — ${t.more}`}>{t.more}<span aria-hidden="true">→</span></SiteLink>
               </div>
             </div>
             <div className="sol" id="cybershield">
@@ -752,7 +766,7 @@ export default function Landing({ lang }: { lang: Lang }) {
           </div>
           <div className="line-grid three">
             {chamberCards.map((c, i) => (
-              <a className="lc" key={c.name} href={localeRoute(lang, c.path)}>
+              <SiteLink className="lc" key={c.name} href={localeRoute(lang, c.path)}>
                 <div className={`lc-shot lc-shot--${c.shot.kind}`}>
                   {/* Decorative: the heading beside it already names the
                       category, and a screen reader repeating "cutaway of an
@@ -764,7 +778,7 @@ export default function Landing({ lang }: { lang: Lang }) {
                 <h4>{c.name}</h4>
                 <p>{t.chambers[i]}</p>
                 <div className="models">{c.models}</div>
-              </a>
+              </SiteLink>
             ))}
           </div>
         </div>
@@ -779,7 +793,7 @@ export default function Landing({ lang }: { lang: Lang }) {
           </div>
           <div className="line-grid three">
             {equipCards.map((c, i) => (
-              <a className="lc" key={c.name} href={localeRoute(lang, c.path)}>
+              <SiteLink className="lc" key={c.name} href={localeRoute(lang, c.path)}>
                 {/* Decorative, as on the chamber row above: the h4 under the
                     band names the family, and a screen reader reading "a horn
                     antenna on a mounting tube" before the word Antennas puts a
@@ -793,7 +807,7 @@ export default function Landing({ lang }: { lang: Lang }) {
                 <h4>{c.name}</h4>
                 <p>{t.eq[i]}</p>
                 <div className="models">{c.models}</div>
-              </a>
+              </SiteLink>
             ))}
           </div>
         </div>
@@ -837,9 +851,9 @@ export default function Landing({ lang }: { lang: Lang }) {
               {/* The band makes a claim about the company and then left the
                   reader with nowhere to check it. About is where the Company
                   section opens. */}
-              <a className="go" href={localeRoute(lang, sectionPath("about"))}>
+              <SiteLink className="go" href={localeRoute(lang, sectionPath("about"))}>
                 {t.trGo}<span aria-hidden="true">→</span>
-              </a>
+              </SiteLink>
             </div>
             <div className="badges">
               {t.badges.map(([b, s]) => (

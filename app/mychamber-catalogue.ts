@@ -5,7 +5,7 @@ import {
   type ChamberModel,
 } from "./chamber-sections";
 import { industryLabel } from "./industries";
-import { modelFit, type CatalogueEntry } from "./mychamber-advisor";
+import { treeModels, type CatalogueEntry } from "./mychamber-advisor";
 import { asset, localeRoute, type Lang } from "./site-config";
 
 /**
@@ -54,22 +54,21 @@ const shotFor = (model: ChamberModel) => {
 };
 
 /**
- * Every model must be indexed. A chamber added to the catalogue without a
- * `modelFit` entry would silently never be recommended — which is the kind of
- * omission nobody notices, so it stops the build instead.
+ * Every designation the decision tree ends in has to be a chamber the site
+ * actually carries. A leaf naming a model that is not in `chamberModels` would
+ * render as an empty result — the kind of omission nobody notices — so it stops
+ * the build instead.
+ *
+ * The reverse is not an error. The Chamber Matrix does not place the Shielded
+ * Room: it is the shell the range is built on rather than an EMC test site, and
+ * MyChamber leaves it to its own product page. Which catalogue models the tree
+ * reaches, and which it deliberately does not, is pinned in
+ * tests/mychamber-matrix.test.mjs.
  */
-const unindexed = chamberModels.filter((m) => !modelFit[m.name]).map((m) => m.name);
-if (unindexed.length > 0) {
+const missing = treeModels().filter((name) => !chamberModels.some((m) => m.name === name));
+if (missing.length > 0) {
   throw new Error(
-    `mychamber-advisor: no modelFit entry for ${unindexed.join(", ")} — every chamber in chamberModels needs one.`,
-  );
-}
-const unknown = Object.keys(modelFit).filter(
-  (name) => !chamberModels.some((m) => m.name === name),
-);
-if (unknown.length > 0) {
-  throw new Error(
-    `mychamber-advisor: modelFit names ${unknown.join(", ")}, which is not in chamberModels.`,
+    `mychamber-advisor: the decision tree ends in ${missing.join(", ")}, which is not in chamberModels.`,
   );
 }
 

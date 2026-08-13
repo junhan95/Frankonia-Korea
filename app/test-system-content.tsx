@@ -34,6 +34,7 @@ import {
   type TestModel,
   type TestProduct,
 } from "./test-system-sections";
+import SiteLink from "./site-link";
 import type { PageBody } from "./page-body";
 
 /**
@@ -74,6 +75,9 @@ const copy = {
      *  again. Same wording as the chamber branch — it is the same button. */
     modelQuote: "견적 문의",
     modelQuoteSubject: (name: string) => `[견적 문의] ${name}`,
+    /** Printed in MyCart and in the enquiry it writes, so a shortlist says
+     *  which part of the catalogue each line came out of. */
+    cartFrom: "EMC 시험 시스템",
     galleryPrev: "이전 사진",
     galleryNext: "다음 사진",
     galleryFrame: "사진 {at} / {of} — 눌러서 다음 사진",
@@ -108,6 +112,7 @@ const copy = {
     modelsTitle: (n: number) => `${n} models in this family`,
     modelQuote: "Request a quote",
     modelQuoteSubject: (name: string) => `[Quote request] ${name}`,
+    cartFrom: "EMC Test Systems",
     galleryPrev: "Previous picture",
     galleryNext: "Next picture",
     galleryFrame: "Picture {at} of {of} — press for the next",
@@ -200,11 +205,11 @@ function Axes({ lang }: { lang: Lang }) {
       </div>
       <div className="hairline-list">
         {testCategories.map((category, i) => (
-          <a className="hl-row" key={category} href={localeRoute(lang, testCategoryPath(category))}>
+          <SiteLink className="hl-row" key={category} href={localeRoute(lang, testCategoryPath(category))}>
             <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
             <b>{testCategoryMeta[lang][category].label}</b>
             <span className="hl-desc">{testCategoryMeta[lang][category].note}</span>
-          </a>
+          </SiteLink>
         ))}
       </div>
 
@@ -213,11 +218,11 @@ function Axes({ lang }: { lang: Lang }) {
       </div>
       <div className="hairline-list">
         {testProducts.map((product, i) => (
-          <a className="hl-row" key={product} href={localeRoute(lang, testProductPath(product))}>
+          <SiteLink className="hl-row" key={product} href={localeRoute(lang, testProductPath(product))}>
             <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
             <b>{testProductMeta[lang][product].label}</b>
             <span className="hl-desc">{modelCount(t, modelsByProduct(product).length)}</span>
-          </a>
+          </SiteLink>
         ))}
       </div>
 
@@ -231,11 +236,11 @@ function Axes({ lang }: { lang: Lang }) {
         <h2>{t.byStandard}</h2>
       </div>
       <div className="hairline-list">
-        <a className="hl-row" href={localeRoute(lang, testStandardsPath)}>
+        <SiteLink className="hl-row" href={localeRoute(lang, testStandardsPath)}>
           <span className="hl-idx">01</span>
           <b>{testStandardsMeta[lang].label}</b>
           <span className="hl-desc">{t.standardsCount(testStandards.length)}</span>
-        </a>
+        </SiteLink>
       </div>
     </>
   );
@@ -255,11 +260,11 @@ function Equipment({ lang, slug }: { lang: Lang; slug: TestCategory }) {
       </div>
       <div className="hairline-list">
         {products.map((product, i) => (
-          <a className="hl-row" key={product} href={localeRoute(lang, testProductPath(product))}>
+          <SiteLink className="hl-row" key={product} href={localeRoute(lang, testProductPath(product))}>
             <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
             <b>{testProductMeta[lang][product].label}</b>
             <span className="hl-desc">{modelCount(t, modelsByProduct(product).length)}</span>
-          </a>
+          </SiteLink>
         ))}
       </div>
     </>
@@ -297,7 +302,7 @@ function Models({ lang, slug }: { lang: Lang; slug: TestProduct }) {
               {group.title}
             </h3>
           )}
-          <ModelList lang={lang} models={group.models} />
+          <ModelList lang={lang} models={group.models} slug={slug} />
         </div>
       ))}
     </>
@@ -349,13 +354,13 @@ function Standards({ lang }: { lang: Lang }) {
                 guard rather than a link to a 404. */}
             {isChamberIndustry(industry) && (
               <p style={{ marginTop: "40px" }}>
-                <a
+                <SiteLink
                   className="hl-action"
                   style={{ marginLeft: 0 }}
                   href={localeRoute(lang, chamberIndustryPath(industry))}
                 >
                   {t.chamberCross} →
-                </a>
+                </SiteLink>
               </p>
             )}
           </div>
@@ -418,11 +423,24 @@ function Documents({ lang, label }: { lang: Lang; label: string }) {
  * A row with nothing to open stays the plain row it was, which is not an
  * omission but the shape of the source: the head office's amplifier matrix
  * publishes a band and a model name and nothing else, so all seventy
- * amplifiers, and the GTEM cell, are rows rather than panels. See the note on
- * `TestModel.desc` and on `testModelBody`.
+ * amplifiers are rows rather than panels. See the note on `TestModel.desc` and
+ * on `testModelBody`.
  */
-function ModelList({ lang, models }: { lang: Lang; models: readonly TestModel[] }) {
+function ModelList({
+  lang,
+  models,
+  slug,
+}: {
+  lang: Lang;
+  models: readonly TestModel[];
+  /** The family this list is on. No row links to it — the family page *is* the
+   *  model's page, and a page does not link to itself — but the basket needs
+   *  somewhere to point a reader back to, and this is where the instrument is
+   *  described. */
+  slug: TestProduct;
+}) {
   const t = copy[lang];
+  const family = localeRoute(lang, testProductPath(slug));
   const rows: AccordionRow[] = models.map((model) => {
     const body = testModelBody(lang, model.name);
     return {
@@ -440,11 +458,20 @@ function ModelList({ lang, models }: { lang: Lang; models: readonly TestModel[] 
       quoteHref: `mailto:${contactEmail}?subject=${encodeURIComponent(
         t.modelQuoteSubject(model.name),
       )}`,
+      cart: {
+        id: `system:${model.name}`,
+        name: model.name,
+        desc: model.desc,
+        from: t.cartFrom,
+        href: family,
+        lang,
+      },
     };
   });
 
   return (
     <ModelAccordion
+      lang={lang}
       rows={rows}
       quote={t.modelQuote}
       /* Never read today — every instrument the head office photographs, it

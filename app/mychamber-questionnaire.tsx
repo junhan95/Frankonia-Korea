@@ -3,8 +3,10 @@
 import { useState } from "react";
 import {
   questionnaire,
+  visibleFields,
   type QField,
   type QuestionnaireId,
+  type QValues,
 } from "./mychamber-questionnaires";
 import { contactEmail, type Lang } from "./site-config";
 
@@ -22,7 +24,7 @@ import { contactEmail, type Lang } from "./site-config";
  * changed prefill arrives as a fresh mount rather than a stale state.
  */
 
-type Values = Readonly<Record<string, string | readonly string[]>>;
+type Values = QValues;
 type Contact = { company: string; person: string; email: string; phone: string };
 
 const emptyContact: Contact = { company: "", person: "", email: "", phone: "" };
@@ -111,9 +113,13 @@ export default function QuestionnairePanel({
     setCopied(false);
   };
 
+  // Recomputed on every answer: a field can appear and disappear as the reader
+  // changes an earlier one, and the required check has to follow it.
+  const fields = visibleFields(q, values);
+
   const answered = (field: QField) => selected(values, field).length > 0;
   const ready =
-    q.fields.every((f) => f.optional || answered(f)) &&
+    fields.every((f) => f.optional || answered(f)) &&
     Boolean(contact.company.trim() && contact.person.trim() && contact.email.trim());
 
   const body = mailBody(lang, qid, values, contact);
@@ -138,7 +144,7 @@ export default function QuestionnairePanel({
           {/* No action and no method, like the wizard's enquiry: the fields
               exist to write the mailto below. */}
           <form className="mc-form" onSubmit={(event) => event.preventDefault()}>
-            {q.fields.map((field) =>
+            {fields.map((field) =>
               field.kind === "choice" ? (
                 <div className="mc-opts mc-q-field" key={field.id} role="group" aria-labelledby={`mcq-${field.id}`}>
                   {/* Like the wizard's contact fields, only the required mark
@@ -273,7 +279,7 @@ function mailBody(lang: Lang, qid: QuestionnaireId, values: Values, contact: Con
   const lines: string[] = [q.name[lang], ""];
 
   lines.push(`[${t.mailAnswers}]`);
-  for (const field of q.fields) {
+  for (const field of visibleFields(q, values)) {
     lines.push(`${field.label[lang]}: ${summarise(values, field, lang) || t.none}`);
   }
   lines.push("");

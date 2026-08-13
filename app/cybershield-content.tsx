@@ -3,6 +3,7 @@ import StructuredData from "./structured-data";
 import { CheckList } from "./page-parts";
 import { contactPath } from "./contact-sections";
 import { pageDescription } from "./site-metadata";
+import SiteLink from "./site-link";
 import { asset, cyberShieldUrl, localeRoute, type Lang } from "./site-config";
 
 /* CyberShield, summarised.
@@ -401,9 +402,9 @@ export default function CyberShieldPage({ lang }: { lang: Lang }) {
               <a className="btn btn-red" href={site} {...outbound}>
                 {t.openSite}<span aria-hidden="true">↗</span>
               </a>
-              <a className="btn btn-outline" href={localeRoute(lang, contactPath)}>
+              <SiteLink className="btn btn-outline" href={localeRoute(lang, contactPath)}>
                 {t.talk}<span aria-hidden="true">→</span>
-              </a>
+              </SiteLink>
             </div>
           </div>
         </section>

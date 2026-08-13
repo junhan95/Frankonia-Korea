@@ -1,4 +1,5 @@
 import { contactPath } from "./contact-sections";
+import SiteLink from "./site-link";
 import { contactEmail, localeRoute, type Lang } from "./site-config";
 
 /** Strings the contact band needs, wherever it is reused. */
@@ -44,7 +45,7 @@ export default function ContactBand({
       <div className="btns">
         {actions ?? (
           <>
-            <a className="btn btn-red" href={localeRoute(lang, contactPath)}>{t.ctB1}</a>
+            <SiteLink className="btn btn-red" href={localeRoute(lang, contactPath)}>{t.ctB1}</SiteLink>
             <a className="btn btn-ghost" href={`mailto:${contactEmail}`}>{t.ctB2}</a>
           </>
         )}

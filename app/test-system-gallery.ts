@@ -19,13 +19,12 @@ import type { Lang } from "./site-config";
  * Keyed by `TestModel.name`, because that is what the model list is keyed by:
  * these products have no slug, having no page of their own.
  *
- * **A model missing from this table is not an omission.** Twelve of the
- * twenty-nine instruments here are photographed by the head office and
- * seventeen are not — the four EFS probes share one picture of a probe, the
- * PSG-300A and the PMS 1084 B share their sibling's enclosure, and the
- * seventy amplifiers have no photograph at all (test-systems-assets.md). A row
- * with no frame still opens: its panel is the figures alone, which is the half
- * of the panel the source actually supports.
+ * **A model missing from this table is not an omission.** Most of the
+ * instruments here are not photographed by the head office — the four EFS
+ * probes share one picture of a probe, the PMS 1084 B shares its sibling's
+ * enclosure, and the seventy amplifiers have no photograph at all
+ * (test-systems-assets.md). A row with no frame still opens: its panel is the
+ * figures alone, which is the half of the panel the source actually supports.
  */
 
 type Frame = Pick<Plate, "src" | "w" | "h">;
@@ -46,8 +45,7 @@ const frames: Record<string, readonly Frame[]> = {
   "PMS 1084": [p("meter-pms-1084.webp", 1600, 249)],
   RSU: [p("meter-rsu.webp", 1600, 669)],
   "CIT-100": [p("system-cit-100.webp", 1600, 609)],
-  "PSG-300": [p("system-psg-300.webp", 1400, 554)],
-  "MTS-800": [p("system-mts-800.webp", 1400, 782)],
+  "CIT-1000": [p("system-cit-1000.webp", 726, 356)],
 };
 
 /**
@@ -81,9 +79,8 @@ const alt: Record<Lang, Record<string, string>> = {
     "PMS 1084": "The PMS 1084 as a 1U rack unit, front panel lettered “RF Power Meter”",
     RSU: "The RSU rear panel with four relay blocks of N-type connectors",
     "CIT-100": "The CIT-100 in a 19-inch case, front panel lettered “Conducted Immunity Test System”",
-    "PSG-300": "The PSG-300 front panel, lettered “Power Signal Generator DC … 300 kHz”",
-    "MTS-800":
-      "The MTS-800 front panel, lettered “Magnetic Test System”, with banana jacks, BNC inputs and a mains switch",
+    "CIT-1000":
+      "The CIT-1000 front panel: a red Frankonia nameplate above the RF-IN and RF-OUT connectors, a wide touch screen running the control software, “Conducted Immunity Test System” lettered beneath it, and a red POWER rocker switch beside the CIT-1000 name strip",
   },
   ko: {
     "ALX-4000E":
@@ -103,9 +100,8 @@ const alt: Record<Lang, Record<string, string>> = {
     "PMS 1084": "1U 랙 유닛 형태의 PMS 1084, 전면 패널에 “RF Power Meter” 표기",
     RSU: "N형 커넥터 릴레이 블록 네 개가 붙은 RSU 후면 패널",
     "CIT-100": "19인치 케이스에 든 CIT-100, 전면 패널에 “Conducted Immunity Test System” 표기",
-    "PSG-300": "PSG-300 전면 패널, “Power Signal Generator DC … 300 kHz” 표기",
-    "MTS-800":
-      "“Magnetic Test System” 표기가 있는 MTS-800 전면 패널 — 바나나 잭, BNC 입력, 전원 스위치",
+    "CIT-1000":
+      "CIT-1000 전면 패널 — 왼쪽 위 빨간 FRANKONIA 명판 아래로 RF-IN·RF-OUT 커넥터, 가운데에 제어 소프트웨어가 떠 있는 넓은 터치스크린과 그 아래 “Conducted Immunity Test System” 표기, 오른쪽 CIT-1000 이름 띠 옆에 빨간 POWER 로커 스위치",
   },
 };
 

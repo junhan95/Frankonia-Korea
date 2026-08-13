@@ -12,6 +12,16 @@ const nextConfig: NextConfig = isStaticExport
       trailingSlash: true,
       basePath: basePath || undefined,
       images: { unoptimized: true },
+      // A build directory of its own, because the two targets are routinely
+      // used at the same time: you keep `next dev` open and run
+      // `npm run build:static` to check the export. Both default to `.next`,
+      // and the build rewrites the manifests the dev server is holding open —
+      // after which every request it serves is a 500 (`SyntaxError: Unexpected
+      // non-whitespace character after JSON`), with nothing wrong in the source
+      // and nothing in the terminal to say a build did it. Restarting dev is
+      // the fix, and never needing to is better. `out/` is unaffected: the
+      // export lands there either way.
+      distDir: ".next-static",
     }
   : {};
 

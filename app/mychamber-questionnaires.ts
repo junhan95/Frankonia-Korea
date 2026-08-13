@@ -1,4 +1,4 @@
-import { standards, type SegmentChoice } from "./mychamber-advisor";
+import { standards, type QuestionnaireId, type SegmentChoice } from "./mychamber-advisor";
 import type { ChamberIndustry } from "./chamber-sections";
 import type { Lang } from "./site-config";
 
@@ -23,24 +23,42 @@ import type { Lang } from "./site-config";
  * into a `mailto:` the reader sends themselves — see mychamber-questionnaire.tsx.
  */
 
-export type QuestionnaireId = "A" | "B" | "C" | "D" | "X";
+export type { QuestionnaireId };
 
 type L = Record<Lang, string>;
 
 export type QChoiceOption = { id: string; label: L; note?: L };
 
-export type QField =
-  | {
-      kind: "choice";
-      id: string;
-      label: L;
-      /** Checkboxes when true, radio buttons when false. */
-      multi?: true;
-      optional?: true;
-      options: readonly QChoiceOption[];
-    }
-  | { kind: "text"; id: string; label: L; optional?: true; placeholder?: L }
-  | { kind: "textarea"; id: string; label: L; optional?: true; placeholder?: L };
+/** What the form holds: one entry per field, a string for everything but the
+ *  multi-choice fields. Declared here rather than in the component because
+ *  `when` below is written against it. */
+export type QValues = Readonly<Record<string, string | readonly string[]>>;
+
+/**
+ * A field only asked of some readers.
+ *
+ * The E-Drive fields are the case that needed it: the load machine's rating is
+ * the number a drivetrain bench is quoted from and means nothing to anybody
+ * testing a component, so it appears when the reader says E-Drive and not
+ * before. A hidden field is neither required nor written into the message —
+ * see `visibleFields`.
+ */
+type QWhen = { when?: (values: QValues) => boolean };
+
+export type QField = QWhen &
+  (
+    | {
+        kind: "choice";
+        id: string;
+        label: L;
+        /** Checkboxes when true, radio buttons when false. */
+        multi?: true;
+        optional?: true;
+        options: readonly QChoiceOption[];
+      }
+    | { kind: "text"; id: string; label: L; optional?: true; placeholder?: L }
+    | { kind: "textarea"; id: string; label: L; optional?: true; placeholder?: L }
+  );
 
 export type Questionnaire = {
   id: QuestionnaireId;
@@ -81,6 +99,55 @@ const freqField: QField = {
   placeholder: { ko: "예: 30 MHz – 18 GHz", en: "e.g. 30 MHz – 18 GHz" },
 };
 
+/**
+ * The first number a chamber is sized from.
+ *
+ * Free text rather than a set of brackets: a reader knows their own EUT's
+ * dimensions, and rounding them into ranges here would lose the one figure the
+ * engineering team starts from. Required everywhere a segment is known,
+ * because without it nothing downstream can be answered — and optional in ⓧ,
+ * which is where a reader who cannot yet place their problem ends up.
+ */
+const eutSizeLabel: L = { ko: "피시험체 치수 · 중량", en: "EUT dimensions and weight" };
+const eutSizePlaceholder: L = {
+  ko: "가장 큰 피시험체 기준으로 적어 주세요 — 예: 4,800 × 1,900 × 1,500 mm, 2,100 kg",
+  en: "For the largest EUT you will test — e.g. 4,800 × 1,900 × 1,500 mm, 2,100 kg",
+};
+
+const eutSizeField: QField = {
+  kind: "text",
+  id: "eutSize",
+  label: eutSizeLabel,
+  placeholder: eutSizePlaceholder,
+};
+
+const eutSizeOptionalField: QField = {
+  kind: "text",
+  id: "eutSize",
+  optional: true,
+  label: eutSizeLabel,
+  placeholder: eutSizePlaceholder,
+};
+
+/**
+ * Quiet zone, and the reason it is here.
+ *
+ * The 10 m branch of the tree offers ø3.0 to ø6.0 m and a "Custom" that lands
+ * in this questionnaire — so this is the field that reader came to fill in.
+ * Optional because the other three branches into Ⓑ have no quiet zone to
+ * state, and a required field they cannot answer would stop them sending.
+ */
+const qzField: QField = {
+  kind: "text",
+  id: "qz",
+  optional: true,
+  label: { ko: "정온 영역 (QZ)", en: "Quiet zone" },
+  placeholder: {
+    ko: "예: ø4.5 m — 아직 정하지 않으셨으면 비워 두세요",
+    en: "e.g. ø4.5 m — leave it blank if it is not decided",
+  },
+};
+
 const requirementField = (placeholder: L): QField => ({
   kind: "textarea",
   id: "requirement",
@@ -99,6 +166,39 @@ const timelineField: QField = {
     { id: "later", label: { ko: "1년 이후", en: "Beyond a year" } },
     { id: "exploring", label: { ko: "검토 단계", en: "Still exploring" } },
   ],
+};
+
+/* ---- E-Drive, asked only of a drivetrain bench --------------------- *
+ *
+ * The three EDTC chambers differ in one thing — the dynamometer — and a
+ * quotation for one starts from its rating. Both fields hang off the EUT
+ * answer, so a reader testing a component never sees them. The setup ids match
+ * the tree's own E-Drive branch, which is what lets that branch carry an
+ * answer straight in.
+ */
+const onEdrive = (values: QValues) => values.eut === "edrive";
+
+const driveSetupField: QField = {
+  kind: "choice",
+  id: "driveSetup",
+  optional: true,
+  when: onEdrive,
+  label: { ko: "부하기 구성", en: "Load machine" },
+  options: [
+    { id: "single", label: { ko: "고정 단축 부하기", en: "Fixed single dyno" } },
+    { id: "eaxle", label: { ko: "고정 2축 부하기 (e-axle)", en: "Fixed axis dyno (e-axle)" } },
+    { id: "bluebox", label: { ko: "이동식 부하기 (EMC-BlueBox)", en: "Mobile dyno (EMC-BlueBox)" } },
+    { id: "undecided", label: { ko: "미정", en: "Not decided" } },
+  ],
+};
+
+const drivePowerField: QField = {
+  kind: "text",
+  id: "drivePower",
+  optional: true,
+  when: onEdrive,
+  label: { ko: "부하기 출력 · 최대 회전수", en: "Load machine rating" },
+  placeholder: { ko: "예: 250 kW, 20,000 rpm", en: "e.g. 250 kW, 20,000 rpm" },
 };
 
 const siteField: QField = {
@@ -141,11 +241,14 @@ export const questionnaires: readonly Questionnaire[] = [
           { id: "other", label: { ko: "그 외", en: "Something else" } },
         ],
       },
+      eutSizeField,
+      driveSetupField,
+      drivePowerField,
       standardsField(["automotive", "powertrain"]),
       freqField,
       requirementField({
-        ko: "표준 모델로 풀리지 않는 지점을 적어 주세요 — 피시험체 치수, 특수한 시험 구성, 여러 시험의 병행 등.",
-        en: "Say what the standard models did not solve — EUT dimensions, an unusual test setup, several tests in one room.",
+        ko: "표준 모델로 풀리지 않는 지점을 적어 주세요 — 특수한 시험 구성, 여러 시험의 병행, 다이나모미터 통합 등.",
+        en: "Say what the standard models did not solve — an unusual test setup, several tests in one room, an integrated dynamometer.",
       }),
       timelineField,
       siteField,
@@ -175,6 +278,7 @@ export const questionnaires: readonly Questionnaire[] = [
           { id: "other", label: { ko: "그 외", en: "Something else" } },
         ],
       },
+      eutSizeField,
       {
         kind: "choice",
         id: "distance",
@@ -187,11 +291,12 @@ export const questionnaires: readonly Questionnaire[] = [
           { id: "undecided", label: { ko: "미정", en: "Not decided" } },
         ],
       },
+      qzField,
       standardsField(["commercial"]),
       freqField,
       requirementField({
-        ko: "표준 모델로 풀리지 않는 지점을 적어 주세요 — 정온 영역, 건물 제약, 처리량, 특수한 바닥 조건 등.",
-        en: "Say what the standard models did not solve — quiet zone, building constraints, throughput, an unusual floor condition.",
+        ko: "표준 모델로 풀리지 않는 지점을 적어 주세요 — 건물 제약, 처리량, 특수한 바닥 조건, 시험 축 구성 등.",
+        en: "Say what the standard models did not solve — building constraints, throughput, an unusual floor condition, the arrangement of the test axes.",
       }),
       timelineField,
       siteField,
@@ -220,6 +325,7 @@ export const questionnaires: readonly Questionnaire[] = [
           { id: "other", label: { ko: "그 외", en: "Something else" } },
         ],
       },
+      eutSizeField,
       standardsField(["military"]),
       {
         // The military branch splits on where the range starts — it is what
@@ -236,9 +342,10 @@ export const questionnaires: readonly Questionnaire[] = [
           { id: "undecided", label: { ko: "미정", en: "Not decided" } },
         ],
       },
+      freqField,
       requirementField({
-        ko: "표준 모델로 풀리지 않는 지점을 적어 주세요 — 플랫폼 치수, 보안 요건, 특수한 시험 구성 등.",
-        en: "Say what the standard models did not solve — platform dimensions, security requirements, an unusual test setup.",
+        ko: "표준 모델로 풀리지 않는 지점을 적어 주세요 — 보안 요건, 차폐 감쇠량, 특수한 시험 구성 등.",
+        en: "Say what the standard models did not solve — security requirements, shielding attenuation, an unusual test setup.",
       }),
       timelineField,
       siteField,
@@ -314,9 +421,13 @@ export const questionnaires: readonly Questionnaire[] = [
           { id: "unsure", label: { ko: "잘 모르겠습니다", en: "Not sure" } },
         ],
       },
+      // Optional here, unlike Ⓐ–Ⓒ: ⓧ is where a reader who cannot yet place
+      // their problem in a segment ends up, and some of them do not have an
+      // EUT to measure at all.
+      eutSizeOptionalField,
       requirementField({
-        ko: "무엇을 시험·측정하려는지, 어떤 제약이 있는지 자유롭게 적어 주세요.",
-        en: "What you want to test or measure, and the constraints around it — in your own words.",
+        ko: "무엇을 시험·측정하려는지, 어떤 제약이 있는지 자유롭게 적어 주세요. 차폐룸처럼 시험장이 아닌 요구사항도 이곳으로 보내 주시면 됩니다.",
+        en: "What you want to test or measure, and the constraints around it — in your own words. A requirement that is not a test site at all, a shielded room for instance, belongs here too.",
       }),
       freqField,
       timelineField,
@@ -329,18 +440,34 @@ export const questionnaire = (id: QuestionnaireId): Questionnaire =>
   questionnaires.find((q) => q.id === id)!;
 
 /**
- * The questionnaire a set of segment answers points at.
+ * The fields a questionnaire actually asks, given what has been answered so
+ * far.
  *
- * The Special track always means Ⓓ. One model segment means its own letter.
- * Anything else — none chosen yet, or several at once — is ⓧ, because a
- * questionnaire addressed to two segments is addressed to neither.
+ * Every reader of the form goes through here — the rendering, the check that
+ * decides whether the message can be written, and the message itself. A field
+ * that is not on screen is therefore never required and never sent, which is
+ * what keeps a stale answer from riding along: a reader who says E-Drive,
+ * states the load machine, then changes to a component keeps the typing (it
+ * comes back if they change their mind again) but the enquiry does not carry
+ * a dynamometer they are not buying.
  */
-export const questionnaireFor = (segs: readonly SegmentChoice[]): QuestionnaireId => {
-  if (segs.includes("special")) return "D";
-  if (segs.length === 1) {
-    if (segs[0] === "automotive") return "A";
-    if (segs[0] === "commercial") return "B";
-    if (segs[0] === "military") return "C";
-  }
-  return "X";
+export const visibleFields = (q: Questionnaire, values: QValues): readonly QField[] =>
+  q.fields.filter((f) => !f.when || f.when(values));
+
+/**
+ * The questionnaire a segment points at.
+ *
+ * The matrix hangs one circled letter under each of its four boxes, and the
+ * segment question is a single choice, so this is a straight lookup. ⓧ is for
+ * the reader who has not reached a segment yet — the free-standing Custom
+ * Request box the matrix draws beside the tree.
+ */
+const letters: Record<SegmentChoice, QuestionnaireId> = {
+  automotive: "A",
+  commercial: "B",
+  military: "C",
+  special: "D",
 };
+
+export const questionnaireFor = (segment: SegmentChoice | undefined): QuestionnaireId =>
+  segment ? letters[segment] : "X";

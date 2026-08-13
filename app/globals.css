@@ -51,7 +51,13 @@ html { scroll-behavior: smooth; }
    design reference's own sticky offset (`.cutaway-view { top: 96px }`). */
 #main, .hero[id], section[id], .band[id] { scroll-margin-top: 96px; }
 body {
-  font-family: var(--font-inter), var(--font-noto-kr), Inter, "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
+  /* `--font-noto-kr` is declared by the Korean root layout and by nothing else
+     — the English pages have no Hangul on them and do not load that face (see
+     app/fonts-kr.ts). The fallback inside the var() is not decoration: an
+     undefined custom property makes the whole declaration invalid at
+     computed-value time, so without it every English page would lose this
+     font stack entirely and render in the browser's default serif. */
+  font-family: var(--font-inter), var(--font-noto-kr, "Noto Sans KR"), Inter, "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
   color: var(--ink);
   background: var(--bg);
   line-height: 1.5;
@@ -227,6 +233,10 @@ nav.menu .mi--hl > a:hover { background: var(--primary); border-color: var(--pri
 .mm-utils { border-top: 1px solid rgba(255, 255, 255, .08); padding-top: 8px; margin-top: 2px; }
 .mm-utils a { font-size: 13px; color: #9a9a9a; }
 .mm-cta { display: inline-block; margin-top: 22px; }
+/* The drawer's two closing buttons. `.btns` already lays them out and stacks
+   them at 700px; this only stops the second one inheriting the first one's
+   top margin twice over. */
+.mm-foot { margin-top: 4px; }
 
 /* ===== Hero ===== */
 .hero { position: relative; background: var(--ink); color: #fff; overflow: hidden; }
@@ -1130,6 +1140,130 @@ h2[tabindex]:focus-visible { outline: 2px solid var(--primary); outline-offset: 
 .mc-field textarea { resize: vertical; line-height: 1.6; }
 .mc-note { margin-top: 16px; color: var(--body-dark); font-size: 14px; }
 
+/* ===== MyCart =====
+   Two surfaces: the control in the header, which is dark chrome, and the page,
+   which reuses the enquiry form above wholesale — `.mc-form`, `.mc-fields` and
+   `.mc-field` are form furniture rather than anything MyChamber owns, and a
+   second set of input rules under a different prefix would be two places to
+   keep one text field in step. What is new below is the basket itself. */
+
+/* --- The header control --- */
+/* Not inside `nav.menu`: it sits between the menu and the language switch and
+   survives the 1240px fold that hides the menu. See cart-button.tsx. */
+.cart { position: relative; display: flex; align-items: center; flex: none; }
+.cart-btn {
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border: 1px solid rgba(255, 255, 255, .3); border-radius: 50%;
+  color: #fff; transition: background .2s, border-color .2s, color .2s;
+}
+/* The same fill the marked nav entry takes on hover, for the same reason: it
+   is the one other control in the bar that is a destination rather than a
+   menu, and the pair should read as the same gesture. */
+.cart-btn:hover, .cart:focus-within .cart-btn { background: var(--primary); border-color: var(--primary); }
+/* A basket with something in it is not the same object as an empty one, and
+   the count alone is easy to miss at 11px against ink. */
+.cart-btn.has-items { border-color: var(--primary); }
+.cart-ico { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.cart-ico circle { fill: currentColor; stroke: none; }
+/* The ink ring is what keeps the badge legible where it overlaps the button's
+   own border — and what keeps it visible once hover fills the button red,
+   at which point the badge inverts rather than disappearing into it. */
+.cart-count {
+  position: absolute; top: -2px; right: -4px; min-width: 19px; height: 19px; padding: 0 5px;
+  border-radius: var(--pill); background: var(--primary); color: #fff;
+  font-size: 11px; font-weight: 800; line-height: 19px; text-align: center;
+  box-shadow: 0 0 0 2px var(--ink);
+}
+.cart-btn:hover .cart-count, .cart:focus-within .cart-count { background: #fff; color: var(--primary); }
+
+/* The peek. Same ink panel and hairline as the navigation's dropdowns, and the
+   same 16px of dead space above it so the pointer can cross the gap. Anchored
+   to its right edge rather than centred: it is 300px wide and the icon is
+   about 120px from the end of the bar. */
+.cart-peek { position: absolute; top: 100%; right: -12px; padding-top: 16px; display: none; z-index: 120; }
+.cart:hover .cart-peek, .cart:focus-within .cart-peek { display: block; }
+.cart-panel { width: 320px; background: var(--ink); border: 1px solid rgba(255, 255, 255, .3); border-radius: var(--radius); padding: 14px 0 0; }
+.cart-panel-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 18px 10px; color: var(--primary); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.cart-panel-h span { color: #8a8a8a; }
+.cart-panel-empty { padding: 4px 18px 14px; }
+.cart-panel-empty b { display: block; color: #fff; font-size: 14px; font-weight: 700; }
+.cart-panel-empty span { display: block; margin-top: 6px; color: #8a8a8a; font-size: 12.5px; line-height: 1.5; }
+.cart-peek-list { list-style: none; margin: 0; padding: 0; }
+.cart-peek-list li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 12px 8px 18px; border-top: 1px solid rgba(255, 255, 255, .08); }
+.cart-peek-name { min-width: 0; flex: 1; }
+.cart-peek-name b { display: block; color: #fff; font-size: 13.5px; font-weight: 700; line-height: 1.35; }
+/* One line and then an ellipsis: the descriptor is here to tell two similar
+   designations apart, and three lines of it would push the way out of the
+   panel off the bottom of the screen. */
+.cart-peek-name span { display: block; margin-top: 2px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #8a8a8a; font-size: 11.5px; }
+.cart-peek-more { padding: 8px 18px 0; color: #8a8a8a; font-size: 12px; }
+.cart-panel-foot { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-top: 12px; border-top: 1px solid rgba(255, 255, 255, .18); background: rgba(255, 255, 255, .04); padding: 10px 18px 11px; border-radius: 0 0 var(--radius) var(--radius); }
+.cart-panel-foot a { color: #fff; font-size: 13px; font-weight: 700; }
+.cart-panel-foot a:hover { color: var(--primary); }
+.cart-clear { padding: 0; background: none; border: 0; font: inherit; font-size: 12.5px; color: #8a8a8a; cursor: pointer; }
+.cart-clear:hover { color: var(--primary); }
+/* The ✕ that takes one line back out, in the panel and on the page. */
+.cart-x { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; padding: 0; background: none; border: 0; border-radius: 50%; color: var(--mute); cursor: pointer; transition: background .2s, color .2s; }
+.cart-x:hover { background: rgba(230, 0, 0, .12); color: var(--primary); }
+.cart-x svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+
+/* --- The add button --- */
+/* The compact pill, used where the controls beside it are text — the MyChamber
+   card foot. The model rows pass `btn btn-outline` instead and pick up `.on`
+   from the rule below. */
+.cart-add {
+  display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px;
+  background: var(--canvas); border: 1px solid var(--mute); border-radius: var(--pill);
+  font: inherit; font-size: 13.5px; font-weight: 700; color: var(--ink); cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.cart-add:hover { border-color: var(--primary); color: var(--primary); }
+.cart-add.on, .btn-outline.on { background: var(--primary); border-color: var(--primary); color: #fff; }
+.cart-add.on:hover, .btn-outline.on:hover { background: var(--primary-dark); border-color: var(--primary-dark); color: #fff; }
+.cart-add-ico { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cart-add-ico circle { fill: currentColor; stroke: none; }
+
+/* --- The page --- */
+.cart-empty { max-width: 760px; }
+.cart-empty-btns { justify-content: center; }
+/* Count on the left, what is ticked in the middle, the two list-wide controls
+   on the right — the same three-part strip the model indexes carry above a
+   list, at the same weight. */
+.cart-bar { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.cart-bar-count { color: var(--primary); font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.cart-bar-picked { color: var(--body-text); font-size: 13.5px; }
+.cart-bar-acts { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 4px; margin-left: auto; }
+.cart-confirm { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 4px; color: var(--ink); font-size: 13px; font-weight: 700; }
+.cart-confirm-no { color: var(--body-text); }
+
+.cart-list { list-style: none; margin: 0; padding: 0; }
+/* Three columns: the tick, the product, the two things you can do to it. The
+   tick is a column of its own rather than a control floating in the copy
+   because it is the one thing on this page a reader operates on every line,
+   and it should be in the same place on all of them. */
+.cart-item { display: grid; grid-template-columns: auto 1fr auto; gap: 8px 24px; align-items: start; padding: 24px 2px; border-bottom: 1px solid var(--line); }
+/* An unticked line is still in the cart. It is dimmed rather than struck
+   through or greyed out entirely — struck through reads as deleted, which is
+   the one thing it is not. */
+.cart-item:not(.on) .cart-item-body { opacity: .5; }
+.cart-tick { display: inline-flex; align-items: center; gap: 9px; padding-top: 3px; font-size: 12px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--body-text); white-space: nowrap; cursor: pointer; }
+.cart-tick input { width: 18px; height: 18px; accent-color: var(--primary); }
+.cart-item.on .cart-tick { color: var(--primary); }
+.cart-item-body { min-width: 0; }
+.cart-item-body h3 { font-size: 22px; font-weight: 700; line-height: 1.25; }
+.cart-item-desc { margin-top: 6px; color: var(--body-dark); font-size: 15px; line-height: 1.6; max-width: 640px; }
+.cart-item-spec { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.cart-item-spec li { color: var(--body-text); font-size: 13px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+/* The MyChamber branch, where a chamber came from one. Set off the way the
+   card's own `.mc-variant` is, because it is the same fact. */
+.cart-item-config { margin-top: 14px; padding: 12px 16px; border-left: 3px solid var(--primary); background: var(--canvas-soft); border-radius: var(--radius); }
+.cart-item-label { display: block; margin-bottom: 5px; color: var(--primary); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.cart-item-config ul { list-style: none; margin: 0; padding: 0; }
+.cart-item-config li { color: var(--body-dark); font-size: 13px; line-height: 1.6; }
+.cart-item-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 12px; color: var(--mute); font-size: 12.5px; }
+.cart-item-acts { display: flex; align-items: center; gap: 10px; }
+.cart-warn { margin-top: 12px; padding: 12px 16px; border-left: 3px solid var(--primary); background: var(--canvas); border-radius: var(--radius); color: var(--body-dark); font-size: 13.5px; line-height: 1.6; max-width: 640px; }
+
 /* Contact band — the page's one red full-bleed surface, once per page.
    Left-aligned on the same container as every other band; the reference's
    `.contact-section` does not centre either. */
@@ -1210,6 +1344,11 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
   .mobile-menu.open { display: block; }
   .nav { gap: 14px; }
   .cta-top { display: none; }
+  /* The icon stays — a basket a reader cannot see on a phone is a basket they
+     forget they filled — but the panel under it goes. There is no hover on
+     touch, so it would only ever open by accident on the way to somewhere
+     else, and the page it links to shows the same list with room to work in. */
+  .cart:hover .cart-peek, .cart:focus-within .cart-peek { display: none; }
 }
 
 /* 1100: two-column content collapses. */
@@ -1306,6 +1445,17 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
   /* `.btns` is already column here, so the buttons stretch; the hint under
      them should not. */
   .mc-need { text-align: center; }
+  /* The cart line loses its third column: a designation and a descriptor need
+     the width more than the ✕ needs to be beside them, so the two controls go
+     under the copy on the tick's own axis. */
+  .cart-item { grid-template-columns: auto 1fr; gap: 6px 16px; }
+  .cart-item-acts { grid-column: 2; justify-content: space-between; margin-top: 6px; }
+  .cart-item-body h3 { font-size: 19px; }
+  .cart-bar-acts { margin-left: 0; }
+  /* The panel is 320px against an 18px-gutter frame — it would hang off the
+     left edge of a small phone. It is already hidden at 1240px; this is the
+     fallback for a browser that reaches it some other way. */
+  .cart-panel { width: min(320px, calc(100vw - 36px)); }
   .hero-stats { flex-wrap: wrap; }
   .hero-stats .st { flex: 1 1 100%; padding: 18px 0; border-right: 0; border-bottom: 1px solid rgba(255, 255, 255, .2); }
   .hero-stats .st:last-child { border-bottom: 0; }

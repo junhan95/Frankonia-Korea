@@ -157,6 +157,7 @@ test("the export contains the pages the site map defines", () => {
       "/ko/cybershield/",
       "/ko/downloads/",
       "/ko/imprint/",
+      "/ko/mycart/",
       "/ko/mychamber/",
       "/ko/privacy/",
       "/ko/test-systems/",
@@ -173,6 +174,7 @@ test("the export contains the pages the site map defines", () => {
       "/ko/test-systems/test/emission/",
       "/ko/test-systems/test/magnetic/",
       "/ko/test-systems/test/radiated/",
+      "/mycart/",
       "/mychamber/",
       "/privacy/",
       "/test-systems/",
@@ -281,21 +283,72 @@ test("MyChamber holds the marked slot in the bar, and Career keeps a home", () =
   }
 });
 
+test("MyCart is in the bar of every page, and its page ships the empty state", () => {
+  // The basket lives in the reader's own browser, so the export can only ever
+  // contain an empty one — which is the point of asserting it. What the export
+  // *must* carry is the way in: the icon is rendered by a client component, and
+  // a client component that is rendered but not server-rendered would leave
+  // 130 pages with a hole in the bar until the bundle lands.
+  for (const { route, html } of pages) {
+    const cart = localeOf(route) === "ko" ? `${BASE}/ko/mycart/` : `${BASE}/mycart/`;
+    assert.ok(html.includes('class="cart-btn"'), `${route}: the bar carries no MyCart control`);
+    assert.ok(html.includes(`href="${cart}"`), `${route}: the MyCart control leads nowhere`);
+    // Nothing in it, and therefore no count on it.
+    assert.doesNotMatch(html, /class="cart-count"/, `${route}: the exported bar shows a basket count`);
+  }
+
+  // The page itself: the empty state, not a blank frame waiting for script.
+  const empty = {
+    "/mycart/": "MyCart is empty",
+    "/ko/mycart/": "MyCart가 비어 있습니다",
+  };
+  for (const [route, heading] of Object.entries(empty)) {
+    const page = pages.find((p) => p.route === route);
+    assert.ok(page, `${route} is not in the export`);
+    assert.ok(page.html.includes(heading), `${route}: the empty state is not in the HTML`);
+    // And the three ways back into the catalogue it offers, which are the only
+    // reason the empty state is worth rendering at all.
+    const ko = route.startsWith("/ko/");
+    for (const path of ["mychamber/", "chambers/", "test-systems/"]) {
+      assert.ok(
+        page.html.includes(`href="${BASE}${ko ? "/ko/" : "/"}${path}"`),
+        `${route}: the empty state does not offer ${path}`,
+      );
+    }
+  }
+});
+
+test("a model row offers the basket as well as the enquiry", () => {
+  // The add button is the only control in a panel that is not a link, and the
+  // failure it guards against is silent: `cart` is optional on a row, so a
+  // caller that stops passing it takes the button off every model on the site
+  // and nothing else notices.
+  for (const route of ["/chambers/type/sac/", "/ko/chambers/type/sac/", "/test-systems/product/system/"]) {
+    const { html } = pages.find((p) => p.route === route);
+    const ko = localeOf(route) === "ko";
+    const label = ko ? "MyCart에 담기" : "Add to MyCart";
+    const found = [...html.matchAll(new RegExp(label, "g"))].length;
+    const panels = [...html.matchAll(/aria-controls="panel-/g)].length;
+    assert.equal(found, panels, `${route}: ${found} add buttons for ${panels} model panels`);
+  }
+});
+
 test("the questionnaire is in the exported HTML, not assembled by script", () => {
   // A static export with a client-rendered first step would serve an empty
   // page to a crawler and to anyone whose bundle has not landed yet.
   const first = {
-    "/mychamber/": "What kind of product are you testing?",
-    "/ko/mychamber/": "어떤 종류의 제품을 시험하시나요?",
+    "/mychamber/": "Which field is the chamber for?",
+    "/ko/mychamber/": "어떤 분야의 챔버가 필요하십니까?",
   };
   for (const [route, question] of Object.entries(first)) {
     const page = pages.find((p) => p.route === route);
     assert.ok(page, `${route} is not in the export`);
     assert.ok(page.html.includes(question), `${route}: the first question is not in the HTML`);
-    // Every option of it, too — the answer set is the page. Three, which is
-    // what the head office matrix has: E-Drive is a branch under Automotive,
-    // not a segment beside it.
-    for (const option of ["Automotive", "Commercial", "Military"]) {
+    // Every option of it, too — the answer set is the page. Four, which is what
+    // the extended head office matrix has: E-Drive is a branch under
+    // Automotive rather than a segment beside it, and Special Chambers is the
+    // fourth box the 12 August extension added.
+    for (const option of ["Automotive", "Commercial", "Military", "Special"]) {
       assert.ok(page.html.includes(option), `${route}: the ${option} option is missing`);
     }
   }
@@ -338,16 +391,15 @@ test("a model row opens onto its figures, and still leads to the model page", ()
     assert.ok(html.includes('class="hl-figures"'), `${route}: no summary figures in any panel`);
     assert.ok(html.includes('class="hl-lead"'), `${route}: no panel says what the model is`);
     const ko = localeOf(route) === "ko";
-    // Chambers only. A chamber has a page of its own and the panel is the only
-    // way an index reaches it, which is the link this test exists to protect.
-    // An instrument does not: its family page is its page, so a panel there
-    // offers the enquiry and nothing else.
-    if (route.includes("/chambers/")) {
-      assert.ok(
-        html.includes(ko ? "모델 상세 보기" : "View the model page"),
-        `${route}: no panel offers the model page`,
-      );
-    }
+    // The panel used to offer the model page on the chamber branch. It no
+    // longer does, on either branch — see the `more` prop on `ModelAccordion` —
+    // and the assertion is inverted rather than deleted, because the button is
+    // drawn from copy that is still in the file and one prop away from coming
+    // back by accident.
+    assert.ok(
+      !html.includes(ko ? "모델 상세 보기" : "View the model page"),
+      `${route}: a panel still offers the model page`,
+    );
     // The enquiry arrives naming the chamber it is about. A quote button that
     // opens an empty mail is the failure this checks for.
     assert.ok(
@@ -369,29 +421,37 @@ test("a model row opens onto its figures, and still leads to the model page", ()
     12,
     "/chambers/type/sac/: the model count changed",
   );
-  for (const slug of ["sac-10-v", "avtc", "mil-std-chamber", "sac-3-plus", "sac-10-plus-triton"]) {
-    assert.ok(
-      sac.html.includes(`href="${BASE}/chambers/model/${slug}/"`),
-      `/chambers/type/sac/: ${slug} lost its link to the model page`,
-    );
-  }
+  // And none of the twelve links to its model page any more: the panel's one
+  // link out is gone, so the index is a place to read and enquire from rather
+  // than a way through to the twenty-seven model pages. Those pages are still
+  // exported and still in the sitemap — see the sitemap test — which is what
+  // makes this a change to the navigation and not a deletion.
+  assert.doesNotMatch(
+    sac.html,
+    /href="[^"]*\/chambers\/model\//,
+    "/chambers/type/sac/: a row still links to a model page",
+  );
 
-  // The same list on the other branch: eight integrated systems, of which seven
-  // open. GTEM is the eighth and stays a row — the head office gives it a name
-  // and a datasheet and no figures, and a panel that opens onto nothing is
-  // worse than no panel.
+  // The same list on the other branch: the integrated systems family is the
+  // CIT series and nothing else, and both of them open. The six instruments
+  // that used to sit here — the ECUs, the PSGs, the MTS-800 and the GTEM
+  // cell — came off the page deliberately; this is what stops one of them
+  // drifting back in unnoticed with its copy half-deleted.
   const systems = pages.find((p) => p.route === "/test-systems/product/system/");
   assert.equal(
     [...systems.html.matchAll(/aria-controls="panel-/g)].length,
-    7,
+    2,
     "/test-systems/product/system/: the panel count changed",
   );
-  assert.ok(systems.html.includes("<b>GTEM</b>"), "/test-systems/product/system/: GTEM lost its row");
-  assert.doesNotMatch(
-    systems.html,
-    /aria-controls="panel-gtem"/,
-    "/test-systems/product/system/: GTEM opens onto a panel it has no figures for",
-  );
+  for (const name of ["CIT-100", "CIT-1000"]) {
+    assert.ok(systems.html.includes(`<b>${name}</b>`), `/test-systems/product/system/: ${name} lost its row`);
+  }
+  for (const gone of ["ECU-3", "ECU-6", "PSG-300", "MTS-800", "GTEM"]) {
+    assert.ok(
+      !systems.html.includes(gone),
+      `/test-systems/product/system/: ${gone} is back on the page`,
+    );
+  }
   // The amplifier page is the counter-example the count above turns on.
   const amps = pages.find((p) => p.route === "/test-systems/product/amplifier/");
   assert.doesNotMatch(

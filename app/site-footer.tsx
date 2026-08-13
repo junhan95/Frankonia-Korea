@@ -3,6 +3,7 @@ import { legalPath } from "./legal-sections";
 import { companySections, sectionMeta, sectionPath } from "./company-sections";
 import { contactPath } from "./contact-sections";
 import { testSystemsPath } from "./test-system-sections";
+import SiteLink from "./site-link";
 import { localeRoute, type Lang } from "./site-config";
 
 /** Shared dark footer. */
@@ -21,7 +22,7 @@ export default function SiteFooter({ lang, t }: { lang: Lang; t: FooterCopy }) {
             <ul>
               {companySections.map((s) => (
                 <li key={s}>
-                  <a href={localeRoute(lang, sectionPath(s))}>{sectionMeta[lang][s].label}</a>
+                  <SiteLink href={localeRoute(lang, sectionPath(s))}>{sectionMeta[lang][s].label}</SiteLink>
                 </li>
               ))}
             </ul>
@@ -31,21 +32,21 @@ export default function SiteFooter({ lang, t }: { lang: Lang; t: FooterCopy }) {
             <ul>
               {/* The chamber branch has its own overview now; the landing's
                   #chambers band is a summary of it, not the destination. */}
-              <li><a href={localeRoute(lang, chambersPath)}>{t.ftL1}</a></li>
-              <li><a href={localeRoute(lang, testSystemsPath)}>{t.ftL2}</a></li>
-              <li><a href={localeRoute(lang, "/cybershield")}>CyberShield</a></li>
+              <li><SiteLink href={localeRoute(lang, chambersPath)}>{t.ftL1}</SiteLink></li>
+              <li><SiteLink href={localeRoute(lang, testSystemsPath)}>{t.ftL2}</SiteLink></li>
+              <li><SiteLink href={localeRoute(lang, "/cybershield")}>CyberShield</SiteLink></li>
             </ul>
           </div>
           <div>
             <h5>{t.ftLink}</h5>
             <ul>
               <li><a href="https://frankonia-solutions.com/" target="_blank" rel="noopener">{t.ftHq}</a></li>
-              <li><a href={localeRoute(lang, contactPath)}>{t.ftContact}</a></li>
+              <li><SiteLink href={localeRoute(lang, contactPath)}>{t.ftContact}</SiteLink></li>
               {/* Both were promised by the footer long before they existed —
                   the privacy entry pointed at `#`, which on 84 pages is a link
                   that does nothing. */}
-              <li><a href={localeRoute(lang, legalPath("imprint"))}>{t.ftImprint}</a></li>
-              <li><a href={localeRoute(lang, legalPath("privacy"))}>{t.ftPriv}</a></li>
+              <li><SiteLink href={localeRoute(lang, legalPath("imprint"))}>{t.ftImprint}</SiteLink></li>
+              <li><SiteLink href={localeRoute(lang, legalPath("privacy"))}>{t.ftPriv}</SiteLink></li>
             </ul>
           </div>
         </div>

@@ -9,8 +9,8 @@ import type { Lang } from "./site-config";
    a branch of one page.
    The FAC-3 panorama from Marktheidenfeld — a different room from the one the
    chambers index opens on, and the same 4:1 frame that survives a band this
-   shallow. The five questions below ask which chamber is yours; the answer is
-   a room like this one. */
+   shallow. The branch below asks which chamber is yours; the answer is a room
+   like this one. */
 const wizardShot: HeadShot = {
   src: "/chambers/images/pano-fac-3.webp", w: 2000, h: 500, at: "50% 42%",
 };

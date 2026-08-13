@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { cartPath } from "./cart-sections";
 import {
   chamberIndustries,
   chamberModelSlugs,
@@ -80,6 +81,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // into the chamber range, and for a reader who does not yet know a model
     // name it is the better one.
     ...perLocale(mychamberPath, lastModified, 0.9, "monthly"),
+    // Listed, but at the bottom of the range with the legal pages: a crawler
+    // reaching MyCart finds an empty basket, because the basket is in the
+    // reader's browser and nowhere else. It is here so the page is not a hole
+    // in the map — every other route in the chrome is on it — rather than
+    // because anyone should arrive by search.
+    ...perLocale(cartPath, lastModified, 0.3, "yearly"),
     // The chamber branch. The overview outranks its two index axes, which in
     // turn outrank the technology pages — the order a crawler should read them
     // in, and the order the dropdown presents them.

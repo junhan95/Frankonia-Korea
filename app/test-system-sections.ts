@@ -29,9 +29,9 @@ export const testCategories = ["emission", "conducted", "radiated", "magnetic"] 
  * column, the index, and the equipment list on a test page.
  *
  * Integrated systems lead. The five families under them are components of a
- * setup the buyer assembles; CIT-100, PSG-300, MTS-800 and the GTEM cells are
- * the setup, bought whole. A reader who can use one should meet it before the
- * parts list, and a reader who cannot loses one line to reach the amplifiers.
+ * setup the buyer assembles; the CIT series is the setup, bought whole. A
+ * reader who can use one should meet it before the parts list, and a reader
+ * who cannot loses one line to reach the amplifiers.
  * The rest keep the signal chain's own order: what drives the field, what
  * radiates it, what measures it, what conditions the measurement, what routes
  * it.
@@ -311,15 +311,20 @@ export const testModels: readonly TestModel[] = [
   { name: "PMS 1084 B", desc: "10 kHz – 500 MHz", product: "meter" },
   { name: "RSU", desc: "DC – 12.4 GHz, extendable to 18 / 40 GHz", product: "meter" },
 
-  // Integrated systems.
+  // Integrated systems — the CIT series, and only the CIT series.
+  //
+  // The head office files eight products under this family: the two CITs, the
+  // ECU-3 and ECU-6 control units, the PSG-300 and 300A power signal
+  // generators, the MTS-800 magnetic field system and the GTEM cells. This
+  // site presents the two. The other six are instruments a laboratory adds to
+  // a bench it already has, and the page they shared was answering three
+  // different questions at once — what a complete immunity system is, what a
+  // signal generator is for, and how to make a magnetic field. The CIT series
+  // is the one that answers the first, which is what "Integrated Systems"
+  // means. Their copy, figures, tables and photographs came out with them;
+  // `git log` on this file is where they are if the branch grows back.
   { name: "CIT-100", desc: "Compact immunity test system, 4 kHz – 1.2 GHz, 25 / 75 W", product: "system" },
   { name: "CIT-1000", desc: "Compact immunity test system, 4 kHz – 1.2 GHz, 25 – 180 W, touch-screen PC", product: "system" },
-  { name: "ECU-3", desc: "EMC test and control unit, generator 9 kHz – 3 GHz", product: "system" },
-  { name: "ECU-6", desc: "EMC test and control unit, generator 9 kHz – 6.5 GHz", product: "system" },
-  { name: "PSG-300", desc: "Power signal generator, DC – 300 kHz, 250 W", product: "system" },
-  { name: "PSG-300A", desc: "Power signal generator, DC – 300 kHz, 800 W", product: "system" },
-  { name: "MTS-800", desc: "Magnetic field test system, DC – 250 kHz, up to 1000 A/m", product: "system" },
-  { name: "GTEM", desc: "GTEM cell", product: "system" },
 
   // Emission measuring systems, from the 2021 catalogue of that name. The
   // receivers are the family the overview paragraph has named since the branch
@@ -530,9 +535,9 @@ export const testProductMeta = {
     },
     system: {
       label: "통합 시험 시스템",
-      note: "랙 또는 셀 하나로 완결되는 시험 구성",
+      note: "19″ 케이스 하나로 완결되는 전도 내성 시험",
       description:
-        "CIT-100·CIT-1000 컴팩트 내성 시험 시스템, ECU-3·ECU-6 EMC 컨트롤 유닛, PSG-300·300A 파워 신호 발생기, MTS-800 자기장 시험 시스템, GTEM 셀.",
+        "CIT 시리즈 컴팩트 내성 시험 시스템 — IEC/EN 61000-4-6 전도 RF 내성과 ISO 11452-4 · MIL-STD 461 CS114 BCI 시험을 위한 CIT-100과 상위 기종 CIT-1000.",
     },
     emission: {
       label: "방출 계측 시스템",
@@ -580,9 +585,9 @@ export const testProductMeta = {
     },
     system: {
       label: "Integrated Systems",
-      note: "A whole test in one rack or cell",
+      note: "A whole conducted immunity test in one 19″ case",
       description:
-        "The CIT-100 and CIT-1000 compact immunity test systems, the ECU-3 and ECU-6 control units, PSG-300 and 300A power signal generators, the MTS-800 magnetic field test system and GTEM cells.",
+        "The CIT series of compact immunity test systems — the CIT-100 and its larger sibling the CIT-1000, for conducted RF immunity to IEC/EN 61000-4-6 and BCI testing to ISO 11452-4 and MIL-STD 461 CS114.",
     },
     emission: {
       label: "Emission Measuring Systems",
@@ -1450,8 +1455,7 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
     system: {
       lead: [
         "The CIT-100 is a complete test system for conducted RF-immunity testing and BCI-testing acc. to IEC/EN 61000-4-6, ISO 11452-4, MIL-STD 461, CS114 and similar standards. The system consists of a built-in signal generator (4 kHz – 1.2 GHz), an RF-power amplifier (25 / 75 W), a 3-channel RF-power-meter, a directional coupler and the control software.",
-        "The PSG-300 contains a linear precision power amplifier with a wide bandwidth (DC – 300 kHz), suitable for all applications concerning fast alternating signals at high output power. The application software is suited for general power generator applications and for immunity tests according to IEC/EN 61000-4-16 as well as to IEC/EN 61543.",
-        "The MTS-800 is a compact test system for broadband generation and measurement of magnetic fields, and with the triaxial Helmholtz coils it reaches 1000 A/m from DC to 1 kHz.",
+        "The CIT-1000 is the larger of the two. The generator, directional coupler and RF voltmeter reach 1.2 GHz, so it can drive a radiated immunity test to IEC/EN 61000-4-3 as well with an external power amplifier connected; the frequency extension for MIL-STD 461 reaches down to 4 kHz through the external CIT-4K and its 250 W amplifier; and it runs stand-alone from an integrated touch-screen PC.",
       ],
       figure: {
         src: "/test-systems/images/system-cit-100.webp",
@@ -1460,29 +1464,6 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
         alt: "The CIT-100 in a 19-inch case, front panel lettered “Conducted Immunity Test System”",
         caption: "The whole 61000-4-6 chain in one case — and every instrument in it still reachable on its own connector.",
       },
-      figureRow: [
-        {
-          src: "/test-systems/images/system-psg-300.webp",
-          w: 1400,
-          h: 554,
-          alt: "The PSG-300 front panel, lettered “Power Signal Generator DC … 300 kHz”",
-          caption: "PSG-300 — 250 W, and 800 W in the PSG-300A.",
-        },
-        {
-          src: "/test-systems/images/system-mts-800.webp",
-          w: 1400,
-          h: 782,
-          alt: "The MTS-800 front panel, lettered “Magnetic Test System”, with banana jacks and BNC inputs",
-          caption: "MTS-800 — magnetic fields to 1000 A/m, generated and measured by the same unit.",
-        },
-        {
-          src: "/test-systems/images/meter-rsu.webp",
-          w: 1600,
-          h: 669,
-          alt: "The RSU rear panel with four relay blocks of N-type connectors",
-          caption: "RSU — the unit that keeps a multi-amplifier bench from being re-cabled by hand.",
-        },
-      ],
       groups: [
         {
           title: "CIT-100",
@@ -1496,13 +1477,13 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
           ],
         },
         {
-          title: "PSG-300",
+          title: "CIT-1000",
           items: [
-            "Simulation of DC / AC supply lines",
-            "Control of piezo actors",
-            "Generation of magnetic fields with Helmholtz or similar coils",
-            "Immunity testing according to IEC/EN 61000-4-16, IEC/EN 61000-4-19 and IEC/EN 61543",
-            "Short circuit and overload protection, completely linear and low noise design, outstanding DC stability",
+            "Everything the CIT-100 does, with amplifier modules of 25, 75 and 180 W",
+            "Generator, directional coupler and RF voltmeter to 1.2 GHz — radiated immunity to IEC/EN 61000-4-3 with an external amplifier",
+            "Frequency extension to 4 kHz for MIL-STD 461, through the external CIT-4K with its 250 W amplifier",
+            "Stand-alone from an integrated touch-screen PC, no external computer needed",
+            "Temperature input for the BCI clamp",
           ],
         },
       ],
@@ -1523,25 +1504,6 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             ["RF voltmeter 2 + 3 (forward, reverse)", "4 kHz to 1.2 GHz, −40 to +30 dBm\nplus directional coupler typ. 40 dB"],
             ["EUT monitor input", "0 – 10 V, resolution 2.5 mV, 100 kΩ"],
             ["Interfaces", "USB 2.0, LAN 100 Mbit, GPIB optional"],
-          ],
-        },
-        {
-          title: "PSG-300 and PSG-300A",
-          note: "The PSG-E300 option adds an external power source for short term tests at 300 V, DC / 16⅔ / 50 / 60 Hz; PSG-EXT adds phase controlled switching of that source.",
-          head: ["", "PSG-300", "PSG-300A"],
-          rows: [
-            ["Power bandwidth", "DC – 200 kHz", "DC – 200 kHz"],
-            ["Slew rate", "100 V/μs", "100 V/μs"],
-            ["Gain", "10 ± 0.1 %", "10 ± 0.1 %"],
-            ["Output voltage", "50 Veff / ± 75 Vpeak", "50 Veff / ± 75 Vpeak"],
-            ["Output current", "5 Aeff / ± 7.5 Apeak", "16 Aeff / ± 23 Apeak"],
-            ["Power output", "250 W", "800 W"],
-            ["Distortion", "< 0.10 %", "< 0.10 %"],
-            ["Generator frequency range", "DC, 0.05 Hz – 300 kHz", "DC, 0.05 Hz – 300 kHz"],
-            ["Waveform", "sine, square, triangle", "sine, square, triangle"],
-            ["Remote control", "USB connector", "USB connector"],
-            ["Dimensions (L × W × D)", "448.9 × 132.55 × 435.5 mm", "448.9 × 177 × 585.5 mm"],
-            ["Weight", "approx. 14 kg", "approx. 30 kg"],
           ],
         },
       ],
@@ -2043,8 +2005,7 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
     system: {
       lead: [
         "CIT-100은 IEC/EN 61000-4-6, ISO 11452-4, MIL-STD 461 CS114 등에 따른 전도 RF 내성 시험과 BCI 시험을 위한 완성형 시험 시스템입니다. 신호발생기(4 kHz~1.2 GHz), RF 파워앰프(25 / 75 W), 3채널 RF 파워미터, 방향성 결합기와 제어 소프트웨어가 내장되어 있습니다.",
-        "PSG-300은 대역폭이 넓은(DC~300 kHz) 선형 정밀 파워앰프로, 높은 출력에서 빠르게 변하는 신호가 필요한 모든 용도에 쓰입니다. 응용 소프트웨어는 범용 파워 제너레이터 용도와 IEC/EN 61000-4-16, IEC/EN 61543 내성 시험에 대응합니다.",
-        "MTS-800은 자기장의 광대역 발생과 측정을 함께 하는 컴팩트 시험 시스템으로, 삼축 Helmholtz 코일과 조합하면 DC~1 kHz에서 1000 A/m에 이릅니다.",
+        "CIT-1000은 둘 중 상위 기종입니다. 발생기·방향성 결합기·RF 전압계가 1.2 GHz까지 올라가 외부 파워앰프를 연결하면 IEC/EN 61000-4-3 방사 내성 시험까지 구동합니다. MIL-STD 461용 저역 확장은 250 W 앰프를 갖춘 외장 CIT-4K로 4 kHz까지 내려가며, 터치스크린 PC를 내장해 단독으로 동작합니다.",
       ],
       figure: {
         src: "/test-systems/images/system-cit-100.webp",
@@ -2053,29 +2014,6 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
         alt: "19인치 케이스에 든 CIT-100, 전면 패널에 “Conducted Immunity Test System” 표기",
         caption: "61000-4-6 시험 체인 전체가 한 케이스에. 그러면서 안의 계측기를 각각 개별 커넥터로 따로 쓸 수 있습니다.",
       },
-      figureRow: [
-        {
-          src: "/test-systems/images/system-psg-300.webp",
-          w: 1400,
-          h: 554,
-          alt: "“Power Signal Generator DC … 300 kHz” 표기가 있는 PSG-300 전면 패널",
-          caption: "PSG-300 — 250 W, PSG-300A는 800 W.",
-        },
-        {
-          src: "/test-systems/images/system-mts-800.webp",
-          w: 1400,
-          h: 782,
-          alt: "“Magnetic Test System” 표기가 있는 MTS-800 전면 패널 — 바나나 잭과 BNC 입력",
-          caption: "MTS-800 — 1000 A/m까지의 자기장을 한 대가 만들고 또 측정합니다.",
-        },
-        {
-          src: "/test-systems/images/meter-rsu.webp",
-          w: 1600,
-          h: 669,
-          alt: "N형 커넥터 릴레이 블록 네 개가 배열된 RSU 후면 패널",
-          caption: "RSU — 앰프 여러 대를 쓰는 시험대에서 케이블을 손으로 갈아 끼우지 않게 해 주는 장비.",
-        },
-      ],
       groups: [
         {
           title: "CIT-100",
@@ -2089,13 +2027,13 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
           ],
         },
         {
-          title: "PSG-300",
+          title: "CIT-1000",
           items: [
-            "DC / AC 전원선 시뮬레이션",
-            "피에조 액추에이터 구동",
-            "Helmholtz 코일 등으로 자기장 발생",
-            "IEC/EN 61000-4-16, IEC/EN 61000-4-19, IEC/EN 61543 내성 시험",
-            "단락·과부하 보호, 완전 선형 저잡음 설계, 뛰어난 DC 안정도",
+            "CIT-100이 하는 것 전부에, 25 · 75 · 180 W 앰프 모듈",
+            "발생기·방향성 결합기·RF 전압계 1.2 GHz — 외부 앰프를 붙이면 IEC/EN 61000-4-3 방사 내성 시험까지",
+            "MIL-STD 461용 저역 확장 4 kHz — 250 W 앰프를 갖춘 외장 CIT-4K",
+            "터치스크린 PC 내장, 외부 컴퓨터 없이 단독 운용",
+            "BCI 클램프 온도 입력",
           ],
         },
       ],
@@ -2116,25 +2054,6 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             ["RF voltmeter 2 + 3 (forward, reverse)", "4 kHz to 1.2 GHz, −40 to +30 dBm\n방향성 결합기 typ. 40 dB 포함"],
             ["EUT monitor input", "0 – 10 V, resolution 2.5 mV, 100 kΩ"],
             ["Interfaces", "USB 2.0, LAN 100 Mbit, GPIB 옵션"],
-          ],
-        },
-        {
-          title: "PSG-300 · PSG-300A",
-          note: "PSG-E300 옵션은 단시간 시험용 외부 전원(300 V, DC / 16⅔ / 50 / 60 Hz)을, PSG-EXT는 그 외부 전원의 위상 제어 스위칭을 추가합니다.",
-          head: ["", "PSG-300", "PSG-300A"],
-          rows: [
-            ["Power bandwidth", "DC – 200 kHz", "DC – 200 kHz"],
-            ["Slew rate", "100 V/μs", "100 V/μs"],
-            ["Gain", "10 ± 0.1 %", "10 ± 0.1 %"],
-            ["Output voltage", "50 Veff / ± 75 Vpeak", "50 Veff / ± 75 Vpeak"],
-            ["Output current", "5 Aeff / ± 7.5 Apeak", "16 Aeff / ± 23 Apeak"],
-            ["Power output", "250 W", "800 W"],
-            ["Distortion", "< 0.10 %", "< 0.10 %"],
-            ["Generator frequency range", "DC, 0.05 Hz – 300 kHz", "DC, 0.05 Hz – 300 kHz"],
-            ["Waveform", "sine, square, triangle", "sine, square, triangle"],
-            ["Remote control", "USB connector", "USB connector"],
-            ["Dimensions (L × W × D)", "448.9 × 132.55 × 435.5 mm", "448.9 × 177 × 585.5 mm"],
-            ["Weight", "approx. 14 kg", "approx. 30 kg"],
           ],
         },
       ],
@@ -2170,7 +2089,6 @@ export const factLabel = {
     dynamic: "동적 범위",
     overload: "과부하 한계",
     fieldStrength: "전계강도",
-    magField: "자계강도",
     isotropy: "등방성",
     channels: "채널",
     measuring: "측정 범위",
@@ -2181,11 +2099,6 @@ export const factLabel = {
     amplifier: "내장 앰프",
     voltmeter: "RF 전압계",
     eutMonitor: "EUT 모니터 입력",
-    powerBw: "전력 대역폭",
-    generator: "내장 발생기",
-    output: "출력 전압·전류",
-    powerOut: "출력",
-    adc: "AD 변환기",
     interface: "인터페이스",
     supply: "전원",
     operation: "동작 시간",
@@ -2206,7 +2119,6 @@ export const factLabel = {
     dynamic: "Dynamic range",
     overload: "Overload",
     fieldStrength: "Field strength",
-    magField: "Magnetic field strength",
     isotropy: "Isotropy",
     channels: "Channels",
     measuring: "Measuring range",
@@ -2217,11 +2129,6 @@ export const factLabel = {
     amplifier: "Internal amplifier",
     voltmeter: "RF voltmeters",
     eutMonitor: "EUT monitor input",
-    powerBw: "Power bandwidth",
-    generator: "Generator",
-    output: "Output voltage and current",
-    powerOut: "Power output",
-    adc: "AD converter",
     interface: "Interface",
     supply: "Power supply",
     operation: "Operation time",
@@ -2251,11 +2158,9 @@ export const factLabel = {
  * three rows would be the same text three times, in the place a reader opened
  * expecting the thing they had not already read.
  *
- * Keyed by `TestModel.name`. GTEM is absent on purpose: the head office
- * publishes a name and a datasheet PDF for it and no figures at all, so its row
- * stays a plain row rather than opening onto an empty box.
+ * Keyed by `TestModel.name`.
  *
- * The seventy amplifiers are absent for the same reason at a larger scale — see
+ * The seventy amplifiers are absent on purpose — see
  * the note on `TestModel.desc`, and docs/source/test-systems-source.md §4.
  */
 export type TestModelBody = {
@@ -2522,7 +2427,7 @@ const modelFacts: Record<string, readonly { key: TestFactKey; value: string }[]>
     { key: "connector", value: "Type N female" },
   ],
 
-  // Integrated systems.
+  // Integrated systems — the CIT series. See the note on `testModels`.
   "CIT-100": [
     { key: "band", value: "4 kHz – 1.2 GHz" },
     { key: "amplifier", value: "25 W / 75 W modules" },
@@ -2530,45 +2435,12 @@ const modelFacts: Record<string, readonly { key: TestFactKey; value: string }[]>
     { key: "eutMonitor", value: "0 – 10 V, 100 kΩ" },
     { key: "interface", value: "USB 2.0, LAN, GPIB opt." },
   ],
-  "PSG-300": [
-    { key: "powerBw", value: "DC – 200 kHz" },
-    { key: "generator", value: "DC, 0.05 Hz – 300 kHz" },
-    { key: "output", value: "50 Veff / 5 Aeff" },
-    { key: "powerOut", value: "250 W" },
-    { key: "weight", value: "approx. 14 kg" },
-  ],
-  "PSG-300A": [
-    { key: "powerBw", value: "DC – 200 kHz" },
-    { key: "generator", value: "DC, 0.05 Hz – 300 kHz" },
-    { key: "output", value: "50 Veff / 16 Aeff" },
-    { key: "powerOut", value: "800 W" },
-    { key: "weight", value: "approx. 30 kg" },
-  ],
-  "MTS-800": [
-    { key: "band", value: "DC – 250 kHz" },
-    { key: "magField", value: "up to 1000 A/m" },
-    { key: "amplifier", value: "800 W, 16 Arms, 50 Vrms" },
-    { key: "adc", value: "16 bit, 1.25 MSPS" },
-    { key: "weight", value: "approx. 34 kg" },
-  ],
   "CIT-1000": [
     { key: "band", value: "4 kHz – 1.2 GHz" },
     { key: "amplifier", value: "25 / 75 / 180 W modules" },
     { key: "voltmeter", value: "3 ch, −40 … +33 dBm" },
     { key: "eutMonitor", value: "0 – 10 V, 100 kΩ" },
     { key: "interface", value: "USB 2.0, LAN, GPIB opt." },
-  ],
-  "ECU-3": [
-    { key: "generator", value: "9 kHz – 3 GHz" },
-    { key: "output", value: "−65 … +10 dBm" },
-    { key: "outputs", value: "3 × N male, relay switched" },
-    { key: "accuracy", value: "± 25 ppm" },
-  ],
-  "ECU-6": [
-    { key: "generator", value: "9 kHz – 6.5 GHz" },
-    { key: "output", value: "−100 … +13 dBm" },
-    { key: "outputs", value: "4 × N male, relay switched" },
-    { key: "accuracy", value: "± 100 ppb" },
   ],
 };
 
@@ -2599,16 +2471,8 @@ const modelLead: Record<Lang, Record<string, string>> = {
     RSU: "The RSU RF-Relay Switching Unit is applicable for all fields of RF- and EMC measurements to switch, manually or remote controlled, from one input to 2 or 3 outputs. Typical applications in measuring systems are changeover switching between different amplifiers, antennas or power meters. This does also prevent circuit faults due to wrong cabling.",
     "CIT-100":
       "The CIT-100 is a complete test system for conducted RF-immunity testing and BCI-testing acc. to IEC/EN 61000-4-6, ISO 11452-4, MIL-STD 461, CS114 and similar standards. A signal generator, an RF-power amplifier, a 3-channel RF-power-meter, a directional coupler and the control software sit in one 19″ case, and every instrument in it can also be used separately over its own connector.",
-    "PSG-300":
-      "The PSG-300 contains a linear precision power amplifier with a wide bandwidth (DC – 300 kHz), suitable for all applications concerning fast alternating signals at high output power. The built-in generator provides sine, square and triangle waves, and the application software is suited for general power generator applications and for immunity tests according to IEC/EN 61000-4-16 as well as to IEC/EN 61543.",
-    "MTS-800":
-      "The MTS-800 is a compact test system for broadband generation and measurement of magnetic fields. In combination with the triaxial Helmholtz coils, full automated susceptibility tests are possible at magnetic field strength up to 1000 A/m for frequencies from DC to 1 kHz; lower field strength can be generated for frequencies up to 250 kHz. Because the coil is triaxial, there is no need to turn an EUT during tests.",
     "CIT-1000":
       "The CIT-1000 is the CIT-100's larger sibling: the same complete system for conducted RF immunity and BCI testing, extended where the smaller unit stops. The generator, directional coupler and RF voltmeter reach 1.2 GHz, so the unit can drive a radiated immunity test to IEC/EN 61000-4-3 as well; an external power amplifier can be connected for that; and the frequency extension for MIL-STD 461 reaches down to 4 kHz through the external CIT-4K with its 250 W amplifier. It runs stand-alone from an integrated touch-screen PC, and a temperature input reads the BCI clamp.",
-    "ECU-3":
-      "The ECU-3/-6 is a central EMC test and control unit, which combines in just one compact box many major test components — signal generator, power meter, directional couplers and relay switching unit — that are needed for EMC tests. That reduces the cabling work, and the cabling mistakes, to a minimum. It switches automatically between up to four external amplifiers and up to three antennas or coupling devices, and between up to two receivers or spectrum analyzers.",
-    "ECU-6":
-      "The ECU-6 is the ECU-3 with the generator taken to 6.5 GHz and its resolution and level range widened with it. Everything else — the relay switching between four amplifiers and three outputs, the EUT monitoring, the interlock — is as the ECU-3.",
     "ERX-6":
       "The ERX-6 combines the advantages of a traditional EMI-receiver with the ultra-fast FFT-technology (time domain). It measures in 162 MHz frequency segments and outperforms comparable top-of-the-range devices many times over. The delivery already includes a control software that runs on the receiver's own touch screen, so no external PC is required.",
     "ERC-6":
@@ -2646,16 +2510,8 @@ const modelLead: Record<Lang, Record<string, string>> = {
     RSU: "RSU RF 릴레이 스위칭 유닛은 RF·EMC 측정 전반에서 입력 하나를 2개 또는 3개 출력으로 전환합니다. 수동과 원격 제어 모두 가능합니다. 측정 시스템에서는 서로 다른 앰프·안테나·파워미터 사이를 바꿔 잇는 데 쓰이며, 잘못된 배선으로 생기는 회로 사고도 막아 줍니다.",
     "CIT-100":
       "CIT-100은 IEC/EN 61000-4-6, ISO 11452-4, MIL-STD 461 CS114 등에 따른 전도 RF 내성 시험과 BCI 시험을 위한 완성형 시험 시스템입니다. 신호발생기, RF 파워앰프, 3채널 RF 파워미터, 방향성 결합기와 제어 소프트웨어가 19″ 케이스 하나에 들어 있고, 내장된 계측기는 각각의 커넥터로 따로 쓸 수도 있습니다.",
-    "PSG-300":
-      "PSG-300에는 DC~300 kHz의 넓은 대역을 갖춘 선형 정밀 파워앰프가 들어 있어, 높은 출력으로 빠르게 변화하는 신호를 다루는 용도 전반에 씁니다. 내장 발생기는 사인·구형·삼각파를 냅니다. 응용 소프트웨어는 일반 파워 발생기 용도와 IEC/EN 61000-4-16, IEC/EN 61543 내성 시험에 대응합니다.",
-    "MTS-800":
-      "MTS-800은 자기장의 광대역 발생과 측정을 함께 하는 컴팩트 시험 시스템입니다. 삼축 Helmholtz 코일과 조합하면 DC~1 kHz에서 최대 1000 A/m까지 완전 자동 내성 시험이 가능하고, 더 낮은 자계강도는 250 kHz까지 발생시킬 수 있습니다. 코일이 삼축이라 시험 중 EUT를 돌려놓을 필요가 없습니다.",
     "CIT-1000":
       "CIT-1000은 CIT-100의 상위 기종입니다. 전도 RF 내성과 BCI 시험을 위한 완성형 시스템이라는 점은 같고, 작은 기종이 멈추는 곳에서 더 나아갑니다. 발생기·방향성 결합기·RF 전압계가 1.2 GHz까지 올라가 IEC/EN 61000-4-3 방사 내성 시험까지 구동할 수 있고, 그때는 외부 파워앰프를 연결합니다. MIL-STD 461용 저역 확장은 250 W 앰프를 갖춘 외장 CIT-4K로 4 kHz까지 내려갑니다. 터치스크린 PC를 내장해 단독으로 동작하며, 온도 입력으로 BCI 클램프 온도를 읽습니다.",
-    "ECU-3":
-      "ECU-3/-6은 EMC 시험에 필요한 주요 구성요소 — 신호발생기, 파워미터, 방향성 결합기, 릴레이 스위칭 유닛 — 을 한 상자에 모은 중앙 제어 유닛입니다. 배선 작업과 배선 실수를 최소로 줄여 줍니다. 외부 앰프 최대 4대와 안테나·결합장치 최대 3계통, 그리고 리시버·스펙트럼 분석기 최대 2대 사이를 자동으로 전환합니다.",
-    "ECU-6":
-      "ECU-6은 ECU-3의 발생기를 6.5 GHz까지 끌어올리고 분해능과 레벨 범위를 함께 넓힌 기종입니다. 앰프 4대와 출력 3계통 사이의 릴레이 전환, EUT 모니터링, 인터록은 ECU-3과 같습니다.",
     "ERX-6":
       "ERX-6은 전통적인 EMI 리시버의 장점에 초고속 FFT(시간영역) 기술을 결합한 계측기입니다. 162 MHz 세그먼트 단위로 측정해 동급 최상위 기종을 여러 배 앞섭니다. 리시버 자체 터치스크린에서 돌아가는 제어 소프트웨어를 기본 포함하므로 외부 PC가 필요 없습니다.",
     "ERC-6":

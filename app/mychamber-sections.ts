@@ -11,9 +11,9 @@ import type { Lang } from "./site-config";
  * buy a chamber than to one who has arrived to apply for a job — this site's
  * one job is to get a specification into a quotation.
  *
- * The questionnaire and the recommendation engine live in mychamber-advisor.ts;
- * this file carries nothing but the route and the labels, so the header can
- * import it without pulling the engine into the header's own module graph.
+ * The decision tree itself lives in mychamber-advisor.ts; this file carries
+ * nothing but the route and the labels, so the header can import it without
+ * pulling the tree into the header's own module graph.
  */
 
 /** Path, relative to the locale root. */
@@ -28,15 +28,15 @@ export const mychamberMeta = {
     title: "MyChamber",
     /** Sub-head under the title, and the meta description. */
     description:
-      "네다섯 개의 질문으로 32종의 Frankonia 챔버 중 요구사항에 맞는 모델을 좁혀 드립니다. 추천 결과는 선택 내용과 함께 그대로 견적 문의 메일로 이어집니다.",
+      "Frankonia 본사의 Chamber Matrix를 그대로 따라가는 두세 번에서 다섯 번의 질문으로 요구사항에 맞는 챔버에 도달합니다. 결과는 선택하신 경로와 함께 그대로 견적 문의 메일로 이어집니다.",
     /** Dropdown caption in the Chambers mega panel. */
-    note: "질문 4~6개로 챔버 추천",
+    note: "질문 2~5개로 챔버 선택",
   },
   en: {
     label: "MyChamber",
     title: "MyChamber",
     description:
-      "Four or five questions narrow the 32 Frankonia chambers down to the models that match your requirement. The recommendation carries your answers straight into a quotation enquiry.",
-    note: "Find your chamber in 4–6 questions",
+      "Two to five questions, taken straight from the Frankonia Chamber Matrix, lead to the chamber that matches your requirement. The result carries the branch you took into a quotation enquiry.",
+    note: "Find your chamber in 2–5 questions",
   },
 } as const satisfies Record<Lang, { label: string; title: string; description: string; note: string }>;

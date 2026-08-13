@@ -41,6 +41,7 @@ import ModelAccordion, { type AccordionRow } from "./model-accordion";
 import { CheckColumn, Groups, Lead, Tables } from "./page-parts";
 import PageShell, { type HeadShot } from "./page-shell";
 import StructuredData, { type TrailStep } from "./structured-data";
+import SiteLink from "./site-link";
 import { asset, contactEmail, localeRoute, plural, type Lang } from "./site-config";
 
 /**
@@ -93,13 +94,18 @@ const copy = {
      */
     specsNote: "Frankonia 표준 구성입니다. 치수는 외형 기준으로, 챔버 자체의 크기이며 내부 유효 공간이 아닙니다. 설치 공간과 적용 규격에 맞춰 치수와 구성을 조정할 수 있으며, 상세 도면과 견적은 문의해 주시면 안내해 드립니다.",
     overview: "한눈에",
-    /** In the panel a row opens. Not "자세히" — the reader is already looking at
-     *  the detail, and what the link adds is the model's own page. */
+    /** Not rendered at the moment: the panel no longer offers the model page,
+     *  and `ModelAccordion` draws that button only when it is given a label.
+     *  Kept, with its counterpart below, so restoring the control is a matter
+     *  of passing the prop again. */
     modelMore: "모델 상세 보기",
     /** Beside it. The mail opens with the model already in the subject, so the
      *  reader is not asked to name again what they just picked out of twelve. */
     modelQuote: "견적 문의",
     modelQuoteSubject: (name: string) => `[견적 문의] ${name}`,
+    /** Printed in MyCart and in the enquiry it writes, so a shortlist says
+     *  which part of the catalogue each line came out of. */
+    cartFrom: "무향 챔버",
     galleryPrev: "이전 사진",
     galleryNext: "다음 사진",
     galleryFrame: "사진 {at} / {of} — 눌러서 다음 사진",
@@ -126,9 +132,11 @@ const copy = {
     specsNote:
       "Frankonia standard configurations. The dimensions are external — the size of the chamber itself, not the usable volume inside it. Both size and layout can be adapted to your site and to the standards you test against; contact us for a drawing and a quotation.",
     overview: "At a glance",
+    /** Unused for now — see the note on the Korean one. */
     modelMore: "View the model page",
     modelQuote: "Request a quote",
     modelQuoteSubject: (name: string) => `[Quote request] ${name}`,
+    cartFrom: "Anechoic Chambers",
     galleryPrev: "Previous picture",
     galleryNext: "Next picture",
     galleryFrame: "Picture {at} of {of} — press for the next",
@@ -244,11 +252,11 @@ function Axes({ lang }: { lang: Lang }) {
       </div>
       <div className="hairline-list">
         {chamberIndustries.map((industry, i) => (
-          <a className="hl-row" key={industry} href={localeRoute(lang, industryPath(industry))}>
+          <SiteLink className="hl-row" key={industry} href={localeRoute(lang, industryPath(industry))}>
             <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
             <b>{industryLabel[lang][industry]}</b>
             <span className="hl-desc">{t.modelCount(modelsByIndustry(industry).length)}</span>
-          </a>
+          </SiteLink>
         ))}
       </div>
 
@@ -263,11 +271,11 @@ function Axes({ lang }: { lang: Lang }) {
             their counts: those are the same 27 chambers divided up, so how
             many fall into each is the thing that differs. */}
         {chamberTypes.map((type, i) => (
-          <a className="hl-row" key={type} href={localeRoute(lang, typePath(type))}>
+          <SiteLink className="hl-row" key={type} href={localeRoute(lang, typePath(type))}>
             <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
             <b>{typeMeta[lang][type].label}</b>
             <span className="hl-desc">{typeMeta[lang][type].note}</span>
-          </a>
+          </SiteLink>
         ))}
       </div>
     </>
@@ -431,14 +439,17 @@ function Stub({ lang, label }: { lang: Lang; label: string }) {
  * ChamberModel.
  *
  * A row opens rather than navigates: the plate and the "at a glance" pairs from
- * the model's own page slide out under it, and the link to that page is the one
- * control inside the panel. `lang` is threaded down for both halves — the panel
- * reads the locale's `modelBody`, and the link the locale's route.
+ * the model's own page slide out under it, and the panel is where the reader
+ * decides. The panel used to offer the model page as well; it no longer does —
+ * see the call to `ModelAccordion` below — so what the reader is offered there
+ * is the enquiry and the basket. `lang` is still threaded down for both halves:
+ * the panel reads the locale's `modelBody`, and the basket line the locale's
+ * route.
  *
- * `here` is the slug of the page the list is on, and those rows carry no link.
- * Only the RVC page has any — seven models under one slug — and seven links
- * back to the page you are reading is worse than no link at all. They still
- * open: the seven differ in exactly the figures the panel shows.
+ * `here` is the slug of the page the list is on, and those rows carry no
+ * `href`. Nothing draws it today, but the field is what the plain-row fallback
+ * would navigate to, and a row on the RVC page linking to the RVC page is the
+ * one case where that fallback would be wrong.
  *
  * The catalogue figures under the descriptor are deliberately not translated.
  * They are measurements and standard designations, and both have to match the
@@ -453,19 +464,21 @@ function ModelList({
   models: readonly ChamberModel[];
   here?: string;
 }) {
+  const t = copy[lang];
   const rows: AccordionRow[] = models.map((model, i) => {
     // The panel's contents are the model page's own opening plate and summary
     // strip, read from the same table that page renders. Nothing is authored
     // twice, and a model whose page has neither degrades to the plain row.
     const body = modelBody[lang][model.slug];
+    const spec = model.spec &&
+      [model.spec.size, model.spec.note, model.spec.range].filter((v): v is string => !!v);
     return {
       // The name, not the slug: seven reverberation chambers share a slug, and
       // two rows with one `id` would be two panels with one `aria-controls`.
       id: `${i + 1}-${model.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`,
       name: model.name,
       desc: model.desc,
-      spec: model.spec &&
-        [model.spec.size, model.spec.note, model.spec.range].filter((v): v is string => !!v),
+      spec,
       // The model page's own plate first, then the gallery extras. Both come
       // from the head office's page for this model; only the first has a
       // caption, and the panel does not print captions.
@@ -474,16 +487,33 @@ function ModelList({
       facts: body?.overview,
       href: model.slug === here ? undefined : localeRoute(lang, modelPath(model.slug)),
       quoteHref: `mailto:${contactEmail}?subject=${encodeURIComponent(
-        copy[lang].modelQuoteSubject(model.name),
+        t.modelQuoteSubject(model.name),
       )}`,
+      // The basket's copy of the row. Its link is the model page unconditionally,
+      // unlike the row's: `here` drops the link because a page should not offer
+      // itself, but a basket read a week later on another page should still
+      // know where the model lives.
+      cart: {
+        id: `chamber:${model.name}`,
+        name: model.name,
+        desc: model.desc,
+        spec,
+        from: t.cartFrom,
+        href: localeRoute(lang, modelPath(model.slug)),
+        lang,
+      },
     };
   });
 
-  const t = copy[lang];
   return (
     <ModelAccordion
+      lang={lang}
       rows={rows}
-      more={t.modelMore}
+      /* No `more`, so the panel does not offer the model page. The label is
+         what draws that button — `row.href` alone draws nothing — so withholding
+         it takes the control off every chamber index at once, and putting it
+         back is one prop. The enquiry and the basket stay: they are what a
+         reader who has picked a model out of twelve actually wants next. */
       quote={t.modelQuote}
       gallery={{ prev: t.galleryPrev, next: t.galleryNext, frame: t.galleryFrame }}
     />

@@ -6,13 +6,13 @@
 
 [frankonia-solutions.com](https://frankonia-solutions.com/) 의 콘텐츠를 기준으로
 정보 구조와 디자인을 다시 짠 **본사 사이트 리뉴얼 제안**이다.
-English · 한국어 두 개 로케일, 로케일당 65페이지를 정적 HTML로 프리렌더한다.
+English · 한국어 두 개 로케일, 로케일당 68페이지를 정적 HTML로 프리렌더한다.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.2-000000?logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-19.2-149ECA?logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)
 ![Static export](https://img.shields.io/badge/output-static%20export-2ea44f)
-![Pages](https://img.shields.io/badge/pages-130-25282B)
+![Pages](https://img.shields.io/badge/pages-136-25282B)
 
 ### [English](http://www.frankonia-korea.com/) · [한국어](http://www.frankonia-korea.com/ko/)
 
@@ -37,7 +37,9 @@ English · 한국어 두 개 로케일, 로케일당 65페이지를 정적 HTML�
 ## The site
 
 여섯 개 GNB — Company · Anechoic Chambers · EMC Test Systems · CyberShield ·
-Contact · **MyChamber**. 로케일당 65페이지, 합계 130페이지.
+Contact · **MyChamber**. 그 옆에 **MyCart** 아이콘이 붙는다 — 메뉴가 아니라
+장바구니라서 아이콘 하나로 서고, 담긴 개수를 뱃지로 단다. 로케일당 68페이지,
+합계 136페이지.
 
 Philosophy와 History는 **About** 한 페이지로 합쳤다(`/company/about`). 둘 다 혼자서는
 한 페이지에 못 미쳤고, Company 메뉴를 여는 독자의 질문 — 이 회사는 무엇인가 —
@@ -52,6 +54,7 @@ Career는 GNB에서 내려 Company 드롭다운으로 돌아갔다. 그 자리�
 |---|---|---|---|
 | Landing | 1 | 히어로, 세 개 제품 축 요약, 레퍼런스, 컨택 밴드 | 완성 |
 | MyChamber | 1 | 질문 3~9개로 챔버 32종을 좁히고, 결과를 그대로 견적 메일로 | 완성 |
+| MyCart | 1 | 챔버·시험 시스템을 담아 두고, 고른 것만 한 통의 견적 메일로. 목록은 `localStorage`에만 남는다 | 완성 |
 | Company | 4 | About(이념 + 연혁) · Publications · Events · Career | 완성 |
 | Anechoic Chambers | 15 | 개요 + 산업 5 + 챔버 형태 6 + 기술 4 (FrankoSorb · 차폐 게이트 · 자동화 · 서비스) + References | 골격 |
 | EMC Test Systems | 17 | 개요 + 산업 5 + 시험 종류 4 + 제품군 6 + 규격 인덱스 | 골격 |
@@ -165,12 +168,36 @@ HTML에 그대로 담기 위해 `(en)` / `(ko)` 라우트 그룹이 각자의 �
 다시 추가하면 복구된다.
 
 **Nothing is fetched off this origin.** Inter와 Noto Sans KR은 빌드 시점에 받아
-export에 함께 실린다([`app/fonts.ts`](app/fonts.ts)). 방문자 IP가 Google로 가지
+export에 함께 실린다([`app/fonts.ts`](app/fonts.ts),
+[`app/fonts-kr.ts`](app/fonts-kr.ts)). 방문자 IP가 Google로 가지
 않으므로 독일에서 운영하는 사이트가 감수할 이유가 없는 GDPR 논쟁이 사라지고,
 `@import`가 만들던 왕복 한 번도 없어진다. 두 폰트 모두 가변 폰트라 유니코드 범위당
 파일 하나가 300~800 굵기를 전부 담당하며, 브라우저는 그 페이지에 실제로 쓰인 범위만
 받는다 — 랜딩 267KB. (함께 적어 두었던 CyberShield 340KB는 걷어낸 포팅본을 잰
 값이라 삭제했다. 요약본 수치는 다시 재야 한다.)
+
+**한국어 폰트는 한국어 로케일만 싣는다.** Noto Sans KR은 유니코드 범위마다
+`@font-face` 한 덩어리씩, 모두 125개 — 스타일시트 78KB, 전송 26KB이고 그것을 받는
+페이지의 첫 렌더를 막는다. 두 폰트가 한 모듈에 있던 동안에는 공유 셸이 그 모듈을
+import했으므로 영어 페이지도 같이 냈는데, 영어 페이지에는 한글이 한 글자도 없다.
+next/font의 CSS는 ES import에 붙으므로 파일을 나누는 것이 로케일을 나누는 방법이다
+— `(en)`은 `fonts.ts`만, `(ko)`는 둘 다 import한다. 영어 페이지의 렌더 차단 CSS는
+36KB → 10KB(전송 기준). `globals.css`의 `font-family`가 `var(--font-noto-kr,
+"Noto Sans KR")`로 대체값을 갖는 것은 장식이 아니다 — 정의되지 않은 커스텀
+속성은 선언 전체를 무효로 만들어 영어 페이지가 브라우저 기본 serif로 떨어진다.
+
+**Links are routes, not document loads.** 사이트 안의 모든 링크는
+[`app/site-link.tsx`](app/site-link.tsx)를 거친다. 내부 경로면 `next/link`,
+`mailto:`·`tel:`·외부 URL·같은 페이지 `#anchor`면 원래대로 `<a>`다. 139개 페이지가
+헤더·푸터·스타일시트를 공유하는데, `<a>`로 이동하면 매번 그것을 전부 버리고 HTML
+110KB를 다시 파싱하고 JS 640KB를 다시 실행한 뒤 방금 지운 것과 같은 헤더를 다시
+세운다 — 그 사이는 흰 화면이다. 라우터는 문서를 유지한 채 그 라우트의 RSC 페이로드
+(gzip 8KB, `output: export`가 HTML 옆에 같이 써 둔다)만 받아 달라진 부분만 바꾼다.
+화면에 보이는 링크는 미리 받아 두므로 대개 클릭 시점에는 이미 메모리에 있다.
+로케일 전환만 예외로 `<a>`인데, 두 로케일은 루트 레이아웃이 달라서 어떻게 쓰든
+문서를 새로 받는다. 드로어가 링크 클릭에 닫히는 것도 이제 위임된 `onClick` 하나에
+달려 있다 — 문서가 안 죽으니 `open` 상태가 그대로 살아남는다
+([`app/nav-drawer.tsx`](app/nav-drawer.tsx)).
 
 **Design tokens, measured not guessed.** 색·타이포·간격·버튼 규격은
 [`docs/FRANKONIA-DESIGN-REFERENCE.md`](docs/FRANKONIA-DESIGN-REFERENCE.md)에
@@ -222,6 +249,13 @@ npm run build:static
 [`scripts/staging-env.mjs`](scripts/staging-env.mjs)에 있고 Node에서 주입되므로
 Windows와 Linux에서 같은 명령이 동작한다.
 
+**dev 서버를 켜 둔 채로 돌려도 된다.** 정적 빌드는 `.next`가 아니라
+`.next-static`에 쌓는다([`next.config.ts`](next.config.ts)). 둘 다 `.next`를 쓰던
+동안에는 빌드가 dev 서버가 열어 둔 매니페스트를 덮어썼고, 그 뒤로는 모든 요청이
+500(`SyntaxError: Unexpected non-whitespace character after JSON`)이 됐다 —
+소스에는 아무 문제가 없고 터미널에도 빌드가 그랬다는 말은 안 나오므로, 방금 고친
+코드를 의심하며 한참을 보내게 되는 종류의 고장이다.
+
 ```bash
 npm run lint
 npm test
@@ -259,6 +293,7 @@ app/
   site-header.tsx    # 스티키 GNB + 메가 패널 (서버 컴포넌트)
   nav-drawer.tsx     # 모바일 드로어의 상태 — 클라이언트, 마크업은 서버에서 받는다
   lang-switch.tsx    # 언어 스위처 — 현재 경로를 알아야 해서 클라이언트
+  site-link.tsx      # 사이트의 모든 링크 — 내부 경로는 next/link, 그 밖은 <a>
   site-footer.tsx
   page-shell.tsx     # 랜딩이 아닌 모든 페이지의 크롬
   structured-data.tsx  # JSON-LD: Organization, WebSite, WebPage, Product, BreadcrumbList
@@ -331,6 +366,19 @@ python deploy/deploy.py
 여기 들어 있다. 그 경로들은 자식만 export되어 index가 없는 디렉터리로 남고, 그대로 두면
 아파치가 사이트 404 대신 맨 403을 답한다. GitHub Pages는 헤더를 설정할 수 없으므로 이
 파일은 정식 도메인에서만 효력이 있다.
+
+캐시·압축 규칙은 라이브 응답 헤더를 실제로 읽어 보고 고친 것이다. 두 가지가 새고
+있었다. **JS가 전혀 압축되지 않았다** — 아파치 2.4.55부터 `.js`는
+`application/javascript`가 아니라 `text/javascript`로 나가는데 `mod_deflate` 목록에는
+앞의 것만 있었다. 콜드 로드마다 스크립트 640KB가 그대로 갔고, 압축하면 200KB다.
+**woff2에는 캐시 규칙이 아예 없었다** — 한국어는 유니코드 범위별로 파일이 쪼개져
+있으므로 페이지를 옮길 때마다 여러 번 재검증했다. 여기에 해시가 붙은 자산
+(`.js` · `.css` · `.woff2`, 전부 `/_next/static/` 안에 있다)에 `immutable`을 얹어
+새로고침이 재검증하지 않게 했고, 라우터가 받아 가는 RSC 페이로드(`.txt`)는
+`text/plain`의 1시간이 아니라 HTML과 같은 `no-cache`를 따르게 했다 — 페이지와 같은
+내용이니 배포 후 한 시간 묵은 것을 들고 있으면 안 된다. 경로가 아니라 확장자로
+거는 것은 `<If>`가 `AllowOverride All`을 요구해서다. 호스트가 그것을 주지 않으면
+아파치는 사이트 전체를 500으로 답한다.
 
 기존 `.htaccess`는 매 배포마다 `.htaccess.bak-<타임스탬프>`로 백업된다. 정리 단계는
 빌드가 더 이상 만들지 않는 파일을 지우되, 숨김 파일과 40개 미만 업로드는 건드리지

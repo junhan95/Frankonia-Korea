@@ -1,4 +1,6 @@
 import type { CSSProperties } from "react";
+import CartButton from "./cart-button";
+import { cartMeta, cartPath } from "./cart-sections";
 import {
   chamberIndustries,
   chamberIndustryMeta,
@@ -19,14 +21,10 @@ import { industryLabel } from "./industries";
 import LangSwitch from "./lang-switch";
 import { mychamberMeta, mychamberPath } from "./mychamber-sections";
 import NavDrawer from "./nav-drawer";
+import SiteLink from "./site-link";
 import {
-  testCategories,
-  testCategoryMeta,
-  testCategoryPath,
-  testNavCopy,
   testProductMeta,
   testProductPath,
-  testProducts,
   testSystemsPath,
 } from "./test-system-sections";
 import { asset, localeRoute, type Lang } from "./site-config";
@@ -98,45 +96,28 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     { label: t.navSubs.contact.catalog, href: localeRoute(lang, downloadsPath) },
   ];
 
-  // Test Systems takes two columns, not the chamber branch's three. It carried
-  // an industry column to begin with, on the reasoning that an automotive
-  // customer buys from both branches and should not have to learn a second
-  // taxonomy — but an industry page here could only ever list that industry's
-  // standards, which is the slice of the standards index that the standards
-  // index already prints under the same heading. The axis was a second door
-  // into one room. Industry survives as the grouping *inside* that index, and
-  // the two axes left are the ones that describe instruments rather than
-  // buyers: what the test is, and what the equipment is.
-  const tn = testNavCopy[lang];
-  const testGroups: NavGroup[] = [
+  // Test Systems offers one entry: Integrated Systems.
+  //
+  // It used to be the chamber branch's mega panel in miniature — a By Test
+  // column of four and a By Product column of eight, with the catalogues on a
+  // utility row under them. Fourteen links, and the branch behind them is the
+  // one whose pages are still a skeleton: a reader following "Pre-Amplifiers"
+  // out of the bar arrives at a route, a breadcrumb and a model list with no
+  // body under it. A menu that wide is a promise about what is on the other
+  // side of it, and this branch cannot keep it yet.
+  //
+  // So the panel names the one product family that is finished and nothing
+  // else. Nothing is deleted and nothing is stranded: every category and every
+  // product family is still a page, and the overview at `/test-systems/` —
+  // which is what the branch label in the bar leads to — lists all of them as
+  // rows. This is the bar declining to point at them, not the site losing
+  // them. Put the two groups back here when the copy lands; `NavSection` still
+  // takes `groups` and `utils`, and the chamber branch is using both.
+  const testItems: NavLink[] = [
     {
-      title: tn.byTest,
-      links: testCategories.map((c) => ({
-        label: testCategoryMeta[lang][c].label,
-        href: localeRoute(lang, testCategoryPath(c)),
-        note: testCategoryMeta[lang][c].note,
-      })),
+      label: testProductMeta[lang].system.label,
+      href: localeRoute(lang, testProductPath("system")),
     },
-    {
-      title: tn.byProduct,
-      // What the instrument is for, as in the chamber panel's type column. The
-      // caption used to be a model count, which told a reader how deep the
-      // amplifier range goes and nothing about whether an amplifier is the
-      // thing they came for.
-      links: testProducts.map((p) => ({
-        label: testProductMeta[lang][p].label,
-        href: localeRoute(lang, testProductPath(p)),
-        note: testProductMeta[lang][p].note,
-      })),
-    },
-  ];
-
-  // The utility row carries the catalogues alone. It used to open with an "All
-  // n products" link and a standards count; the branch label in the bar is
-  // itself the link to that index, and the standards index moved onto it as a
-  // third way in — see the By Standard band in test-system-content.
-  const testUtils: NavLink[] = [
-    { label: t.navSubs.contact.catalog, href: localeRoute(lang, downloadsPath) },
   ];
 
   const sections: NavSection[] = [
@@ -144,7 +125,9 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     // its own, and a dead parent link is worse than a predictable one.
     { label: t.nav.company, href: company[0].href, items: company },
     { label: t.nav.chamber, href: localeRoute(lang, chambersPath), groups: chamberGroups, utils: chamberUtils },
-    { label: t.nav.equip, href: localeRoute(lang, testSystemsPath), groups: testGroups, utils: testUtils },
+    // `items`, not `groups`: one link does not want a titled column, and a
+    // mega panel sized for one would be a 273px sheet of ink around it.
+    { label: t.nav.equip, href: localeRoute(lang, testSystemsPath), items: testItems },
     // Internal page: the product site cannot be framed, so the CyberShield
     // content is rendered inside this chrome instead. See cybershield-content.
     { label: t.nav.cyber, href: localeRoute(lang, "/cybershield") },
@@ -185,7 +168,7 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
                 Next's basePath rewriting, so the src goes through asset(). The
                 alt is the site name rather than the artwork's wording, because
                 this is the link home. */}
-            <a className="brand" href={home}>
+            <SiteLink className="brand" href={home}>
               {/* next/image cannot optimise an SVG, and the static export runs
                   with images.unoptimized anyway — it would emit this same tag
                   with more machinery around it. */}
@@ -197,15 +180,15 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
                 height={1029}
                 alt="Frankonia"
               />
-            </a>
+            </SiteLink>
 
             <nav className="menu" aria-label={t.a11y.primaryNav}>
               {sections.map((section) => (
                 <div className={section.accent ? "mi mi--hl" : "mi"} key={section.label}>
-                  <a href={section.href}>
+                  <SiteLink href={section.href}>
                     {section.label}
                     {hasMenu(section) && <span className="caret" aria-hidden="true">▼</span>}
-                  </a>
+                  </SiteLink>
                   {hasMenu(section) && (
                     <div className="dropdown">
                       {section.groups ? (
@@ -221,10 +204,10 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
                               <div className="dd-col" key={group.title}>
                                 <h6>{group.title}</h6>
                                 {group.links.map((link) => (
-                                  <a key={link.label} href={link.href}>
+                                  <SiteLink key={link.label} href={link.href}>
                                     {link.label}
                                     {link.note && <span className="dd-note">{link.note}</span>}
-                                  </a>
+                                  </SiteLink>
                                 ))}
                               </div>
                             ))}
@@ -232,7 +215,7 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
                           {section.utils && (
                             <div className="dd-utils">
                               {section.utils.map((link) => (
-                                <a key={link.label} href={link.href}>{link.label}</a>
+                                <SiteLink key={link.label} href={link.href}>{link.label}</SiteLink>
                               ))}
                             </div>
                           )}
@@ -240,7 +223,7 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
                       ) : (
                         <div className="dd-panel">
                           {section.items!.map((link) => (
-                            <a key={link.label} href={link.href}>{link.label}</a>
+                            <SiteLink key={link.label} href={link.href}>{link.label}</SiteLink>
                           ))}
                         </div>
                       )}
@@ -250,18 +233,27 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
               ))}
             </nav>
 
+            {/* The basket, between the menu and the controls. It belongs to
+                neither group: the menu is where a reader goes to find
+                something and the controls are settings, and this is the one
+                thing in the bar that holds what they have already chosen. It
+                is also the only part of the bar besides the drawer that
+                carries state, which is why it is a component of its own and
+                not markup here — see cart-button.tsx. */}
+            <CartButton lang={lang} />
+
             <LangSwitch lang={lang} />
 
-            <a className="cta-top" href={localeRoute(lang, contactPath)}>{t.nav.cta}</a>
+            <SiteLink className="cta-top" href={localeRoute(lang, contactPath)}>{t.nav.cta}</SiteLink>
           </>
         }
       >
         <div className="wrap">
           {sections.map((section) => (
             <div className="mm-group" key={section.label}>
-              <a className={section.accent ? "mm-top mm-top--hl" : "mm-top"} href={section.href}>
+              <SiteLink className={section.accent ? "mm-top mm-top--hl" : "mm-top"} href={section.href}>
                 {section.label}
-              </a>
+              </SiteLink>
               {/* Chambers alone carries fifteen links. Flat, they turn the
                   drawer into a scroll; <details> folds them by group with no
                   state of our own and no loss of keyboard access. */}
@@ -270,7 +262,7 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
                   <summary>{group.title}</summary>
                   <div className="mm-subs">
                     {group.links.map((link) => (
-                      <a key={link.label} href={link.href}>{link.label}</a>
+                      <SiteLink key={link.label} href={link.href}>{link.label}</SiteLink>
                     ))}
                   </div>
                 </details>
@@ -278,20 +270,27 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
               {section.items && (
                 <div className="mm-subs">
                   {section.items.map((link) => (
-                    <a key={link.label} href={link.href}>{link.label}</a>
+                    <SiteLink key={link.label} href={link.href}>{link.label}</SiteLink>
                   ))}
                 </div>
               )}
               {section.utils && (
                 <div className="mm-subs mm-utils">
                   {section.utils.map((link) => (
-                    <a key={link.label} href={link.href}>{link.label}</a>
+                    <SiteLink key={link.label} href={link.href}>{link.label}</SiteLink>
                   ))}
                 </div>
               )}
             </div>
           ))}
-          <a className="btn btn-red mm-cta" href={localeRoute(lang, contactPath)}>{t.nav.cta}</a>
+          {/* The icon above stays in the bar at every width, so this is not the
+              only way to the basket — it is the way a reader who opened the
+              drawer to look for it will find it, which the icon alone does not
+              answer. */}
+          <div className="btns mm-foot">
+            <SiteLink className="btn btn-red mm-cta" href={localeRoute(lang, contactPath)}>{t.nav.cta}</SiteLink>
+            <SiteLink className="btn btn-ghost mm-cta" href={localeRoute(lang, cartPath)}>{cartMeta[lang].label}</SiteLink>
+          </div>
         </div>
       </NavDrawer>
     </header>

@@ -3,6 +3,7 @@ import StructuredData from "./structured-data";
 import { contactMeta, contactPath, offices } from "./contact-sections";
 import { downloadsPath } from "./chamber-sections";
 import { mychamberMeta, mychamberPath } from "./mychamber-sections";
+import SiteLink from "./site-link";
 import { localeRoute, type Lang } from "./site-config";
 
 /* The contact page.
@@ -119,12 +120,12 @@ export default function ContactPage({ lang }: { lang: Lang }) {
          catalogues for one who would rather read first. */
       bandActions={
         <>
-          <a className="btn btn-red" href={localeRoute(lang, mychamberPath)}>
+          <SiteLink className="btn btn-red" href={localeRoute(lang, mychamberPath)}>
             {mychamberMeta[lang].label}
-          </a>
-          <a className="btn btn-ghost" href={localeRoute(lang, downloadsPath)}>
+          </SiteLink>
+          <SiteLink className="btn btn-ghost" href={localeRoute(lang, downloadsPath)}>
             {t.goDownloads}
-          </a>
+          </SiteLink>
         </>
       }
     >
@@ -184,9 +185,9 @@ export default function ContactPage({ lang }: { lang: Lang }) {
               </div>
             ))}
           </div>
-          <a className="go sec-go" href={localeRoute(lang, mychamberPath)}>
+          <SiteLink className="go sec-go" href={localeRoute(lang, mychamberPath)}>
             {t.goMychamber}<span aria-hidden="true">→</span>
-          </a>
+          </SiteLink>
         </div>
       </section>
     </PageShell>
