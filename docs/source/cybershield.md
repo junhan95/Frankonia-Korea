@@ -133,7 +133,10 @@ status quo는 **업계 관행**으로만 서술한다.
 요약본이 쓰는 것은 아래 7개다. 나머지(`hero-render-loop.mp4`,
 `hero-render-poster.webp`, `facility-aerial.webp`, `technician-verification.webp`,
 `engineer-inspection.webp`, `frankonia-campus.webp`)는 랜딩 페이지가 쓰거나 남아
-있다.
+있다. `facility-aerial.webp`는 이 페이지의 시스템 절 도판으로 **계속 쓰지만**, 랜딩
+솔루션 카드는 2026-08-13에 손을 뗐다 — 렌더 대신 실사를 쓰기로 하고 같은 폴더에
+`images/shielding-boundary.webp`(본사 웹사이트 사진 폴더 `RN_0459_052-1.jpg`,
+1600×847)를 새로 넣었다. 경위는 `chambers-assets.md` §11.
 
 | 파일 | 크기 | 쓰이는 곳 |
 |---|---|---|

@@ -302,25 +302,39 @@ const copy = {
    opposite argument: a photograph of the thing is a stronger claim than a
    drawing of it. These three now follow.
 
-   Each is the branch's own lead image, so the card and the page it opens show
-   the same thing: the chambers overview's figure, the CIT-100 that heads the
-   integrated-systems family, and the data-centre campus the CyberShield page
-   opens its system section on. `kind` picks the fitting rule, as it does on the
-   chamber cards — the two photographs fill the band, and the CIT-100 is a
-   product render on white that has to be fitted whole. Cropping it to the
-   band's ratio would cut through the front panel that is the only reason to
-   show it.
+   The first two are the branch's own lead image, so the card and the page it
+   opens show the same thing: the chambers overview's figure and the CIT-100
+   that heads the integrated-systems family. `kind` picks the fitting rule, as
+   it does on the chamber cards — the two photographs fill the band, and the
+   CIT-100 is a product render on white that has to be fitted whole. Cropping
+   it to the band's ratio would cut through the front panel that is the only
+   reason to show it.
 
    The third card carried the PAN panel wall until the CyberShield band below
    took the product page's six lines and their six photographs with it; that
    wall is the Structure card's picture now, and one photograph twice on one
-   page reads as an oversight. The campus is the better card image anyway — the
-   two beside it are both laboratory interiors, and this branch's argument is
-   that the shielding leaves the laboratory. */
+   page reads as an oversight. It then carried `facility-aerial.webp`, the
+   data-centre campus the CyberShield page opens its system section on — but
+   that image is a render, and on a row where the two cards beside it are
+   photographs of real rooms a rendered building is the weakest of the three
+   claims. What stands there now is the shielded boundary itself: the control
+   cabinets and the filter bank that carry power and signal across it, and the
+   bolted shielded door beside them. Everything that enters the room is in the
+   frame, which is the argument CyberShield makes about a data centre — the
+   envelope is only as good as its penetrations.
+
+   The same photograph, cropped tighter, is the Electrical & Filters card in
+   the shielding band further down. That is deliberate rather than the
+   oversight described above: this crop opens out to the full bay and the one
+   below closes on the cabinet line, and the head office's website library has
+   no second photograph of a service boundary. Replace this one first if a
+   picture of a delivered installation seen from outside ever arrives — all
+   three cards in this row are interiors now, so "the shielding leaves the
+   laboratory" rests on the copy alone. */
 const solutionShots = [
   { src: "/chambers/images/overview-lineup.webp", w: 1600, h: 989, kind: "photo" },
   { src: "/test-systems/images/system-cit-100.webp", w: 1600, h: 609, kind: "render" },
-  { src: "/cybershield/images/facility-aerial.webp", w: 1024, h: 1024, kind: "photo" },
+  { src: "/cybershield/images/shielding-boundary.webp", w: 1600, h: 847, kind: "photo" },
 ] as const;
 
 /* The six cards the site map fixes the order of, each pointing at the page that
@@ -821,9 +835,9 @@ export default function Landing({ lang }: { lang: Lang }) {
               <p>{t.trP2}</p>
               <p>{t.trP3}</p>
               {/* The band makes a claim about the company and then left the
-                  reader with nowhere to check it. Philosophy is where the
-                  Company section opens. */}
-              <a className="go" href={localeRoute(lang, sectionPath("philosophy"))}>
+                  reader with nowhere to check it. About is where the Company
+                  section opens. */}
+              <a className="go" href={localeRoute(lang, sectionPath("about"))}>
                 {t.trGo}<span aria-hidden="true">→</span>
               </a>
             </div>

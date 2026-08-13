@@ -14,8 +14,15 @@ import { asset, contactEmail, headOfficeUrl, jobsEmail, type Lang } from "./site
    `EmptyState`, and the list fills in without a layout change. */
 const copy = {
   ko: {
-    philosophy: {
-      eyebrow: "PHILOSOPHY",
+    /* Philosophy and History are one page. Their two copy blocks are one
+       object, in the order the page renders them: the philosophy head and its
+       two bands, then the history narrative, the group timeline and the
+       milestones, then the closing statement. Nothing is rewritten for the
+       merge — the only line dropped is History's own intro, which repeated the
+       last paragraph of `storyClose` word for word and would now sit two
+       screens above it. */
+    about: {
+      eyebrow: "ABOUT",
       title: "전 세계를 무대로, 미래에도 유효한 솔루션",
       intro:
         "Frankonia는 자동차 및 산업 분야의 전자파 적합성(EMC) 시험을 위한 무향 챔버와 시험 시스템 분야에서 고도로 전문화된 기술 기업으로 인정받고 있습니다.",
@@ -53,13 +60,8 @@ const copy = {
           "글로벌 네트워크와 전 세계 활동",
         ],
       },
-      statement: "전 세계 EMC 솔루션의 유일하고 신뢰할 수 있는 파트너.",
-    },
-    history: {
-      eyebrow: "HISTORY",
-      title: "1987 … 성공 스토리의 시작",
-      intro:
-        "Frankonia는 'Made in Germany'로 분류되는 품질과 기술, 그리고 끊임없는 연구개발에 성과를 돌립니다.",
+      historyKicker: "HISTORY",
+      historyTitle: "1987 … 성공 스토리의 시작",
       // 원문 8문단. 6번째(95%)는 callout으로, 나머지는 순서 그대로.
       storyLead: [
         "Frankonia는 원래 여러 산업을 위한 화학·전기화학 제품의 생산과 거래를 위해 설립되었습니다. 처음부터 Wolfgang Opitz의 지휘 아래 자체 연구소와 집중적인 연구가 회사의 본질적인 일부였습니다. 이른 단계에서 제품 범위는 EMP 방호실과 벙커로 빠르게 확장되었고, 이것이 오늘날 무향 챔버와 차폐실을 위한 전자기 차폐의 근본 기준이 되었습니다.",
@@ -131,6 +133,7 @@ const copy = {
         ["2020", "안테나 챔버용 신규 흡수체 — A2 등급 P1400HF-A2 Frankosorb® 흡수체"],
         ["2021", "신규 하이브리드 흡수체 시리즈 출시 — A2 등급 Frankosorb® H1300 Turbine 흡수체"],
       ],
+      statement: "전 세계 EMC 솔루션의 유일하고 신뢰할 수 있는 파트너.",
     },
     career: {
       eyebrow: "CAREER",
@@ -221,8 +224,8 @@ const copy = {
     },
   },
   en: {
-    philosophy: {
-      eyebrow: "PHILOSOPHY",
+    about: {
+      eyebrow: "ABOUT",
       title: "Future-proof solutions on a global scale",
       intro:
         "Frankonia is recognized as a highly specialized technology corporation for EMC anechoic chambers and test systems within the automotive and industrial sector for testing of electromagnetic compatibility.",
@@ -260,13 +263,8 @@ const copy = {
           "Global presence and worldwide activity",
         ],
       },
-      statement: "The unique and trustworthy partner for EMC solutions worldwide.",
-    },
-    history: {
-      eyebrow: "HISTORY",
-      title: "1987 … the start of a success story",
-      intro:
-        "Frankonia contributes its success to quality and technology along the classification of ‘Made in Germany’, paired with a continuously research and development.",
+      historyKicker: "HISTORY",
+      historyTitle: "1987 … the start of a success story",
       // The source's eight paragraphs. The sixth (the 95% figure) is lifted
       // into the callout; the rest keep their order. Wording is the head
       // office's own, including `In the late early,` and `a continuously
@@ -342,6 +340,7 @@ const copy = {
         ["2020", "New absorbers for Antenna Chambers, the P1400HF-A2 Frankosorb® absorber in A2"],
         ["2021", "New hybrid absorbers series launched, the Frankosorb® H1300 Turbine absorber in A2"],
       ],
+      statement: "The unique and trustworthy partner for EMC solutions worldwide.",
     },
     career: {
       eyebrow: "CAREER",
@@ -606,38 +605,43 @@ export default function CompanyPage({
   );
 }
 
-/* The head band of Philosophy, which is where the Company menu opens.
+/* The head band of About, which is where the Company menu opens.
    The drone shot of Großenseebach: five buildings, the solar roofs and the
    village behind them. The page's own subject is what the company is rather
    than what it makes, and this is the only photograph on the site that shows
    that. Framed a shade above centre: the entrance and the solar roofs take the
    half of the band the scrim clears, and the village holds the top edge. */
-const philosophyShot: HeadShot = {
+const aboutShot: HeadShot = {
   src: "/company/images/hq-aerial.webp", w: 1513, h: 553, at: "50% 48%",
 };
 
 function CompanyBody({ lang, section }: { lang: Lang; section: CompanySection }) {
   const t = copy[lang];
 
-  if (section === "philosophy") {
-    const p = t.philosophy;
+  /* About: the former Philosophy page, then the former History page, on one
+     spine. The order is what the company is → what it stands for and provides
+     → how it got there → the group and the products it built, and the closing
+     line lands at the end of all of it rather than halfway down. The tinted
+     `.alt` bands still alternate: commitment, then the group timeline. */
+  if (section === "about") {
+    const a = t.about;
     return (
-      <PageShell lang={lang} eyebrow={p.eyebrow} title={p.title} intro={p.intro} shot={philosophyShot}>
+      <PageShell lang={lang} eyebrow={a.eyebrow} title={a.title} intro={a.intro} shot={aboutShot}>
         {/* Copy left, photograph right — the source page's own two-column
             opening, on this site's existing `.trust` split. */}
         <section>
           <div className="wrap trust">
             <div>
-              <span className="kicker">{p.approachKicker}</span>
-              <h2>{p.approachTitle}</h2>
-              {p.approachBody.map((para) => (
+              <span className="kicker">{a.approachKicker}</span>
+              <h2>{a.approachTitle}</h2>
+              {a.approachBody.map((para) => (
                 <p key={para}>{para}</p>
               ))}
             </div>
             <Figure
               src="/company/images/frankosorb-absorber.webp"
-              alt={p.figureAlt}
-              caption={p.figureCaption}
+              alt={a.figureAlt}
+              caption={a.figureCaption}
               width={720}
               height={480}
             />
@@ -646,63 +650,51 @@ function CompanyBody({ lang, section }: { lang: Lang; section: CompanySection })
 
         <section className="alt">
           <div className="wrap">
-            <SectionHead kicker={p.commitKicker} title={p.commitTitle} />
+            <SectionHead kicker={a.commitKicker} title={a.commitTitle} />
             <div className="check-cols">
-              <CheckColumn head={p.standsFor.head} items={p.standsFor.items} />
-              <CheckColumn head={p.provides.head} items={p.provides.items} />
+              <CheckColumn head={a.standsFor.head} items={a.standsFor.items} />
+              <CheckColumn head={a.provides.head} items={a.provides.items} />
             </div>
           </div>
         </section>
 
+        {/* The history narrative, in the source's own order, with the two
+            photographs where they sit on that page: the archive print beside
+            the opening, the current chamber after the 95% figure. It opens
+            under a section head now rather than a page head — that is the one
+            structural change the merge makes to it. */}
         <section>
           <div className="wrap">
-            <div className="statement">
-              <p>{p.statement}</p>
-            </div>
-          </div>
-        </section>
-      </PageShell>
-    );
-  }
-
-  if (section === "history") {
-    const h = t.history;
-    return (
-      <PageShell lang={lang} eyebrow={h.eyebrow} title={h.title} intro={h.intro}>
-        {/* The source's narrative, in its own order, with the two photographs
-            where they sit on that page: the archive print beside the opening,
-            the current chamber after the 95% figure. */}
-        <section>
-          <div className="wrap">
+            <SectionHead kicker={a.historyKicker} title={a.historyTitle} />
             <div className="trust">
-              <Prose paras={h.storyLead} />
+              <Prose paras={a.storyLead} />
               <Figure
                 src="/company/images/history-early-shielded-line.webp"
-                alt={h.earlyFigureAlt}
-                caption={h.earlyFigureCaption}
+                alt={a.earlyFigureAlt}
+                caption={a.earlyFigureCaption}
                 width={1200}
                 height={808}
               />
             </div>
-            <Prose paras={h.storyRest} />
-            <div className="callout">{h.callout}</div>
+            <Prose paras={a.storyRest} />
+            <div className="callout">{a.callout}</div>
             <Figure
               src="/company/images/history-antenna-chamber-arch.webp"
-              alt={h.archFigureAlt}
-              caption={h.archFigureCaption}
+              alt={a.archFigureAlt}
+              caption={a.archFigureCaption}
               width={1600}
               height={991}
               className="figure figure-wide"
             />
-            <Prose paras={h.storyClose} />
+            <Prose paras={a.storyClose} />
           </div>
         </section>
 
         <section className="alt">
           <div className="wrap">
-            <SectionHead kicker={h.groupKicker} title={h.groupTitle} />
+            <SectionHead kicker={a.groupKicker} title={a.groupTitle} />
             <div className="badges badges-four">
-              {h.groupFacts.map(([value, label]) => (
+              {a.groupFacts.map(([value, label]) => (
                 <div className="bd" key={label}>
                   <b>{value}</b>
                   <span>{label}</span>
@@ -710,15 +702,27 @@ function CompanyBody({ lang, section }: { lang: Lang; section: CompanySection })
               ))}
             </div>
             <div className="sec-go">
-              <EntryList entries={h.groupEntries} />
+              <EntryList entries={a.groupEntries} />
             </div>
           </div>
         </section>
 
         <section>
           <div className="wrap">
-            <SectionHead kicker={h.milestonesKicker} title={h.milestonesTitle} />
-            <EntryList entries={h.milestones} />
+            <SectionHead kicker={a.milestonesKicker} title={a.milestonesTitle} />
+            <EntryList entries={a.milestones} />
+          </div>
+        </section>
+
+        {/* The closing line, which used to end Philosophy. It ends the whole
+            page now — the one place on the site where a sentence stands on its
+            own, so it keeps its own band rather than hanging off the milestone
+            list. */}
+        <section>
+          <div className="wrap">
+            <div className="statement">
+              <p>{a.statement}</p>
+            </div>
           </div>
         </section>
       </PageShell>

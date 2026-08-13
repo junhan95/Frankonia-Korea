@@ -97,10 +97,9 @@ test("the export contains the pages the site map defines", () => {
       "/chambers/type/rvc/",
       "/chambers/type/sac/",
       "/chambers/type/shielded-room/",
+      "/company/about/",
       "/company/career/",
       "/company/events/",
-      "/company/history/",
-      "/company/philosophy/",
       "/company/publications/",
       "/contact/",
       "/cybershield/",
@@ -149,10 +148,9 @@ test("the export contains the pages the site map defines", () => {
       "/ko/chambers/type/rvc/",
       "/ko/chambers/type/sac/",
       "/ko/chambers/type/shielded-room/",
+      "/ko/company/about/",
       "/ko/company/career/",
       "/ko/company/events/",
-      "/ko/company/history/",
-      "/ko/company/philosophy/",
       "/ko/company/publications/",
       "/ko/contact/",
       "/ko/cybershield/",
@@ -289,8 +287,10 @@ test("the questionnaire is in the exported HTML, not assembled by script", () =>
     const page = pages.find((p) => p.route === route);
     assert.ok(page, `${route} is not in the export`);
     assert.ok(page.html.includes(question), `${route}: the first question is not in the HTML`);
-    // Every option of it, too — the answer set is the page.
-    for (const option of ["Automotive", "Military", "Commercial", "Powertrain"]) {
+    // Every option of it, too — the answer set is the page. Three, which is
+    // what the head office matrix has: E-Drive is a branch under Automotive,
+    // not a segment beside it.
+    for (const option of ["Automotive", "Commercial", "Military"]) {
       assert.ok(page.html.includes(option), `${route}: the ${option} option is missing`);
     }
   }

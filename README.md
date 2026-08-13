@@ -6,13 +6,13 @@
 
 [frankonia-solutions.com](https://frankonia-solutions.com/) 의 콘텐츠를 기준으로
 정보 구조와 디자인을 다시 짠 **본사 사이트 리뉴얼 제안**이다.
-English · 한국어 두 개 로케일, 로케일당 66페이지를 정적 HTML로 프리렌더한다.
+English · 한국어 두 개 로케일, 로케일당 65페이지를 정적 HTML로 프리렌더한다.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16.2-000000?logo=nextdotjs&logoColor=white)
 ![React](https://img.shields.io/badge/React-19.2-149ECA?logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)
 ![Static export](https://img.shields.io/badge/output-static%20export-2ea44f)
-![Pages](https://img.shields.io/badge/pages-132-25282B)
+![Pages](https://img.shields.io/badge/pages-130-25282B)
 
 ### [English](http://www.frankonia-korea.com/) · [한국어](http://www.frankonia-korea.com/ko/)
 
@@ -37,7 +37,12 @@ English · 한국어 두 개 로케일, 로케일당 66페이지를 정적 HTML�
 ## The site
 
 여섯 개 GNB — Company · Anechoic Chambers · EMC Test Systems · CyberShield ·
-Contact · **MyChamber**. 로케일당 66페이지, 합계 132페이지.
+Contact · **MyChamber**. 로케일당 65페이지, 합계 130페이지.
+
+Philosophy와 History는 **About** 한 페이지로 합쳤다(`/company/about`). 둘 다 혼자서는
+한 페이지에 못 미쳤고, Company 메뉴를 여는 독자의 질문 — 이 회사는 무엇인가 —
+어느 한쪽만으로는 답이 되지 않았다. 이념 → 추구하는 것·제공하는 것 → 연혁 →
+법인·제품 마일스톤 → 클로징 한 줄의 순서다.
 
 Career는 GNB에서 내려 Company 드롭다운으로 돌아갔다. 그 자리는 챔버를 사러 온
 사람에게 더 값이 나가는 자리이고, 이 사이트가 할 일은 사양을 견적으로 옮기는
@@ -47,7 +52,7 @@ Career는 GNB에서 내려 Company 드롭다운으로 돌아갔다. 그 자리�
 |---|---|---|---|
 | Landing | 1 | 히어로, 세 개 제품 축 요약, 레퍼런스, 컨택 밴드 | 완성 |
 | MyChamber | 1 | 질문 3~9개로 챔버 32종을 좁히고, 결과를 그대로 견적 메일로 | 완성 |
-| Company | 5 | Philosophy · History · Publications · Events · Career | 완성 |
+| Company | 4 | About(이념 + 연혁) · Publications · Events · Career | 완성 |
 | Anechoic Chambers | 15 | 개요 + 산업 5 + 챔버 형태 6 + 기술 4 (FrankoSorb · 차폐 게이트 · 자동화 · 서비스) + References | 골격 |
 | EMC Test Systems | 17 | 개요 + 산업 5 + 시험 종류 4 + 제품군 6 + 규격 인덱스 | 골격 |
 | CyberShield | 1 | 요약 — 위협·PAN 시스템·제품군 6·측정과 표준·적용 분야, 그리고 제품 사이트로 넘기는 링크 | 완성 |
@@ -72,9 +77,19 @@ Career는 GNB에서 내려 Company 드롭다운으로 돌아갔다. 그 자리�
 사는데, 그러려고 분류 체계를 두 번 배울 이유가 없다.
 
 **MyChamber — 본사 매트릭스를 정답지로 쓰는 채점 엔진.** 질문의 분기점은
-본사가 손으로 그린 *Chamber Matrix*(2026-08-11) 그대로다 — 세 개 세그먼트,
-그 아래 부품·차량·잔향·E-Drive, 사전 인증과 정식 인증, 측정 거리, 흡수체
-방식, 정온 영역. 다만 트리를 그대로 옮기지는 않았다. 트리는 한 모델이 두 가지에
+본사가 손으로 그린 *Chamber Matrix*(2026-08-11) 그대로다 — 세 개 세그먼트
+(Automotive · Commercial · Military), 그 아래 부품·차량·잔향·E-Drive, 사전
+인증과 정식 인증, 측정 거리, 흡수체 방식, 정온 영역.
+
+첫 질문은 **세 개**다. 사이트의 산업 축은 Powertrain을 포함해 다섯 개지만
+(카탈로그 분류이자 `/chambers/industry/…` 라우트), 매트릭스는 E-Drive를
+Automotive **아래 가지**로 둔다 — 구동계 시험대는 자동차 시험소가 사는
+물건이기 때문이다. Powertrain을 네 번째 선택지로 내놓으면 독자에게 본사가
+하나로 보는 것을 둘로 나누라고 묻는 셈이고, E-Drive 가지가 제자리에서 빠진다.
+두 축을 잇는 곳은 `mychamber-advisor.ts`의 `segmentIndustries` 한 곳뿐이고,
+질문이 세 개인지는 테스트가 지킨다.
+
+다만 트리를 그대로 옮기지는 않았다. 트리는 한 모델이 두 가지에
 동시에 속한다는 말을 못 하는데 (MIL-STD Chamber Advanced는 군용이면서 상용·자동차
 시험장 요건을 만족하고, CTC는 Commercial에 걸려 있으면서 자동차·군용 부품용이다),
 `mychamber-advisor.ts`의 채점은 그것을 `alsoIndustries` 한 줄로 말한다.

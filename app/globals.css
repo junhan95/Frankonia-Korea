@@ -114,9 +114,20 @@ nav.menu .mi > a { display: inline-flex; align-items: center; gap: 5px; }
 .mi:hover .dropdown, .mi:focus-within .dropdown { display: block; }
 /* No drop shadow — the reference's own overlay panel (`.cs .language-menu`)
    separates itself with an ink fill and a 30% white hairline instead. */
-.dd-panel { background: var(--ink); border: 1px solid rgba(255, 255, 255, .3); border-radius: var(--radius); min-width: 216px; padding: 8px 0; }
-.dd-panel a { display: block; padding: 9px 18px; color: #c9c9c9; font-size: 13.5px; font-weight: 400; border-bottom: 0; border-left: 2px solid transparent; }
-.dd-panel a:hover { color: #fff; border-left-color: var(--red); background: rgba(255, 255, 255, .05); border-bottom: 0; }
+.dd-panel { background: var(--ink); border: 1px solid rgba(255, 255, 255, .3); border-radius: var(--radius); min-width: 216px; padding: 8px 20px; }
+/* Every rule for a link *inside* a panel is prefixed with `nav.menu`, and so
+   is each of their :hover pairs. `nav.menu a` above carries one element
+   selector more than a bare `.dd-panel a` and was quietly taking the padding,
+   the colour and the size off these links: the Company and Contact panels
+   rendered 15px white rows starting 5px from the panel edge rather than 13.5px
+   grey ones at 33px. Prefixing only the base rules would then have let them
+   outrank their own :hover rules and swallow the red edge, hence both. */
+/* The 20px above plus the 10px here put the label 33px in from the panel's
+   left edge — the same axis the mega panel's columns sit on, so the two kinds
+   of panel read as one menu. The 20px is on the panel rather than the link
+   because the hover fill should stop where the column's would. */
+nav.menu .dd-panel a { display: block; padding: 9px 10px; color: #c9c9c9; font-size: 13.5px; font-weight: 400; border-bottom: 0; border-left: 2px solid transparent; }
+nav.menu .dd-panel a:hover { color: #fff; border-left-color: var(--red); background: rgba(255, 255, 255, .05); border-bottom: 0; }
 
 /* Mega panel — the two product branches. Fifteen links in one 216px column
    would not be scannable, so they are grouped into titled columns of four to
@@ -140,15 +151,21 @@ nav.menu .mi:has(.dd-panel--mega) { position: static; }
 .dd-panel--mega { --dd-cols: 3; width: calc(var(--dd-cols) * 243.33px + 30px); max-width: calc(100vw - 48px); padding: 20px 0 0; }
 .dd-cols { display: grid; grid-template-columns: repeat(var(--dd-cols), 1fr); gap: 0 10px; padding: 0 20px 16px; }
 /* Same voice as the `.kicker` above every section heading on the site. */
-.dd-col h6 { color: var(--primary); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 0 10px 8px; }
-.dd-panel--mega a { padding: 7px 10px; line-height: 1.35; }
+/* 12px, not the links' 10px: a link spends 2px of its own inset on the
+   transparent border that turns red on hover, so 12 is what puts the heading
+   on the same axis as the labels underneath it. */
+.dd-col h6 { color: var(--primary); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 0 12px 8px; }
+nav.menu .dd-panel--mega a { padding: 7px 10px; line-height: 1.35; }
 .dd-note { display: block; color: #8a8a8a; font-size: 11.5px; margin-top: 2px; }
 .dd-panel--mega a:hover .dd-note { color: #b0b0b0; }
 /* Utility row: whole-branch links (all models, references, downloads) that
    belong to no single column. */
-.dd-utils { display: flex; flex-wrap: wrap; gap: 4px 24px; border-top: 1px solid rgba(255, 255, 255, .18); background: rgba(255, 255, 255, .04); padding: 6px 22px 8px; border-radius: 0 0 var(--radius) var(--radius); }
-.dd-utils a { padding: 7px 0; font-size: 13px; border-left: 0; }
-.dd-utils a:hover { border-left: 0; background: none; text-decoration: underline; }
+/* 32px so the first utility link starts under the column labels above it and
+   the panel keeps one left edge all the way down; these links carry no padding
+   of their own, so the whole inset is the row's. */
+.dd-utils { display: flex; flex-wrap: wrap; gap: 4px 24px; border-top: 1px solid rgba(255, 255, 255, .18); background: rgba(255, 255, 255, .04); padding: 6px 32px 8px; border-radius: 0 0 var(--radius) var(--radius); }
+nav.menu .dd-utils a { padding: 7px 0; font-size: 13px; border-left: 0; }
+nav.menu .dd-utils a:hover { border-left: 0; background: none; text-decoration: underline; }
 
 /* The one marked entry in the bar — MyChamber (see the note in site-header).
    An outlined pill rather than red lettering, and the reason is contrast:
@@ -861,13 +878,62 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
    sequence of questions still reads as the same site as the pages it leads to.
    Nothing here introduces a shadow, a gradient or a second radius. */
 
-/* Progress. A count in the kicker's voice and a 2px rule that fills — the
-   number of steps changes with the answers, so the bar has to be honest about
-   a total that moves. */
-.mc-progress { display: flex; align-items: center; gap: 18px; max-width: 900px; margin-bottom: 40px; }
-.mc-count { flex: none; color: var(--primary); font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-.mc-track { flex: 1; height: 2px; background: var(--line); }
-.mc-fill { display: block; height: 100%; background: var(--primary); transition: width .3s ease; }
+/* Progress. A count in the kicker's voice, then the flow itself as a row of
+   nodes on a connector: a tick behind the reader, a filled ring where they
+   are, a number ahead of them. Under each node the question it asks and the
+   answer given to it — which is why this is also the only place the answers
+   are listed, the result page included. There is no summary section further
+   down; a second copy of the answers would only be a second place to keep in
+   step, and a reader who wants to change one goes back to the question.
+
+   The pill uses `--pill`, the radius this site already gives to a label of
+   this shape, and the row carries no shadow and no gradient. */
+.mc-progress { margin-bottom: 44px; }
+.mc-count { display: block; color: var(--primary); font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+
+/* Left-aligned, like everything else on the page: the first node sits on the
+   column's edge under the count, not inset by half a segment. Each item holds
+   its node at its own left edge and carries the connector on from there, so
+   there is no gap between items to cut the line — the pills are spaced by
+   their own margin instead. */
+.mc-steps { display: flex; align-items: flex-start; list-style: none; margin: 22px 0 0; padding: 0; }
+.mc-step { position: relative; flex: 1 1 0; min-width: 0; }
+/* The connector, from under this node to the next. Behind the node, so the
+   filled circle covers the join; the last one runs out to the end of the row,
+   which is what keeps the track the width of the column. */
+.mc-step::after { content: ""; position: absolute; top: 13px; left: 15px; right: 0; height: 4px; background: var(--line); transition: background .25s ease; }
+.mc-step.is-done::after { background: var(--primary); }
+
+.mc-step-btn { display: flex; flex-direction: column; align-items: flex-start; width: 100%; padding: 0; background: none; border: 0; font: inherit; color: inherit; text-align: left; cursor: pointer; }
+.mc-step-btn:disabled { cursor: default; }
+.mc-step-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: var(--pill); }
+
+.mc-step-dot { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--canvas-soft); color: var(--body-text); font-size: 13px; font-weight: 800; transition: background .25s ease, color .25s ease; }
+.mc-step.is-done .mc-step-dot, .mc-step.is-now .mc-step-dot { background: var(--primary); color: var(--white); }
+/* Where the reader is: a white centre inside the filled node, as opposed to
+   the tick of a question already behind them. */
+.mc-step.is-now .mc-step-dot::after { content: ""; width: 11px; height: 11px; border-radius: 50%; background: var(--white); }
+.mc-step-chk { width: 15px; height: 15px; fill: none; stroke: var(--white); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* The label, with a caret up to its node. `::before` is the caret and takes
+   the pill's own background, so the three states colour together. */
+.mc-step-pill { position: relative; max-width: calc(100% - 10px); margin-top: 16px; padding: 7px 15px; border-radius: var(--pill); background: var(--canvas-soft); color: var(--body-dark); font-size: 12.5px; font-weight: 700; line-height: 1.3; transition: background .25s ease, color .25s ease; }
+.mc-step-pill > span { display: block; max-width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.mc-step-pill::before { content: ""; position: absolute; top: -5px; left: 15px; transform: translateX(-50%); border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 5px solid var(--canvas-soft); transition: border-color .25s ease; }
+.mc-step.is-now .mc-step-pill { background: var(--primary); color: var(--white); }
+.mc-step.is-now .mc-step-pill::before { border-bottom-color: var(--primary); }
+.mc-step.is-done .mc-step-pill { color: var(--ink); }
+
+/* The answer itself. Two lines at most — the standards used to run to four,
+   and a strip that grows with the answer would push the question off screen. */
+.mc-step-val { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; max-width: calc(100% - 8px); margin-top: 9px; overflow: hidden; color: var(--body-text); font-size: 12px; line-height: 1.45; }
+.mc-step.is-done .mc-step-val { color: var(--body-dark); }
+.mc-step.is-todo .mc-step-val { color: var(--mute); }
+
+.mc-step-btn:not(:disabled):hover .mc-step-pill { background: var(--primary); color: var(--white); }
+.mc-step-btn:not(:disabled):hover .mc-step-pill::before { border-bottom-color: var(--primary); }
+.mc-step-btn:not(:disabled):hover .mc-step-dot { background: var(--primary); color: var(--white); }
+.mc-step-hint { margin-top: 22px; color: var(--body-dark); font-size: 13px; line-height: 1.6; }
 
 .mc-head { margin-bottom: 32px; }
 /* The heading takes focus when the step changes, so it needs a ring of its
@@ -890,6 +956,14 @@ h2[tabindex]:focus-visible { outline: 2px solid var(--primary); outline-offset: 
 
 .mc-actions { align-items: center; margin-top: 34px; }
 .mc-need { color: var(--body-dark); font-size: 14px; }
+
+/* Questionnaire fields (mychamber-questionnaire.tsx). The same grammar as the
+   wizard's steps — option cards, hairline inputs — stacked as one form, so a
+   field needs a heading of its own where a step had the section head. */
+.mc-q-field { margin-top: 34px; }
+.mc-q-field:first-child { margin-top: 0; }
+.mc-q-label { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+.mc-q-label em { margin-left: 8px; color: var(--primary); font-style: normal; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 
 /* Result cards. Picture left, everything else right — the picture is a
    category photograph and is captioned as one, so it sits in its own ink
@@ -1128,8 +1202,11 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
   /* A 140px label column leaves nothing for a size like "19,205 × 12,080 ×
      8,325 mm", so the figure moves under its label. */
   .mc-spec > div { grid-template-columns: 1fr; gap: 4px; }
-  .mc-progress { flex-wrap: wrap; gap: 10px; }
-  .mc-track { flex-basis: 100%; }
+  /* The row keeps its shape and scrolls sideways instead of wrapping: a
+     connector that breaks across two lines stops reading as one flow. 128px
+     is the narrowest a pill stays a word rather than an ellipsis. */
+  .mc-steps { overflow-x: auto; padding-bottom: 6px; }
+  .mc-step { flex: 0 0 128px; }
   /* `.btns` is already column here, so the buttons stretch; the hint under
      them should not. */
   .mc-need { text-align: center; }

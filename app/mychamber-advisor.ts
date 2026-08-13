@@ -8,18 +8,27 @@ import type { Lang } from "./site-config";
  * ## The source
  *
  * The branch points below are the head office's own — the hand-drawn *Chamber
- * Matrix* of 11 August 2026, which sorts the range into three segments and
- * three or four levels under each:
+ * Matrix* of 11 August 2026, extended on 12 August 2026, which sorts the range
+ * into segments and three or four levels under each:
  *
  *   Automotive   components  → reverberation / pre-compliance / full compliance
  *                vehicle     → 3 m / 10 m → hybrid or pyramid
  *                reverberation → components / vehicle
  *                E-Drive     → mobile / fixed single / fixed axis dyno
  *   Commercial   reverberation · pre-compliance · full compliance SAC (3/5/10 m,
- *                hybrid or pyramid, quiet zone ø3–6 m) · full compliance FAC ·
+ *   Industrial   hybrid or pyramid, quiet zone ø3–6 m) · full compliance FAC ·
  *                special
  *   Military     components → hybrid / pyramid
  *                vehicle    → hybrid / pyramid
+ *   Special      SAT chamber · antenna components (OTA) · antenna vehicle · RCS
+ *
+ * The 12 August extension adds two things the tree of models cannot carry:
+ * the *Special Chambers* segment, whose four entries are measurement tasks
+ * rather than catalogue models, and a questionnaire behind every segment —
+ * Ⓐ Automotive, Ⓑ Commercial Industrial, Ⓒ Military, Ⓓ Special Chambers,
+ * plus a free-standing ⓧ Custom Request. Those live in
+ * mychamber-questionnaires.ts; what this file carries is the Special segment
+ * itself and the one question under it, because both branch the flow.
  *
  * Everything the matrix branches on is asked here: what is being tested,
  * pre-compliance against full compliance, the measurement distance, the
@@ -63,6 +72,63 @@ import type { Lang } from "./site-config";
 /* ------------------------------------------------------------------ *
  * Answer axes
  * ------------------------------------------------------------------ */
+
+/**
+ * The three segments the matrix sorts the whole range into, in its own order.
+ *
+ * Three answers rather than four, on purpose. The site's product taxonomy has
+ * an industry axis of five slugs — Automotive, Military, Commercial,
+ * Powertrain, Others — because that is how the head office files the catalogue
+ * and how /chambers/industry/… is routed. The matrix is not that axis. It has
+ * three segments, and it files the E-Drive benches *inside* Automotive, as a
+ * sibling of "components" and "vehicle", because a drivetrain bench is
+ * something an automotive laboratory buys.
+ *
+ * Offering Powertrain here as a fourth segment asked the reader to separate two
+ * things the matrix treats as one, and took E-Drive off the Automotive branch
+ * the head office put it on. So the questionnaire asks the matrix's three, and
+ * `segmentIndustries` below is the one place that knows a Powertrain chamber
+ * answers to the Automotive segment.
+ */
+export const segments = ["automotive", "commercial", "military"] as const;
+export type Segment = (typeof segments)[number];
+
+/**
+ * The 12 August extension's fourth segment. It is a choice on the first
+ * question, but not a member of `segments`: those three are what the scoring
+ * engine knows, because they are the ones with catalogue models behind them.
+ * The Special Chambers segment has none — its four entries are measurement
+ * tasks, and its whole branch ends in questionnaire Ⓓ rather than in a
+ * recommendation. Choosing it is exclusive: the matrix draws it as a track of
+ * its own, not a fourth thing to tick alongside Automotive.
+ */
+export type SegmentChoice = Segment | "special";
+
+/** The four measurement tasks the matrix files under Special Chambers. */
+export const specialUses = ["sat", "ota", "antenna-vehicle", "rcs"] as const;
+export type SpecialUse = (typeof specialUses)[number];
+
+/** True where the reader is on the Special Chambers track — the standard
+ *  questions close and the flow ends in questionnaire Ⓓ. */
+export const isSpecialTrack = (a: Answers): boolean => a.segments.includes("special");
+
+/** The catalogue industries each segment covers. The join between the matrix's
+ *  three and the catalogue's four. */
+const segmentIndustries: Record<Segment, readonly ChamberIndustry[]> = {
+  automotive: ["automotive", "powertrain"],
+  commercial: ["commercial"],
+  military: ["military"],
+};
+
+/** Every catalogue industry the chosen segments cover — what the scoring
+ *  compares a model's own filing against. The Special segment covers none:
+ *  nothing in the catalogue answers to it. */
+export const coveredIndustries = (segs: readonly SegmentChoice[]): readonly ChamberIndustry[] =>
+  segs.flatMap((s) => (s === "special" ? [] : segmentIndustries[s]));
+
+/** The segment a catalogue industry is filed under. */
+export const segmentOf = (i: ChamberIndustry): Segment =>
+  i === "powertrain" ? "automotive" : i;
 
 /** The four EMC test kinds: conducted immunity, radiated immunity, conducted
  *  emission, radiated emission. */
@@ -244,7 +310,11 @@ export const standardName = (id: StandardId) =>
  * ------------------------------------------------------------------ */
 
 export type Answers = {
-  industries: readonly ChamberIndustry[];
+  /** The matrix's segments, not the catalogue's four industries — see the
+   *  notes on `segments` and `SegmentChoice`. */
+  segments: readonly SegmentChoice[];
+  /** The Special Chambers track's one question. */
+  specialUse?: SpecialUse;
   dut?: DutClass;
   tests: readonly TestKind[];
   level?: LevelAnswer;
@@ -257,26 +327,31 @@ export type Answers = {
   qz?: QzAnswer;
   drive?: DriveAnswer;
   /**
-   * `undefined` means the reader has not touched the standards step yet, and
-   * the suggestion below stands in for it — including in the scoring, so the
-   * result is the same whether they confirmed the suggestion or skipped it.
-   * The moment they tick or untick anything it becomes an explicit list, empty
-   * included.
+   * The flow no longer asks — see the note where the step used to be — so in
+   * the wizard this is always `undefined` and the suggestion below stands in
+   * for it. It stays an overridable field because the scoring is specified
+   * against explicit lists: that is how the matrix tests pin a path down, and
+   * how a caller with a real list of standards in hand can supply one.
    */
   standards?: readonly StandardId[];
 };
 
-export const emptyAnswers: Answers = { industries: [], tests: [] };
+export const emptyAnswers: Answers = { segments: [], tests: [] };
 
-/** The standards the answers already imply. See the note on `Answers.standards`. */
-export const suggestStandards = (a: Answers): StandardId[] =>
-  standards
+/** The standards the answers already imply. See the note on `Answers.standards`.
+ *  A standard is filed against the catalogue's industries, so the reader's
+ *  segments are expanded before they are compared — which is what keeps
+ *  CISPR 25 suggested to an Automotive reader testing a drivetrain. */
+export const suggestStandards = (a: Answers): StandardId[] => {
+  const covered = coveredIndustries(a.segments);
+  return standards
     .filter(
       (s) =>
-        s.industries.some((i) => a.industries.includes(i)) &&
+        s.industries.some((i) => covered.includes(i)) &&
         s.tests.some((t) => a.tests.includes(t)),
     )
     .map((s) => s.id);
+};
 
 /** What the engine actually scores against — the reader's list if they made
  *  one, the suggestion otherwise. */
@@ -288,9 +363,9 @@ export const effectiveStandards = (a: Answers): readonly StandardId[] =>
  * ------------------------------------------------------------------ */
 
 export type QuestionId =
-  | "industries" | "dut" | "tests"
+  | "segments" | "specialUse" | "dut" | "tests"
   | "family" | "luf" | "stirrer" | "level" | "ground"
-  | "absorber" | "qz" | "shell" | "drive" | "standards";
+  | "absorber" | "qz" | "shell" | "drive";
 
 export type Option = {
   id: string;
@@ -305,7 +380,8 @@ export type Question = {
   id: QuestionId;
   /** Checkboxes when true, radio buttons when false. */
   multi: boolean;
-  /** May be left empty and still advance. Only the standards step is. */
+  /** May be left empty and still advance. No step is, since the standards
+   *  question was taken out; the flag stays for the next one that is. */
   optional?: boolean;
   kicker: Record<Lang, string>;
   title: Record<Lang, string>;
@@ -352,7 +428,13 @@ export const wantsAnechoic = (a: Answers) =>
  */
 export const questions: readonly Question[] = [
   {
-    id: "industries",
+    // The matrix's first level, in its own order — the three model segments,
+    // and the Special Chambers segment the 12 August extension added. The note
+    // under Automotive names the drivetrain out loud, because that is the one
+    // place a reader could expect a segment of its own and find none — see the
+    // note on `segments`. The Commercial label carries "Industrial" because
+    // the extension renamed the box.
+    id: "segments",
     multi: true,
     kicker: { ko: "적용 분야", en: "Application" },
     title: {
@@ -365,22 +447,54 @@ export const questions: readonly Question[] = [
     },
     options: [
       { id: "automotive", label: { ko: "Automotive", en: "Automotive" },
-        note: { ko: "차량·전장부품", en: "Vehicles and vehicle components" } },
+        note: { ko: "차량·전장부품·전기 구동계(E-Drive)", en: "Vehicles, vehicle components and electric drivetrains" } },
+      { id: "commercial", label: { ko: "Commercial · Industrial", en: "Commercial · Industrial" },
+        note: { ko: "일반 산업·전자기기", en: "Industrial and consumer electronics" } },
       { id: "military", label: { ko: "Military", en: "Military" },
         note: { ko: "군수·방산·항공", en: "Defence, aerospace" } },
-      { id: "commercial", label: { ko: "Commercial", en: "Commercial" },
-        note: { ko: "일반 산업·전자기기", en: "Industrial and consumer electronics" } },
-      { id: "powertrain", label: { ko: "Powertrain", en: "Powertrain" },
-        note: { ko: "전기차 구동계·모터", en: "Electric drivetrains and motors" } },
+      { id: "special", label: { ko: "특수 챔버 (Special Chambers)", en: "Special chambers" },
+        note: { ko: "위성 시험 · 안테나 측정(OTA) · RCS — EMC 시험이 아닌 측정 과제", en: "Satellite testing, antenna measurement (OTA), RCS — measurement tasks beyond EMC" } },
+    ],
+  },
+  {
+    /*
+     * The Special Chambers track's one question — the four measurement tasks
+     * the matrix files under the segment. They are not catalogue models, so
+     * the flow does not end in a recommendation: it ends in questionnaire Ⓓ,
+     * with this answer carried in. The descriptions name the measurement, not
+     * a specification — a special chamber is designed to the task.
+     */
+    id: "specialUse",
+    multi: false,
+    when: (a) => isSpecialTrack(a),
+    kicker: { ko: "측정 과제", en: "The measurement" },
+    title: {
+      ko: "어떤 측정을 위한 챔버인가요?",
+      en: "What will the chamber measure?",
+    },
+    hint: {
+      ko: "특수 챔버는 표준 모델이 아니라 측정 과제에 맞춰 설계됩니다. 용도를 선택하시면 다음 단계에서 요구사항을 받아 설계팀 검토로 바로 이어집니다.",
+      en: "A special chamber is designed to the measurement task rather than picked from the standard range. Choose the task and the next step takes the requirement straight to the engineering team.",
+    },
+    options: [
+      { id: "sat", label: { ko: "위성 시험 (SAT chamber)", en: "Satellite testing — SAT chamber" },
+        note: { ko: "위성·탑재체 시험 설비", en: "Satellites and payloads under test" } },
+      { id: "ota", label: { ko: "안테나 부품 · OTA", en: "Antenna components — OTA" },
+        note: { ko: "안테나·무선 부품의 방사 특성 측정", en: "Radiated performance of antennas and wireless components" } },
+      { id: "antenna-vehicle", label: { ko: "차량 안테나 측정", en: "Vehicle antenna measurement" },
+        note: { ko: "완성차에 장착된 안테나의 방사 특성", en: "Antenna performance measured on the whole vehicle" } },
+      { id: "rcs", label: { ko: "RCS 측정", en: "RCS measurement" },
+        note: { ko: "레이더 반사 단면적(Radar Cross Section)", en: "Radar cross-section" } },
     ],
   },
   {
     // The matrix's second level, and the question that does the most work: it
     // separates the component chambers from the test sites from the E-Drive
     // benches — and the shielded room from all of them — before anything else
-    // is asked.
+    // is asked. Not on the Special track, which has no models to size.
     id: "dut",
     multi: false,
+    when: (a) => !isSpecialTrack(a),
     kicker: { ko: "용도", en: "What it is for" },
     title: {
       ko: "무엇을 위한 챔버인가요?",
@@ -399,12 +513,13 @@ export const questions: readonly Question[] = [
         note: { ko: "승용차, 이륜차, 대형 어셈블리", en: "Passenger cars, motorcycles, large assemblies" } },
       { id: "large-vehicle", label: { ko: "대형 차량 (버스 · 트럭 · 장갑차)", en: "Large vehicles — buses, trucks, armour" },
         note: { ko: "맞춤 설계 구간", en: "The custom-size range" } },
-      // The matrix files E-Drive under Automotive. This site's own taxonomy
-      // gives Powertrain an industry of its own, following the head office
-      // portfolio tags, so the option is offered from either.
+      // The matrix files E-Drive under Automotive, level with "components" and
+      // "vehicle", so this is where it is asked. The catalogue still tags those
+      // three chambers Powertrain — that is the industry axis, and the segment
+      // question is not it.
       { id: "edrive", label: { ko: "구동계 (E-Drive)", en: "Drivetrain (E-Drive)" },
         note: { ko: "부하기를 갖춘 전기 구동계 시험대", en: "An electric drivetrain bench with a load machine" },
-        when: (a) => a.industries.includes("automotive") || a.industries.includes("powertrain") },
+        when: (a) => a.segments.includes("automotive") },
       // Not every customer is buying a test site. The shielded room is the
       // product the whole range is built on, and it is bought on its own — for
       // security work, for isolating a sensitive instrument, or as the shell a
@@ -416,7 +531,7 @@ export const questions: readonly Question[] = [
   {
     id: "tests",
     multi: true,
-    when: (a) => a.dut !== "shielding",
+    when: (a) => !isSpecialTrack(a) && a.dut !== "shielding",
     kicker: { ko: "시험 종류", en: "Test kind" },
     title: {
       ko: "어떤 EMC 시험을 하시나요?",
@@ -573,7 +688,7 @@ export const questions: readonly Question[] = [
     // live. It is the one answer that can ask for the Transformer.
     id: "ground",
     multi: false,
-    when: (a) => wantsAnechoic(a) && a.level === "3m" && a.industries.includes("commercial"),
+    when: (a) => wantsAnechoic(a) && a.level === "3m" && a.segments.includes("commercial"),
     kicker: { ko: "바닥 조건", en: "The floor" },
     title: {
       ko: "바닥은 반사면이어야 하나요, 흡수면이어야 하나요?",
@@ -605,7 +720,7 @@ export const questions: readonly Question[] = [
     id: "absorber",
     multi: false,
     when: (a) =>
-      wantsAnechoic(a) && (a.level === "10m" || a.industries.includes("military")),
+      wantsAnechoic(a) && (a.level === "10m" || a.segments.includes("military")),
     kicker: { ko: "흡수체", en: "Absorber lining" },
     title: {
       ko: "흡수체 방식은 어느 쪽을 고려하고 계신가요?",
@@ -681,7 +796,7 @@ export const questions: readonly Question[] = [
     when: (a) =>
       wantsAnechoic(a) &&
       a.level === "10m" &&
-      a.industries.includes("commercial") &&
+      a.segments.includes("commercial") &&
       (!decided(a.qz) || a.qz === "3m"),
     kicker: { ko: "10 m 챔버 구성", en: "10 m configuration" },
     title: {
@@ -727,27 +842,13 @@ export const questions: readonly Question[] = [
         note: { ko: "세 구성을 함께 제안드립니다", en: "We will show all three" } },
     ],
   },
-  {
-    // Last, optional, and pre-ticked from everything above. Not a branch of
-    // the matrix — it is what the enquiry needs to be answerable.
-    id: "standards",
-    multi: true,
-    optional: true,
-    kicker: { ko: "적용 규격", en: "Standards" },
-    title: {
-      ko: "만족해야 하는 시험 규격을 확인해 주세요.",
-      en: "Check the standards you have to satisfy.",
-    },
-    hint: {
-      ko: "앞선 답변에서 해당할 만한 규격을 미리 선택해 두었습니다. 더하거나 빼시고, 확실하지 않으면 그대로 넘어가셔도 됩니다.",
-      en: "The ones your answers imply are ticked already. Add or remove any — or leave them as they are and move on.",
-    },
-    options: standards.map((s) => ({
-      id: s.id,
-      label: { ko: s.name, en: s.name },
-      note: s.hint,
-    })),
-  },
+  // The standards are no longer asked about. They used to be a last, optional
+  // step pre-ticked from everything above, and confirming a list of regulation
+  // numbers is not a question a reader of this flow is in a position to answer
+  // better than the flow can answer it for them. `suggestStandards` still
+  // derives the list from the segment and the test kinds, and the engine still
+  // scores against it — nothing about the recommendation changed, only who is
+  // asked. The Special track collects standards in its own questionnaire.
 ];
 
 /** The questions this set of answers actually asks. Recomputed on every
@@ -779,9 +880,12 @@ export const prune = (a: Answers): Answers => {
     const dutQuestion = questions.find((q) => q.id === "dut")!;
     out = {
       ...out,
+      specialUse: asked.has("specialUse") ? out.specialUse : undefined,
       // E-Drive is an option rather than a question, so it needs the same
-      // treatment: deselecting Automotive and Powertrain takes it away.
-      dut: out.dut && !visibleOptions(dutQuestion, out).some((o) => o.id === out.dut)
+      // treatment: deselecting Automotive takes it away. The whole question
+      // closes on the Special track, and its answer goes with it.
+      dut: !asked.has("dut")
+        || (out.dut && !visibleOptions(dutQuestion, out).some((o) => o.id === out.dut))
         ? undefined
         : out.dut,
       tests: asked.has("tests") ? out.tests : [],
@@ -1330,12 +1434,12 @@ const driveLabel: Record<Lang, Record<Drive, string>> = {
   en: { single: "fixed single dyno", eaxle: "fixed axis dyno", bluebox: "mobile EMC-BlueBox" },
 };
 
-/** The industry names, read off the first question rather than kept as a
+/** The segment names, read off the first question rather than kept as a
  *  second copy — they are the labels the reader just chose from. */
-const industryName = (i: ChamberIndustry, lang: Lang) =>
+const segmentName = (s: Segment, lang: Lang) =>
   questions
-    .find((q) => q.id === "industries")!
-    .options.find((o) => o.id === i)?.label[lang] ?? i;
+    .find((q) => q.id === "segments")!
+    .options.find((o) => o.id === s)?.label[lang] ?? s;
 
 /** True where the reader actually chose, rather than skipping. */
 const decided = <T extends string>(v: T | "unsure" | undefined): v is T =>
@@ -1518,14 +1622,25 @@ function evaluate(entry: CatalogueEntry, a: Answers, lang: Lang): Recommendation
 
   /* --- weighted scoring -------------------------------------------- */
 
-  if (a.industries.includes(entry.industry)) {
+  /*
+   * The model's own filing, against the segments the reader chose.
+   *
+   * The comparison runs on the catalogue's industries rather than on the three
+   * segments, because that is what a model carries — and it is why the E-Drive
+   * benches, which the catalogue tags Powertrain, score as full members of the
+   * Automotive segment the matrix files them under rather than as cross-segment
+   * strangers. The reason line still prints the model's own label, because
+   * "Powertrain line-up" is what the catalogue and the quotation will say.
+   */
+  const covered = coveredIndustries(a.segments);
+  if (covered.includes(entry.industry)) {
     score += 30;
     reasons.unshift(t.industry(entry.industryLabel));
   } else {
-    const also = fit.alsoIndustries?.find((i) => a.industries.includes(i));
+    const also = fit.alsoIndustries?.find((i) => covered.includes(i));
     if (also) {
       score += 20;
-      reasons.unshift(t.alsoIndustry(entry.industryLabel, industryName(also, lang)));
+      reasons.unshift(t.alsoIndustry(entry.industryLabel, segmentName(segmentOf(also), lang)));
     } else {
       score -= 12;
     }

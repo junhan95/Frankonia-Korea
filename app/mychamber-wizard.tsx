@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  effectiveStandards,
   emptyAnswers,
+  isSpecialTrack,
   prune,
   recommend,
   visibleOptions,
@@ -14,6 +14,8 @@ import {
   type QuestionId,
   type Recommendation,
 } from "./mychamber-advisor";
+import QuestionnairePanel from "./mychamber-questionnaire";
+import { questionnaireFor } from "./mychamber-questionnaires";
 import { contactEmail, type Lang } from "./site-config";
 
 /**
@@ -39,6 +41,10 @@ const emptyForm: Form = { company: "", person: "", email: "", phone: "", note: "
 const copy = {
   ko: {
     stepOf: (i: number, n: number) => `질문 ${i} / ${n}`,
+    stepAll: (n: number) => `질문 ${n}개 모두 완료`,
+    progressLabel: "진행 상황과 선택 내용",
+    jumpHint: "각 항목을 누르시면 그 질문으로 돌아가 수정하실 수 있습니다. 수정하면 추천 결과가 다시 계산됩니다.",
+    jumpTo: (kicker: string) => `${kicker} 질문으로 이동`,
     multi: "복수 선택 가능",
     single: "하나만 선택",
     back: "이전",
@@ -67,14 +73,15 @@ const copy = {
 
     noneH: "표준 모델로는 맞는 것이 없습니다",
     noneP:
-      "선택하신 조건은 맞춤 설계 구간입니다. Frankonia는 표준 치수를 벗어나는 챔버를 실제로 제작해 왔습니다 — 조건을 그대로 보내 주시면 설계팀이 검토해 회신드립니다.",
-    noneCta: "맞춤 설계 문의",
-    noneSubject: "[MyChamber] 맞춤 설계 문의",
+      "선택하신 조건은 맞춤 설계 구간입니다. Frankonia는 표준 치수를 벗어나는 챔버를 실제로 제작해 왔습니다 — 맞춤 설문으로 조건을 보내 주시면 설계팀이 검토해 회신드립니다.",
+    noneCta: "맞춤 설문으로 문의",
 
-    summaryKicker: "선택 내용",
-    summaryH: "입력하신 내용",
-    summaryP: "각 항목은 언제든 수정하실 수 있습니다. 수정하면 추천 결과가 다시 계산됩니다.",
-    edit: "수정",
+    customLink: "표준 선택지에 없는 요구사항이라면 — 맞춤 설문으로 문의",
+    customFromResult: "표준 모델로 부족하다면 — 맞춤 설문으로 문의",
+    customBackFlow: "질문으로 돌아가기",
+    customBackResult: "결과로 돌아가기",
+    toQuestionnaire: "요구사항 작성하기",
+
     none: "—",
 
     quoteKicker: "견적 문의",
@@ -108,6 +115,10 @@ const copy = {
   },
   en: {
     stepOf: (i: number, n: number) => `Question ${i} of ${n}`,
+    stepAll: (n: number) => `All ${n} questions answered`,
+    progressLabel: "Progress and answers so far",
+    jumpHint: "Select any of them to go back to that question — the recommendation is recalculated from scratch.",
+    jumpTo: (kicker: string) => `Go to the question about ${kicker}`,
     multi: "Select all that apply",
     single: "Select one",
     back: "Back",
@@ -136,14 +147,15 @@ const copy = {
 
     noneH: "No standard model matches",
     noneP:
-      "What you described is in the custom range. Frankonia builds chambers beyond the standard sizes as a matter of course — send the requirement as it stands and the engineering team will come back on it.",
-    noneCta: "Ask about a custom design",
-    noneSubject: "[MyChamber] Custom design enquiry",
+      "What you described is in the custom range. Frankonia builds chambers beyond the standard sizes as a matter of course — send the requirement through the questionnaire and the engineering team will come back on it.",
+    noneCta: "Open the questionnaire",
 
-    summaryKicker: "Your answers",
-    summaryH: "What you told us",
-    summaryP: "Change any of it at any time — the recommendation is recalculated from scratch.",
-    edit: "Change",
+    customLink: "A requirement the options do not carry? Open the questionnaire",
+    customFromResult: "If no standard model quite fits — open the questionnaire",
+    customBackFlow: "Back to the questions",
+    customBackResult: "Back to the result",
+    toQuestionnaire: "Describe the requirement",
+
     none: "—",
 
     quoteKicker: "Enquiry",
@@ -186,10 +198,19 @@ export default function MyChamberWizard({
 
   const [answers, setAnswers] = useState<Answers>(emptyAnswers);
   const [step, setStep] = useState(0);
+  /** The furthest step the reader has opened. The progress strip lets them go
+   *  back to anything behind this line, and no further: a question they have
+   *  not reached yet is not something to skip ahead into, because the ones
+   *  before it decide whether it is asked at all. */
+  const [reached, setReached] = useState(0);
   const [done, setDone] = useState(false);
   /** Set when a step was opened from the result summary, so finishing it goes
    *  back where the reader came from rather than walking the rest of the flow. */
   const [editing, setEditing] = useState(false);
+  /** The questionnaire view — the matrix extension's Ⓐ/Ⓑ/Ⓒ/ⓧ escape hatch,
+   *  opened from any step or from the result. Ⓓ is not opened this way: the
+   *  Special track ends in it. */
+  const [custom, setCustom] = useState(false);
   const [chosen, setChosen] = useState<string | null>(null);
   const [form, setForm] = useState<Form>(emptyForm);
   const [copied, setCopied] = useState(false);
@@ -200,9 +221,10 @@ export default function MyChamberWizard({
   const index = Math.min(step, steps.length - 1);
   const question = steps[index];
 
+  const special = isSpecialTrack(answers);
   const results = useMemo(
-    () => (done ? recommend(catalogue, answers, lang) : []),
-    [done, catalogue, answers, lang],
+    () => (done && !special ? recommend(catalogue, answers, lang) : []),
+    [done, special, catalogue, answers, lang],
   );
   const pick = results.find((r) => r.entry.name === chosen) ?? results[0];
 
@@ -223,15 +245,100 @@ export default function MyChamberWizard({
   const chose = (id: QuestionId, value: string) =>
     setAnswers((prev) => prune(apply(prev, id, value)));
 
+  const goto = (i: number) => {
+    setStep(i);
+    setReached((far) => Math.max(far, i));
+  };
+
+  /** Opening a step from the progress strip while the result is on screen is
+   *  an edit, not a walk back through the flow — finishing it returns to the
+   *  result rather than stepping through everything after it. */
+  const jump = (i: number) => {
+    if (done) {
+      setDone(false);
+      setEditing(true);
+    }
+    goto(i);
+  };
+
+  const restart = () => {
+    setAnswers(emptyAnswers);
+    setStep(0);
+    setReached(0);
+    setDone(false);
+    setEditing(false);
+    setChosen(null);
+  };
+
   const answered = question ? selectedIds(answers, question).length > 0 : true;
   const canAdvance = answered || Boolean(question?.optional);
   const last = index === steps.length - 1;
+
+  // The escape hatch — questionnaire Ⓐ, Ⓑ, Ⓒ or ⓧ, from wherever the reader
+  // opened it. Keyed on the questionnaire so switching segments and reopening
+  // starts the right form fresh rather than carrying another form's state.
+  if (custom) {
+    const qid = questionnaireFor(answers.segments);
+    return (
+      <>
+        <section>
+          <div className="wrap">
+            <button type="button" className="go" onClick={() => setCustom(false)}>
+              {done ? t.customBackResult : t.customBackFlow}<span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </section>
+        <QuestionnairePanel key={qid} lang={lang} qid={qid} />
+      </>
+    );
+  }
+
+  // The Special Chambers track. There is no model shortlist to show — the
+  // matrix gives the segment four measurement tasks and questionnaire Ⓓ, so
+  // the flow ends in the questionnaire with the chosen task carried in.
+  if (done && special) {
+    return (
+      <>
+        <section>
+          <div className="wrap">
+            <div className="btns">
+              <button type="button" className="go" onClick={() => setDone(false)}>
+                {t.back}<span aria-hidden="true">→</span>
+              </button>
+              <button type="button" className="go" onClick={restart}>
+                {t.restart}<span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </div>
+        </section>
+        <QuestionnairePanel
+          key={`D-${answers.specialUse ?? ""}`}
+          lang={lang}
+          qid="D"
+          prefill={answers.specialUse ? { use: answers.specialUse } : undefined}
+        />
+      </>
+    );
+  }
 
   if (done) {
     return (
       <>
         <section>
           <div className="wrap">
+            {/* The answers, where they have been all along: the progress strip.
+                A reader who wants to change one goes back to the question
+                itself rather than to a second copy of it further down. */}
+            <StepStrip
+              lang={lang}
+              steps={steps}
+              answers={answers}
+              index={steps.length - 1}
+              reached={steps.length - 1}
+              done
+              onJump={jump}
+            />
+
             <div className="sec-head">
               <span className="kicker">{t.resultKicker}</span>
               <h2 ref={headingRef} tabIndex={-1}>{t.resultH}</h2>
@@ -242,14 +349,9 @@ export default function MyChamberWizard({
               <div className="empty">
                 <h4>{t.noneH}</h4>
                 <p>{t.noneP}</p>
-                <a
-                  className="btn btn-red"
-                  href={`mailto:${contactEmail}?subject=${encodeURIComponent(t.noneSubject)}&body=${encodeURIComponent(
-                    mailBody(lang, answers, null, [], form),
-                  )}`}
-                >
+                <button type="button" className="btn btn-red" onClick={() => setCustom(true)}>
                   {t.noneCta}
-                </a>
+                </button>
               </div>
             ) : (
               <div className="mc-results">
@@ -265,50 +367,17 @@ export default function MyChamberWizard({
                 ))}
               </div>
             )}
-          </div>
-        </section>
 
-        <section className="alt">
-          <div className="wrap">
-            <div className="sec-head">
-              <span className="kicker">{t.summaryKicker}</span>
-              <h2>{t.summaryH}</h2>
-              <p>{t.summaryP}</p>
-            </div>
-            <div className="hairline-list">
-              {steps.map((q, i) => (
-                <div className="hl-row" key={q.id}>
-                  <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
-                  <b>{q.kicker[lang]}</b>
-                  <span className="hl-desc">
-                    {summarise(answers, q, lang) || t.none}
-                    <button
-                      type="button"
-                      className="hl-action"
-                      onClick={() => {
-                        setDone(false);
-                        setEditing(true);
-                        setStep(i);
-                      }}
-                    >
-                      {t.edit}
-                    </button>
-                  </span>
-                </div>
-              ))}
-            </div>
             <div className="btns mc-actions">
-              <button
-                type="button"
-                className="go"
-                onClick={() => {
-                  setAnswers(emptyAnswers);
-                  setStep(0);
-                  setDone(false);
-                  setEditing(false);
-                  setChosen(null);
-                }}
-              >
+              {/* The matrix extension's custom node under this segment — the
+                  reader whose requirement the shortlist does not carry. The
+                  empty state carries the same link in its own box. */}
+              {results.length > 0 && (
+                <button type="button" className="go" onClick={() => setCustom(true)}>
+                  {t.customFromResult}<span aria-hidden="true">→</span>
+                </button>
+              )}
+              <button type="button" className="go" onClick={restart}>
                 {t.restart}<span aria-hidden="true">→</span>
               </button>
             </div>
@@ -334,12 +403,15 @@ export default function MyChamberWizard({
   return (
     <section>
       <div className="wrap">
-        <div className="mc-progress">
-          <span className="mc-count">{t.stepOf(index + 1, steps.length)}</span>
-          <span className="mc-track" aria-hidden="true">
-            <span className="mc-fill" style={{ width: `${((index + 1) / steps.length) * 100}%` }} />
-          </span>
-        </div>
+        <StepStrip
+          lang={lang}
+          steps={steps}
+          answers={answers}
+          index={index}
+          reached={reached}
+          done={false}
+          onJump={jump}
+        />
 
         <div className="sec-head mc-head">
           <span className="kicker">{question.kicker[lang]}</span>
@@ -374,7 +446,7 @@ export default function MyChamberWizard({
 
         <div className="btns mc-actions">
           {index > 0 && (
-            <button type="button" className="btn btn-outline" onClick={() => setStep(index - 1)}>
+            <button type="button" className="btn btn-outline" onClick={() => goto(index - 1)}>
               {t.back}
             </button>
           )}
@@ -387,16 +459,117 @@ export default function MyChamberWizard({
                 setEditing(false);
                 setDone(true);
               } else {
-                setStep(index + 1);
+                goto(index + 1);
               }
             }}
           >
-            {editing ? t.backToResult : last ? t.toResult : t.next}
+            {editing ? t.backToResult : last ? (special ? t.toQuestionnaire : t.toResult) : t.next}
           </button>
           {!canAdvance && <span className="mc-need">{t.needAnswer}</span>}
         </div>
+
+        {/* The matrix extension's escape hatch, on every standard step: the
+            reader whose requirement the options do not carry goes to the
+            segment's questionnaire instead of guessing. The Special track has
+            no link — its whole flow already ends in questionnaire Ⓓ. */}
+        {!special && (
+          <p className="mc-note">
+            <button type="button" className="go" onClick={() => setCustom(true)}>
+              {t.customLink}<span aria-hidden="true">→</span>
+            </button>
+          </p>
+        )}
       </div>
     </section>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * Progress strip
+ * ------------------------------------------------------------------ */
+
+/**
+ * Where the reader is, what they have chosen, and the way back to any of it.
+ *
+ * One element does all three because they are one thing: a question already
+ * answered is a segment of the bar that is filled, and the answer is written
+ * under it. There is no separate summary further down the page — a second
+ * copy of the answers would only be a second place to keep in step.
+ *
+ * The total moves as the answers branch, so the strip is drawn from
+ * `visibleQuestions` on every render rather than from a fixed list of steps.
+ */
+function StepStrip({
+  lang,
+  steps,
+  answers,
+  index,
+  reached,
+  done,
+  onJump,
+}: {
+  lang: Lang;
+  steps: readonly Question[];
+  answers: Answers;
+  index: number;
+  reached: number;
+  done: boolean;
+  onJump: (i: number) => void;
+}) {
+  const t = copy[lang];
+  const far = Math.max(index, reached);
+
+  return (
+    <nav className="mc-progress" aria-label={t.progressLabel}>
+      <span className="mc-count">{done ? t.stepAll(steps.length) : t.stepOf(index + 1, steps.length)}</span>
+
+      <ol className="mc-steps">
+        {steps.map((q, i) => {
+          const value = summarise(answers, q, lang);
+          const now = !done && i === index;
+          // Answered counts as behind the reader even when it is ahead of the
+          // cursor: going back to question 3 from the result must not make
+          // questions 4 to 6 look like they were never answered.
+          const past = done || i < index || value.length > 0;
+          const open = done || i <= far;
+          const kicker = q.kicker[lang];
+          return (
+            <li
+              className={`mc-step ${now ? "is-now" : past ? "is-done" : "is-todo"}${open ? "" : " is-locked"}`}
+              key={q.id}
+            >
+              <button
+                type="button"
+                className="mc-step-btn"
+                disabled={!open}
+                aria-current={now ? "step" : undefined}
+                aria-label={`${kicker} — ${value || t.none}. ${t.jumpTo(kicker)}`}
+                title={value || undefined}
+                onClick={() => onJump(i)}
+              >
+                {/* The node. A tick once the question is behind the reader, a
+                    filled ring where they are, the number until they get
+                    there — the connector to either side is drawn by the row. */}
+                <span className="mc-step-dot" aria-hidden="true">
+                  {past ? (
+                    <svg className="mc-step-chk" viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 5" /></svg>
+                  ) : now ? null : (
+                    <b>{i + 1}</b>
+                  )}
+                </span>
+                {/* The kicker sits in a span of its own because the pill
+                    carries the caret up to the node as a corner of itself,
+                    and the ellipsis that trims a long kicker would clip it. */}
+                <span className="mc-step-pill"><span>{kicker}</span></span>
+                <span className="mc-step-val">{value || t.none}</span>
+              </button>
+            </li>
+          );
+        })}
+      </ol>
+
+      <p className="mc-step-hint">{t.jumpHint}</p>
+    </nav>
   );
 }
 
@@ -622,9 +795,9 @@ function Field({
 
 const selectedIds = (a: Answers, q: Question): readonly string[] => {
   switch (q.id) {
-    case "industries": return a.industries;
+    case "segments": return a.segments;
+    case "specialUse": return a.specialUse ? [a.specialUse] : [];
     case "tests": return a.tests;
-    case "standards": return effectiveStandards(a);
     case "dut": return a.dut ? [a.dut] : [];
     case "level": return a.level ? [a.level] : [];
     case "family": return a.family ? [a.family] : [];
@@ -645,11 +818,18 @@ const toggle = (list: readonly string[], id: string) =>
  *  table rather than a switch full of parsing. */
 function apply(a: Answers, id: QuestionId, value: string): Answers {
   switch (id) {
-    case "industries": return { ...a, industries: toggle(a.industries, value) as Answers["industries"] };
+    // The Special Chambers segment is exclusive — the matrix draws it as a
+    // track of its own, not a fourth thing to tick alongside Automotive. So
+    // choosing it clears the model segments, and choosing one of them clears it.
+    case "segments": {
+      const next = toggle(a.segments, value) as Answers["segments"];
+      if (value === "special") {
+        return { ...a, segments: next.includes("special") ? ["special"] : next };
+      }
+      return { ...a, segments: next.filter((s) => s !== "special") as Answers["segments"] };
+    }
+    case "specialUse": return { ...a, specialUse: value as Answers["specialUse"] };
     case "tests": return { ...a, tests: toggle(a.tests, value) as Answers["tests"] };
-    // The first tick turns the suggestion into an explicit list — see the note
-    // on `Answers.standards`.
-    case "standards": return { ...a, standards: toggle(effectiveStandards(a), value) as Answers["standards"] };
     case "dut": return { ...a, dut: value as Answers["dut"] };
     case "level": return { ...a, level: value as Answers["level"] };
     case "family": return { ...a, family: value as Answers["family"] };

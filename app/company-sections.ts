@@ -6,13 +6,18 @@ import type { Lang } from "./site-config";
  * the header is a client component, and importing the page module there
  * would close an import cycle.
  *
- * All five are in the dropdown. Career used to be held out of it because it
+ * All four are in the dropdown. Career used to be held out of it because it
  * had a top-level item of its own; MyChamber has that slot now, so the one
  * link to the Career page is the one in this list.
+ *
+ * Philosophy and History used to be two entries. They are one page now —
+ * About: what the company is, then how it got there. Both were short of a
+ * full page on their own and neither answered the question a reader opens the
+ * Company menu with without the other. The slug `about` is the merged page;
+ * `/company/philosophy` and `/company/history` no longer exist.
  */
 export const companySections = [
-  "philosophy",
-  "history",
+  "about",
   "career",
   "publications",
   "events",
@@ -27,15 +32,10 @@ export const isCompanySection = (value: string): value is CompanySection =>
  *  the page title and the search snippet all read from here. */
 export const sectionMeta = {
   ko: {
-    philosophy: {
-      label: "경영이념",
+    about: {
+      label: "이념과 연혁",
       description:
-        "전문성과 유연성, 품질, 높은 기술 수준으로 전 세계를 무대로 미래에도 유효한 EMC 솔루션을 만듭니다. Frankonia가 추구하는 것과 제공하는 것.",
-    },
-    history: {
-      label: "연혁",
-      description:
-        "1987년 설립부터 Frankosorb® 흡수체 개발과 전 세계 법인 설립까지 — Frankonia 그룹의 연혁과 제품·기술 마일스톤 25건.",
+        "전문성과 유연성, 품질, 높은 기술 수준으로 전 세계를 무대로 미래에도 유효한 EMC 솔루션을 만듭니다. Frankonia가 추구하는 것과 제공하는 것, 그리고 1987년 설립부터의 연혁과 제품·기술 마일스톤 25건.",
     },
     career: {
       label: "채용",
@@ -54,15 +54,10 @@ export const sectionMeta = {
     },
   },
   en: {
-    philosophy: {
-      label: "Philosophy",
+    about: {
+      label: "About",
       description:
-        "Expertise, flexibility, quality and a high degree of technology, generating future-proof solutions on a global scale. What Frankonia stands for, and what Frankonia provides.",
-    },
-    history: {
-      label: "History",
-      description:
-        "From the foundation in 1987 through the Frankosorb® absorber to the group's companies worldwide — the Frankonia timeline and 25 product and technology milestones.",
+        "Expertise, flexibility, quality and a high degree of technology, generating future-proof solutions on a global scale. What Frankonia stands for and provides, and the timeline from the foundation in 1987 through the Frankosorb® absorber to the group's companies worldwide.",
     },
     career: {
       label: "Career",

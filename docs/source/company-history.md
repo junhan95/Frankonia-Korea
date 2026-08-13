@@ -3,6 +3,14 @@
 수집일: 2026-08-07
 출처: https://frankonia-solutions.com/history/ (본사 원본 — `/company/history/`가 아니다)
 
+> **렌더링 위치 변경(2026-08-13).** 이 원장의 카피는 이제 `/company/history`가 아니라
+> **`/company/about`** 에 실립니다. [[company-philosophy]]와 한 페이지로 합쳤고,
+> 서사는 페이지 헤드가 아니라 `HISTORY / 1987 … the start of a success story`
+> 섹션 헤드 아래에서 시작합니다. 그 과정에서 **원본 도입 한 문장**(“Frankonia
+> contributes its success to quality and technology …”)만 뺐습니다 — 아래 §2.1
+> 마지막 문단과 한 글자도 다르지 않은 중복이었고, 합친 페이지에서는 두 화면
+> 떨어진 자리에 같은 문장이 두 번 나오게 되기 때문입니다. 나머지는 그대로입니다.
+
 ---
 
 ## 1. 원본 페이지 구조
