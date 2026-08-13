@@ -193,55 +193,96 @@ export default function TestSystemPage({ lang, view }: { lang: Lang; view: TestS
 const modelCount = (t: (typeof copy)[Lang], n: number) =>
   n > 0 ? t.count(n) : t.countPending;
 
-/** The overview's two ways in, in the order the dropdown lists them. */
+/**
+ * What the index band currently puts on show — a hold, not a deletion.
+ *
+ * The branch has three ways in and eight product families behind them, and for
+ * now the index prints one row: Integrated Systems. Nothing under it has been
+ * taken away. `/test-systems/test/*`, `/test-systems/standards` and the seven
+ * other family pages all still build, still carry their models, and are still
+ * reachable from the header dropdown and the sitemap — the rows that led to
+ * them are simply not drawn here yet.
+ *
+ * Putting a row back is editing this block and nothing else: `showTestAxis` and
+ * `showStandardsAxis` to `true` restore those two lists whole, and
+ * `shownProducts` back to `testProducts` restores the family list in the order
+ * `test-system-sections` declares. `Axes` reads these and hangs the band's
+ * kicker on whichever list survives first, so any subset reads as a finished
+ * band rather than as one with its head cut off.
+ */
+const showTestAxis = false;
+const showStandardsAxis = false;
+const shownProducts: readonly TestProduct[] = ["system"];
+
+/** The overview's ways in, in the order the dropdown lists them. */
 function Axes({ lang }: { lang: Lang }) {
   const t = copy[lang];
+  const products = testProducts.filter((product) => shownProducts.includes(product));
 
-  return (
-    <>
-      <div className="sec-head">
-        <span className="kicker">{t.browse}</span>
-        <h2>{t.byTest}</h2>
-      </div>
-      <div className="hairline-list">
-        {testCategories.map((category, i) => (
-          <SiteLink className="hl-row" key={category} href={localeRoute(lang, testCategoryPath(category))}>
-            <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
-            <b>{testCategoryMeta[lang][category].label}</b>
-            <span className="hl-desc">{testCategoryMeta[lang][category].note}</span>
-          </SiteLink>
-        ))}
-      </div>
+  /* Built as a list rather than written out in sequence because which lists
+     exist is now a decision made above rather than a fact of the page: the
+     kicker belongs to the band, not to "By Test", and the 72px that separates
+     one list from the next is only owed by a list that has one above it. */
+  const lists: { key: string; title: string; rows: ReactNode }[] = [];
 
-      <div className="sec-head" style={{ marginTop: "72px" }}>
-        <h2>{t.byProduct}</h2>
-      </div>
-      <div className="hairline-list">
-        {testProducts.map((product, i) => (
-          <SiteLink className="hl-row" key={product} href={localeRoute(lang, testProductPath(product))}>
-            <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
-            <b>{testProductMeta[lang][product].label}</b>
-            <span className="hl-desc">{modelCount(t, modelsByProduct(product).length)}</span>
-          </SiteLink>
-        ))}
-      </div>
+  if (showTestAxis) {
+    lists.push({
+      key: "test",
+      title: t.byTest,
+      rows: testCategories.map((category, i) => (
+        <SiteLink className="hl-row" key={category} href={localeRoute(lang, testCategoryPath(category))}>
+          <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
+          <b>{testCategoryMeta[lang][category].label}</b>
+          <span className="hl-desc">{testCategoryMeta[lang][category].note}</span>
+        </SiteLink>
+      )),
+    });
+  }
 
-      {/* A third way in, and the only one the dropdown no longer offers: the
-          standards index used to hang in the menu's utility row and came out of
-          it with the rest of that row. It is one row rather than a column
-          because it is one page — a reader who arrives holding a standard
-          designation rather than a product name needs the door to exist, not to
-          be wide. */}
-      <div className="sec-head" style={{ marginTop: "72px" }}>
-        <h2>{t.byStandard}</h2>
-      </div>
-      <div className="hairline-list">
+  if (products.length > 0) {
+    lists.push({
+      key: "product",
+      title: t.byProduct,
+      rows: products.map((product, i) => (
+        <SiteLink className="hl-row" key={product} href={localeRoute(lang, testProductPath(product))}>
+          <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
+          <b>{testProductMeta[lang][product].label}</b>
+          <span className="hl-desc">{modelCount(t, modelsByProduct(product).length)}</span>
+        </SiteLink>
+      )),
+    });
+  }
+
+  /* A third way in, and the only one the dropdown no longer offers: the
+     standards index used to hang in the menu's utility row and came out of it
+     with the rest of that row. It is one row rather than a column because it is
+     one page — a reader who arrives holding a standard designation rather than
+     a product name needs the door to exist, not to be wide. */
+  if (showStandardsAxis) {
+    lists.push({
+      key: "standard",
+      title: t.byStandard,
+      rows: (
         <SiteLink className="hl-row" href={localeRoute(lang, testStandardsPath)}>
           <span className="hl-idx">01</span>
           <b>{testStandardsMeta[lang].label}</b>
           <span className="hl-desc">{t.standardsCount(testStandards.length)}</span>
         </SiteLink>
-      </div>
+      ),
+    });
+  }
+
+  return (
+    <>
+      {lists.map((list, i) => (
+        <div key={list.key}>
+          <div className="sec-head" style={i > 0 ? { marginTop: "72px" } : undefined}>
+            {i === 0 && <span className="kicker">{t.browse}</span>}
+            <h2>{list.title}</h2>
+          </div>
+          <div className="hairline-list">{list.rows}</div>
+        </div>
+      ))}
     </>
   );
 }

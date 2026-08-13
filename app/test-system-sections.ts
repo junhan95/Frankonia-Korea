@@ -604,18 +604,28 @@ export const testProductMeta = {
   },
 } as const satisfies Record<Lang, Record<TestProduct, Entry>>;
 
+/**
+ * The second sentence used to name the two ways in, because the index printed
+ * both. While the index is held back to one list (see the note on
+ * `showTestAxis` in test-system-content.tsx) it says what the division supplies
+ * instead — a line that sits above one list and above three equally well, so
+ * restoring the other lists does not oblige a second edit here.
+ *
+ * This string is the page's own intro *and* its meta description, which is why
+ * it is a sentence about the branch rather than an instruction about the page.
+ */
 export const testSystemsOverviewMeta = {
   ko: {
     label: "EMC 시험장비",
     title: "EMC Test Systems",
     description:
-      "RF 파워앰프부터 전계강도계·프리앰프·통합 시험 시스템까지. 시험 항목별, 제품군별 두 가지 방식으로 찾아보실 수 있습니다.",
+      "RF 파워앰프부터 전계강도계·프리앰프·통합 시험 시스템까지, 방출·내성 시험에 필요한 장비를 공급합니다.",
   },
   en: {
     label: "EMC Test Systems",
     title: "EMC Test Systems",
     description:
-      "From RF power amplifiers to field strength meters, pre-amplifiers and integrated systems — browse by test or by product.",
+      "From RF power amplifiers to field strength meters, pre-amplifiers and integrated systems — the instruments an emission or immunity setup is built from.",
   },
 } as const satisfies Record<Lang, { label: string; title: string; description: string }>;
 
