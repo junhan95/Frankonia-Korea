@@ -12,16 +12,16 @@ const nextConfig: NextConfig = isStaticExport
       trailingSlash: true,
       basePath: basePath || undefined,
       images: { unoptimized: true },
-      // A build directory of its own, because the two targets are routinely
-      // used at the same time: you keep `next dev` open and run
-      // `npm run build:static` to check the export. Both default to `.next`,
-      // and the build rewrites the manifests the dev server is holding open —
-      // after which every request it serves is a 500 (`SyntaxError: Unexpected
-      // non-whitespace character after JSON`), with nothing wrong in the source
-      // and nothing in the terminal to say a build did it. Restarting dev is
-      // the fix, and never needing to is better. `out/` is unaffected: the
-      // export lands there either way.
-      distDir: ".next-static",
+      // No `distDir` here, however tempting it looks. Under `output: "export"`
+      // Next reads it as the *export* directory and forces the build directory
+      // back to `.next` (`hasCustomExportOutput` in next/dist/export/utils).
+      // So setting it does not keep a static build off the manifests an open
+      // `next dev` is holding — the thing it would be for — and it does move
+      // the export out of `out/`, where the tests and `deploy/upload.py` look.
+      // Set to ".next-static" on 13 August 2026, that left `npm test` asserting
+      // against a stale export and would have uploaded one: the export was in
+      // `.next-static/` and `out/` still held the previous commit's build.
+      // If a dev server does get poisoned by a concurrent build, restart it.
     }
   : {};
 
