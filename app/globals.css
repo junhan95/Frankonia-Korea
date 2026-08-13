@@ -1293,6 +1293,31 @@ footer a:hover { color: #fff; }
 
 /* ===== Accessibility ===== */
 
+/* The route-change indicator. Why a client navigation needs one at all, and
+   why this one waits before it appears and never fills: nav-progress.tsx.
+
+   Above the header (100) and its dropdown panels (120) — the bar reports the
+   whole page's state and the reader is usually still inside a menu when it
+   runs. It sits under the skip link's 200 by not competing: the two are never
+   on screen together.
+
+   `scaleX` rather than `width`: the browser can run a transform on the
+   compositor, and this animates during exactly the seconds the main thread is
+   busy parsing the payload it is reporting on. A width transition would jerk
+   in step with that work, which is the opposite of what a progress bar is for. */
+.nav-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 150; pointer-events: none; }
+.nav-progress i { display: block; height: 100%; background: var(--primary); transform: scaleX(0); transform-origin: left center; }
+/* Eight seconds of deceleration that lands at 90% and stops. The curve is
+   steep at the start so the first tenth of a second is visibly movement. */
+.nav-progress--loading i { transform: scaleX(.9); transition: transform 8s cubic-bezier(0, .7, .2, 1); }
+.nav-progress--done i { transform: scaleX(1); transition: transform .16s ease-out; }
+.nav-progress--done { opacity: 0; transition: opacity .22s ease-out .1s; }
+/* The bar still has to say "working" — it just says it without the travel. */
+@media (prefers-reduced-motion: reduce) {
+  .nav-progress--start i, .nav-progress--loading i { transform: scaleX(.9); transition: none; }
+  .nav-progress--done i { transition: none; }
+}
+
 /* Visible only once tabbed to — the first stop past the browser chrome, so
    keyboard and screen-reader users can jump the 6-item nav on every page. */
 .skip-link { position: absolute; left: 16px; top: -60px; z-index: 200; background: var(--red); color: #fff; padding: 10px 18px; border-radius: var(--radius); font-size: 14px; font-weight: 700; transition: top .15s; }

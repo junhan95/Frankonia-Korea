@@ -1,4 +1,5 @@
 import "./globals.css";
+import NavProgress from "./nav-progress";
 import type { Lang } from "./site-config";
 
 /**
@@ -23,7 +24,14 @@ export default function RootShell({
     // The font variables are declared on <html> rather than <body> so the
     // stylesheet can reach them from :root, where the rest of the tokens live.
     <html lang={lang} className={fontClass}>
-      <body>{children}</body>
+      <body>
+        {/* Above the page rather than inside it: it belongs to the router, not
+            to any one route, and mounting it here means it survives the
+            navigation it is reporting on. It renders nothing until a click
+            waits — see nav-progress.tsx. */}
+        <NavProgress />
+        {children}
+      </body>
     </html>
   );
 }
