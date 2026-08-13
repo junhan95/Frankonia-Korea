@@ -13,12 +13,11 @@ import { basePath } from "./site-config";
  * with a blank frame in the middle where the reader watches it happen.
  *
  * `next/link` keeps the document. It fetches the new route's RSC payload —
- * ~8 KB gzipped, already on disk beside the HTML because `output: export`
- * writes both — and swaps only the part of the tree that differs. The header,
- * the footer, the stylesheet and the typefaces are never touched. And because
- * the router prefetches a link once it is on screen, the payload for anywhere
- * a reader can see is usually already in memory when they click: the page
- * changes in the next frame.
+ * already on disk beside the HTML because `output: export` writes both — and
+ * swaps only the part of the tree that differs. The header, the footer, the
+ * stylesheet and the typefaces are never touched. The payload is fetched when
+ * the link is clicked rather than before, which is not how this was written
+ * first: see the note above the default `prefetch` below.
  *
  * This wrapper exists so that is the default rather than a decision made 69
  * times. An off-site href, a `mailto:`, a `tel:` or a same-page `#anchor` has
@@ -29,13 +28,44 @@ import { basePath } from "./site-config";
  * it is written.
  */
 type Props = AnchorHTMLAttributes<HTMLAnchorElement> & {
-  href: string;
-  /** Passed through to `next/link`. `false` turns off prefetching for a link
-   *  that is on screen but rarely followed. */
+  /** Passed through to `next/link`. See the note on the default below before
+   *  turning this back on for any link. */
   prefetch?: boolean;
+  href: string;
 };
 
-export default function SiteLink({ href, prefetch = true, ...rest }: Props) {
+/**
+ * Prefetching is off, and this is not a tuning decision.
+ *
+ * On Next 16.2.6 with `output: export`, a link the pointer has hovered stops
+ * navigating. The click reaches the anchor and `next/link` calls
+ * preventDefault on it, so the browser does not follow the href either — and
+ * then nothing happens: no request, no history entry, no error in the console.
+ * The reader is left on the page they were on. Every subsequent attempt at
+ * that link fails the same way, keyboard included.
+ *
+ * It is the hover that breaks it, not the click: `onMouseEnter` calls
+ * `onNavigationIntent`, which reschedules the link's prefetch task at Intent
+ * priority (next/dist/client/components/links.js), and against a static export
+ * that task leaves the router waiting on it forever. A click with no real
+ * pointer over the link — synthetic, or Enter on a focused anchor — still
+ * navigates in ~50 ms, which is why this survived every check made from a
+ * script and was caught by a reader using a mouse.
+ *
+ * `prefetch={false}` is the only lever the public API offers here: it is what
+ * `mountLinkInstance` reads to skip the prefetchable instance entirely, and
+ * with no instance registered `onNavigationIntent` returns before it can
+ * schedule anything. There is no way to keep viewport prefetching and drop the
+ * hover intent.
+ *
+ * What it costs: the payload is fetched on click instead of before it — 103 ms
+ * to first paint of the new page over GitHub Pages, 120 ms locally, against
+ * ~50 ms warm. The document, the header, the stylesheet and the typefaces are
+ * still kept; this is still a client navigation and not the full reload the
+ * plain `<a>` did. Worth re-testing on a later Next: the fix upstream would
+ * let the default go back to `true`.
+ */
+export default function SiteLink({ href, prefetch = false, ...rest }: Props) {
   if (!isRoute(href)) {
     return <a href={href} {...rest} />;
   }
