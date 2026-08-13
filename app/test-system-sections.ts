@@ -447,19 +447,19 @@ export const testCategoryMeta = {
       label: "방출 Emission",
       note: "9kHz~40GHz",
       description:
-        "방사·전도 방출 측정 구성 — 안테나, FPA 프리앰프 6종, RF 파워미터. 9kHz부터 40GHz까지 커버합니다.",
+        "방사·전도 방출 측정 구성 — 안테나, EMI 리시버와 LISN, FPA 프리앰프 6종, RF 파워미터. 9kHz부터 40GHz까지 커버합니다.",
     },
     conducted: {
       label: "전도 내성 Conducted",
       note: "9kHz~400MHz",
       description:
-        "전도 RF 내성과 BCI 시험 구성 — CIT-100 컴팩트 시스템, PSG-300 파워 신호 발생기, 9kHz~400MHz 대역 앰프.",
+        "전도 RF 내성과 BCI 시험 구성 — CIT-100·CIT-1000 컴팩트 시스템, 9kHz~400MHz 대역 앰프, CDN과 결합·분리 클램프, 파워미터.",
     },
     radiated: {
       label: "방사 내성 Radiated",
       note: "20MHz~18GHz",
       description:
-        "방사 RF 내성 시험 구성 — 20MHz~18GHz 대역 앰프, 안테나, EFS 전계강도계, 파워미터와 스위칭 유닛.",
+        "방사 RF 내성 시험 구성 — ECU 컨트롤 유닛, 20MHz~18GHz 대역 앰프, 안테나, EFS 전계강도계, 파워미터와 스위칭 유닛.",
     },
     magnetic: {
       label: "자기장 내성 Magnetic",
@@ -473,19 +473,19 @@ export const testCategoryMeta = {
       label: "Emission",
       note: "9 kHz – 40 GHz",
       description:
-        "Radiated and conducted emission setups — antennas, the six FPA pre-amplifiers and RF power meters, covering 9 kHz to 40 GHz.",
+        "Radiated and conducted emission setups — antennas, the EMI receivers and their LISNs, the six FPA pre-amplifiers and RF power meters, covering 9 kHz to 40 GHz.",
     },
     conducted: {
       label: "Conducted Immunity",
       note: "9 kHz – 400 MHz",
       description:
-        "Conducted RF immunity and BCI setups — the CIT-100 compact system, the PSG-300 power signal generator, and amplifiers over 9 kHz to 400 MHz.",
+        "Conducted RF immunity and BCI setups — the CIT-100 and CIT-1000 compact systems, amplifiers over 9 kHz to 400 MHz, and the CDNs and clamps that put the disturbance on the cable.",
     },
     radiated: {
       label: "Radiated Immunity",
       note: "20 MHz – 18 GHz",
       description:
-        "Radiated RF immunity setups — amplifiers over 20 MHz to 18 GHz, antennas, EFS field strength meters, power meters and switching units.",
+        "Radiated RF immunity setups — the ECU control units, amplifiers over 20 MHz to 18 GHz, antennas, EFS field strength meters, power meters and switching units.",
     },
     magnetic: {
       label: "Magnetic Field",
