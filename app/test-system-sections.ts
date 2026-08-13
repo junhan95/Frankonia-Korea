@@ -40,9 +40,11 @@ export const testProducts = [
   "system",
   "amplifier",
   "antenna",
+  "emission",
   "efs",
   "preamp",
   "meter",
+  "coupling",
 ] as const;
 
 export type TestCategory = (typeof testCategories)[number];
@@ -92,42 +94,126 @@ export type TestModel = {
 export const testModels: readonly TestModel[] = [
   // RF power amplifiers. The band is the head office's own column heading —
   // see the note on `group`.
-  { name: "FLL-25", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "FLL-25A", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "FLL-75", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "FLL-75A", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "FLL-100A", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "VLL-140", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "VLL-300", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "VLL-500L", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "VLL-600", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "VLL-1000L", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "VLL-1300", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "VLL-2000L", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "VLL-2500", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "VLL-3500L", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "VLL-5000", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "VLL-7000L", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "VLL-12000L", desc: "", product: "amplifier", group: "10 kHz – 300 MHz" },
-  { name: "VLC-60", desc: "", product: "amplifier", group: "10 kHz – 400 MHz" },
-  { name: "VLC-110", desc: "", product: "amplifier", group: "10 kHz – 400 MHz" },
-  { name: "FLC-75", desc: "", product: "amplifier", group: "10 kHz – 400 MHz" },
-  { name: "FLC-180", desc: "", product: "amplifier", group: "10 kHz – 400 MHz" },
-  { name: "VLC-220", desc: "", product: "amplifier", group: "10 kHz – 400 MHz" },
-  { name: "VLC-400", desc: "", product: "amplifier", group: "10 kHz – 400 MHz" },
-  { name: "VLC-1100", desc: "", product: "amplifier", group: "10 kHz – 400 MHz" },
-  { name: "VLC-1200", desc: "", product: "amplifier", group: "10 kHz – 400 MHz" },
-  { name: "VLC-2000", desc: "", product: "amplifier", group: "10 kHz – 400 MHz" },
-  { name: "VLLH-25", desc: "", product: "amplifier", group: "10 kHz – 1000 MHz" },
-  { name: "VLLH-70", desc: "", product: "amplifier", group: "10 kHz – 1000 MHz" },
-  { name: "VLLH-150", desc: "", product: "amplifier", group: "10 kHz – 1000 MHz" },
-  { name: "VLLH-260", desc: "", product: "amplifier", group: "10 kHz – 1000 MHz" },
-  { name: "VLLH-800", desc: "", product: "amplifier", group: "10 kHz – 1000 MHz" },
-  { name: "FLH-4A", desc: "", product: "amplifier", group: "1 – 1000 MHz" },
-  { name: "FLH-50A", desc: "", product: "amplifier", group: "1 – 1000 MHz" },
-  { name: "FLH-100A", desc: "", product: "amplifier", group: "1 – 1000 MHz" },
-  { name: "FLH-100C", desc: "", product: "amplifier", group: "1 – 1000 MHz" },
-  { name: "FLH-200C", desc: "", product: "amplifier", group: "1 – 1000 MHz" },
+  //
+  // The four groups to 1 GHz are the website's own matrix, and so are their
+  // figures: that page prints a full specification table per model, of which
+  // the band and the typical output power are carried here. Everything from
+  // "20 MHz – 1 GHz" down is from the 2019 Amplifier Selection Book, which is
+  // the only place the head office publishes those sixty-nine models — its
+  // website matrix stops at 1 GHz. See docs/source/test-systems-source.md §2.10.
+  { name: "FLL-25", desc: "100 kHz – 250 MHz, 25 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "FLL-25A", desc: "10 kHz – 230 MHz, 25 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "FLL-75", desc: "100 kHz – 300 MHz, 75 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "FLL-75A", desc: "150 kHz – 230 MHz, 75 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "FLL-100A", desc: "10 kHz – 250 MHz, 100 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "VLL-140", desc: "10 kHz – 250 MHz, 140 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "VLL-300", desc: "10 kHz – 250 MHz, 300 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "VLL-500L", desc: "100 kHz – 200 MHz, 500 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "VLL-600", desc: "10 kHz – 250 MHz, 600 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "VLL-1000L", desc: "100 kHz – 200 MHz, 1000 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "VLL-1300", desc: "10 kHz – 250 MHz, 1300 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "VLL-2000L", desc: "100 kHz – 200 MHz, 2000 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "VLL-2500", desc: "10 kHz – 250 MHz, 2500 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "VLL-3500L", desc: "100 kHz – 200 MHz, 3500 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "VLL-5000", desc: "10 kHz – 250 MHz, 5000 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "VLL-7000L", desc: "100 kHz – 200 MHz, 7000 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "VLL-12000L", desc: "100 kHz – 200 MHz, 12000 W", product: "amplifier", group: "10 kHz – 300 MHz" },
+  { name: "VLC-60", desc: "10 kHz – 400 MHz, 60 W", product: "amplifier", group: "10 kHz – 400 MHz" },
+  { name: "VLC-110", desc: "10 kHz – 400 MHz, 110 W", product: "amplifier", group: "10 kHz – 400 MHz" },
+  { name: "FLC-75", desc: "100 kHz – 400 MHz, 75 W", product: "amplifier", group: "10 kHz – 400 MHz" },
+  { name: "FLC-180", desc: "1 – 400 MHz, 180 W", product: "amplifier", group: "10 kHz – 400 MHz" },
+  { name: "VLC-220", desc: "10 kHz – 400 MHz, 220 W", product: "amplifier", group: "10 kHz – 400 MHz" },
+  { name: "VLC-400", desc: "10 kHz – 400 MHz, 400 W", product: "amplifier", group: "10 kHz – 400 MHz" },
+  { name: "VLC-1100", desc: "10 kHz – 400 MHz, 1100 W", product: "amplifier", group: "10 kHz – 400 MHz" },
+  { name: "VLC-1200", desc: "10 kHz – 400 MHz, 1200 W", product: "amplifier", group: "10 kHz – 400 MHz" },
+  { name: "VLC-2000", desc: "10 kHz – 400 MHz, 2000 W", product: "amplifier", group: "10 kHz – 400 MHz" },
+  { name: "VLLH-25", desc: "10 kHz – 1000 MHz, 25 W", product: "amplifier", group: "10 kHz – 1000 MHz" },
+  { name: "VLLH-70", desc: "10 kHz – 1000 MHz, 70 W", product: "amplifier", group: "10 kHz – 1000 MHz" },
+  { name: "VLLH-150", desc: "10 kHz – 1000 MHz, 150 W", product: "amplifier", group: "10 kHz – 1000 MHz" },
+  { name: "VLLH-260", desc: "10 kHz – 200 MHz / 200 – 1000 MHz, 260 W", product: "amplifier", group: "10 kHz – 1000 MHz" },
+  { name: "VLLH-800", desc: "10 kHz – 200 MHz / 200 – 1000 MHz, 800 W", product: "amplifier", group: "10 kHz – 1000 MHz" },
+  { name: "FLH-4A", desc: "1 – 1000 MHz, 4 W", product: "amplifier", group: "1 – 1000 MHz" },
+  { name: "FLH-50A", desc: "1 – 1000 MHz, 50 W", product: "amplifier", group: "1 – 1000 MHz" },
+  { name: "FLH-100A", desc: "1 – 1000 MHz, 100 W", product: "amplifier", group: "1 – 1000 MHz" },
+  { name: "FLH-100C", desc: "20 – 500 MHz, 100 W", product: "amplifier", group: "1 – 1000 MHz" },
+  { name: "FLH-200C", desc: "20 – 500 MHz, 200 W", product: "amplifier", group: "1 – 1000 MHz" },
+
+  // From here on the 2019 selection book is the only source — see the note
+  // above, and §2.10 of the ledger for what the book prints and the website
+  // does not.
+  { name: "FLH-20B", desc: "20 MHz – 1 GHz, 20 W", product: "amplifier", group: "20 MHz – 1 GHz" },
+  { name: "FLH-70B", desc: "20 MHz – 1 GHz, 70 W", product: "amplifier", group: "20 MHz – 1 GHz" },
+  { name: "VLH-90B", desc: "20 MHz – 1 GHz, 90 W", product: "amplifier", group: "20 MHz – 1 GHz" },
+  { name: "VLH-160B", desc: "20 MHz – 1 GHz, 160 W", product: "amplifier", group: "20 MHz – 1 GHz" },
+  { name: "FLH-200B", desc: "20 MHz – 1 GHz, 200 W", product: "amplifier", group: "20 MHz – 1 GHz" },
+  { name: "VLH-320B", desc: "20 MHz – 1 GHz, 320 W", product: "amplifier", group: "20 MHz – 1 GHz" },
+  { name: "VLH-600B", desc: "20 MHz – 1 GHz, 600 W", product: "amplifier", group: "20 MHz – 1 GHz" },
+  { name: "VLH-100B1", desc: "80 MHz – 1 GHz, 100 W", product: "amplifier", group: "80 MHz – 1 GHz" },
+  { name: "FLH-250B1", desc: "80 MHz – 1 GHz, 250 W", product: "amplifier", group: "80 MHz – 1 GHz" },
+  { name: "VLH-400B1", desc: "80 MHz – 1 GHz, 400 W", product: "amplifier", group: "80 MHz – 1 GHz" },
+  { name: "FLH-500B1", desc: "80 MHz – 1 GHz, 500 W", product: "amplifier", group: "80 MHz – 1 GHz" },
+  { name: "VLH-900B1", desc: "80 MHz – 1 GHz, 900 W", product: "amplifier", group: "80 MHz – 1 GHz" },
+  { name: "VLH-1450B1", desc: "80 MHz – 1 GHz, 1450 W", product: "amplifier", group: "80 MHz – 1 GHz" },
+  { name: "VLH-1650B1", desc: "80 MHz – 1 GHz, 1650 W", product: "amplifier", group: "80 MHz – 1 GHz" },
+  { name: "VLH-2400B1", desc: "80 MHz – 1 GHz, 2400 W", product: "amplifier", group: "80 MHz – 1 GHz" },
+  { name: "VLH-3500B1", desc: "80 MHz – 1 GHz, 3500 W", product: "amplifier", group: "80 MHz – 1 GHz" },
+  { name: "FLG-7A", desc: "0,8 – 2 GHz, 7 W", product: "amplifier", group: "0,8 – 2 GHz" },
+  { name: "FLG-12A", desc: "0,8 – 2 GHz, 12 W", product: "amplifier", group: "0,8 – 2 GHz" },
+  { name: "FLG-25A", desc: "1 – 2 GHz, 25 W", product: "amplifier", group: "0,8 – 2 GHz" },
+  { name: "FLG-50A", desc: "0,8 – 2 GHz, 50 W", product: "amplifier", group: "0,8 – 2 GHz" },
+  { name: "FLG-100A", desc: "0,8 – 2 GHz, 120 W", product: "amplifier", group: "0,8 – 2 GHz" },
+  { name: "FLG-200A", desc: "0,8 – 2 GHz, 200 W", product: "amplifier", group: "0,8 – 2 GHz" },
+  { name: "FLG-300A", desc: "0,8 – 2 GHz, 300 W", product: "amplifier", group: "0,8 – 2 GHz" },
+  { name: "FLG-500A", desc: "0,8 – 2 GHz, 500 W", product: "amplifier", group: "0,8 – 2 GHz" },
+  { name: "FLG-10C", desc: "1 – 3 GHz, 10 W", product: "amplifier", group: "0,8 – 3,2 GHz" },
+  { name: "FLG-30C", desc: "1 – 3 GHz, 30 W", product: "amplifier", group: "0,8 – 3,2 GHz" },
+  { name: "VLG-40CA", desc: "0,8 – 3,2 GHz, 40 W", product: "amplifier", group: "0,8 – 3,2 GHz" },
+  { name: "VLG-70CA", desc: "0,8 – 3,2 GHz, 70 W", product: "amplifier", group: "0,8 – 3,2 GHz" },
+  { name: "VLG-120CA", desc: "0,8 – 3,2 GHz, 120 W", product: "amplifier", group: "0,8 – 3,2 GHz" },
+  { name: "VLG-220CA", desc: "0,8 – 3,2 GHz, 220 W", product: "amplifier", group: "0,8 – 3,2 GHz" },
+  { name: "VLG-450CA", desc: "0,8 – 3,2 GHz, 450 W", product: "amplifier", group: "0,8 – 3,2 GHz" },
+  { name: "VLG-1000CA", desc: "0,8 – 3,2 GHz, 1000 W", product: "amplifier", group: "0,8 – 3,2 GHz" },
+  { name: "VLG-25D", desc: "0,8 – 4 GHz, 25 W", product: "amplifier", group: "0,8 – 4 GHz" },
+  { name: "VLG-45D", desc: "0,8 – 4 GHz, 45 W", product: "amplifier", group: "0,8 – 4 GHz" },
+  { name: "VLG-80D", desc: "0,8 – 4 GHz, 80 W", product: "amplifier", group: "0,8 – 4 GHz" },
+  { name: "VLG-100D", desc: "0,8 – 4 GHz, 100 W", product: "amplifier", group: "0,8 – 4 GHz" },
+  { name: "VLG-200D", desc: "0,8 – 4 GHz, 200 W", product: "amplifier", group: "0,8 – 4 GHz" },
+  { name: "VLG-420D", desc: "0,8 – 4 GHz, 420 W", product: "amplifier", group: "0,8 – 4 GHz" },
+  { name: "VLG-800D", desc: "0,8 – 4 GHz, 800 W", product: "amplifier", group: "0,8 – 4 GHz" },
+  { name: "FLG-15E", desc: "2 – 4 GHz, 15 W", product: "amplifier", group: "2 – 4 GHz" },
+  { name: "FLG-30E", desc: "2 – 4 GHz, 30 W", product: "amplifier", group: "2 – 4 GHz" },
+  { name: "FLG-60E", desc: "2 – 4 GHz, 60 W", product: "amplifier", group: "2 – 4 GHz" },
+  { name: "FLG-100E", desc: "2 – 4 GHz, 100 W", product: "amplifier", group: "2 – 4 GHz" },
+  { name: "FLG-200E", desc: "2 – 4 GHz, 200 W", product: "amplifier", group: "2 – 4 GHz" },
+  { name: "FLG-9F", desc: "2 – 6 GHz, 9 W", product: "amplifier", group: "2 – 6 GHz" },
+  { name: "VLG-15F", desc: "2 – 6 GHz, 15 W", product: "amplifier", group: "2 – 6 GHz" },
+  // Named for 15 W and rated at 20 W: that is what the book's own table says,
+  // and correcting a part number to match a figure is not our call.
+  { name: "FLG-15F", desc: "2 – 6 GHz, 20 W", product: "amplifier", group: "2 – 6 GHz" },
+  { name: "FLG-30F", desc: "2 – 6 GHz, 30 W", product: "amplifier", group: "2 – 6 GHz" },
+  { name: "VLG-30F", desc: "2 – 6 GHz, 30 W", product: "amplifier", group: "2 – 6 GHz" },
+  { name: "FLG-50F", desc: "2 – 6 GHz, 50 W", product: "amplifier", group: "2 – 6 GHz" },
+  { name: "VLG-55F", desc: "2 – 6 GHz, 55 W", product: "amplifier", group: "2 – 6 GHz" },
+  { name: "FLG-100F", desc: "2 – 6 GHz, 100 W", product: "amplifier", group: "2 – 6 GHz" },
+  { name: "VLG-100F", desc: "2 – 6 GHz, 100 W", product: "amplifier", group: "2 – 6 GHz" },
+  { name: "VLG-180F", desc: "2 – 6 GHz, 180 W", product: "amplifier", group: "2 – 6 GHz" },
+  { name: "FLG-15G", desc: "0,7 – 6 GHz, 15 W", product: "amplifier", group: "0,7 – 6 GHz" },
+  { name: "FLG-25G", desc: "0,7 – 6 GHz, 25 W", product: "amplifier", group: "0,7 – 6 GHz" },
+  { name: "FLG-50G", desc: "0,7 – 6 GHz, 50 W", product: "amplifier", group: "0,7 – 6 GHz" },
+  { name: "FLG-100G", desc: "0,7 – 6 GHz, 100 W", product: "amplifier", group: "0,7 – 6 GHz" },
+  { name: "FLG-200G", desc: "0,7 – 6 GHz, 200 W", product: "amplifier", group: "0,7 – 6 GHz" },
+  // Two output figures per model, because these are two amplifiers in one case
+  // — the book prints them as "40 W / 15 W" and so do we.
+  { name: "VLG-40/15G", desc: "0,8 – 6 GHz, 40 W / 15 W", product: "amplifier", group: "0,8 – 6 GHz" },
+  { name: "VLG-40/30G", desc: "0,8 – 6 GHz, 40 W / 30 W", product: "amplifier", group: "0,8 – 6 GHz" },
+  { name: "VLG-70/15G", desc: "0,8 – 6 GHz, 70 W / 15 W", product: "amplifier", group: "0,8 – 6 GHz" },
+  { name: "VLG-70/30G", desc: "0,8 – 6 GHz, 70 W / 30 W", product: "amplifier", group: "0,8 – 6 GHz" },
+  { name: "VLG-70/55G", desc: "0,8 – 6 GHz, 70 W / 55 W", product: "amplifier", group: "0,8 – 6 GHz" },
+  { name: "VLG-120/30G", desc: "0,8 – 6 GHz, 120 W / 30 W", product: "amplifier", group: "0,8 – 6 GHz" },
+  { name: "VLG-120/55G", desc: "0,8 – 6 GHz, 120 W / 55 W", product: "amplifier", group: "0,8 – 6 GHz" },
+  { name: "VLG-120/100G", desc: "0,8 – 6 GHz, 120 W / 100 W", product: "amplifier", group: "0,8 – 6 GHz" },
+  { name: "VLG-220/55G", desc: "0,8 – 6 GHz, 220 W / 55 W", product: "amplifier", group: "0,8 – 6 GHz" },
+  { name: "VLG-220/100G", desc: "0,8 – 6 GHz, 220 W / 100 W", product: "amplifier", group: "0,8 – 6 GHz" },
   // WBA microwave amplifiers. These carry a description because the wideband
   // catalogue prints output power and gain per model, which the website's
   // amplifier matrix does not.
@@ -169,16 +255,41 @@ export const testModels: readonly TestModel[] = [
   // Antennas, under the five headings the head office's antenna page uses.
   // The form names stay in English for the same reason `industryLabel` keeps
   // Automotive: that is how they are written in Korean EMC practice.
+  { name: "ALX-4000", desc: "25 MHz – 4 GHz, 900 W at 100 MHz", product: "antenna", group: "Broadband" },
   { name: "ALX-4000E", desc: "25 MHz – 4 GHz, 100 W cont. / 200 W intermitt.", product: "antenna", group: "Broadband" },
   { name: "ALX-8000E", desc: "25 MHz – 8 GHz, 100 W cont. / 200 W intermitt.", product: "antenna", group: "Broadband" },
+  // The double-stacked range, from the 2024 antenna catalogue. Two log-periodic
+  // structures on one boom: about 2.5 dB more gain than a single one, which is
+  // amplifier power the buyer does not have to pay for.
+  { name: "AXL-80", desc: "70 MHz – 4 GHz, 1.5 kW intermitt. / 1 kW cont.", product: "antenna", group: "Double stacked log.-periodic" },
+  { name: "AXL-80S", desc: "70 MHz – 4 GHz, folded elements, 1,480 mm wide", product: "antenna", group: "Double stacked log.-periodic" },
+  { name: "AXL-80ES", desc: "80 MHz – 2.7 GHz, folded longest elements", product: "antenna", group: "Double stacked log.-periodic" },
+  { name: "AXL-80-6G", desc: "70 MHz – 10 GHz, 8.6 dBi ± 2.3 dB", product: "antenna", group: "Double stacked log.-periodic" },
+  { name: "AXL-200", desc: "150 MHz – 4 GHz, 2 kW intermitt. / 1 kW cont.", product: "antenna", group: "Double stacked log.-periodic" },
   { name: "MAX-9", desc: "600 MHz – 10.5 GHz, 300 W at 1 GHz", product: "antenna", group: "Stacked log.-periodic" },
   { name: "MAX-9-7/16", desc: "0.6 – 7.5 GHz, 950 W at 1 GHz", product: "antenna", group: "Stacked log.-periodic" },
   { name: "MAX-18", desc: "700 MHz – 20 GHz, 50 W", product: "antenna", group: "Stacked log.-periodic" },
   { name: "HAX-6", desc: "500 MHz – 6 GHz, 6 – 18 dBi", product: "antenna", group: "Horn" },
+  { name: "HAX-6-KFZ", desc: "800 MHz – 6.2 GHz, 1 kW at 1 GHz", product: "antenna", group: "Horn" },
   { name: "HAX-18", desc: "800 MHz – 18 GHz, 6 – 18 dBi", product: "antenna", group: "Horn" },
   { name: "HAX-40", desc: "14 – 40 GHz, 15 – 20 dBi", product: "antenna", group: "Horn" },
+  // The microwave biconicals. They exist because above 3 GHz there is no
+  // omnidirectional broadband antenna on the market — which is what a
+  // site-VSWR validation to CISPR 16-1-4 needs.
+  { name: "SAM-6", desc: "1 – 6 GHz, 20 W", product: "antenna", group: "Biconical, microwave" },
+  { name: "SAM-18", desc: "3 – 18 GHz, 10 W", product: "antenna", group: "Biconical, microwave" },
   { name: "SAX-10", desc: "9 kHz – 30 MHz, antenna factor +10 dB/m", product: "antenna", group: "Active rod" },
   { name: "LAX-10", desc: "9 kHz – 30 MHz, 0.5 m loop", product: "antenna", group: "Active loop" },
+  // What holds the antenna up and turns it over. Filed with the antennas
+  // because the head office's own 2024 antenna catalogue files them here —
+  // they are bought with the antenna and sized by it.
+  { name: "FSM-1.6", desc: "Telescopic mast, 0.9 – 1.6 m, fibre glass, 6 kg", product: "antenna", group: "Masts and positioners" },
+  { name: "FSM-2.0", desc: "Telescopic mast, 1.2 – 2.0 m, fibre glass, 7 kg", product: "antenna", group: "Masts and positioners" },
+  { name: "FSM-4.0", desc: "Manual winch mast, 0.4 – 4.15 m, 13 kg", product: "antenna", group: "Masts and positioners" },
+  { name: "FAM2-4", desc: "Fully automatic mast, up to 4.0 m, 12 kg load", product: "antenna", group: "Masts and positioners" },
+  { name: "FAM2-6", desc: "Fully automatic mast, 0.9 – 6.0 m, 12 kg load", product: "antenna", group: "Masts and positioners" },
+  { name: "FBM 1-4", desc: "Boresight mast, 1.0 – 4.0 m, pneumatic polarisation", product: "antenna", group: "Masts and positioners" },
+  { name: "FPD-01", desc: "Electrical polarisation switch, 0° – 90° in approx. 5 s", product: "antenna", group: "Masts and positioners" },
 
   // Electrical field strength meters.
   { name: "EFS-10", desc: "10 kHz – 9.25 GHz, 0.5 – 500 V/m", product: "efs" },
@@ -202,10 +313,41 @@ export const testModels: readonly TestModel[] = [
 
   // Integrated systems.
   { name: "CIT-100", desc: "Compact immunity test system, 4 kHz – 1.2 GHz, 25 / 75 W", product: "system" },
+  { name: "CIT-1000", desc: "Compact immunity test system, 4 kHz – 1.2 GHz, 25 – 180 W, touch-screen PC", product: "system" },
+  { name: "ECU-3", desc: "EMC test and control unit, generator 9 kHz – 3 GHz", product: "system" },
+  { name: "ECU-6", desc: "EMC test and control unit, generator 9 kHz – 6.5 GHz", product: "system" },
   { name: "PSG-300", desc: "Power signal generator, DC – 300 kHz, 250 W", product: "system" },
   { name: "PSG-300A", desc: "Power signal generator, DC – 300 kHz, 800 W", product: "system" },
   { name: "MTS-800", desc: "Magnetic field test system, DC – 250 kHz, up to 1000 A/m", product: "system" },
   { name: "GTEM", desc: "GTEM cell", product: "system" },
+
+  // Emission measuring systems, from the 2021 catalogue of that name. The
+  // receivers are the family the overview paragraph has named since the branch
+  // was built — "Full-compliant EMI-Receiver with FFT" — and had no page for.
+  { name: "ERX-6", desc: "EMI test receiver, 10 Hz – 6 GHz (7 GHz option), hardware FFT", product: "emission", group: "EMI test receivers" },
+  { name: "ERC-6", desc: "EMI test receiver, 9 kHz – 6 GHz, integrated 10″ touch PC", product: "emission", group: "EMI test receivers" },
+  { name: "C2-16", desc: "Single-phase LISN, 9 kHz – 30 MHz, 16 A", product: "emission", group: "Line impedance stabilization networks" },
+  { name: "C4-32", desc: "Three-phase LISN, 9 kHz – 30 MHz, 32 A", product: "emission", group: "Line impedance stabilization networks" },
+  { name: "LISN-KFZ", desc: "Automotive LISN, 100 kHz – 150 MHz, 70 A", product: "emission", group: "Line impedance stabilization networks" },
+  { name: "LISN-MIL", desc: "MIL-STD-461 LISN, 150 kHz – 100 MHz, 70 A", product: "emission", group: "Line impedance stabilization networks" },
+  { name: "NFS-100", desc: "Near-field probe set, E 80 – 500 MHz / H 10 – 500 MHz", product: "emission", group: "Probes and clamps" },
+  { name: "LVVL", desc: "2 m large loop antenna, 9 kHz – 30 MHz, three axes", product: "emission", group: "Probes and clamps" },
+  { name: "ACF-01B", desc: "Absorbing clamp, 30 – 1000 MHz, 17 dB ± 4 dB", product: "emission", group: "Probes and clamps" },
+
+  // Coupling and decoupling accessories, from the conducted immunity catalogue.
+  // Listed by type rather than by order code: each of these is a family with
+  // ten or more variants for connector, current rating and voltage class, and
+  // a page that printed all of them would be a parts list.
+  { name: "CDN-AF2 / AF3 / AF4 / AF5", desc: "Unscreened unbalanced lines, 2 to 5 poles, 150 kHz – 230 / 300 MHz", product: "coupling", group: "Coupling / decoupling networks" },
+  { name: "CDN-AF8 / AF9", desc: "Unscreened unbalanced lines, 8 or 9 poles, 150 kHz – 230 MHz", product: "coupling", group: "Coupling / decoupling networks" },
+  { name: "CDN-M1 / M2 / M3 / M4 / M5", desc: "Power supply lines, to 1000 VAC and 100 A", product: "coupling", group: "Coupling / decoupling networks" },
+  { name: "CDN-S1 … S25", desc: "Screened lines, coupled to the shield through 100 Ω", product: "coupling", group: "Coupling / decoupling networks" },
+  { name: "CDN-USB / HDMI / Firewire / RJ45-S", desc: "Data interfaces, (10 kHz) 150 kHz – 230 MHz", product: "coupling", group: "Coupling / decoupling networks" },
+  { name: "EMCL-20", desc: "EM coupling clamp, 10 kHz – 1000 MHz, cable ≤ 20 mm", product: "coupling", group: "Clamps and probes" },
+  { name: "EMCL-35", desc: "EM coupling clamp, 10 kHz – 1000 MHz, cable ≤ 37 mm", product: "coupling", group: "Clamps and probes" },
+  { name: "ABCL-20", desc: "EM decoupling clamp, 100 kHz – 1000 MHz, cable ≤ 20 mm", product: "coupling", group: "Clamps and probes" },
+  { name: "BCI probe", desc: "Bulk current injection probe, 4 kHz – 400 MHz, 40 mm harness", product: "coupling", group: "Clamps and probes" },
+  { name: "MP50", desc: "Bulk current monitoring probe", product: "coupling", group: "Clamps and probes" },
 ];
 
 export const modelsByProduct = (product: TestProduct) =>
@@ -285,9 +427,9 @@ export const standardsByIndustry = (industry: Industry) =>
  *  derived: it is the equipment list for a setup, not a category membership.
  *  A set, though — the order it prints in comes from `testProducts`. */
 const categoryProducts: Record<TestCategory, readonly TestProduct[]> = {
-  emission: ["antenna", "preamp", "meter"],
-  conducted: ["system", "amplifier", "meter"],
-  radiated: ["amplifier", "antenna", "efs", "meter"],
+  emission: ["antenna", "emission", "preamp", "meter"],
+  conducted: ["system", "amplifier", "coupling", "meter"],
+  radiated: ["system", "amplifier", "antenna", "efs", "meter"],
   magnetic: ["system"],
 };
 
@@ -360,7 +502,7 @@ export const testProductMeta = {
       label: "RF 파워앰프",
       note: "내성 시험 구동용 고체소자·광대역 — 최대 12kW",
       description:
-        "RF 파워앰프 70종 — 10kHz~1GHz 고체소자 앰프 36종(최대 12kW)과 500MHz~40GHz 광대역 WBA 34종.",
+        "RF 파워앰프 139종 — 10kHz~6GHz 고체소자 앰프 105종(최대 12kW)과 500MHz~40GHz 광대역 WBA 34종.",
     },
     antenna: {
       label: "안테나",
@@ -390,7 +532,19 @@ export const testProductMeta = {
       label: "통합 시험 시스템",
       note: "랙 또는 셀 하나로 완결되는 시험 구성",
       description:
-        "CIT-100 컴팩트 내성 시험 시스템, PSG-300·300A 파워 신호 발생기, MTS-800 자기장 시험 시스템, GTEM 셀.",
+        "CIT-100·CIT-1000 컴팩트 내성 시험 시스템, ECU-3·ECU-6 EMC 컨트롤 유닛, PSG-300·300A 파워 신호 발생기, MTS-800 자기장 시험 시스템, GTEM 셀.",
+    },
+    emission: {
+      label: "방출 계측 시스템",
+      note: "방출을 재는 쪽 — 리시버, LISN, 프로브",
+      description:
+        "EMI 테스트 리시버 ERX-6·ERC-6, LISN 4종, 근접전계 프로브 NFS-100, 대형 루프 안테나 LVVL, 흡수 클램프 ACF-01B.",
+    },
+    coupling: {
+      label: "결합·분리 액세서리",
+      note: "전도 내성 시험에서 신호를 케이블에 싣는 장치",
+      description:
+        "IEC/EN 61000-4-6 결합·분리 회로망(CDN) 전 계열과 EM 결합 클램프 EMCL, 분리 클램프 ABCL-20, BCI 주입·모니터링 프로브.",
     },
   },
   en: {
@@ -398,7 +552,7 @@ export const testProductMeta = {
       label: "RF Power Amplifiers",
       note: "Immunity drive, solid-state and wideband — to 12 kW",
       description:
-        "Seventy RF power amplifiers — thirty-six solid-state models from 10 kHz to 1 GHz, up to 12 kW, and thirty-four WBA wideband models from 500 MHz to 40 GHz.",
+        "A hundred and thirty-nine RF power amplifiers — a hundred and five solid-state models from 10 kHz to 6 GHz, up to 12 kW, and thirty-four WBA wideband models from 500 MHz to 40 GHz.",
     },
     antenna: {
       label: "Antennas",
@@ -428,7 +582,19 @@ export const testProductMeta = {
       label: "Integrated Systems",
       note: "A whole test in one rack or cell",
       description:
-        "The CIT-100 compact immunity test system, PSG-300 and 300A power signal generators, the MTS-800 magnetic field test system and GTEM cells.",
+        "The CIT-100 and CIT-1000 compact immunity test systems, the ECU-3 and ECU-6 control units, PSG-300 and 300A power signal generators, the MTS-800 magnetic field test system and GTEM cells.",
+    },
+    emission: {
+      label: "Emission Measuring Systems",
+      note: "The measuring half — receivers, LISNs, probes",
+      description:
+        "The ERX-6 and ERC-6 EMI test receivers, four LISNs, the NFS-100 near-field probe set, the LVVL large loop antenna and the ACF-01B absorbing clamp.",
+    },
+    coupling: {
+      label: "Coupling & Decoupling",
+      note: "What puts the disturbance on the cable",
+      description:
+        "The full range of coupling/decoupling networks for IEC/EN 61000-4-6, the EMCL coupling clamps, the ABCL-20 decoupling clamp and the BCI injection and monitoring probes.",
     },
   },
 } as const satisfies Record<Lang, Record<TestProduct, Entry>>;
@@ -782,10 +948,186 @@ export const categoryBody: Record<Lang, Partial<Record<TestCategory, PageBody>>>
  */
 export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> = {
   en: {
+    emission: {
+      lead: [
+        "The ERX-6 combines the advantages of a traditional EMI-receiver with the ultra-fast FFT-technology (time domain). Furthermore it offers the full functionality of a real-time spectrum analyzer, which is very helpful to see immediate results of modifications on an EUT.",
+        "Although the ERC-6 is the less expensive little brother of our flagship ERX-6, it is more than worth to have an intensive look on it. Only properties that are not required for full-compliance EMI measurements according to CISPR 16-1 have been reduced or omitted, which makes it a good alternative to the high-end devices for many users, such as in-house developing departments.",
+        "Around the receiver sits the rest of an emission measurement: the LISN that gives the mains a defined impedance, the near-field probes that locate the source, the large loop antenna for luminaires and the absorbing clamp for CISPR 14.",
+      ],
+      /* The one photograph in the 2021 catalogue that is a product and not a
+         screenshot or a schematic — see docs/source/test-systems-assets.md.
+         A LISN rather than a receiver is not the plate this page would have
+         chosen, but it is the plate the source has. */
+      figure: {
+        src: "/test-systems/images/emission-lisn.webp",
+        w: 723,
+        h: 802,
+        alt: "A LISN in a grey metal case, its front plate lettered “0.1 MHz - 150 MHz, 400 A, 5 µH” over Measure and Output jacks, with brass and red wing terminals for GND and the EuT line below",
+        caption: "The mains has no impedance worth measuring against. This is what gives it one — and the receiver output beside it is the whole point of the box.",
+      },
+      groups: [
+        {
+          title: "ERX-6 key features",
+          items: [
+            "Frequency range 10 Hz to 6 GHz (7 GHz as option)",
+            "Traditional EMI-receiver mode acc. to CISPR 16-1",
+            "Ultra-fast FFT-based (time domain) EMI-receiver mode acc. to CISPR 16-1-1, Ed. 3.1",
+            "Real-time spectrum analyzer mode",
+            "About 6000 times faster than traditional receivers",
+            "Quasi-Peak, Peak, Average, RMS and RMS-AVG detectors",
+            "Remote control of the receiver, antenna mast and turntable with the EM-LAB software",
+            "Measurements acc. to CISPR, MIL, DO, VG and ETSI standards",
+          ],
+        },
+        {
+          title: "ERC-6 key features",
+          items: [
+            "Frequency range 9 kHz – 6 GHz",
+            "Traditional EMI-receiver mode according to CISPR 16-1",
+            "Fast, FFT-based (time domain) EMI-receiver mode acc. to CISPR 16-1-1, Ed. 3.1",
+            "Integrated touch-PC with 10″ monitor",
+            "Integrated 20 dB (15 dB above 1 GHz) pre-amplifier",
+            "Full-compliant according to CISPR 16-1",
+            "Peak, Quasi-Peak, Average, RMS and CISPR-Average detectors, RMS-average optional",
+          ],
+        },
+        {
+          // Prose rather than a table: the head office's own LISN-KFZ and
+          // LISN-MIL tables print their label column and their value column out
+          // of step with one another, and a figure that cannot be tied to its
+          // label with certainty does not go on the page. These four lines are
+          // from the description beside those tables, which is unambiguous.
+          title: "The automotive and military LISNs",
+          items: [
+            "LISN-KFZ — measurement of interference voltage in vehicles, aircraft and ships over 100 kHz – 150 MHz; also usable for bulk current injection and for transient measurements according to ISO 7637-2",
+            "LISN-KFZ — impedance realised according to CISPR 16 / 25 and MIL-STD-461F, (5 µH + 1 Ω) ∥ 50 Ω; 70 A continuous and more than 100 A for a short time",
+            "LISN-MIL — designed according to MIL-STD-461E and 461F, 50 µH + 5 Ω ∥ 50 Ω over 150 kHz – 100 MHz",
+            "With the optionally available external capacitor CAP 10 the LISN-KFZ can be used for DO-160 and DEF-STAN 59 as well",
+          ],
+        },
+      ],
+      tables: [
+        {
+          title: "EMI test receivers",
+          head: ["", "ERX-6", "ERC-6"],
+          rows: [
+            ["Frequency range", "10 Hz – 6 GHz\n7 GHz with option ERX-FE7", "9 kHz – 6 GHz"],
+            ["Operating modes", "EMI receiver, FFT-based receiver,\nspectrum analyzer, oscilloscope", "EMI receiver,\nFFT-based receiver"],
+            ["Detectors", "Quasi-Peak, Average, RMS, RMS-Average,\nCISPR-AVG, CISPR-RMS", "Peak, Quasi-peak, Average, RMS,\nCISPR-Average (RMS-average option)"],
+            ["Pre-amplifier", "typ. 20 dB, noise figure typ. 3.5 dB", "20 dB, 15 dB above 1 GHz"],
+            ["RF input", "N type, 50 Ω", "BNC 50 Ω (9 kHz – 30 MHz)\nN 50 Ω (30 MHz – 6 GHz)"],
+            ["Attenuator", "0 – 50 dB in 10 dB steps", "0 – 35 dB / 0 – 55 dB in 5 dB steps"],
+            ["Display", "8.4″ touchscreen, 800 × 600", "integrated 10″ touch PC"],
+            ["Interfaces", "Ethernet/LAN, USB, VGA, HDMI, audio", "USB, RS-232, user port"],
+            ["Power supply", "+11 … +14 V DC; 230 V ± 20 % 50 Hz\nor 110 V ± 10 % 60 Hz", "100 – 240 VAC, 50/60 Hz, 25 W"],
+            ["Dimensions", "—", "2 RU, 482 × 95 × 485 mm"],
+            ["Weight", "approx. 8 kg", "7 kg"],
+          ],
+        },
+        {
+          title: "Line impedance stabilization networks",
+          note: "Both are V-networks of 50 Ω ∥ (5 Ω + 50 µH), fully compliant with CISPR 16, VDE 0876 and FCC part 15.",
+          head: ["", "C2-16", "C4-32"],
+          rows: [
+            ["Frequency range", "9 kHz – 30 MHz", "9 kHz – 30 MHz"],
+            ["Lines", "single-phase, two-line", "three-phase, three-line"],
+            ["Continuous rated output current", "16 A, SCHUKO socket", "32 A IEC, 16 A SCHUKO"],
+            ["Max. operating voltage", "250 VAC / 350 VDC", "230 VAC / 325 VDC (L-PE, N-PE)\n400 VAC / 565 VDC (L-L, L-N)"],
+            ["AC supply frequency range", "DC – 60 Hz", "DC – 60 Hz"],
+            ["RF output", "BNC female", "BNC female"],
+            ["Rated temperature", "−10 … +45 °C", "−10 … +40 °C"],
+            ["Dimensions (W × H × D)", "230 × 105 × 285 mm", "342 × 254 × 510 mm"],
+            ["Weight", "5.5 kg", "16.5 kg"],
+          ],
+        },
+        {
+          title: "Probes, loop antenna and absorbing clamp",
+          head: ["", "NFS-100", "LVVL", "ACF-01B"],
+          rows: [
+            ["Frequency range", "E 80 – 500 MHz\nH 10 – 500 MHz", "9 kHz – 30 MHz", "30 – 1000 MHz"],
+            ["Standard", "—", "CISPR-15 / EN 55015, §7.2 and annex B", "CISPR 16-1-3, EN 55014-1"],
+            ["Configuration", "E probe, H probe, BNC adaptor,\nsensitivity plots, hard carry case", "three independent loops, 2 m diameter,\nselected by patch panel switch", "clamp on wheels, 6 dB attenuator\nrecommended at the output"],
+            ["Insertion loss / coupling", "—", "—", "17 dB ± 4 dB"],
+            ["Decoupling typ.", "—", "—", "5 … 20 dB over 1 – 30 MHz\n> 20 dB over 30 MHz – 1 GHz"],
+            ["Impedance / connection", "50 Ω nom., BNC", "50 Ω BNC", "50 Ω"],
+            ["Max. input", "isolation voltage 1 kV", "—", "30 A peak current, 5 W peak"],
+            ["Max. cable diameter", "—", "—", "20 mm"],
+            ["Dimensions", "E 180 mm, H 183 mm overall\nouter diameter H 69 mm", "2.6 × 2.1 × 2.1 m (H × W × W)", "600 × 105 × 80 mm"],
+            ["Weight", "—", "—", "6.5 kg"],
+          ],
+        },
+      ],
+    },
+    coupling: {
+      lead: [
+        "According to IEC/EN 61000-4-6 the preferred coupling and decoupling devices are the CDNs, for reasons of test reproducibility and protection of the AE. However, if they are not suitable or available, clamp injection should be used.",
+        "CDN-AF type networks are required for coupling and decoupling disturbing signals to an unscreened cable with non-balanced lines. CDN M-types are used for all power supply lines, with types available for EUT voltages of up to 1000 VAC and EUT currents of up to 100 A. For coupling and decoupling on screened lines the CDN S-types are used, where the interference signal is in all cases coupled to the cable shield via a 100 Ω resistor.",
+        "The EM clamp establishes both capacitive and inductive coupling to the cable connected to the EUT. In contrast to the conventional current injection clamp it has a directivity above 10 dB over 10 MHz, so that a defined impedance between the common-mode point of the AE and the ground reference plane is no longer required — above 10 MHz the behaviour of the EM clamp is similar to that of a CDN.",
+      ],
+      groups: [
+        {
+          // The list above is by type, not by order code. This group is where a
+          // reader finds out that each type is a family: the head office prints
+          // roughly eighty ordering variants of the M-types alone.
+          title: "How a type becomes an order code",
+          items: [
+            "The connector — terminal block, 4 mm safety banana jack, 6 mm round connectors for currents above 32 A, or Sub-D on the AF8 and AF9",
+            "The bottom of the band — 150 kHz as standard, 10 kHz on the “-10k” types",
+            "The current rating — 16 A as standard, then 32 A, 63 A and 100 A",
+            "The voltage class — “-HV” to 1000 V and “-VHV” to 1700 V line-to-line",
+            "A calibration adapter is available for every type, and a mounting bracket with a 50/150 Ω adapter and a 50 Ω termination for the adapters",
+          ],
+        },
+        {
+          title: "The clamp injection setup",
+          items: [
+            "The EM coupling clamp EMCL couples to the cable under test; less than 15 W of amplifier output is required to obtain a test level of 10 V",
+            "A calibration unit and calibration data are supplied with each EMCL",
+            "The decoupling clamp ABCL-20 is a ferrite tube clamp fitted to every cable between EUT and AE except the cable under test, so that the test signal does not reach the rest of the setup",
+            "The BCI probe injects RF current into a harness of up to 40 mm diameter for ISO 11452-4 and MIL-STD 461 CS 114, at secondary currents of 300 mA and more",
+          ],
+        },
+      ],
+      tables: [
+        {
+          title: "Coupling / decoupling networks",
+          note: "One column per type family. Which variant of a family a setup needs is set by the connector, the current and the voltage class — see the list above.",
+          head: ["", "CDN-AF", "CDN-M", "CDN-S"],
+          rows: [
+            ["Frequency range (RF in)", "(10 kHz) 150 kHz – 80 MHz /\n230 MHz (300 MHz)", "(10 kHz) 150 kHz – 80 MHz /\n230 MHz (300 MHz)", "150 kHz – 230 MHz"],
+            ["Power rating (RF in)", "6 W continuous", "6 W continuous", "6 W continuous"],
+            ["Decoupling attenuation (RF in → AE)", "> 20 dB (150 kHz – 230 MHz)\n> 40 dB (1 – 100 MHz)", "> 30 dB (150 kHz – 80 MHz)", "> 35 dB (150 kHz – 80 MHz)\n> 30 dB (80 – 230 MHz)"],
+            ["Insertion loss (RF in → EUT)", "10 dB − 1 dB (150 kHz – 80 MHz)", "10 dB +2 / −1 dB\n(150 kHz – 80 MHz)", "10 dB − 1 dB (150 kHz – 80 MHz)"],
+            ["Connector (RF in)", "BNC", "BNC", "BNC"],
+            ["Max. input voltage AC", "100 V", "280 V (line-PE)\n600 / 1000 V on the HV types", "150 V"],
+            ["Max. input voltage DC", "150 V", "500 V, 1000 V on the HV types", "200 V"],
+            ["Current rating (AE → EUT)", "1 A", "16 / 32 / 63 / 100 A", "1.5 A"],
+            ["Insertion loss (AE → EUT)", "< 1 dB (DC – 100 kHz)", "< 1 dB (DC – 100 kHz)", "< 1 dB (0 – 10 MHz)"],
+            ["Dimensions (W × H × D)", "160 × 84.5 × 240 mm", "160 × 84.5 × 240 mm\n200 × 122.5 × 400 mm (HV)", "160 × 84.5 × 240 mm"],
+          ],
+        },
+        {
+          title: "EM clamps",
+          head: ["", "EMCL-20", "EMCL-35", "ABCL-20"],
+          rows: [
+            ["Frequency range", "10 kHz – 1000 MHz", "10 kHz – 1000 MHz", "100 kHz – 1000 MHz"],
+            ["Nominal impedance", "50 Ω", "50 Ω", "—"],
+            ["Connector", "N-type female", "N-type female", "—"],
+            ["Max. input 0.15 – 100 MHz", "100 W, 15 min", "100 W, 15 min", "—"],
+            ["Max. input 100 – 230 MHz", "100 W, 5 min", "100 W, 5 min", "—"],
+            ["Max. input 230 – 1000 MHz", "50 W, 3 min", "50 W, 3 min", "—"],
+            ["Max. cable diameter", "< 20 mm", "< 37 mm", "< 20 mm"],
+            ["Dimensions (L × W × D)", "655 × 120 × 80 mm", "666 × 135 × 120 mm", "632 × 120 × 80 mm"],
+            ["Weight", "7 kg", "14 kg", "7 kg"],
+          ],
+        },
+      ],
+    },
     amplifier: {
       lead: [
         "FRANKONIA offers RF-power amplifiers whose frequency range and output power have been tailored especially to the applications in immunity test systems: radiated immunity acc. to IEC/EN 61000-4-3, ISO 11452-2 and MIL-STD 461 RS 103; conducted immunity acc. to IEC/EN 61000-4-6; and BCI testing acc. to ISO 11452-4 and MIL-STD 461 CS 114.",
-        "Two ranges sit side by side. The solid-state amplifiers reach from 10 kHz to 1 GHz at up to 12 kW; the WBA wideband series takes over from 500 MHz and runs to 40 GHz.",
+        "Two ranges sit side by side. The solid-state amplifiers reach from 10 kHz to 6 GHz at up to 12 kW; the WBA wideband series takes over from 500 MHz and runs to 40 GHz.",
+        "Each row below carries the band and the typical output power of that model. The four bands to 1 GHz are the website's own matrix; the nine above them are the 2019 Amplifier Selection Book, which is where the head office publishes them.",
       ],
       groups: [
         {
@@ -1206,10 +1548,179 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
     },
   },
   ko: {
+    emission: {
+      lead: [
+        "ERX-6은 전통적인 EMI 리시버의 장점에 초고속 FFT(시간영역) 기술을 결합한 계측기입니다. 여기에 실시간 스펙트럼 분석기의 모든 기능까지 갖춰, EUT를 손본 결과를 그 자리에서 확인할 수 있습니다.",
+        "ERC-6은 상위 기종 ERX-6의 저가형이지만 그냥 지나칠 물건이 아닙니다. CISPR 16-1 풀컴플라이언스 방출 측정에 필요하지 않은 기능만 줄이거나 뺐기 때문에, 사내 개발 부서처럼 많은 사용자에게 고급기의 좋은 대안이 됩니다.",
+        "리시버 주위를 채우는 것이 방출 측정의 나머지입니다 — 전원선에 규정된 임피던스를 만들어 주는 LISN, 방출원을 짚어내는 근접전계 프로브, 조명기기용 대형 루프 안테나, 그리고 CISPR 14용 흡수 클램프.",
+      ],
+      figure: {
+        src: "/test-systems/images/emission-lisn.webp",
+        w: 723,
+        h: 802,
+        alt: "회색 금속 케이스에 든 LISN — 전면 명판에 “0.1 MHz - 150 MHz, 400 A, 5 µH”와 Measure·Output 단자, 그 아래 GND용 황동 나비너트와 EuT 라인용 빨간 나비너트",
+        caption: "상용 전원에는 기준 삼을 임피던스가 없습니다. 그것을 만들어 주는 장치이고, 옆에 달린 리시버 출력이 이 상자의 존재 이유입니다.",
+      },
+      groups: [
+        {
+          title: "ERX-6 주요 특징",
+          items: [
+            "주파수 범위 10 Hz~6 GHz(옵션 7 GHz)",
+            "CISPR 16-1에 따른 전통적 EMI 리시버 모드",
+            "CISPR 16-1-1 Ed. 3.1에 따른 초고속 FFT(시간영역) 리시버 모드",
+            "실시간 스펙트럼 분석기 모드",
+            "전통적 리시버 대비 약 6,000배 빠른 측정",
+            "Quasi-Peak · Peak · Average · RMS · RMS-AVG 검파기",
+            "EM-LAB 소프트웨어로 리시버·안테나 마스트·턴테이블 원격 제어",
+            "CISPR · MIL · DO · VG · ETSI 규격 측정 대응",
+          ],
+        },
+        {
+          title: "ERC-6 주요 특징",
+          items: [
+            "주파수 범위 9 kHz~6 GHz",
+            "CISPR 16-1에 따른 전통적 EMI 리시버 모드",
+            "CISPR 16-1-1 Ed. 3.1에 따른 고속 FFT(시간영역) 리시버 모드",
+            "10″ 모니터 터치 PC 내장",
+            "20 dB(1 GHz 이상 15 dB) 프리앰프 내장",
+            "CISPR 16-1 풀컴플라이언트",
+            "Peak · Quasi-Peak · Average · RMS · CISPR-Average 검파기, RMS-average는 옵션",
+          ],
+        },
+        {
+          // 표가 아니라 문장으로 싣는 이유는 en 쪽 주석에 적어 두었다 — 본사
+          // 원본 표의 라벨 열과 값 열이 한 행씩 어긋나 있어, 라벨에 확실히
+          // 붙일 수 없는 수치는 페이지에 올리지 않는다.
+          title: "자동차·군용 LISN",
+          items: [
+            "LISN-KFZ — 차량·항공기·선박의 방해 전압을 100 kHz~150 MHz에서 측정합니다. BCI 시험과 ISO 7637-2 과도현상 측정에도 쓸 수 있습니다.",
+            "LISN-KFZ — 임피던스는 CISPR 16 / 25와 MIL-STD-461F에 따라 (5 µH + 1 Ω) ∥ 50 Ω으로 구현했습니다. 연속 70 A, 단시간 100 A 이상.",
+            "LISN-MIL — MIL-STD-461E·461F에 따라 설계했으며 150 kHz~100 MHz에서 50 µH + 5 Ω ∥ 50 Ω입니다.",
+            "옵션인 외부 커패시터 CAP 10을 쓰면 LISN-KFZ를 DO-160과 DEF-STAN 59에도 쓸 수 있습니다.",
+          ],
+        },
+      ],
+      tables: [
+        {
+          title: "EMI 테스트 리시버",
+          head: ["", "ERX-6", "ERC-6"],
+          rows: [
+            ["Frequency range", "10 Hz – 6 GHz\n7 GHz with option ERX-FE7", "9 kHz – 6 GHz"],
+            ["Operating modes", "EMI receiver, FFT-based receiver,\nspectrum analyzer, oscilloscope", "EMI receiver,\nFFT-based receiver"],
+            ["Detectors", "Quasi-Peak, Average, RMS, RMS-Average,\nCISPR-AVG, CISPR-RMS", "Peak, Quasi-peak, Average, RMS,\nCISPR-Average (RMS-average option)"],
+            ["Pre-amplifier", "typ. 20 dB, noise figure typ. 3.5 dB", "20 dB, 15 dB above 1 GHz"],
+            ["RF input", "N type, 50 Ω", "BNC 50 Ω (9 kHz – 30 MHz)\nN 50 Ω (30 MHz – 6 GHz)"],
+            ["Attenuator", "0 – 50 dB in 10 dB steps", "0 – 35 dB / 0 – 55 dB in 5 dB steps"],
+            ["Display", "8.4″ touchscreen, 800 × 600", "integrated 10″ touch PC"],
+            ["Interfaces", "Ethernet/LAN, USB, VGA, HDMI, audio", "USB, RS-232, user port"],
+            ["Power supply", "+11 … +14 V DC; 230 V ± 20 % 50 Hz\nor 110 V ± 10 % 60 Hz", "100 – 240 VAC, 50/60 Hz, 25 W"],
+            ["Dimensions", "—", "2 RU, 482 × 95 × 485 mm"],
+            ["Weight", "approx. 8 kg", "7 kg"],
+          ],
+        },
+        {
+          title: "LISN 전원 임피던스 안정화 회로망",
+          note: "두 기종 모두 50 Ω ∥ (5 Ω + 50 µH) V-네트워크이며 CISPR 16, VDE 0876, FCC part 15에 완전히 대응합니다.",
+          head: ["", "C2-16", "C4-32"],
+          rows: [
+            ["Frequency range", "9 kHz – 30 MHz", "9 kHz – 30 MHz"],
+            ["Lines", "single-phase, two-line", "three-phase, three-line"],
+            ["Continuous rated output current", "16 A, SCHUKO socket", "32 A IEC, 16 A SCHUKO"],
+            ["Max. operating voltage", "250 VAC / 350 VDC", "230 VAC / 325 VDC (L-PE, N-PE)\n400 VAC / 565 VDC (L-L, L-N)"],
+            ["AC supply frequency range", "DC – 60 Hz", "DC – 60 Hz"],
+            ["RF output", "BNC female", "BNC female"],
+            ["Rated temperature", "−10 … +45 °C", "−10 … +40 °C"],
+            ["Dimensions (W × H × D)", "230 × 105 × 285 mm", "342 × 254 × 510 mm"],
+            ["Weight", "5.5 kg", "16.5 kg"],
+          ],
+        },
+        {
+          title: "프로브 · 루프 안테나 · 흡수 클램프",
+          head: ["", "NFS-100", "LVVL", "ACF-01B"],
+          rows: [
+            ["Frequency range", "E 80 – 500 MHz\nH 10 – 500 MHz", "9 kHz – 30 MHz", "30 – 1000 MHz"],
+            ["Standard", "—", "CISPR-15 / EN 55015, §7.2 and annex B", "CISPR 16-1-3, EN 55014-1"],
+            ["Configuration", "E probe, H probe, BNC adaptor,\nsensitivity plots, hard carry case", "three independent loops, 2 m diameter,\nselected by patch panel switch", "clamp on wheels, 6 dB attenuator\nrecommended at the output"],
+            ["Insertion loss / coupling", "—", "—", "17 dB ± 4 dB"],
+            ["Decoupling typ.", "—", "—", "5 … 20 dB over 1 – 30 MHz\n> 20 dB over 30 MHz – 1 GHz"],
+            ["Impedance / connection", "50 Ω nom., BNC", "50 Ω BNC", "50 Ω"],
+            ["Max. input", "isolation voltage 1 kV", "—", "30 A peak current, 5 W peak"],
+            ["Max. cable diameter", "—", "—", "20 mm"],
+            ["Dimensions", "E 180 mm, H 183 mm overall\nouter diameter H 69 mm", "2.6 × 2.1 × 2.1 m (H × W × W)", "600 × 105 × 80 mm"],
+            ["Weight", "—", "—", "6.5 kg"],
+          ],
+        },
+      ],
+    },
+    coupling: {
+      lead: [
+        "IEC/EN 61000-4-6은 결합·분리 장치로 CDN을 우선합니다 — 시험 재현성과 보조기기(AE) 보호 때문입니다. CDN이 적합하지 않거나 없을 때 클램프 주입을 씁니다.",
+        "CDN-AF 계열은 비평형 라인을 가진 비차폐 케이블에 방해 신호를 결합·분리할 때 씁니다. CDN-M 계열은 모든 전원 라인용이며, EUT 전압 1000 VAC와 전류 100 A까지 대응하는 기종이 있습니다. 차폐 라인에는 CDN-S 계열을 쓰는데, 이 경우 방해 신호는 언제나 100 Ω 저항을 통해 케이블 실드에 결합됩니다.",
+        "EM 클램프는 EUT에 연결된 케이블에 용량성 결합과 유도성 결합을 동시에 만듭니다. 일반적인 전류 주입 클램프와 달리 10 MHz 이상에서 지향성이 10 dB를 넘기 때문에, AE의 커먼모드 지점과 기준 접지면 사이에 규정된 임피던스를 둘 필요가 없습니다 — 10 MHz 이상에서는 CDN과 비슷하게 동작합니다.",
+      ],
+      groups: [
+        {
+          // 위 모델 목록을 주문 코드가 아니라 타입 단위로 실은 이유가 여기 있다.
+          // 본사는 M 계열만 해도 주문 변형을 여든 가지 가까이 인쇄한다.
+          title: "타입에서 주문 코드로",
+          items: [
+            "커넥터 — 터미널 블록, 4 mm 안전 바나나 잭, 32 A 초과 시 6 mm 원형 커넥터, AF8·AF9는 Sub-D",
+            "대역 하한 — 표준은 150 kHz, “-10k” 기종은 10 kHz",
+            "전류 정격 — 표준 16 A, 그 위로 32 A · 63 A · 100 A",
+            "전압 등급 — “-HV”는 1000 V, “-VHV”는 상간 1700 V까지",
+            "모든 타입에 교정용 어댑터가 있고, 어댑터용 마운팅 브래킷은 50/150 Ω 어댑터와 50 Ω 종단을 포함합니다",
+          ],
+        },
+        {
+          title: "클램프 주입 구성",
+          items: [
+            "EM 결합 클램프 EMCL이 시험 대상 케이블에 결합합니다. 10 V 시험 레벨을 얻는 데 앰프 출력 15 W 미만이면 됩니다",
+            "EMCL은 교정 유닛과 교정 데이터를 기본으로 함께 공급합니다",
+            "분리 클램프 ABCL-20은 페라이트 튜브 클램프로, 시험 대상 케이블을 제외한 EUT–AE 사이 모든 케이블에 물려 시험 신호가 나머지 구성으로 새는 것을 막습니다",
+            "BCI 프로브는 ISO 11452-4와 MIL-STD 461 CS 114를 위해 직경 40 mm까지의 하니스에 RF 전류를 주입합니다. 2차 전류 300 mA 이상.",
+          ],
+        },
+      ],
+      tables: [
+        {
+          title: "결합·분리 회로망 CDN",
+          note: "타입 계열별 열입니다. 그 계열 안에서 어느 변형이 필요한지는 커넥터·전류·전압 등급이 정합니다 — 위 목록을 참고하십시오.",
+          head: ["", "CDN-AF", "CDN-M", "CDN-S"],
+          rows: [
+            ["Frequency range (RF in)", "(10 kHz) 150 kHz – 80 MHz /\n230 MHz (300 MHz)", "(10 kHz) 150 kHz – 80 MHz /\n230 MHz (300 MHz)", "150 kHz – 230 MHz"],
+            ["Power rating (RF in)", "6 W continuous", "6 W continuous", "6 W continuous"],
+            ["Decoupling attenuation (RF in → AE)", "> 20 dB (150 kHz – 230 MHz)\n> 40 dB (1 – 100 MHz)", "> 30 dB (150 kHz – 80 MHz)", "> 35 dB (150 kHz – 80 MHz)\n> 30 dB (80 – 230 MHz)"],
+            ["Insertion loss (RF in → EUT)", "10 dB − 1 dB (150 kHz – 80 MHz)", "10 dB +2 / −1 dB\n(150 kHz – 80 MHz)", "10 dB − 1 dB (150 kHz – 80 MHz)"],
+            ["Connector (RF in)", "BNC", "BNC", "BNC"],
+            ["Max. input voltage AC", "100 V", "280 V (line-PE)\n600 / 1000 V on the HV types", "150 V"],
+            ["Max. input voltage DC", "150 V", "500 V, 1000 V on the HV types", "200 V"],
+            ["Current rating (AE → EUT)", "1 A", "16 / 32 / 63 / 100 A", "1.5 A"],
+            ["Insertion loss (AE → EUT)", "< 1 dB (DC – 100 kHz)", "< 1 dB (DC – 100 kHz)", "< 1 dB (0 – 10 MHz)"],
+            ["Dimensions (W × H × D)", "160 × 84.5 × 240 mm", "160 × 84.5 × 240 mm\n200 × 122.5 × 400 mm (HV)", "160 × 84.5 × 240 mm"],
+          ],
+        },
+        {
+          title: "EM 클램프",
+          head: ["", "EMCL-20", "EMCL-35", "ABCL-20"],
+          rows: [
+            ["Frequency range", "10 kHz – 1000 MHz", "10 kHz – 1000 MHz", "100 kHz – 1000 MHz"],
+            ["Nominal impedance", "50 Ω", "50 Ω", "—"],
+            ["Connector", "N-type female", "N-type female", "—"],
+            ["Max. input 0.15 – 100 MHz", "100 W, 15 min", "100 W, 15 min", "—"],
+            ["Max. input 100 – 230 MHz", "100 W, 5 min", "100 W, 5 min", "—"],
+            ["Max. input 230 – 1000 MHz", "50 W, 3 min", "50 W, 3 min", "—"],
+            ["Max. cable diameter", "< 20 mm", "< 37 mm", "< 20 mm"],
+            ["Dimensions (L × W × D)", "655 × 120 × 80 mm", "666 × 135 × 120 mm", "632 × 120 × 80 mm"],
+            ["Weight", "7 kg", "14 kg", "7 kg"],
+          ],
+        },
+      ],
+    },
     amplifier: {
       lead: [
         "Frankonia의 RF 파워앰프는 주파수 범위와 출력을 내성 시험 용도에 맞춰 설계했습니다 — IEC/EN 61000-4-3, ISO 11452-2, MIL-STD 461 RS 103 방사 내성, IEC/EN 61000-4-6 전도 내성, ISO 11452-4와 MIL-STD 461 CS 114 BCI 시험이 그 대상입니다.",
-        "두 계열이 나란히 있습니다. 고체소자 앰프는 10 kHz부터 1 GHz까지 최대 12 kW를 내고, WBA 광대역 계열이 500 MHz에서 이어받아 40 GHz까지 커버합니다.",
+        "두 계열이 나란히 있습니다. 고체소자 앰프는 10 kHz부터 6 GHz까지 최대 12 kW를 내고, WBA 광대역 계열이 500 MHz에서 이어받아 40 GHz까지 커버합니다.",
+        "아래 각 행에 그 모델의 대역과 정격 출력을 적었습니다. 1 GHz까지의 네 대역은 본사 웹사이트의 모델 매트릭스이고, 그 위 아홉 대역은 본사가 해당 모델을 싣는 유일한 자료인 2019 Amplifier Selection Book입니다.",
       ],
       groups: [
         {
@@ -1630,6 +2141,542 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
     },
   },
 };
+
+/**
+ * The label on one "at a glance" figure, as a key rather than a string.
+ *
+ * The chamber branch writes its `overview` pairs out once per locale, which is
+ * right there: everything else on a chamber's page is prose, so the pair is
+ * just two more sentences. Here it would have meant two copies of a hundred and
+ * thirty measurements — and the copy nobody reads twice is the copy that
+ * drifts. So the label is looked up per locale and the value is written once,
+ * which is the same division this branch already makes everywhere else: a
+ * heading is translated, a figure a reader matches against a quotation is not.
+ */
+export type TestFactKey = keyof (typeof factLabel)["en"];
+
+export const factLabel = {
+  ko: {
+    band: "주파수 범위",
+    isoGain: "등방성 이득",
+    gain: "이득",
+    noise: "잡음지수",
+    compression: "1 dB 압축점(입력)",
+    antennaFactor: "안테나 팩터",
+    maxInput: "최대 입력 전력",
+    connector: "커넥터",
+    fixation: "고정",
+    loopDia: "루프 직경",
+    dynamic: "동적 범위",
+    overload: "과부하 한계",
+    fieldStrength: "전계강도",
+    magField: "자계강도",
+    isotropy: "등방성",
+    channels: "채널",
+    measuring: "측정 범위",
+    accuracy: "정확도",
+    isolation: "아이솔레이션",
+    insertion: "삽입 손실",
+    outputs: "구성",
+    amplifier: "내장 앰프",
+    voltmeter: "RF 전압계",
+    eutMonitor: "EUT 모니터 입력",
+    powerBw: "전력 대역폭",
+    generator: "내장 발생기",
+    output: "출력 전압·전류",
+    powerOut: "출력",
+    adc: "AD 변환기",
+    interface: "인터페이스",
+    supply: "전원",
+    operation: "동작 시간",
+    dimensions: "치수",
+    weight: "무게",
+  },
+  en: {
+    band: "Frequency range",
+    isoGain: "Isotropic gain",
+    gain: "Gain",
+    noise: "Noise figure",
+    compression: "1 dB compression at input",
+    antennaFactor: "Antenna factor",
+    maxInput: "Max. input power",
+    connector: "Connector",
+    fixation: "Fixation",
+    loopDia: "Loop diameter",
+    dynamic: "Dynamic range",
+    overload: "Overload",
+    fieldStrength: "Field strength",
+    magField: "Magnetic field strength",
+    isotropy: "Isotropy",
+    channels: "Channels",
+    measuring: "Measuring range",
+    accuracy: "Accuracy",
+    isolation: "Isolation",
+    insertion: "Insertion loss",
+    outputs: "Configuration",
+    amplifier: "Internal amplifier",
+    voltmeter: "RF voltmeters",
+    eutMonitor: "EUT monitor input",
+    powerBw: "Power bandwidth",
+    generator: "Generator",
+    output: "Output voltage and current",
+    powerOut: "Power output",
+    adc: "AD converter",
+    interface: "Interface",
+    supply: "Power supply",
+    operation: "Operation time",
+    dimensions: "Dimensions",
+    weight: "Weight",
+  },
+} as const satisfies Record<Lang, Record<string, string>>;
+
+/**
+ * What a model row opens onto: four to six figures out of the specification
+ * tables above, and — where there is one — the sentence the head office writes
+ * about that model.
+ *
+ * **Every value here is a cell from a table further up this file**, which is
+ * itself the head office's own table. A long cell is cut to its leading figure
+ * rather than rewritten (`−60 dBm to +20 dBm (10 kHz ≤ f ≤ 4 GHz)` becomes
+ * `−60 … +20 dBm`); the full row is in the specification band on the same page,
+ * a screen below. Nothing here is computed, converted or rounded, and no model
+ * gets a figure its own column does not carry — which is why the three
+ * microwave pre-amplifiers show three pairs where the others show five.
+ *
+ * `lead` follows one rule, and it is the reason most rows have none: **a panel
+ * carries a lead only where the head office writes about that model by name.**
+ * The horn antennas, the four EFS probes and the FPA-18/26/40 are described by
+ * a paragraph about their series, and that paragraph is already the page's own
+ * lead, three hundred pixels above the row. Printing it again under each of
+ * three rows would be the same text three times, in the place a reader opened
+ * expecting the thing they had not already read.
+ *
+ * Keyed by `TestModel.name`. GTEM is absent on purpose: the head office
+ * publishes a name and a datasheet PDF for it and no figures at all, so its row
+ * stays a plain row rather than opening onto an empty box.
+ *
+ * The seventy amplifiers are absent for the same reason at a larger scale — see
+ * the note on `TestModel.desc`, and docs/source/test-systems-source.md §4.
+ */
+export type TestModelBody = {
+  lead?: string;
+  facts?: readonly { key: TestFactKey; value: string }[];
+};
+
+/** The figures, written once — see `factLabel`. */
+const modelFacts: Record<string, readonly { key: TestFactKey; value: string }[]> = {
+  // Antennas. Bands, gains and antenna factors are the head office's antenna
+  // tables; `fixation` stands in for `maxInput` on the two horns whose input
+  // power the source states in words rather than in watts.
+  "ALX-4000E": [
+    { key: "band", value: "25 MHz – 4 GHz" },
+    { key: "isoGain", value: "6.4 ± 1.2 dBi" },
+    { key: "antennaFactor", value: "7 … 34 dB/m" },
+    { key: "maxInput", value: "100 W cont. / 200 W int." },
+    { key: "weight", value: "3.1 kg" },
+  ],
+  "ALX-8000E": [
+    { key: "band", value: "25 MHz – 8 GHz" },
+    { key: "isoGain", value: "6.4 ± 1.2 dBi" },
+    { key: "antennaFactor", value: "7 … 43 dB/m" },
+    { key: "maxInput", value: "100 W cont. / 200 W int." },
+    { key: "weight", value: "3.1 kg" },
+  ],
+  "MAX-9": [
+    { key: "band", value: "600 MHz – 10.5 GHz" },
+    { key: "isoGain", value: "typ. 10.3 dBi ± 1.5 dB" },
+    { key: "antennaFactor", value: "18 … 41 dB/m" },
+    { key: "maxInput", value: "300 W at 1 GHz" },
+    { key: "weight", value: "3.7 kg" },
+  ],
+  "MAX-9-7/16": [
+    { key: "band", value: "0,6 – 7,5 GHz" },
+    { key: "isoGain", value: "typ. 10.3 dBi" },
+    { key: "maxInput", value: "950 W at 1 GHz" },
+    { key: "connector", value: "7/16" },
+  ],
+  "MAX-18": [
+    { key: "band", value: "700 MHz – 20 GHz" },
+    { key: "isoGain", value: "typ. 8.6 dBi ± 1 dB" },
+    { key: "antennaFactor", value: "20 … 49 dB/m" },
+    { key: "maxInput", value: "50 W" },
+    { key: "weight", value: "1.2 kg" },
+  ],
+  "HAX-6": [
+    { key: "band", value: "500 MHz – 6 GHz" },
+    { key: "isoGain", value: "6 … 18 dBi" },
+    { key: "antennaFactor", value: "19 … 29 dB/m" },
+    { key: "fixation", value: "Ø 22 mm mounting tube" },
+    { key: "weight", value: "4.1 kg" },
+  ],
+  "HAX-18": [
+    { key: "band", value: "800 MHz – 18 GHz" },
+    { key: "isoGain", value: "6 … 18 dBi" },
+    { key: "antennaFactor", value: "24 … 50 dB/m" },
+    { key: "fixation", value: "Ø 22 mm mounting tube" },
+    { key: "weight", value: "1.3 kg" },
+  ],
+  "HAX-40": [
+    { key: "band", value: "14 – 40 GHz" },
+    { key: "isoGain", value: "15 … 20 dBi" },
+    { key: "antennaFactor", value: "38 … 45 dB/m" },
+    { key: "maxInput", value: "10 W cont. / 25 W peak" },
+    { key: "weight", value: "0.3 kg" },
+  ],
+  "SAX-10": [
+    { key: "band", value: "9 kHz – 30 MHz" },
+    { key: "antennaFactor", value: "+10 dB/m ± 1.5 dB" },
+    { key: "connector", value: "BNC, 50 Ω" },
+    { key: "supply", value: "9.6 V / 1100 mAh NiMH" },
+    { key: "operation", value: "typ. ≥ 50 h" },
+  ],
+  "LAX-10": [
+    { key: "band", value: "9 kHz – 30 MHz" },
+    { key: "loopDia", value: "0.5 m" },
+    { key: "antennaFactor", value: "20 dB/m (E-field)" },
+    { key: "operation", value: "typ. 12 h" },
+    { key: "weight", value: "1.9 kg" },
+  ],
+
+  // Field strength meters. The four probes share a housing, so `dimensions` is
+  // the same figure four times — it is in the table four times too, and a
+  // reader comparing two probes is entitled to see that it does not change.
+  "EFS-10": [
+    { key: "band", value: "10 kHz – 9.25 GHz" },
+    { key: "dynamic", value: "0.5 – 500 V/m (60 dB)" },
+    { key: "overload", value: "1000 V/m" },
+    { key: "operation", value: "100 h at 0.4 S/s" },
+    { key: "dimensions", value: "53 mm, body ø 17 mm" },
+  ],
+  "EFS-100": [
+    { key: "band", value: "100 kHz – 9.25 GHz" },
+    { key: "dynamic", value: "0.14 – 140 V/m (60 dB)" },
+    { key: "overload", value: "300 V/m" },
+    { key: "operation", value: "100 h at 0.4 S/s" },
+    { key: "dimensions", value: "53 mm, body ø 17 mm" },
+  ],
+  "EFS-300": [
+    { key: "band", value: "300 kHz – 18 GHz" },
+    { key: "dynamic", value: "1.5 – 1500 V/m (60 dB)" },
+    { key: "overload", value: "350 V/m" },
+    { key: "operation", value: "100 h at 0.4 S/s" },
+    { key: "dimensions", value: "53 mm, body ø 17 mm" },
+  ],
+  "EFS-500": [
+    { key: "band", value: "300 kHz – 26.5 GHz" },
+    { key: "dynamic", value: "0.4 – 800 V/m (66 dB)" },
+    { key: "overload", value: "1600 V/m" },
+    { key: "operation", value: "100 h at 0.4 S/s" },
+    { key: "dimensions", value: "53 mm, body ø 17 mm" },
+  ],
+  "EFS-Laser": [
+    { key: "band", value: "10 kHz – 6 GHz" },
+    { key: "fieldStrength", value: "0.1 V/m – 10 kV/m" },
+    { key: "dynamic", value: "up to 100 dB" },
+    { key: "isotropy", value: "< 1 dB at 900 MHz" },
+    { key: "interface", value: "USB 2.0" },
+  ],
+
+  // Pre-amplifiers. The first three are a table; the last three are the model
+  // list's own line, which is all the head office publishes of them.
+  "FPA-2": [
+    { key: "band", value: "9 kHz – 2 GHz" },
+    { key: "gain", value: "+ 30 dB" },
+    { key: "noise", value: "2.5 dB (1.0 GHz)" },
+    { key: "compression", value: "≥ −20 dBm" },
+    { key: "supply", value: "+ 12 V (± 2 V)" },
+  ],
+  "FPA-6A": [
+    { key: "band", value: "10 MHz – 6 GHz" },
+    { key: "gain", value: "+ 28 dB" },
+    { key: "noise", value: "2.5 dB (1.0 GHz)" },
+    { key: "compression", value: "≥ −18 dBm" },
+    { key: "supply", value: "+ 12 V (± 2 V)" },
+  ],
+  "FPA-6B": [
+    { key: "band", value: "9 kHz – 6 GHz" },
+    { key: "gain", value: "+ 28 dB" },
+    { key: "noise", value: "2.5 dB (1.0 GHz)" },
+    { key: "compression", value: "> 100 dBμV" },
+    { key: "supply", value: "+ 12 V (± 2 V)" },
+  ],
+  "FPA-18": [
+    { key: "band", value: "1 – 18 GHz" },
+    { key: "gain", value: "≈ 33 dB" },
+    { key: "noise", value: "2 dB" },
+  ],
+  "FPA-26": [
+    { key: "band", value: "18 – 26.5 GHz" },
+    { key: "gain", value: "≈ 33 dB" },
+    { key: "noise", value: "3.5 dB" },
+  ],
+  "FPA-40": [
+    { key: "band", value: "18 – 40 GHz" },
+    { key: "gain", value: "≈ 35 dB" },
+    { key: "noise", value: "5.5 dB" },
+  ],
+
+  // Meters and switching. The RSU's table is a column per band rather than a
+  // row per property, so its three figures carry the band they hold over.
+  "PMS 1084": [
+    { key: "channels", value: "2 standard, up to 4" },
+    { key: "band", value: "100 kHz – 6 GHz" },
+    { key: "measuring", value: "−60 … +20 dBm" },
+    { key: "accuracy", value: "± 1 dB (0.5 dB typ.)" },
+    { key: "interface", value: "USB, RS232" },
+  ],
+  "PMS 1084 B": [
+    { key: "channels", value: "2 standard, up to 4" },
+    { key: "band", value: "10 kHz – 500 MHz" },
+    { key: "measuring", value: "−60 … +20 dBm" },
+    { key: "accuracy", value: "± 1 dB (0.5 dB typ.)" },
+    { key: "interface", value: "USB, RS232" },
+  ],
+  RSU: [
+    { key: "band", value: "DC – 12.4 GHz" },
+    { key: "outputs", value: "1 in → 2 or 3 out, ≤ 4 relays" },
+    { key: "isolation", value: "> 90 dB (DC … 1 GHz)" },
+    { key: "insertion", value: "< 0.05 dB (DC … 1 GHz)" },
+    { key: "maxInput", value: "< 1.00 kW (DC … 1 GHz)" },
+  ],
+
+  // Emission measuring systems. The two receivers are the flagship of this
+  // catalogue and get the same five figures a reader compares them on.
+  "ERX-6": [
+    { key: "band", value: "10 Hz – 6 GHz" },
+    { key: "gain", value: "pre-amp typ. 20 dB" },
+    { key: "noise", value: "typ. 3.5 dB" },
+    { key: "interface", value: "LAN, USB, VGA, HDMI" },
+    { key: "weight", value: "approx. 8 kg" },
+  ],
+  "ERC-6": [
+    { key: "band", value: "9 kHz – 6 GHz" },
+    { key: "gain", value: "pre-amp 20 dB / 15 dB" },
+    { key: "dimensions", value: "2 RU, 482 × 95 × 485 mm" },
+    { key: "interface", value: "USB, RS-232" },
+    { key: "weight", value: "7 kg" },
+  ],
+  "C2-16": [
+    { key: "band", value: "9 kHz – 30 MHz" },
+    { key: "measuring", value: "16 A, 250 VAC / 350 VDC" },
+    { key: "interface", value: "BNC female" },
+    { key: "dimensions", value: "230 × 105 × 285 mm" },
+    { key: "weight", value: "5.5 kg" },
+  ],
+  "C4-32": [
+    { key: "band", value: "9 kHz – 30 MHz" },
+    { key: "measuring", value: "32 A, 400 VAC / 565 VDC" },
+    { key: "interface", value: "BNC female" },
+    { key: "dimensions", value: "342 × 254 × 510 mm" },
+    { key: "weight", value: "16.5 kg" },
+  ],
+  "LISN-KFZ": [
+    { key: "band", value: "100 kHz – 150 MHz" },
+    { key: "measuring", value: "70 A cont., > 100 A short" },
+  ],
+  "LISN-MIL": [
+    { key: "band", value: "150 kHz – 100 MHz" },
+    { key: "measuring", value: "70 A cont., > 100 A short" },
+  ],
+  "NFS-100": [
+    { key: "band", value: "E 80 – 500 MHz, H 10 – 500 MHz" },
+    { key: "connector", value: "BNC" },
+    { key: "dimensions", value: "E 180 mm, H 183 mm" },
+  ],
+  LVVL: [
+    { key: "band", value: "9 kHz – 30 MHz" },
+    { key: "loopDia", value: "2 m, three axes" },
+    { key: "connector", value: "50 Ω BNC" },
+    { key: "dimensions", value: "2.6 × 2.1 × 2.1 m" },
+  ],
+  "ACF-01B": [
+    { key: "band", value: "30 – 1000 MHz" },
+    { key: "insertion", value: "17 dB ± 4 dB" },
+    { key: "maxInput", value: "30 A peak, 5 W peak" },
+    { key: "dimensions", value: "600 × 105 × 80 mm" },
+    { key: "weight", value: "6.5 kg" },
+  ],
+
+  // Coupling and decoupling. Figures per type family, as the tables are.
+  "EMCL-20": [
+    { key: "band", value: "10 kHz – 1000 MHz" },
+    { key: "maxInput", value: "100 W, 15 min to 100 MHz" },
+    { key: "connector", value: "N-type female" },
+    { key: "dimensions", value: "655 × 120 × 80 mm" },
+    { key: "weight", value: "7 kg" },
+  ],
+  "EMCL-35": [
+    { key: "band", value: "10 kHz – 1000 MHz" },
+    { key: "maxInput", value: "100 W, 15 min to 100 MHz" },
+    { key: "connector", value: "N-type female" },
+    { key: "dimensions", value: "666 × 135 × 120 mm" },
+    { key: "weight", value: "14 kg" },
+  ],
+  "ABCL-20": [
+    { key: "band", value: "100 kHz – 1000 MHz" },
+    { key: "dimensions", value: "632 × 120 × 80 mm" },
+    { key: "weight", value: "7 kg" },
+  ],
+  "BCI probe": [
+    { key: "band", value: "4 kHz – 400 MHz" },
+    { key: "connector", value: "Type N female" },
+  ],
+
+  // Integrated systems.
+  "CIT-100": [
+    { key: "band", value: "4 kHz – 1.2 GHz" },
+    { key: "amplifier", value: "25 W / 75 W modules" },
+    { key: "voltmeter", value: "3 ch, −40 … +30 dBm" },
+    { key: "eutMonitor", value: "0 – 10 V, 100 kΩ" },
+    { key: "interface", value: "USB 2.0, LAN, GPIB opt." },
+  ],
+  "PSG-300": [
+    { key: "powerBw", value: "DC – 200 kHz" },
+    { key: "generator", value: "DC, 0.05 Hz – 300 kHz" },
+    { key: "output", value: "50 Veff / 5 Aeff" },
+    { key: "powerOut", value: "250 W" },
+    { key: "weight", value: "approx. 14 kg" },
+  ],
+  "PSG-300A": [
+    { key: "powerBw", value: "DC – 200 kHz" },
+    { key: "generator", value: "DC, 0.05 Hz – 300 kHz" },
+    { key: "output", value: "50 Veff / 16 Aeff" },
+    { key: "powerOut", value: "800 W" },
+    { key: "weight", value: "approx. 30 kg" },
+  ],
+  "MTS-800": [
+    { key: "band", value: "DC – 250 kHz" },
+    { key: "magField", value: "up to 1000 A/m" },
+    { key: "amplifier", value: "800 W, 16 Arms, 50 Vrms" },
+    { key: "adc", value: "16 bit, 1.25 MSPS" },
+    { key: "weight", value: "approx. 34 kg" },
+  ],
+  "CIT-1000": [
+    { key: "band", value: "4 kHz – 1.2 GHz" },
+    { key: "amplifier", value: "25 / 75 / 180 W modules" },
+    { key: "voltmeter", value: "3 ch, −40 … +33 dBm" },
+    { key: "eutMonitor", value: "0 – 10 V, 100 kΩ" },
+    { key: "interface", value: "USB 2.0, LAN, GPIB opt." },
+  ],
+  "ECU-3": [
+    { key: "generator", value: "9 kHz – 3 GHz" },
+    { key: "output", value: "−65 … +10 dBm" },
+    { key: "outputs", value: "3 × N male, relay switched" },
+    { key: "accuracy", value: "± 25 ppm" },
+  ],
+  "ECU-6": [
+    { key: "generator", value: "9 kHz – 6.5 GHz" },
+    { key: "output", value: "−100 … +13 dBm" },
+    { key: "outputs", value: "4 × N male, relay switched" },
+    { key: "accuracy", value: "± 100 ppb" },
+  ],
+};
+
+/** The sentence, where the head office writes one about this model by name.
+ *  English is its wording; Korean is a translation of that, not new copy. */
+const modelLead: Record<Lang, Record<string, string>> = {
+  en: {
+    "ALX-4000E":
+      "The ALX-4000E is an especially optimized version for emission measurements. It offers lower antenna factors and improved VSWR. Additionally it can be used for immunity tests which require an input power of less than 100 W cw (200 W intermitt.).",
+    "ALX-8000E":
+      "The ALX-8000E has an extended frequency range up to 8 GHz. All antennas are supplied with antenna factors for 3.0 m and 10.0 m measuring distance (1.0 m on request).",
+    "MAX-9":
+      "The MAX-9 is especially suitable for immunity testing acc. to IEC 61000-4-3 because of its good field uniformity. Its further outstanding characteristics are the wide bandwidth, the nearly constant high gain, very good impedance matching as well as equal beamwidth in E- and H-plane.",
+    "SAX-10":
+      "The active monopole antenna SAX-10 consists of a vertical rod and an impedance matching amplifier. The rod has a standard length of 1 m and can be considered as short compared to the wave length in the frequency range 9 kHz – 30 MHz; the conversion factor is independent of the frequency because of the extremely high impedance of the matching amplifier. To avoid absolutely any influence by the mains, the SAX-10 has built-in NiMH rechargeable batteries.",
+    "LAX-10":
+      "Active, shielded loop antenna with a nearly constant antenna factor over the entire frequency range, battery driven to minimize disturbance influence from the power line. It can be used for the frequency selective measurement of magnetic fields in the long wave, mid wave and short wave frequency ranges, for testing according to CISPR, MIL, FCC, EN, ISO, ANSI, ETSI and many other standards.",
+    "EFS-Laser":
+      "The EFS-Laser is a smart, fast, extremely accurate electric field probe, which provides linearization, temperature compensation, control and communication functions. Noise reduction and temperature compensation allow accurate measurements down to 0.1 V/m. The probe is laser-powered to allow continuous, galvanically isolated operation without recharging or battery replacement.",
+    "FPA-2":
+      "The FPA-2 and FPA-6A are ESD protected to prevent defects by unintentional electrostatic discharge. Pre-amplifiers are generally ESD-sensitive devices, so it remains important to discharge coaxial cables before they are connected.",
+    "FPA-6A":
+      "The FPA-2 and FPA-6A are ESD protected to prevent defects by unintentional electrostatic discharge. Pre-amplifiers are generally ESD-sensitive devices, so it remains important to discharge coaxial cables before they are connected.",
+    "FPA-6B":
+      "The FPA-6B offers a frequency range from 9 kHz to 6 GHz. For technical reasons it cannot be ESD-protected and special care is necessary: pre-amplifiers are ESD-sensitive devices, and coaxial cables must be discharged before being connected.",
+    "PMS 1084":
+      "In the standard version a 2-channel RF-Power Meter for the frequency range from 100 kHz up to 6 GHz, with a measuring range from −60 dBm to +20 dBm. It is possible to upgrade it up to max. 4 measuring channels at any time, which makes it very well suited to the automated measurement of forward and reverse power in immunity test systems acc. to IEC/EN 61000-4-3 / -6.",
+    RSU: "The RSU RF-Relay Switching Unit is applicable for all fields of RF- and EMC measurements to switch, manually or remote controlled, from one input to 2 or 3 outputs. Typical applications in measuring systems are changeover switching between different amplifiers, antennas or power meters. This does also prevent circuit faults due to wrong cabling.",
+    "CIT-100":
+      "The CIT-100 is a complete test system for conducted RF-immunity testing and BCI-testing acc. to IEC/EN 61000-4-6, ISO 11452-4, MIL-STD 461, CS114 and similar standards. A signal generator, an RF-power amplifier, a 3-channel RF-power-meter, a directional coupler and the control software sit in one 19″ case, and every instrument in it can also be used separately over its own connector.",
+    "PSG-300":
+      "The PSG-300 contains a linear precision power amplifier with a wide bandwidth (DC – 300 kHz), suitable for all applications concerning fast alternating signals at high output power. The built-in generator provides sine, square and triangle waves, and the application software is suited for general power generator applications and for immunity tests according to IEC/EN 61000-4-16 as well as to IEC/EN 61543.",
+    "MTS-800":
+      "The MTS-800 is a compact test system for broadband generation and measurement of magnetic fields. In combination with the triaxial Helmholtz coils, full automated susceptibility tests are possible at magnetic field strength up to 1000 A/m for frequencies from DC to 1 kHz; lower field strength can be generated for frequencies up to 250 kHz. Because the coil is triaxial, there is no need to turn an EUT during tests.",
+    "CIT-1000":
+      "The CIT-1000 is the CIT-100's larger sibling: the same complete system for conducted RF immunity and BCI testing, extended where the smaller unit stops. The generator, directional coupler and RF voltmeter reach 1.2 GHz, so the unit can drive a radiated immunity test to IEC/EN 61000-4-3 as well; an external power amplifier can be connected for that; and the frequency extension for MIL-STD 461 reaches down to 4 kHz through the external CIT-4K with its 250 W amplifier. It runs stand-alone from an integrated touch-screen PC, and a temperature input reads the BCI clamp.",
+    "ECU-3":
+      "The ECU-3/-6 is a central EMC test and control unit, which combines in just one compact box many major test components — signal generator, power meter, directional couplers and relay switching unit — that are needed for EMC tests. That reduces the cabling work, and the cabling mistakes, to a minimum. It switches automatically between up to four external amplifiers and up to three antennas or coupling devices, and between up to two receivers or spectrum analyzers.",
+    "ECU-6":
+      "The ECU-6 is the ECU-3 with the generator taken to 6.5 GHz and its resolution and level range widened with it. Everything else — the relay switching between four amplifiers and three outputs, the EUT monitoring, the interlock — is as the ECU-3.",
+    "ERX-6":
+      "The ERX-6 combines the advantages of a traditional EMI-receiver with the ultra-fast FFT-technology (time domain). It measures in 162 MHz frequency segments and outperforms comparable top-of-the-range devices many times over. The delivery already includes a control software that runs on the receiver's own touch screen, so no external PC is required.",
+    "ERC-6":
+      "The ERC-6 is the less expensive little brother of the ERX-6: only properties that are not required for full-compliance EMI measurements according to CISPR 16-1 have been reduced or omitted. The receiver can be operated from its integrated 10″ touch PC or from external software, which then also drives the antenna mast and the turntable.",
+    "ACF-01B":
+      "The absorbing clamp is used for measurements according to CISPR 13 / 14 / EN 55014-1. The power cord of the equipment under test is extended to 6 m, fed through the clamp's opening and laid on a non-metallic table; the clamp, which is moveable on wheels, is then driven along the cable and the maximum resonance detected is the measuring value. Because the clamp is constructed to have 17 dB coupling attenuation, the receiver voltage in dBµV equals the interference power in dBpW.",
+    "ABCL-20":
+      "The ABCL-20 is recommended as an additional decoupling network — a ferrite tube clamp — for immunity testing according to IEC/EN 61000-4-6 when the clamp injection method is used. It shall be used on all cables between EUT and AE except the cable under test. It prevents the test signal applied to the EUT from affecting other devices, equipment or systems which are under test, and improves the reproducibility of the test results.",
+    "BCI probe":
+      "The bulk current injection probe is used to inject RF current into cables of electrical equipment to test the susceptibility against radiated electromagnetic energy. It was designed to meet ISO 11452-4:2005 and IEC 61000-4-6 for automotive BCI testing with secondary currents of 300 mA and more, and can be clamped around test conductors supporting cable harness diameters up to 40 mm.",
+    LVVL:
+      "The LVVL is a fully compliant, calibrated 2 m large loop antenna that complies with CISPR-15 / EN 55015 section 7.2 and annex B, over a calibrated frequency range of 9 kHz to 30 MHz. It is a complete 3-axis antenna with a switching unit to select each loop in turn; the loops are 2 metres in diameter with the lowest point 0.5 metres above ground, and are fitted with specially designed current transducers in fully screened housings.",
+  },
+  ko: {
+    "ALX-4000E":
+      "ALX-4000E는 방출 측정에 맞춰 최적화한 버전입니다. 안테나 팩터가 더 낮고 VSWR이 개선되어 있습니다. 100 W 연속(간헐 200 W) 미만의 입력으로 되는 내성 시험에도 쓸 수 있습니다.",
+    "ALX-8000E":
+      "ALX-8000E는 주파수 범위를 8 GHz까지 넓힌 모델입니다. 안테나는 모두 3.0 m와 10.0 m 측정 거리의 안테나 팩터와 함께 공급됩니다(1.0 m는 요청 시).",
+    "MAX-9":
+      "MAX-9는 전계 균일도가 좋아 IEC 61000-4-3 내성 시험에 특히 적합합니다. 넓은 대역폭, 거의 일정하게 높은 이득, 우수한 임피던스 정합, E면과 H면이 같은 빔폭도 이 안테나의 특징입니다.",
+    "SAX-10":
+      "SAX-10 액티브 모노폴 안테나는 수직 로드와 임피던스 정합 앰프로 이루어집니다. 로드 표준 길이는 1 m로, 9 kHz~30 MHz 대역의 파장에 비하면 짧다고 볼 수 있습니다. 정합 앰프의 임피던스가 대단히 높아 변환 계수가 주파수에 좌우되지 않습니다. 상용 전원의 영향을 완전히 배제하기 위해 NiMH 충전지를 내장했습니다.",
+    "LAX-10":
+      "전 대역에서 안테나 팩터가 거의 일정한 액티브 차폐 루프 안테나입니다. 전원선에서 들어오는 방해를 최소화하기 위해 배터리로 구동합니다. 장파·중파·단파 대역 자기장의 주파수 선택 측정에 쓰며, CISPR·MIL·FCC·EN·ISO·ANSI·ETSI를 비롯한 여러 규격 시험에 대응합니다.",
+    "EFS-Laser":
+      "EFS-Laser는 선형화·온도 보상·제어·통신 기능을 갖춘 정밀 전계 프로브입니다. 잡음 저감과 온도 보상으로 0.1 V/m까지 정확하게 측정합니다. 프로브는 레이저로 급전하므로 충전이나 배터리 교체 없이 갈바닉 절연 상태로 연속 동작합니다.",
+    "FPA-2":
+      "FPA-2와 FPA-6A는 의도치 않은 정전기 방전으로 인한 고장을 막기 위해 ESD 보호가 되어 있습니다. 프리앰프는 본래 정전기에 민감한 장비이므로, 동축 케이블은 연결하기 전에 방전시켜야 합니다.",
+    "FPA-6A":
+      "FPA-2와 FPA-6A는 의도치 않은 정전기 방전으로 인한 고장을 막기 위해 ESD 보호가 되어 있습니다. 프리앰프는 본래 정전기에 민감한 장비이므로, 동축 케이블은 연결하기 전에 방전시켜야 합니다.",
+    "FPA-6B":
+      "FPA-6B는 9 kHz부터 6 GHz까지를 커버합니다. 기술적인 이유로 ESD 보호를 넣을 수 없어 취급에 주의가 필요합니다 — 프리앰프는 정전기에 민감한 장비이고, 동축 케이블은 연결하기 전에 방전시켜야 합니다.",
+    "PMS 1084":
+      "표준 사양은 100 kHz~6 GHz 2채널 RF 파워미터로, 측정 범위는 −60 dBm에서 +20 dBm까지입니다. 언제든 최대 4채널까지 증설할 수 있어, IEC/EN 61000-4-3 / -6 내성 시험 시스템의 진행·반사 전력 자동 측정에 잘 맞습니다.",
+    RSU: "RSU RF 릴레이 스위칭 유닛은 RF·EMC 측정 전반에서 입력 하나를 2개 또는 3개 출력으로 전환합니다. 수동과 원격 제어 모두 가능합니다. 측정 시스템에서는 서로 다른 앰프·안테나·파워미터 사이를 바꿔 잇는 데 쓰이며, 잘못된 배선으로 생기는 회로 사고도 막아 줍니다.",
+    "CIT-100":
+      "CIT-100은 IEC/EN 61000-4-6, ISO 11452-4, MIL-STD 461 CS114 등에 따른 전도 RF 내성 시험과 BCI 시험을 위한 완성형 시험 시스템입니다. 신호발생기, RF 파워앰프, 3채널 RF 파워미터, 방향성 결합기와 제어 소프트웨어가 19″ 케이스 하나에 들어 있고, 내장된 계측기는 각각의 커넥터로 따로 쓸 수도 있습니다.",
+    "PSG-300":
+      "PSG-300에는 DC~300 kHz의 넓은 대역을 갖춘 선형 정밀 파워앰프가 들어 있어, 높은 출력으로 빠르게 변화하는 신호를 다루는 용도 전반에 씁니다. 내장 발생기는 사인·구형·삼각파를 냅니다. 응용 소프트웨어는 일반 파워 발생기 용도와 IEC/EN 61000-4-16, IEC/EN 61543 내성 시험에 대응합니다.",
+    "MTS-800":
+      "MTS-800은 자기장의 광대역 발생과 측정을 함께 하는 컴팩트 시험 시스템입니다. 삼축 Helmholtz 코일과 조합하면 DC~1 kHz에서 최대 1000 A/m까지 완전 자동 내성 시험이 가능하고, 더 낮은 자계강도는 250 kHz까지 발생시킬 수 있습니다. 코일이 삼축이라 시험 중 EUT를 돌려놓을 필요가 없습니다.",
+    "CIT-1000":
+      "CIT-1000은 CIT-100의 상위 기종입니다. 전도 RF 내성과 BCI 시험을 위한 완성형 시스템이라는 점은 같고, 작은 기종이 멈추는 곳에서 더 나아갑니다. 발생기·방향성 결합기·RF 전압계가 1.2 GHz까지 올라가 IEC/EN 61000-4-3 방사 내성 시험까지 구동할 수 있고, 그때는 외부 파워앰프를 연결합니다. MIL-STD 461용 저역 확장은 250 W 앰프를 갖춘 외장 CIT-4K로 4 kHz까지 내려갑니다. 터치스크린 PC를 내장해 단독으로 동작하며, 온도 입력으로 BCI 클램프 온도를 읽습니다.",
+    "ECU-3":
+      "ECU-3/-6은 EMC 시험에 필요한 주요 구성요소 — 신호발생기, 파워미터, 방향성 결합기, 릴레이 스위칭 유닛 — 을 한 상자에 모은 중앙 제어 유닛입니다. 배선 작업과 배선 실수를 최소로 줄여 줍니다. 외부 앰프 최대 4대와 안테나·결합장치 최대 3계통, 그리고 리시버·스펙트럼 분석기 최대 2대 사이를 자동으로 전환합니다.",
+    "ECU-6":
+      "ECU-6은 ECU-3의 발생기를 6.5 GHz까지 끌어올리고 분해능과 레벨 범위를 함께 넓힌 기종입니다. 앰프 4대와 출력 3계통 사이의 릴레이 전환, EUT 모니터링, 인터록은 ECU-3과 같습니다.",
+    "ERX-6":
+      "ERX-6은 전통적인 EMI 리시버의 장점에 초고속 FFT(시간영역) 기술을 결합한 계측기입니다. 162 MHz 세그먼트 단위로 측정해 동급 최상위 기종을 여러 배 앞섭니다. 리시버 자체 터치스크린에서 돌아가는 제어 소프트웨어를 기본 포함하므로 외부 PC가 필요 없습니다.",
+    "ERC-6":
+      "ERC-6은 ERX-6의 저가형입니다. CISPR 16-1 풀컴플라이언스 방출 측정에 필요하지 않은 기능만 줄이거나 뺐습니다. 내장 10″ 터치 PC로 조작하거나 외부 소프트웨어로 운용할 수 있고, 후자의 경우 안테나 마스트와 턴테이블까지 함께 제어합니다.",
+    "ACF-01B":
+      "흡수 클램프는 CISPR 13 / 14, EN 55014-1 측정에 씁니다. 시험 대상 기기의 전원 코드를 6 m로 연장해 클램프 개구에 통과시키고 비금속 테이블 위에 올린 뒤, 바퀴 달린 클램프를 케이블을 따라 전원 쪽으로 밀며 검출되는 최대 공진값을 측정값으로 삼습니다. 결합 감쇠가 17 dB가 되도록 만들었기 때문에 리시버 전압(dBµV)이 곧 방해 전력(dBpW)이 됩니다.",
+    "ABCL-20":
+      "ABCL-20은 클램프 주입 방식으로 IEC/EN 61000-4-6 내성 시험을 할 때 추가 분리 회로망으로 쓰는 페라이트 튜브 클램프입니다. 시험 대상 케이블을 제외한 EUT–AE 사이 모든 케이블에 물립니다. EUT에 가한 시험 신호가 함께 시험 중인 다른 기기·장비·시스템에 영향을 주는 것을 막아 시험 결과의 재현성을 높여 줍니다.",
+    "BCI probe":
+      "BCI 프로브는 방사 전자기 에너지에 대한 내성을 시험하기 위해 전기 기기의 케이블에 RF 전류를 주입합니다. 2차 전류 300 mA 이상의 자동차 BCI 시험을 위해 ISO 11452-4:2005와 IEC 61000-4-6에 맞춰 설계했습니다. 시험 도체에 간단히 물릴 수 있고 직경 40 mm까지의 하니스에 대응합니다.",
+    LVVL:
+      "LVVL은 CISPR-15 / EN 55015 7.2절과 부속서 B에 완전히 대응하는 교정된 2 m 대형 루프 안테나입니다. 교정 대역은 9 kHz~30 MHz입니다. 스위칭 유닛으로 각 루프를 차례로 선택하는 완전한 3축 구성이며, 루프 직경은 2 m, 최저점은 바닥에서 0.5 m입니다. 완전 차폐 하우징에 든 전용 전류 트랜스듀서가 달려 있습니다.",
+  },
+};
+
+/** This model's panel. Both halves are optional and both are often absent —
+ *  see the note above. A model with neither renders as the plain row it was. */
+export const testModelBody = (lang: Lang, name: string): TestModelBody => ({
+  lead: modelLead[lang][name],
+  facts: modelFacts[name],
+});
 
 /** Column headings for the Test Systems mega dropdown. The captions under each
  *  link come from the test category's and the product family's own meta. */

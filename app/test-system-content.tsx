@@ -3,11 +3,14 @@ import { industryLabel, industries } from "./industries";
 import { Groups, Lead, Tables } from "./page-parts";
 import PageShell, { type HeadShot } from "./page-shell";
 import StructuredData, { type TrailStep } from "./structured-data";
-import { contactEmail, localeRoute, type Lang } from "./site-config";
+import { contactEmail, headOfficeUrl, localeRoute, type Lang } from "./site-config";
 import { chambersPath, industryPath as chamberIndustryPath,
   isChamberIndustry } from "./chamber-sections";
+import ModelAccordion, { type AccordionRow } from "./model-accordion";
+import { modelShots } from "./test-system-gallery";
 import {
   categoryBody,
+  factLabel,
   modelGroups,
   modelsByProduct,
   overviewBody,
@@ -17,6 +20,7 @@ import {
   testCategories,
   testCategoryMeta,
   testCategoryPath,
+  testModelBody,
   testModels,
   testProductMeta,
   testProductPath,
@@ -65,6 +69,14 @@ const copy = {
     equipmentTitle: "시험 구성 장비",
     modelsKicker: "MODELS",
     modelsTitle: (n: number) => `해당 모델 ${n}종`,
+    /** In the panel a row opens. The mail is addressed to the model already, so
+     *  a reader who has just picked one out of ten is not asked to name it
+     *  again. Same wording as the chamber branch — it is the same button. */
+    modelQuote: "견적 문의",
+    modelQuoteSubject: (name: string) => `[견적 문의] ${name}`,
+    galleryPrev: "이전 사진",
+    galleryNext: "다음 사진",
+    galleryFrame: "사진 {at} / {of} — 눌러서 다음 사진",
     count: (n: number) => `${n}종`,
     /** Kept for a family whose models are not listed yet: "0종" would read as
      *  an error. The label points at the way to get the specification instead. */
@@ -77,6 +89,9 @@ const copy = {
     stubBody:
       "이 항목의 상세 자료는 요청하시면 바로 보내 드립니다. 필요한 사양·도면·적용 규격을 알려 주시면 담당 엔지니어가 검토해 회신드립니다.",
     stubCta: "자료 요청 · 기술 문의",
+    /** 본사 다운로드 영역으로 보냅니다. 사본을 두지 않는 이유는 `Documents`
+     *  주석에 있습니다. */
+    downloadsCta: "본사 카탈로그 9종",
     subject: (label: string) => `[자료 요청] ${label}`,
   },
   en: {
@@ -91,6 +106,11 @@ const copy = {
     equipmentTitle: "What the setup is built from",
     modelsKicker: "MODELS",
     modelsTitle: (n: number) => `${n} models in this family`,
+    modelQuote: "Request a quote",
+    modelQuoteSubject: (name: string) => `[Quote request] ${name}`,
+    galleryPrev: "Previous picture",
+    galleryNext: "Next picture",
+    galleryFrame: "Picture {at} of {of} — press for the next",
     count: (n: number) => `${n} models`,
     countPending: "models on request",
     specsKicker: "SPECIFICATIONS",
@@ -102,6 +122,7 @@ const copy = {
     stubBody:
       "Tell us which specification, drawing or standard you need for this, and an engineer will go through it and come back to you.",
     stubCta: "Request documents",
+    downloadsCta: "The nine catalogues",
     subject: (label: string) => `[Document request] ${label}`,
   },
 } as const;
@@ -276,7 +297,7 @@ function Models({ lang, slug }: { lang: Lang; slug: TestProduct }) {
               {group.title}
             </h3>
           )}
-          <ModelList models={group.models} />
+          <ModelList lang={lang} models={group.models} />
         </div>
       ))}
     </>
@@ -343,37 +364,95 @@ function Standards({ lang }: { lang: Lang }) {
   );
 }
 
+/**
+ * The band that ends every page in this branch.
+ *
+ * Two ways out, and the order is deliberate. The head office keeps nine
+ * catalogue PDFs for this branch — 40 MB of them — and they are the answer to
+ * most of what a reader would otherwise write in to ask. They are **linked, not
+ * copied**: a copy here would go stale the day the head office revises one,
+ * which is the same call the career page makes about its job postings
+ * (docs/source/company-career.md). The enquiry keeps the red fill, because a
+ * reader who needs a drawing for their own site will not find it in a
+ * catalogue.
+ */
 function Documents({ lang, label }: { lang: Lang; label: string }) {
   const t = copy[lang];
   return (
     <div className="empty">
       <h4>{t.stubTitle}</h4>
       <p>{t.stubBody}</p>
-      <a
-        className="btn btn-red"
-        href={`mailto:${contactEmail}?subject=${encodeURIComponent(t.subject(label))}`}
-      >
-        {t.stubCta}
-      </a>
+      <div className="btns">
+        <a
+          className="btn btn-red"
+          href={`mailto:${contactEmail}?subject=${encodeURIComponent(t.subject(label))}`}
+        >
+          {t.stubCta}
+        </a>
+        <a
+          className="btn btn-outline"
+          href={`${headOfficeUrl}/test-systems/download-area_test-systems/`}
+          target="_blank"
+          rel="noopener"
+        >
+          {t.downloadsCta}
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
     </div>
   );
 }
 
-/** Model names stay in the head office's spelling. Not links: the model pages
- *  do not exist yet. A row with no description is not an omission — the head
- *  office's amplifier matrix publishes the band and the name and nothing else.
- *  See the note on `TestModel.desc`. */
-function ModelList({ models }: { models: readonly TestModel[] }) {
+/**
+ * Model names stay in the head office's spelling.
+ *
+ * A row opens rather than navigates, as it does on the chamber branch: the
+ * head office's photograph of that instrument and the figures out of its own
+ * column in the specification table slide out underneath, and the enquiry
+ * inside the panel is already addressed to the model the reader picked.
+ *
+ * Unlike the chamber branch there is no second control beside it. These
+ * instruments have no page of their own — the family page is the page — so no
+ * row carries an `href` and `ModelAccordion` is given no label for one.
+ *
+ * A row with nothing to open stays the plain row it was, which is not an
+ * omission but the shape of the source: the head office's amplifier matrix
+ * publishes a band and a model name and nothing else, so all seventy
+ * amplifiers, and the GTEM cell, are rows rather than panels. See the note on
+ * `TestModel.desc` and on `testModelBody`.
+ */
+function ModelList({ lang, models }: { lang: Lang; models: readonly TestModel[] }) {
+  const t = copy[lang];
+  const rows: AccordionRow[] = models.map((model) => {
+    const body = testModelBody(lang, model.name);
+    return {
+      // The name alone. Every designation in `testModels` is distinct — they
+      // are part numbers — so unlike the chamber branch, where seven models
+      // share a slug, there is nothing here for an index to disambiguate. It
+      // has to hold across the whole page and not just one list: the amplifier
+      // page draws eleven of these lists, one per band.
+      id: model.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
+      name: model.name,
+      desc: model.desc,
+      shots: modelShots(lang, model.name),
+      lead: body.lead,
+      facts: body.facts?.map((fact) => ({ label: factLabel[lang][fact.key], value: fact.value })),
+      quoteHref: `mailto:${contactEmail}?subject=${encodeURIComponent(
+        t.modelQuoteSubject(model.name),
+      )}`,
+    };
+  });
+
   return (
-    <div className="hairline-list">
-      {models.map((model, i) => (
-        <div className="hl-row" key={model.name}>
-          <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
-          <b>{model.name}</b>
-          {model.desc && <span className="hl-desc">{model.desc}</span>}
-        </div>
-      ))}
-    </div>
+    <ModelAccordion
+      rows={rows}
+      quote={t.modelQuote}
+      /* Never read today — every instrument the head office photographs, it
+         photographs once, so no row here has a second frame to step to. Given
+         anyway, so that the day a model gets a second picture the stepper it
+         grows is already labelled. */
+      gallery={{ prev: t.galleryPrev, next: t.galleryNext, frame: t.galleryFrame }}
+    />
   );
 }
 

@@ -162,7 +162,9 @@ test("the export contains the pages the site map defines", () => {
       "/ko/test-systems/",
       "/ko/test-systems/product/amplifier/",
       "/ko/test-systems/product/antenna/",
+      "/ko/test-systems/product/coupling/",
       "/ko/test-systems/product/efs/",
+      "/ko/test-systems/product/emission/",
       "/ko/test-systems/product/meter/",
       "/ko/test-systems/product/preamp/",
       "/ko/test-systems/product/system/",
@@ -176,7 +178,9 @@ test("the export contains the pages the site map defines", () => {
       "/test-systems/",
       "/test-systems/product/amplifier/",
       "/test-systems/product/antenna/",
+      "/test-systems/product/coupling/",
       "/test-systems/product/efs/",
+      "/test-systems/product/emission/",
       "/test-systems/product/meter/",
       "/test-systems/product/preamp/",
       "/test-systems/product/system/",
@@ -304,10 +308,17 @@ test("a model row opens onto its figures, and still leads to the model page", ()
   // CSS state here, not an absent element, and both a crawler and a reader
   // whose bundle has not landed have to find the figures in the file.
   const withRows = pages.filter((p) => p.html.includes('aria-controls="panel-'));
-  // Eleven per locale, all of them on the chamber branch — the four industry
+  // Eighteen per locale. Eleven on the chamber branch — the four industry
   // indexes, the six chamber-type indexes and the RVC page, which lists its
-  // seven siblings. The EMC Test Systems branch still prints plain rows.
-  assert.equal(withRows.length, 22, `${withRows.length} pages carry an opening model list, expected 22`);
+  // seven siblings — and seven on the EMC Test Systems branch, one per product
+  // family that has anything to open onto.
+  //
+  // Seven of eight: the amplifier page is the family that stays a plain list.
+  // Its rows do carry a band and an output power now, but the head office
+  // publishes no photograph of any of the hundred and thirty-nine, and a panel
+  // that repeats the line above it is a panel worth nothing. See the note on
+  // `testModelBody`.
+  assert.equal(withRows.length, 36, `${withRows.length} pages carry an opening model list, expected 36`);
 
   for (const { route, html } of withRows) {
     const panels = [...html.matchAll(/aria-controls="(panel-[^"]+)"/g)].map((m) => m[1]);
@@ -327,12 +338,16 @@ test("a model row opens onto its figures, and still leads to the model page", ()
     assert.ok(html.includes('class="hl-figures"'), `${route}: no summary figures in any panel`);
     assert.ok(html.includes('class="hl-lead"'), `${route}: no panel says what the model is`);
     const ko = localeOf(route) === "ko";
-    // A chamber has a page of its own and the panel is the only way an index
-    // reaches it, which is the link this test exists to protect.
-    assert.ok(
-      html.includes(ko ? "모델 상세 보기" : "View the model page"),
-      `${route}: no panel offers the model page`,
-    );
+    // Chambers only. A chamber has a page of its own and the panel is the only
+    // way an index reaches it, which is the link this test exists to protect.
+    // An instrument does not: its family page is its page, so a panel there
+    // offers the enquiry and nothing else.
+    if (route.includes("/chambers/")) {
+      assert.ok(
+        html.includes(ko ? "모델 상세 보기" : "View the model page"),
+        `${route}: no panel offers the model page`,
+      );
+    }
     // The enquiry arrives naming the chamber it is about. A quote button that
     // opens an empty mail is the failure this checks for.
     assert.ok(
@@ -360,6 +375,30 @@ test("a model row opens onto its figures, and still leads to the model page", ()
       `/chambers/type/sac/: ${slug} lost its link to the model page`,
     );
   }
+
+  // The same list on the other branch: eight integrated systems, of which seven
+  // open. GTEM is the eighth and stays a row — the head office gives it a name
+  // and a datasheet and no figures, and a panel that opens onto nothing is
+  // worse than no panel.
+  const systems = pages.find((p) => p.route === "/test-systems/product/system/");
+  assert.equal(
+    [...systems.html.matchAll(/aria-controls="panel-/g)].length,
+    7,
+    "/test-systems/product/system/: the panel count changed",
+  );
+  assert.ok(systems.html.includes("<b>GTEM</b>"), "/test-systems/product/system/: GTEM lost its row");
+  assert.doesNotMatch(
+    systems.html,
+    /aria-controls="panel-gtem"/,
+    "/test-systems/product/system/: GTEM opens onto a panel it has no figures for",
+  );
+  // The amplifier page is the counter-example the count above turns on.
+  const amps = pages.find((p) => p.route === "/test-systems/product/amplifier/");
+  assert.doesNotMatch(
+    amps.html,
+    /aria-controls="panel-/,
+    "/test-systems/product/amplifier/: a model row opens, but the source has no figures behind it",
+  );
 });
 
 test("every gallery plate the panels name is actually shipped", async () => {

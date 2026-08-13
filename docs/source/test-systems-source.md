@@ -40,17 +40,20 @@ Select standard)이 네 단계로 겹쳐 있다. 실제 **본문이 있는** 페
 에 내려받아 두었다(합계 40.5 MB). **사이트에는 사본을 두지 않는다** — 본사가 개정하면
 사본만 낡기 때문이다(채용 공고와 같은 판단).
 
+**2026-08-13 갱신.** 아홉 종을 전수 검토했다. "미사용"이던 다섯 종이 이제 본문의
+출처다 — 아래 표와 §2.10~§2.13을 보라.
+
 | 파일 | 크기 | 이 작업에서 쓴 부분 |
 |---|---|---|
-| `200824_Antennas_Druck.pdf` (2024-09) | 12.7 MB | 미사용 — 웹페이지가 같은 9종을 더 정확히 싣고 있다 |
-| `Emission-Measuring-Systems-1.pdf` (2019-03) | 11.3 MB | 미사용 |
-| `amplifiers_web.pdf` (2019-09) | 7.3 MB | 미사용 — 웹페이지의 대역별 행렬과 같은 목록 |
-| `Wideband-Amplifiers_web.pdf` (2020-03) | 1.6 MB | **p.4–8 → WBA 34종 전부** |
-| `conducted_immunity_test_systems.pdf` (2019-03) | 3.0 MB | 미사용 |
-| `GTEM.pdf` (2017-10) | 2.1 MB | 미사용 |
-| `Radiated_Immunity_Test_Systems.pdf` (2016-12) | 1.7 MB | 미사용 |
+| `200824_Antennas_Druck.pdf` (2024-09) | 12.7 MB | **신규 모델 13종** — AXL-80·80S·80ES·80-6G·200, ALX-4000, HAX-6-KFZ, SAM-6·18, 마스트 FSM/FAM/FBM, FPD-01 |
+| `Emission-Measuring-Systems-1.pdf` (2021-04) | 11.3 MB | **`product/emission` 전체** — ERX-6, ERC-6, LISN 4종, NFS-100, LVVL, ACF-01B |
+| `amplifiers_web.pdf` (2019-09) | 7.3 MB | **모델 105종의 대역·출력** (§2.10). 웹 매트릭스가 1 GHz에서 멈추는 69종은 여기가 유일한 출처 |
+| `Wideband-Amplifiers_web.pdf` (2020-03) | 1.6 MB | p.4–8 → WBA 34종 전부 |
+| `conducted_immunity_test_systems.pdf` (2019-03) | 3.0 MB | **`product/coupling` 전체**와 CIT-1000 (§2.11) |
+| `GTEM.pdf` (2017-10) | 2.1 MB | 미사용 — 본문 텍스트가 없는 이미지 PDF다(10쪽에서 추출되는 문자 777자). 페이지를 눈으로 옮겨야 하는데 GTEM은 지금 이름 한 줄이라 이번 범위 밖으로 두었다 |
+| `Radiated_Immunity_Test_Systems.pdf` (2016-12) | 1.7 MB | **ECU-3 / ECU-6** (§2.12) |
 | `MTS.pdf` (2019-03) | 0.4 MB | 미사용 — 웹페이지가 같은 내용 |
-| `PSG.pdf` (2019-03) | 0.4 MB | 미사용 |
+| `PSG.pdf` (2019-03) | 0.4 MB | 미사용 — 웹페이지가 같은 내용 |
 
 ---
 
@@ -293,6 +296,102 @@ RS101 Radiated Susceptibility, Magnetic Field, 30 Hz to 100 kHz
 
 모델명은 카탈로그 표기 그대로다 — 소수점 쉼표(`0,5`)와 하이픈 간격까지.
 
+### 2.10 앰프 모델별 대역·출력 — 두 출처 (추가 2026-08-13)
+
+**출처가 둘이고, 어느 모델이 존재하는지는 웹사이트가 정한다.**
+
+- **1 GHz까지의 네 대역(36종)** — 본사 웹 매트릭스
+  `…/conducted-immunity/amplifiers/`. 이 페이지는 모델당 사양표를 통째로 싣는다.
+  저장소에는 대역 헤딩과 품번만 옮겨져 있었는데, 이번에 각 모델의 **주파수 범위와
+  정격 출력**을 표에서 그대로 가져왔다. 이득도 표에 있지만 싣지 않았다 —
+  나머지 69종에는 이득이 없어 열이 비게 된다.
+- **그 위 아홉 대역(69종)** — `amplifiers_web.pdf` (2019 Amplifier Selection Book).
+  웹 매트릭스는 1 GHz에서 끝나므로 이 69종은 이 책에만 있다.
+
+책의 5쪽 Product Range 도표가 사이트의 "Solid-state range" 표(대역 → 출력 범위)의
+출처이며, 이번에 읽은 모델별 값과 서로 맞는다.
+
+**텍스트 추출이 아니라 페이지를 이미지로 읽었다.** 표를 인쇄한 서브셋 폰트
+(`FagoCoTf-Identity-H`)에 ToUnicode CMap이 없어 `pdftotext`가 숫자를 통째로
+떨어뜨린다 — 주파수 행이 `kHz-MHz`처럼 단위만 남는다. 51개 표 페이지를 130 dpi로
+렌더해 상단 세 줄(Part Number / Frequency range / Output Power typ.)만 잘라
+판독했다. 그래서 옮긴 값은 모델당 **두 개**다.
+
+읽으면서 나온 것들:
+
+- **VLC-600 대 VLC-1100.** 책은 10 kHz–400 MHz 그룹에 VLC-600(600 W)을, 웹사이트는
+  같은 자리에 VLC-1100(1100 W)을 싣는다. 둘 다 본사 표기이고 오타로 보이지 않는다
+  — 2019년과 현재의 라인업이 다른 것으로 본다. **현행인 웹사이트를 따랐고
+  VLC-600은 싣지 않았다.** EFS-300 때와 같은 판단이다(§2.4).
+- **FLG-15F는 20 W.** 품번은 15 W를 가리키는데 표의 정격은 20 W다. 수치에 맞춰
+  품번을 고치는 것은 우리가 할 일이 아니라 그대로 두고 데이터에 주석을 달았다.
+- **FLG-100A는 120 W**, 같은 이유로 그대로 두었다.
+- 책의 Product Range 도표는 `10 kHz – 400 MHz`를 `75 W – 2000 W`로 적지만 그
+  그룹의 최소 모델은 VLC-60(60 W)이다. 책 안의 불일치라 도표 값을 그대로 둔다.
+
+### 2.11 CIT-1000과 결합·분리 액세서리 — `conducted_immunity_test_systems.pdf`
+
+> The CIT-1000 is a complete test system for conducted RF-immunity tests acc. to
+> IEC/EN 61000-4-6 and BCI-testing acc. to ISO 11452-4, MIL-STD 461 CS 114 […]
+> In addition to the CIT-10 it offers […] frequency extension of the signal
+> generator, directional coupler and RF-Voltmeter up to 1.2 GHz […] stand-alone
+> operation via integrated touch-screen PC […] frequency extension for MIL-STD
+> 461 testing down to 4 kHz, by means of the external device "CIT-4K", with a
+> 250 W power-amplifier.
+
+> According to IEC/EN 61000-4-6 the preferred coupling and decoupling devices are
+> the CDNs, for reasons of test reproducibility and protection of the AE.
+> However, if they are not suitable or available, clamp injection should be used.
+
+> The EM clamp establishes both capacitive and inductive coupling to the cable
+> connected to the EUT. The EM clamp (in contrast to the conventional current
+> injection clamp) has a directivity ≥ 10 dB, above 10 MHz, so that a defined
+> impedance between the common-mode point of the AE and the ground reference
+> plane is no longer required.
+
+CDN은 **타입 계열 단위로** 실었다. 본사는 M 계열만 해도 주문 변형을 여든 가지
+가까이 인쇄하는데(커넥터·전류·전압 등급·대역 하한의 조합), 그것을 전부 옮기면
+제품 페이지가 아니라 부품표가 된다. 변형을 만드는 네 가지 축은 페이지의
+"타입에서 주문 코드로" 목록에 적었다.
+
+**BCI 프로브의 사양표는 옮기지 않았다.** 추출된 표에서 라벨 열과 값 열이 어긋나
+`Inner diameter 120 mm / Outer Diameter 40 mm`처럼 안지름이 바깥지름보다 큰
+조합이 나온다. 어긋난 정도가 행마다 일정하지 않아 확정할 수 없었다. 산문에서
+확실한 두 값(4 kHz–400 MHz, 하니스 40 mm)만 실었다. **본사 확인이 필요하다.**
+
+### 2.12 ECU-3 / ECU-6 — `Radiated_Immunity_Test_Systems.pdf` p.11–12
+
+개요 목록이 "EMC Control-Unit ECU 3/6"을 들면서도 전용 페이지가 없어 §4에서
+보류했던 제품이다. 이 카탈로그에 두 쪽짜리 본문과 사양표가 있다.
+
+> The ECU-3/-6 is a central EMC test and control unit, which combines in just one
+> compact box many major test components like signal generator, power meter,
+> directional couplers and relay switching unit, which are needed for EMC tests.
+> That reduces the cabling work and possible cabling mistakes to a minimum.
+
+발생기는 ECU-3이 9 kHz–3 GHz, ECU-6이 9 kHz–6.5 GHz다.
+
+### 2.13 방출 계측 시스템 — `Emission-Measuring-Systems-1.pdf` (2021-04)
+
+§4에서 "제품군을 새로 만들 근거가 없어 두지 않았다"고 적었던 EMI 리시버 제품군의
+출처다. §5가 예고한 대로 이 파일이 들어오면서 `product/emission`을 열었다.
+
+> The ERX-6 combines the advantages of a traditional EMI-receiver with the
+> ultra-fast FFT-technology (time domain). Further more it offers the full
+> functionality of a realtime Spectrum Analyzer […]
+
+> Although the "ERC-6" is the less expensive little brother of our flagship
+> "ERX-6", it is more than worth to have an intensive look on it. With the ERC-6
+> only properties, that are not required for full-compliance EMI measurements
+> according to CISPR 16-1, have been reduced or omitted.
+
+싣은 모델 9종: ERX-6, ERC-6, C2-16, C4-32, LISN-KFZ, LISN-MIL, NFS-100, LVVL,
+ACF-01B.
+
+**LISN-KFZ와 LISN-MIL은 표가 아니라 문장으로 실었다.** 이 두 표도 라벨 열과 값
+열이 어긋나 있다(`Frequency range 100 A`, `Max. cont. current 500 V` …). 옆
+설명문은 어긋남이 없으므로 거기서 읽히는 값만 옮겼다.
+
 ---
 
 ## 3. 대응 관계 — 원본 → 이 사이트
@@ -305,15 +404,42 @@ RS101 Radiated Susceptibility, Magnetic Field, 30 Hz to 100 kHz
 | 제품 사진 | `TopicBody.figure` / `figureRow` → `.figure` |
 | 대역별 모델 행렬(앰프) | `bandGroups` → `SubHead` + `.hairline-list` |
 | Select standard 24건 | `testStandards` → `standards` 페이지, 산업군별 묶음 |
+| 사양표의 **모델별 열** | `testModelBody` → 모델 행을 열면 나오는 "한눈에" 수치 |
+| 모델을 지목한 문장 | 〃 → 같은 패널의 리드 한 문단 |
+| 모델별 제품 사진 | `test-system-gallery.ts` → 같은 패널의 사진 |
+
+### 모델 행 아코디언 (추가 2026-08-13)
+
+챔버 브랜치와 같은 구성으로 맞췄다. 모델 행을 누르면 그 모델의 사진, 본사가
+그 모델을 지목해 쓴 문장, 사양표에서 그 모델의 열만 뽑은 수치 4~6개, 그리고
+모델명이 이미 적힌 견적 메일 버튼이 열린다. 챔버 쪽에 있는 "모델 상세 보기"
+버튼은 없다 — 이 장비들은 제품군 페이지가 곧 자기 페이지라 갈 곳이 없다.
+
+**새로 쓴 문장은 없다.** 리드는 §2의 verbatim 원문이고, 수치는 전부 이 파일이
+근거인 사양표의 셀이다. 긴 셀은 앞머리 수치로 줄였고(`−60 dBm to +20 dBm
+(10 kHz ≤ f ≤ 4 GHz)` → `−60 … +20 dBm`) 다시 쓰지는 않았다. 전체 행은 같은
+페이지 사양 밴드에 그대로 있다.
+
+리드를 붙이는 기준은 하나다 — **본사가 그 모델을 이름으로 지목해 쓴 경우에만**.
+혼 안테나 3종, EFS 프로브 4종, FPA-18/26/40은 계열 전체를 설명하는 문단밖에
+없고 그 문단은 이미 같은 페이지 맨 위 리드다. 세 행에 같은 글을 세 번 더 찍는
+대신 수치만 연다.
+
+패널이 아예 없는 행:
+
+- **앰프 70종** — 본사가 대역과 품번만 인쇄한다(§4, 아래 추가 참조).
+- **GTEM** — 이름과 데이터시트 PDF뿐. 수치가 하나도 없다.
 
 ---
 
 ## 4. 옮기지 않은 것과 그 이유
 
-- **EMI-Receiver 제품군.** 개요 문단이 "Full-compliant EMI-Receiver with FFT,
-  9kHz–6GHz"를 들지만 전용 페이지(`/test-systems/emission-measurements/`)는
-  카드뿐이고 모델명도 사양도 없다. 제품군을 새로 만들 근거가 없어 두지 않았다.
-- **ECU 3/6 EMC Control-Unit.** 개요 목록에만 있고 페이지가 없다. 같은 이유.
+- ~~**EMI-Receiver 제품군.**~~ → **2026-08-13 해제.** 본사 웹페이지에는 여전히
+  카드뿐이지만 `Emission-Measuring-Systems-1.pdf`(2021-04)가 들어와 근거가
+  생겼다. `product/emission` 신설, §2.13 참조.
+- ~~**ECU 3/6 EMC Control-Unit.**~~ → **2026-08-13 해제.**
+  `Radiated_Immunity_Test_Systems.pdf` p.11–12에 본문과 사양표가 있다.
+  `product/system`에 ECU-3·ECU-6으로 실었다. §2.12 참조.
 - **ProveEMC 소프트웨어.** 원본이 "Software is coming soon."이라고 적어 두었다.
 - **`/mil-std-461-test-system/`.** 본문이 비어 있다. MIL-STD-461 관련 내용은
   MTS-800 페이지의 CE101/CS101/CS109/RE101/RS101 표에서 가져왔다.
@@ -322,12 +448,34 @@ RS101 Radiated Susceptibility, Magnetic Field, 30 Hz to 100 kHz
 - **각 안테나의 Datasheet PDF 링크.** 본사 원본에 링크만 있다.
 - **CIT-100 페이지의 "CIT-10" 표기.** 같은 문단 안에서 CIT-100과 CIT-10을
   섞어 쓰는데, 제품명은 CIT-100이다. 오타로 보고 옮기지 않았다.
+- **앰프 36종의 모델별 주파수 범위·출력** (추가 2026-08-13). `TestModel` 주석이
+  "2019 Amplifier Selection Book에 있고 아직 옮기지 않았다"고 적어 둔 값이다.
+  모델 패널을 만들면서 다시 시도했고, **옮길 수 없다는 결론**을 내렸다:
 
-## 5. 이 페이지 범위 밖이라 보류한 자료
+  `pdftotext -layout amplifiers_web.pdf`로 뽑으면 표의 굵은 글꼴 서브셋이
+  ROT-31로 인코딩되어 있고(`E#N` → `dBm`, `L)[` → `kHz`) **숫자 글리프가 통째로
+  빠진다.** 주파수 범위 행은 전부 `kHz-MHz`처럼 단위만 남는다. 게다가 라벨 열과
+  값 열이 한 행씩 어긋나게 추출된다 — 위 예에서 `25 W 25 W 75 W`는 바로 위
+  `Frequency range` 행이 아니라 `Output Power typ.` 행의 값이다.
 
-- `Emission-Measuring-Systems-1.pdf`(11.3 MB) — 방출 측정 시스템 전체. EMI-Receiver
-  제품군을 열게 되면 여기가 출처가 된다.
-- `GTEM.pdf` — GTEM 셀. 지금은 `testModels`에 이름만 있다.
-- `200824_Antennas_Druck.pdf`(2024-09) — 안테나 마스트·턴테이블이 함께 들어 있다.
-  액세서리 제품군을 만들 때 쓸 수 있다.
-- `conducted_immunity_test_systems.pdf` — CDN·커플링 클램프 목록.
+  페이지를 이미지로 렌더해 눈으로 옮기는 방법은 남아 있지만, 36종 × 15행을
+  손으로 받아 적는 일이라 **견적서와 대조할 값을 오탈자 위험에 놓는다.** 그래서
+  앰프는 지금도 대역 헤딩 + 품번만 싣는다. 본사에서 원본 표를 텍스트나 스프레드
+  시트로 받는 편이 옳다 — 확인이 필요한 사안이다.
+
+## 5. 아직 남은 것
+
+2026-08-13 기준. 위 네 종은 §2.10~§2.13으로 들어갔고, 남은 것은 이것뿐이다.
+
+- **`GTEM.pdf`** — 10쪽짜리 이미지 PDF다. 추출되는 문자가 777자뿐이라 본문이
+  텍스트로 들어 있지 않고, 페이지를 이미지로 렌더해 눈으로 옮겨야 한다.
+  GTEM은 지금 `testModels`에 이름 한 줄과 "GTEM cell"이라는 설명만 있는 상태이고,
+  `product/system`에서 유일하게 패널이 열리지 않는 행이다. 여는 순간 여기가
+  출처가 된다.
+- **`amplifiers_web.pdf`의 나머지 13행.** 모델당 대역과 출력만 옮겼다(§2.10).
+  이득·평탄도·IP3·VSWR·치수·무게·냉각·회로보호가 표에 남아 있다. 웹 매트릭스에
+  실리는 36종은 웹에서 기계적으로 가져올 수 있지만, 나머지 69종은 눈으로
+  옮겨야 하고 값이 900개 가까이 된다. **본사에서 원본 표를 텍스트나 스프레드시트로
+  받는 편이 옳다.**
+- **본사 확인이 필요한 세 가지** — VLC-600 대 VLC-1100(§2.10), BCI 프로브
+  사양표의 열 어긋남(§2.11), LISN-KFZ·LISN-MIL 표의 열 어긋남(§2.13).
