@@ -1,3 +1,4 @@
+import type { ChamberModel } from "./chamber-sections";
 import type { Plate } from "./page-body";
 import type { Lang } from "./site-config";
 
@@ -288,6 +289,34 @@ const alt: Record<Lang, Record<string, readonly string[]>> = {
  *  locale's alt. Empty for a slug with none, so a caller can spread it. */
 export const modelGallery = (lang: Lang, slug: string): readonly Plate[] =>
   (frames[slug] ?? []).map((frame, i) => ({ ...frame, alt: alt[lang][slug]?.[i] }));
+
+/** The two reverberation chambers built around a large disc under the ceiling.
+ *  Named rather than derived: the stirrer is written into the model tables as
+ *  prose, and matching on that prose would break the first time it is reworded. */
+const largeDiscStirrer = new Set(["RVC XL", "RVC XXL"]);
+
+/**
+ * The plates one model row opens onto: the model page's own lead plate first,
+ * then the gallery extras.
+ *
+ * The reverberation chambers are the exception, and they split in two. Seven of
+ * them share a slug, so they share a page and would share all three plates —
+ * but the three are two different chambers. The lead plate is a large-disc
+ * stirrer turning under the ceiling, which is how the XL and the XXL are built;
+ * both gallery frames are a Z-fold stirrer standing upright, which is how the
+ * other five are. So each row keeps only the plates of its own stirrer: XL and
+ * XXL the lead alone, e1, e2, S, M and L the two Z-folds. A thumbnail is a
+ * claim about the model beside it, and neither group can be shown as the other.
+ */
+export const modelShots = (
+  lang: Lang,
+  model: ChamberModel,
+  figure: Plate,
+): readonly Plate[] => {
+  const extras = modelGallery(lang, model.slug);
+  if (model.type !== "rvc") return [figure, ...extras];
+  return largeDiscStirrer.has(model.name) ? [figure] : extras;
+};
 
 /** Every file the gallery names, for the ledger check in the test suite. */
 export const galleryFiles: readonly string[] =

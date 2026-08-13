@@ -759,8 +759,15 @@ export type ModelBody = PageBody & {
    *
    * `label` is translated, `value` is not: the values are standard numbers and
    * distances.
+   *
+   * `family` marks a pair that describes the page rather than any one chamber
+   * on it — the reverberation page's count of models, and nothing else today.
+   * The strip prints it; a model row's summary drops it, because "Models —
+   * Seven" under the heading "RVC e1" is a fact about the wrong subject. The
+   * flag rather than a label match: the labels are per locale, and a reworded
+   * one would silently start showing again.
    */
-  overview?: readonly { label: string; value: string }[];
+  overview?: readonly { label: string; value: string; family?: true }[];
   /**
    * Typical Product and Verification Standards, as the head office pairs them —
    * emission in one column, immunity in the other. `title` and the column heads
@@ -3667,7 +3674,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
         { label: "최저 사용 주파수", value: "80 – 200 MHz" },
         { label: "최대 작업 체적", value: "8.0 × 5.0 × 3.0 m" },
         { label: "주파수 범위", value: "10 kHz – 18 GHz" },
-        { label: "모델", value: "7종" },
+        { label: "모델", value: "7종", family: true },
       ],
       tables: [
         {
@@ -5079,7 +5086,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
         { label: "Lowest usable freq.", value: "80 – 200 MHz" },
         { label: "Max. working volume", value: "8.0 × 5.0 × 3.0 m" },
         { label: "Frequency range", value: "10 kHz – 18 GHz" },
-        { label: "Models", value: "Seven" },
+        { label: "Models", value: "Seven", family: true },
       ],
       tables: [
         {

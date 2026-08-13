@@ -35,7 +35,7 @@ import {
   type ModelBody,
   type TopicBody,
 } from "./chamber-sections";
-import { modelGallery } from "./chamber-gallery";
+import { modelShots } from "./chamber-gallery";
 import { industryLabel } from "./industries";
 import ModelAccordion, { type AccordionRow } from "./model-accordion";
 import { CheckColumn, Groups, Lead, Tables } from "./page-parts";
@@ -481,10 +481,13 @@ function ModelList({
       spec,
       // The model page's own plate first, then the gallery extras. Both come
       // from the head office's page for this model; only the first has a
-      // caption, and the panel does not print captions.
-      shots: body?.figure ? [body.figure, ...modelGallery(lang, model.slug)] : undefined,
+      // caption, and the panel does not print captions. `modelShots` is where
+      // the one model that must not lead with its page's plate is handled.
+      shots: body?.figure ? modelShots(lang, model, body.figure) : undefined,
       lead: body?.lead[0],
-      facts: body?.overview,
+      // The page's summary strip minus the pairs that are about the page —
+      // see `family` on ModelBody.overview.
+      facts: body?.overview?.filter((f) => !f.family),
       href: model.slug === here ? undefined : localeRoute(lang, modelPath(model.slug)),
       quoteHref: `mailto:${contactEmail}?subject=${encodeURIComponent(
         t.modelQuoteSubject(model.name),
