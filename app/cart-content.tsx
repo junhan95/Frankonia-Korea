@@ -2,20 +2,31 @@ import { cartMeta, cartPath } from "./cart-sections";
 import CartView from "./cart-view";
 import { chambersPath } from "./chamber-sections";
 import { mychamberPath } from "./mychamber-sections";
-import PageShell from "./page-shell";
+import PageShell, { type HeadShot } from "./page-shell";
 import StructuredData from "./structured-data";
 import { testSystemsPath } from "./test-system-sections";
 import { localeRoute, type Lang } from "./site-config";
+
+/* The head band. MyCart stood without a photograph until now, on the argument
+   that the page's content is the reader's own list; in the bar, though, it sits
+   beside MyChamber and CyberShield, and it was the one entry there whose head
+   was a flat ink band — the exception read as an omission rather than as an
+   argument.
+   The SAC-5 Plus panorama from Heideck: the third of the head office's three
+   360° frames and the only one not already heading a band — the chambers index
+   opens on SAC-10 Hybrid and MyChamber on FAC-3, so MyCart reads as their
+   sibling without repeating either. The same 4:1 crop that survives a band this
+   shallow, and its two antenna masts stand at the edges rather than the middle,
+   which keeps the right half — the half the scrim clears — occupied. Framed a
+   shade above centre: the absorber walls and the mast heads, not the floor. */
+const cartShot: HeadShot = {
+  src: "/chambers/images/pano-sac-5-plus.webp", w: 2000, h: 500, at: "50% 44%",
+};
 
 /**
  * The MyCart page. A server component that renders the chrome and hands the
  * basket view the three routes its empty state offers — the route tables stay
  * on this side of the boundary, as they do for MyChamber.
- *
- * No head photograph. Every other first page of a branch carries one; this is
- * not a branch of the catalogue but a reader's own working list, and a
- * panorama of somebody else's chamber above it would be decoration in front of
- * the one page on the site whose content the reader wrote.
  */
 export default function MyCartPage({ lang }: { lang: Lang }) {
   const meta = cartMeta[lang];
@@ -29,7 +40,7 @@ export default function MyCartPage({ lang }: { lang: Lang }) {
         trail={[{ name: meta.label, path: cartPath }]}
         description={meta.description}
       />
-      <PageShell lang={lang} eyebrow="MYCART" title={meta.title} intro={meta.description}>
+      <PageShell lang={lang} eyebrow="MYCART" title={meta.title} intro={meta.description} shot={cartShot}>
         <CartView
           lang={lang}
           links={{
