@@ -49,7 +49,15 @@ for _stream in (sys.stdout, sys.stderr):
         pass
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LOCAL = os.path.join(ROOT, "out")
+# The tree to upload. `out/` by default, but overridable, because `out/` is not
+# a safe place to spend forty minutes reading from: `npm test` and
+# `npm run build:static` both rmtree it and write a *staging* build in its
+# place, and the file list here is taken once at the start. A rebuild partway
+# through has twice ended an upload on FileNotFoundError with the site half
+# replaced — and would have been worse had it not, since the staging build
+# carries the GitHub Pages base path. Point DEPLOY_SOURCE at a checkout or a
+# copy that nothing else writes to, and a concurrent build cannot reach it.
+LOCAL = os.environ.get("DEPLOY_SOURCE") or os.path.join(ROOT, "out")
 HTACCESS = os.path.join(ROOT, "deploy", "htaccess")
 KNOWN_HOSTS = os.path.join(ROOT, "deploy", "known_hosts")
 
