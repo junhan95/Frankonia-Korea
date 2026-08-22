@@ -3,9 +3,11 @@ import { industryLabel, industries } from "./industries";
 import { Groups, Lead, Tables } from "./page-parts";
 import PageShell, { type HeadShot } from "./page-shell";
 import StructuredData, { type TrailStep } from "./structured-data";
-import { asset, contactEmail, headOfficeUrl, localeRoute, type Lang } from "./site-config";
+import { asset, contactEmail, localeRoute, type Lang } from "./site-config";
 import { chambersPath, industryPath as chamberIndustryPath,
   isChamberIndustry } from "./chamber-sections";
+import DownloadCards from "./download-cards";
+import { testSystemCatalogues } from "./downloads-sections";
 import ModelAccordion, { type AccordionRow } from "./model-accordion";
 import { datasheetFor } from "./test-system-datasheets";
 import { modelShots } from "./test-system-gallery";
@@ -103,14 +105,11 @@ const copy = {
     specsTitle: "사양",
     specsNote: "본사 제품 페이지와 카탈로그의 표를 그대로 옮긴 것입니다. 수치와 규격 표기는 번역하지 않습니다 — 도면·견적서와 대조할 값이기 때문입니다.",
     chamberCross: "같은 산업군의 챔버 보기",
-    stubTitle: "자료를 보내 드립니다",
-    stubBody:
-      "이 항목의 상세 자료는 요청하시면 바로 보내 드립니다. 필요한 사양·도면·적용 규격을 알려 주시면 담당 엔지니어가 검토해 회신드립니다.",
-    stubCta: "자료 요청 · 기술 문의",
-    /** 본사 다운로드 영역으로 보냅니다. 사본을 두지 않는 이유는 `Documents`
-     *  주석에 있습니다. */
-    downloadsCta: "본사 카탈로그 다운로드",
-    subject: (label: string) => `[자료 요청] ${label}`,
+    /** 자료실에 있던 시험 시스템 카탈로그가 이 자리로 옮겨 왔다 —
+     *  `Catalogues` 주석 참조. */
+    catalogueKicker: "DOWNLOADS",
+    catalogueTitle: "제품 카탈로그",
+    catalogueNote: "본사 서버에서 바로 내려받으실 수 있습니다. 각 파일은 새 탭에서 열립니다.",
   },
   en: {
     eyebrow: "EMC TEST SYSTEMS",
@@ -137,12 +136,10 @@ const copy = {
     specsNote:
       "Reproduced from the tables on the head office's own product pages and catalogues. Figures and standard designations are not translated — they are what a reader matches against a drawing and a quotation.",
     chamberCross: "Chambers for the same industry",
-    stubTitle: "Documents on request",
-    stubBody:
-      "Tell us which specification, drawing or standard you need for this, and an engineer will go through it and come back to you.",
-    stubCta: "Request documents",
-    downloadsCta: "The head office catalogues",
-    subject: (label: string) => `[Document request] ${label}`,
+    catalogueKicker: "DOWNLOADS",
+    catalogueTitle: "Product catalogues",
+    catalogueNote:
+      "Served from the head office's own server. Each opens in its own tab.",
   },
 } as const;
 
@@ -165,7 +162,7 @@ const overviewShot: HeadShot = {
 
 export default function TestSystemPage({ lang, view }: { lang: Lang; view: TestSystemView }) {
   const t = copy[lang];
-  const { label, title, description, path, trail, body } = resolve(lang, view);
+  const { title, description, path, trail, body } = resolve(lang, view);
 
   const bands: { key: string; node: ReactNode }[] = [];
 
@@ -181,7 +178,10 @@ export default function TestSystemPage({ lang, view }: { lang: Lang; view: TestS
     });
   }
   if (body && body.groups.length > 0) bands.push({ key: "groups", node: <Groups body={body} /> });
-  bands.push({ key: "documents", node: <Documents lang={lang} label={label} /> });
+  /* The index carries the branch's catalogues; the pages under it carry none.
+     There used to be a "documents on request" card under every one of them,
+     and it is gone — see the note over `Catalogues`. */
+  if (view.kind === "overview") bands.push({ key: "documents", node: <Catalogues lang={lang} /> });
 
   return (
     <>
@@ -438,49 +438,45 @@ function Standards({ lang }: { lang: Lang }) {
 }
 
 /**
- * The band that ends every page in this branch.
+ * The band that ends the index of this branch.
  *
- * Two ways out, and the order is deliberate. The head office keeps nine
- * catalogue PDFs for this branch — 40 MB of them — and they are the answer to
- * most of what a reader would otherwise write in to ask. They are **linked, not
- * copied**: a copy here would go stale the day the head office revises one,
- * which is the same call the site makes about the head office's job postings.
- * The enquiry keeps the red fill, because a
- * reader who needs a drawing for their own site will not find it in a
- * catalogue.
+ * It is the branch's download area, which it did not use to be. The head
+ * office's catalogue PDFs for this branch were collected onto `/downloads`
+ * beside the chamber ones; they are printed here instead, because a catalogue
+ * of amplifiers and receivers is wanted by a reader who is already in this
+ * branch and not by one who went looking for the chamber catalogue. The files
+ * themselves have not moved — `testSystemCatalogues` in downloads-sections is
+ * the same table, and docs/source/downloads.md §4 has the reasoning. Only the
+ * index draws them, because nine catalogue covers under every one of twenty
+ * pages is the same list printed twenty times.
  *
- * The per-model datasheets *are* copied, into `public/test-systems/datasheets/`
- * and onto the pill inside each model row. That is not a reversal of the call
- * above — the note at the top of test-system-datasheets.ts sets out why a
- * two-page sheet for one instrument and a forty-page branch catalogue are
- * different things — but it does mean this band is no longer the only way a
- * reader gets a document out of this branch, and it should not be written as
- * though it were.
+ * They are **linked, not copied**: a copy here would go stale the day the head
+ * office revises one, which is the same call the site makes about the head
+ * office's job postings.
+ *
+ * Every page in the branch used to end on a "documents on request" card under
+ * this — an enquiry button and a link out to the head office's download area —
+ * and on the twenty pages that have no catalogues it *was* the band. It is
+ * gone. The enquiry it wrote is the one the header and the footer already
+ * carry on every page, the model rows carry their own beside each instrument,
+ * and the per-model datasheets are copied into `public/test-systems/
+ * datasheets/` and hang on the pill inside the row — so the card was asking a
+ * reader to write in for what the page beside it already hands over.
  */
-function Documents({ lang, label }: { lang: Lang; label: string }) {
+function Catalogues({ lang }: { lang: Lang }) {
   const t = copy[lang];
+
   return (
-    <div className="empty">
-      <h4>{t.stubTitle}</h4>
-      <p>{t.stubBody}</p>
-      <div className="btns">
-        <a
-          className="btn btn-red"
-          href={`mailto:${contactEmail}?subject=${encodeURIComponent(t.subject(label))}`}
-        >
-          {t.stubCta}
-        </a>
-        <a
-          className="btn btn-outline"
-          href={`${headOfficeUrl}/test-systems/download-area_test-systems/`}
-          target="_blank"
-          rel="noopener"
-        >
-          {t.downloadsCta}
-          <span aria-hidden="true">↗</span>
-        </a>
+    <>
+      <div className="sec-head">
+        <span className="kicker">{t.catalogueKicker}</span>
+        <h2>{t.catalogueTitle}</h2>
+        <p>{t.catalogueNote}</p>
       </div>
-    </div>
+      <div className="list-group">
+        <DownloadCards lang={lang} files={testSystemCatalogues} />
+      </div>
+    </>
   );
 }
 

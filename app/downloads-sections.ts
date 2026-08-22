@@ -8,11 +8,13 @@ import type { Lang } from "./site-config";
  *   /anechoic-chambers/download-area_anechoic-chambers/
  *   /test-systems/download-area_test-systems/
  *
- * This site has one hub, because the Contact menu offers one entry and a
- * reader looking for "the catalogue" does not yet know which branch theirs is
- * in. The head office's own headings are kept as the group headings, and its
- * order is kept inside each group, so the two pages can still be read against
- * each other. Collected 2026-08-22 — see docs/source/downloads.md.
+ * Both are collected here, in the head office's own order and under its own
+ * headings, so the pages can still be read against each other. They are not
+ * printed in the same place: the hub at `/downloads` is the chamber area, and
+ * the test-system catalogues are printed at the foot of the EMC Test Systems
+ * index instead — a catalogue of amplifiers and receivers is wanted by a
+ * reader who is already in that branch, not by one who came looking for the
+ * chamber catalogue. Collected 2026-08-22 — see docs/source/downloads.md §4.
  *
  * The one thing that is *not* the head office's is where two of the files are
  * served from. Its own page lists "Anechoic Chambers (PDF)" and
@@ -26,12 +28,12 @@ export const downloadsMeta = {
   ko: {
     label: "자료실",
     description:
-      "Frankonia 챔버 카탈로그, 포토북, 서비스 포트폴리오, ISO 9001 인증서, 그리고 EMC 시험 시스템 제품 카탈로그를 PDF로 내려받으실 수 있습니다.",
+      "Frankonia 챔버 카탈로그, 포토북, 서비스 포트폴리오, ISO 9001 인증서를 PDF로 내려받으실 수 있습니다.",
   },
   en: {
     label: "Downloads",
     description:
-      "Frankonia chamber catalogue, photobook, service portfolio and ISO 9001 certificate, together with the EMC test-system product catalogues — all as PDF.",
+      "The Frankonia chamber catalogue, the photobook, the service portfolio and the ISO 9001 certificate — all as PDF.",
   },
 } as const satisfies Record<Lang, { label: string; description: string }>;
 
@@ -86,7 +88,9 @@ const COVER = (name: string, w: number, h: number) => ({
  *  one edit, and so it is obvious at a glance which files are not ours. */
 const HQ = "https://frankonia-solutions.com/wp-content/uploads";
 
-export const downloadSets = [
+/** Both head-office areas, as collected. Which of them is printed where is
+ *  decided under the table. */
+const downloadAreas = [
   {
     key: "chambers",
     groups: [
@@ -243,11 +247,31 @@ export const downloadSets = [
   },
 ] as const satisfies readonly DownloadSet[];
 
+/**
+ * What the hub at `/downloads` prints: the chamber area, whole.
+ *
+ * An array of one rather than the band written out, because the page counts
+ * its bands to alternate their fill and because the head office may yet put a
+ * third area up.
+ */
+export const downloadSets = [downloadAreas[0]] as const satisfies readonly DownloadSet[];
+
+/**
+ * The test-system product catalogues, printed by the EMC Test Systems index
+ * rather than by the hub.
+ *
+ * Its single group's files, not the set: the band that draws them already
+ * carries its own heading, and "Product catalogues" printed twice — once as
+ * the band's `h2` and once as a `.sub-head` two lines below it — is a heading
+ * repeating itself. Same reason `Group` drops the sub-head on a lone group.
+ */
+export const testSystemCatalogues = downloadAreas[1].groups[0].files;
+
 /** Every file's key, read off the table above rather than listed a second
  *  time — so a file added without its blurb is a type error, not a blank line
  *  on a card. */
 export type DownloadKey =
-  (typeof downloadSets)[number]["groups"][number]["files"][number]["key"];
+  (typeof downloadAreas)[number]["groups"][number]["files"][number]["key"];
 
 /**
  * The English blurbs are the head office's own lines from its two download
@@ -363,8 +387,8 @@ export const downloadCopy = {
 } as const satisfies Record<
   Lang,
   {
-    setTitle: Record<(typeof downloadSets)[number]["key"], string>;
-    setKicker: Record<(typeof downloadSets)[number]["key"], string>;
+    setTitle: Record<(typeof downloadAreas)[number]["key"], string>;
+    setKicker: Record<(typeof downloadAreas)[number]["key"], string>;
     groupTitle: Record<string, string>;
     blurb: Record<DownloadKey, string>;
   }

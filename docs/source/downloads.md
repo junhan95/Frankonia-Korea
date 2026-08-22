@@ -10,9 +10,13 @@ https://frankonia-solutions.com/test-systems/download-area_test-systems/
 
 [[company-publications]] §7이 남겨 둔 미결 항목의 답이다. 그 문서는 네브바
 Contact 그룹의 "카탈로그 다운로드" 항목이 논문 목록을 열어 주고 있다는 문제를
-적으면서 해결안 셋을 남겨 두었다. 실제로 채택된 것은 그중 어느 것도 아닌 넷째다 —
-**항목 하나가 사이트 전체의 자료실 하나를 열고, 그 자료실이 본사의 두 영역을 모두
-담는다.** 나누지 않은 이유는 §4에 적었다.
+적으면서 해결안 셋을 남겨 두었다.
+
+수집 당시(2026-08-22)에는 그중 어느 것도 아닌 넷째를 택했다 — 항목 하나가 자료실
+하나를 열고, 그 자료실이 본사의 두 영역을 모두 담는 형태였다. **2026-08-23,
+시험 시스템 영역 9건은 `/test-systems`의 마지막 밴드로 옮겼다.** `/downloads`는
+챔버 영역만 담는다. 두 영역의 파일 목록 자체는 여전히 한 파일
+(`downloads-sections.ts`)에 있다. 경위는 §4.
 
 ---
 
@@ -118,17 +122,51 @@ sharp(...).resize({width:560, withoutEnlargement:true}).webp({quality:82})
 
 | 원본 | 이 사이트 | 컴포넌트 |
 |---|---|---|
-| 두 Download Area | `/downloads` 한 곳 | `app/downloads-content.tsx` |
-| 영역별 페이지 | 밴드 2개 (`.sec-head` 킥커가 어느 영역인지 말한다) | `Set` |
+| Anechoic Chambers Download Area | `/downloads` | `app/downloads-content.tsx` |
+| Test Systems Download Area | `/test-systems` 마지막 밴드 | `Documents` (`test-system-content.tsx`) |
+| 영역별 페이지 | 밴드 1개씩 (`.sec-head` 킥커가 어느 영역인지 말한다) | `Set` |
 | `h6` 레드 제목 3개 | `.sub-head` (`.list-group`) | `Group` |
 | 썸네일 = 링크 | 카드 전체가 `<a>` | `.dl` / `Card` |
 | — | 메타 줄 (PDF · 쪽수 · 용량 · 본사 서버) | `.dl-meta` (신규) |
 
-**나누지 않은 이유.** [[company-publications]] §7의 해결안 3("각 제품 섹션 안으로
-옮긴다 — 가장 원본에 가깝다")을 택하지 않았다. 본사 구조에 가장 가까운 것은
-맞지만, 이 사이트에는 그 항목을 여는 네브바 자리가 **Contact 그룹에 하나뿐**이고,
-"카탈로그"를 찾는 독자는 자기 것이 어느 분기인지 아직 모른다. 대신 본사의 제목과
-영역 안 순서를 그대로 보존해서 두 페이지를 서로 대조할 수 있게 했다.
+### 나눈 이유 (2026-08-23 변경)
+
+**처음에는 두 영역을 `/downloads` 한 곳에 합쳤다.** [[company-publications]] §7의
+해결안 3("각 제품 섹션 안으로 옮긴다 — 가장 원본에 가깝다")을 택하지 않은 이유는,
+그 항목을 여는 네브바 자리가 **Contact 그룹에 하나뿐**이고 "카탈로그"를 찾는
+독자는 자기 것이 어느 분기인지 아직 모른다는 것이었다.
+
+**사용자 지시(2026-08-23)로 시험 시스템 9건을 `/test-systems`로 옮겼다.** 결과적으로
+해결안 3을 제품 분기 한쪽에 적용한 형태다. 증폭기·리시버 카탈로그를 원하는 독자는
+이미 그 분기 안에 들어와 있는 사람이고, `/downloads`까지 건너갔다 오게 할 이유가
+없다. 챔버 영역은 `/downloads`에 그대로 남는다.
+
+옮기면서 지킨 것:
+
+- **파일 목록은 한 군데다.** `downloadAreas`(downloads-sections.ts)가 두 영역을 다
+  들고 있고, 그 아래에서 `downloadSets`(챔버)와 `testSystemCatalogues`(시험 시스템)로
+  갈린다. 제목·설명·쪽수·용량·썸네일은 전부 그 표 하나에서 나온다.
+- **카드는 한 컴포넌트다.** `app/download-cards.tsx`(신규)로 뽑았다. 두 페이지가
+  같은 `DownloadCards`를 그린다.
+- **인덱스에만 그린다.** 카탈로그 표지 9장을 스무 번 찍는 것은 같은 목록을 스무 번
+  찍는 것이다. `/test-systems`의 하위 20여 페이지에는 이 밴드가 아예 없다 —
+  `view.kind === "overview"`일 때만 `Catalogues` 밴드를 넣는다.
+- **`/downloads` 리드에 행선지를 적었다.** 카탈로그를 찾아 자료실로 온 독자에게
+  "EMC 시험 시스템 제품 카탈로그는 EMC 시험장비 페이지에 있습니다"를 링크로 준다.
+  `downloadsMeta.description`(양 언어)에서도 시험 시스템 언급을 뺐다.
+
+밴드 구성은 `.sec-head`(DOWNLOADS / 제품 카탈로그) → `.dl-grid`다.
+`/test-systems`의 마지막 밴드는 `.alt`(회색)라서 `.alt .dl` 규칙이 걸려 카드가 흰
+바탕이 된다 — 자료실 챔버 밴드와 같은 모양이다.
+
+**요청 카드(`.empty`)는 나중에 걷어냈다.** 처음에는 카탈로그 표 아래에 한 장,
+하위 20여 페이지에서는 그것만 한 장씩 붙어 있었다 — "자료를 보내 드립니다"와
+`The head office catalogues ↗` 두 버튼. 걷어낸 이유는 그 카드가 옆 페이지가 이미
+주는 것을 우편으로 청하게 만들었기 때문이다: 문의 버튼은 헤더와 푸터가 전 페이지에
+달고 있고, 모델 행마다 견적 버튼이 따로 있고, 본사 데이터시트 PDF는 아예
+`public/test-systems/datasheets/`로 복사해 행 안의 알약 버튼에 걸어 두었다.
+챔버 분기의 `Stub` 밴드는 그대로다 — 거기는 아직 `body`가 없는 페이지를 받는
+자리라서(§ 위 참조) 성격이 다르다.
 
 ### 새로 만든 CSS
 
@@ -192,9 +230,10 @@ Documents on request". 페이지 제목도, 검색 스니펫도, 네브바 항�
   이동. 자료실은 챔버 분기가 아니다 — 라우트가 그 파일에 적혀 있었을 뿐이다.
   `site-header.tsx` · `sitemap.ts` · `contact-content.tsx`의 import를 옮겼다
 - `downloadsMeta.description`을 고쳤다. 기존 문장은 네 항목만 약속했는데
-  실제로는 15건이다. **건수는 적지 않는다** — [[frankonia-hq-review-2026-08]]의
+  실제로는 더 많다. **건수는 적지 않는다** — [[frankonia-hq-review-2026-08]]의
   개수 표기 금지가 여기에도 걸린다. 자료실은 본사가 파일을 올리고 내리는 곳이라
   "9종"은 다음 갱신에 틀린 숫자가 된다. 리드 문단도 같은 이유로 숫자를 뺐다
+  (2026-08-23 분리 후 다시 손봤다 — §4)
 
 ## 7. 본사에 확인할 것
 
@@ -204,7 +243,7 @@ Documents on request". 페이지 제목도, 검색 스니펫도, 네브바 항�
 2. ⚠ **이 시안은 그 두 파일을 자체 호스팅한다** (`public/downloads/`, 합계
    31.3 MB). 사용자 지시(2026-08-22)다. 본사가 공개하지 않기로 한 자료가 아니라
    공개하려다 만 자료라는 판단이 근거지만, **본사 확인 대상**이다. 되돌린다면
-   `downloadSets`의 `chambers/catalogues` 두 항목만 지우면 된다.
+   `downloadAreas`의 `chambers/catalogues` 두 항목만 지우면 된다.
 3. `2008_Antennas_web.pdf`(2017)가 챔버 영역에 아직 걸려 있다. 시험 시스템 영역은
    2024년판 `200824_Antennas_Druck.pdf`를 준다. 이 사이트는 신판만 싣는다.
 4. 시험 시스템 카탈로그 9건 중 6건이 2016~2019년 파일이다. GTEM은 2018년,
