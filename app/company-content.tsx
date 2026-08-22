@@ -1,8 +1,8 @@
-import { CheckColumn, CheckList } from "./page-parts";
+import { CheckColumn } from "./page-parts";
 import PageShell, { type HeadShot } from "./page-shell";
 import StructuredData from "./structured-data";
 import { sectionMeta, type CompanySection } from "./company-sections";
-import { asset, contactEmail, headOfficeUrl, jobsEmail, type Lang } from "./site-config";
+import { asset, contactEmail, type Lang } from "./site-config";
 
 /* Every section here is carried over from the head office site section by
    section: the English is its own wording, the Korean a translation of it.
@@ -112,7 +112,7 @@ const copy = {
         ["1992", "EMC 시험 시스템으로 제품 범위 확대"],
         ["1993", "최초의 비연소성 Frankosorb® 흡수체 프로젝트"],
         ["1995", "EMC 시험 장비를 포함한 솔루션 공급자로의 첫걸음"],
-        ["1998", "롱피라미드 흡수체와 하이브리드 흡수체를 적용한 10m 챔버 신세대"],
+        ["1998", "롱피라미드 흡수체와 하이브리드 흡수체를 적용한 10.0 m 챔버 신세대"],
         ["2003", "신형 포지셔닝 장치 (예: 턴테이블)"],
         ["2003", "중국 생산·영업 거점 구축"],
         ["2007", "돔형 천장 설계를 적용한 신세대 챔버 SAC-3 Plus"],
@@ -134,54 +134,6 @@ const copy = {
         ["2021", "신규 하이브리드 흡수체 시리즈 출시 — A2 등급 Frankosorb® H1300 Turbine 흡수체"],
       ],
       statement: "전 세계 EMC 솔루션의 유일하고 신뢰할 수 있는 파트너.",
-    },
-    career: {
-      eyebrow: "CAREER",
-      title: "국제 EMC 시장에서 함께 성장할 분을 찾습니다",
-      intro:
-        "Frankonia에서 일하는 데 관심이 있으시면 지원 서류를 jobs@frankoniagroup.com 으로 보내주세요.",
-      aboutKicker: "CAREER WITH FRANKONIA",
-      aboutTitle: "여러분의 EMC 교육에 투자합니다",
-      about: [
-        "Frankonia 그룹은 EMC 분야의 국제적인 선도 전문가 가운데 하나로, 무향 챔버와 시험 시스템을 아우르는 완결형 EMC 시험소 솔루션의 기획·생산·공급에 전문성을 두고 있습니다.",
-        "이 복잡하고 고도로 기술적인 EMC 시험 환경에서 우리 고객은 전자 산업을 비롯해 자동차·철도·항공 등 전 세계 여러 산업에서 옵니다.",
-        "우리의 성공은 프리미엄 고객 및 대리점과 국제적으로 함께 일하는, 의욕 있고 역동적인 팀에 기반합니다.",
-      ],
-      aboutCallout:
-        "Frankonia는 개별 제품과 완결형 솔루션에서 여러 독보적인 특성을 제공하며, 그래서 전 세계에서 검증된 우선 파트너입니다. 우리의 가치와 목표에 따라 EMC라는 복잡한 주제 안에서 여러분의 교육에 투자하고, 구성원과의 장기적인 관계를 중시하며, 매력적인 조건을 제공합니다.",
-      openingsKicker: "OPEN POSITIONS",
-      openingsTitle: "채용 공고",
-      groupLabels: {
-        hq: ["하이데크 ", "본사"],
-        field: ["국내·해외 ", "현장"],
-      },
-      detailLabel: "공고 상세 (PDF)",
-      applyLabel: "지원하기",
-      openingsNote:
-        "각 공고의 상세 내용과 지원 절차는 채용 페이지에서 확인하실 수 있습니다.",
-      initiativeKicker: "INITIATIVE APPLICATION",
-      initiativeTitle: "상시 지원",
-      initiative: [
-        "국제적인 사업 안에서 이 놀랍고 다양한 분야에 관심이 있으시면 언제든 상시 지원서를 보내주세요. 우리는 여러 산업과 다양한 배경의 인재를 늘 찾고 있습니다.",
-        "하이데크 Frankonia 본사에 지금 바로 지원하세요.",
-      ],
-      fields: [
-        "기계 엔지니어링",
-        "플랜트 엔지니어링",
-        "프로젝트 관리",
-        "전기 엔지니어링",
-        "설치",
-        "서비스",
-      ],
-      initiativeCta: "상시 지원하기",
-      valuesKicker: "CORE VALUES",
-      valuesTitle: "Frankonia의 핵심 가치",
-      values: [
-        ["01", "독창성", ["우리는 앞으로 나아가기를 멈추지 않는다", "우리는 모든 것에서 이점을 찾는다", "우리는 창의적으로 과제를 다룬다", "우리는 단순함을 추구한다"]],
-        ["02", "에너지", ["우리는 하는 모든 일에 에너지를 쏟는다", "우리는 갈망을 잃지 않고 우리가 하는 일을 믿는다", "우리는 도전에 열려 있고 기회를 껴안는다", "우리는 하는 일에 대한 열정을 나눈다"]],
-        ["03", "공동체", ["우리는 공정하고 존중하며 행동한다", "우리는 소매를 걷어붙이고 일을 끝낸다", "우리는 함께 미래를 만든다", "우리는 팀으로 이긴다"]],
-        ["04", "공정함", ["우리는 열린 마음으로 호기심을 갖는다", "우리는 우리 행동에 책임을 진다", "우리는 명료하고 정직하게 소통한다", "우리는 실패를 인정하고 배우고 개선한다"]],
-      ],
     },
     publications: {
       eyebrow: "PUBLICATIONS",
@@ -319,7 +271,7 @@ const copy = {
         ["1992", "Enlarge product scope with EMC test systems"],
         ["1993", "First non-combustible Frankosorb® absorber project"],
         ["1995", "First step as solution provider including EMC testing equipment"],
-        ["1998", "New generation of 10m chambers with long-pyramid absorbers and hybrid absorbers"],
+        ["1998", "New generation of 10.0 m chambers with long-pyramid absorbers and hybrid absorbers"],
         ["2003", "New positioning devices (e.g. turntables)"],
         ["2003", "Setup Frankonia manufacturing and sales in China"],
         ["2007", "New chamber generation SAC-3 Plus with dome shape roof design"],
@@ -341,54 +293,6 @@ const copy = {
         ["2021", "New hybrid absorbers series launched, the Frankosorb® H1300 Turbine absorber in A2"],
       ],
       statement: "The unique and trustworthy partner for EMC solutions worldwide.",
-    },
-    career: {
-      eyebrow: "CAREER",
-      title: "We are always looking for motivated people to join our team",
-      intro:
-        "If you are interested to work at Frankonia, submit your application to jobs@frankoniagroup.com.",
-      aboutKicker: "CAREER WITH FRANKONIA",
-      aboutTitle: "We invest in your education within EMC",
-      about: [
-        "The Frankonia Group is one of the international leading experts in EMC and has its expertise in the planning, production and delivery of complete EMC laboratory solutions that encompass Anechoic Chambers and Test Systems.",
-        "Within this complex and high-tech EMC testing environment, our customers come from the electronic industries and industries as automotive, railway, avionics, etc. from all around the world.",
-        "Our success is based on our motivated and dynamic team, working internationally with our premium customers and representatives.",
-      ],
-      aboutCallout:
-        "Frankonia offers various unique attributes in single products and complete solutions and is herewith the proven and preferred partner around the globe. Along with our values and goals, we invest in your education within the complex subject of EMC, rely on a long-term relationship with our staff and provides attractive conditions.",
-      openingsKicker: "OPEN POSITIONS",
-      openingsTitle: "Frankonia Vacancies",
-      groupLabels: {
-        hq: ["Jobs, ", "Headquarters Heideck"],
-        field: ["Jobs, ", "national und international"],
-      },
-      detailLabel: "Job description (PDF)",
-      applyLabel: "Apply here",
-      openingsNote:
-        "The full description and the application form for each vacancy open on our recruitment pages.",
-      initiativeKicker: "INITIATIVE APPLICATION",
-      initiativeTitle: "Frankonia Initiative Application",
-      initiative: [
-        "If you are interested in working within this amazing and varied sector in our international business, feel free to send you initiative application. We always look for talents from several industries and with different backgrounds.",
-        "Apply now proactive for Frankonia headquarters in Heideck!",
-      ],
-      fields: [
-        "Mechanical Engineering",
-        "Plant Engineering",
-        "Project Management",
-        "Electrical Engineering",
-        "Installation",
-        "Service",
-      ],
-      initiativeCta: "Send an initiative application",
-      valuesKicker: "CORE VALUES",
-      valuesTitle: "Core Values of Frankonia",
-      values: [
-        ["01", "Ingenuity", ["We never stop pushing forward", "We look for advantage in everything", "We handle challenges with creativity", "We strive for simplicity"]],
-        ["02", "Energy", ["We bring energy to everything we do", "We stay hungry and believe in what we do", "We are open to challenges and embrace opportunities", "We share the passion for what we do"]],
-        ["03", "Community", ["We act fair and respectful", "We roll up our sleeves to get the job done", "We shape the future together", "We win as a team"]],
-        ["04", "Fairness", ["We are open minded and curious", "We take responsibility for our actions", "We communicate with clarity and honesty", "We admit failures, learn and improve"]],
-      ],
     },
     publications: {
       eyebrow: "PUBLICATIONS",
@@ -452,34 +356,6 @@ const citations = [
   ["„Effective Lösungen für moderne Absorberhallen”", "U. Panten, E&E, Kompendium 2011, pp. 266 – 268"],
   ["„Novel broad band electromagnetic wave absorber designed with nano-metal films”", "G. Nimtz and U. Panten, Electronic Environment #1.2011, Sweden, pp. 20 – 22"],
 ] as const;
-
-/**
- * Open positions as the head office listed them on 2026-08-07. Titles are not
- * translated — they are the postings' own wording, mostly German.
- *
- * The description PDF and the application form stay on the head office site
- * rather than being copied here: vacancies are live data the head office
- * maintains, and a copy would outlive the posting it came from. Re-check
- * against the source before editing this page — see
- * docs/source/company-career.md §2.2.
- */
-const vacancyGroups = [
-  {
-    key: "hq",
-    jobs: [
-      { title: "Technischer Zeichner oder Techniker (m/w/d)", pdf: "/wp-content/uploads/2025/11/2025-Technischer-Zeichner-Techniker.pdf", apply: "/career-techniker/" },
-      { title: "Sales Manager im technischen Vertrieb (m/w/d)", pdf: "/wp-content/uploads/2026/02/2026-Sales-Manager.pdf", apply: "/career-sales-manager/" },
-    ],
-  },
-  {
-    key: "field",
-    jobs: [
-      { title: "Obermonteur E-Technik (m/w/d)", pdf: "/wp-content/uploads/2025/11/2025-Obermonteur-E-Technik.pdf", apply: "/career-monteure/" },
-      { title: "Obermonteur (m/w/d)", pdf: "/wp-content/uploads/2025/11/2025-Obermonteur.pdf", apply: "/career-monteure/" },
-      { title: "Service Technician – EMC Chambers in India (m/w/d)", pdf: "/wp-content/uploads/2026/03/career-servicetechnician-india.pdf", apply: "/career-service-technician-india/" },
-    ],
-  },
-] as const satisfies readonly { key: "hq" | "field"; jobs: readonly { title: string; pdf: string; apply: string }[] }[];
 
 /** Section head: red eyebrow over a Light heading (design reference §4.2-1). */
 function SectionHead({ kicker, title }: { kicker: string; title: string }) {
@@ -547,17 +423,6 @@ function EntryList({
         </div>
       ))}
     </div>
-  );
-}
-
-/** A group heading inside a band that already carries a `.sec-head`, split the
- *  way the source splits it. */
-function SubHead({ head: [lead, emphasis] }: { head: readonly [string, string] }) {
-  return (
-    <h3 className="sub-head">
-      {lead}
-      <b>{emphasis}</b>
-    </h3>
   );
 }
 
@@ -722,90 +587,6 @@ function CompanyBody({ lang, section }: { lang: Lang; section: CompanySection })
           <div className="wrap">
             <div className="statement">
               <p>{a.statement}</p>
-            </div>
-          </div>
-        </section>
-      </PageShell>
-    );
-  }
-
-  if (section === "career") {
-    const c = t.career;
-    return (
-      <PageShell lang={lang} eyebrow={c.eyebrow} title={c.title} intro={c.intro}>
-        <section>
-          <div className="wrap">
-            <SectionHead kicker={c.aboutKicker} title={c.aboutTitle} />
-            <Prose paras={c.about} />
-            <div className="callout">{c.aboutCallout}</div>
-          </div>
-        </section>
-
-        {/* The vacancies themselves stay on the head office site — see
-            `vacancyGroups`. Each row links to the posting's own PDF and to its
-            application form there. */}
-        <section className="alt">
-          <div className="wrap">
-            <SectionHead kicker={c.openingsKicker} title={c.openingsTitle} />
-            {vacancyGroups.map((group) => (
-              <div className="list-group" key={group.key}>
-                <SubHead head={c.groupLabels[group.key]} />
-                <div className="entry-list">
-                  {group.jobs.map((job, i) => (
-                    <div className="entry" key={job.title}>
-                      <span className="entry-idx">{String(i + 1).padStart(2, "0")}</span>
-                      <h4>{job.title}</h4>
-                      <div className="entry-links">
-                        <a href={`${headOfficeUrl}${job.pdf}`}>{c.detailLabel} ↗</a>
-                        <a href={`${headOfficeUrl}${job.apply}`}>{c.applyLabel} ↗</a>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-            <div className="callout">{c.openingsNote}</div>
-          </div>
-        </section>
-
-        <section>
-          <div className="wrap">
-            <SectionHead kicker={c.initiativeKicker} title={c.initiativeTitle} />
-            <Prose paras={c.initiative} />
-            <div className="check-cols">
-              <div className="check-col">
-                <CheckList items={c.fields.slice(0, 3)} />
-              </div>
-              <div className="check-col">
-                <CheckList items={c.fields.slice(3)} />
-              </div>
-            </div>
-            <div className="btns sec-go">
-              <a
-                className="btn btn-red"
-                href={`mailto:${jobsEmail}?subject=${encodeURIComponent("[Frankonia] Initiative application")}`}
-              >
-                {c.initiativeCta}
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <section className="alt">
-          <div className="wrap">
-            <SectionHead kicker={c.valuesKicker} title={c.valuesTitle} />
-            <div className="value-grid">
-              {c.values.map(([no, name, statements]) => (
-                <div className="num-col" key={no}>
-                  <span className="num">{no}</span>
-                  <h4>{name}</h4>
-                  <ul>
-                    {statements.map((s) => (
-                      <li key={s}>{s}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
             </div>
           </div>
         </section>

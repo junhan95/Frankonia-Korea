@@ -14,7 +14,7 @@ import type { Lang } from "./site-config";
  * A basket control that only ever reads "Add" leaves a reader who has added
  * something clicking it a second time to find out.
  *
- * So it is a toggle, and it says so — pressed, it reads "In MyCart" and its
+ * So it is a toggle, and it says so — pressed, it reads "In My Enquiry" and its
  * hover reads "remove". `aria-pressed` states the same thing to a screen
  * reader, which is what makes the changing label an affordance rather than a
  * surprise.
@@ -25,14 +25,14 @@ import type { Lang } from "./site-config";
 
 const copy = {
   ko: {
-    add: "MyCart에 담기",
-    added: "MyCart에 담김",
-    remove: "MyCart에서 빼기",
+    add: "My Enquiry에 담기",
+    added: "My Enquiry에 담김",
+    remove: "My Enquiry에서 빼기",
   },
   en: {
-    add: "Add to MyCart",
-    added: "In MyCart",
-    remove: "Remove from MyCart",
+    add: "Add to My Enquiry",
+    added: "In My Enquiry",
+    remove: "Remove from My Enquiry",
   },
 } as const;
 

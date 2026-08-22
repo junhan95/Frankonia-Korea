@@ -102,8 +102,8 @@ const copy = {
     copied: "복사했습니다",
     to: (address: string) => `수신 ${address}`,
 
-    mailSubject: (model: string, company: string) => `[MyChamber] ${model} 견적 문의 — ${company}`,
-    mailTitle: "Frankonia MyChamber 결과",
+    mailSubject: (model: string, company: string) => `[My Chamber] ${model} 견적 문의 — ${company}`,
+    mailTitle: "Frankonia My Chamber 결과",
     mailPick: "선택한 챔버",
     mailAnswers: "선택 경로",
     mailAlts: "같은 분기의 다른 선택지",
@@ -112,7 +112,7 @@ const copy = {
     // them; in the message they are just a phone number and a note.
     mailPhone: "전화",
     mailNote: "추가 요청사항",
-    mailFoot: "이 메일은 Frankonia MyChamber에서 선택 내용을 바탕으로 자동 작성되었습니다.",
+    mailFoot: "이 메일은 Frankonia My Chamber에서 선택 내용을 바탕으로 자동 작성되었습니다.",
   },
   en: {
     stepOf: (i: number, n: number) => `Question ${i} of ${n}`,
@@ -170,15 +170,15 @@ const copy = {
     copied: "Copied",
     to: (address: string) => `To ${address}`,
 
-    mailSubject: (model: string, company: string) => `[MyChamber] ${model} — quotation request from ${company}`,
-    mailTitle: "Frankonia MyChamber result",
+    mailSubject: (model: string, company: string) => `[My Chamber] ${model} — quotation request from ${company}`,
+    mailTitle: "Frankonia My Chamber result",
     mailPick: "Chamber chosen",
     mailAnswers: "The branch taken",
     mailAlts: "Alternatives at the same branch",
     mailFrom: "Enquirer",
     mailPhone: "Phone",
     mailNote: "Notes",
-    mailFoot: "Written automatically by Frankonia MyChamber from the answers above.",
+    mailFoot: "Written automatically by Frankonia My Chamber from the answers above.",
   },
 } as const;
 
@@ -281,7 +281,7 @@ export default function MyChamberWizard({
 
   // A branch that ends outside the catalogue: the matrix's `custom` oval under
   // each segment, the Special Chambers track, and the custom quiet zone under
-  // a 10 m chamber. All three end in a questionnaire rather than in a model,
+  // a 10.0 m chamber. All three end in a questionnaire rather than in a model,
   // with whatever the branch already established carried in as a pre-selection.
   if (atOutcome && at.kind === "form") {
     return (
@@ -571,7 +571,7 @@ function ResultCard({
       result.variant && `${t.variant}: ${result.variant.name} — ${result.variant.size}`,
       ...steps.map((s) => `${s.question.kicker[lang]}: ${s.chosen?.label[lang] ?? t.none}`),
     ].filter((line): line is string => Boolean(line)),
-    from: "MyChamber",
+    from: "My Chamber",
     href: entry.href,
     lang,
   };
@@ -659,7 +659,7 @@ function ResultCard({
           {/* Beside the radio rather than instead of it, because the two are
               different questions. The radio decides which chamber the enquiry
               at the foot of *this* page is about — one branch, one model, sent
-              now. MyCart is for the reader who is specifying a laboratory:
+              now. My Enquiry is for the reader who is specifying a laboratory:
               they walk the questions again for the next requirement, and the
               basket in the bar keeps what they found. */}
           <CartAdd lang={lang} item={seed} />

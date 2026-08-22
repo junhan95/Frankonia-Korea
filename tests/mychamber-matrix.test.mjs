@@ -187,7 +187,7 @@ test("every chamber in the catalogue is reachable, except the one the matrix omi
    * There is one deliberate exception and it is named here rather than left to
    * be noticed: the Chamber Matrix does not place the Shielded Room. It is not
    * an EMC test site — it is the shell the whole range is built on, bought on
-   * its own for security work or to isolate an instrument — so MyChamber
+   * its own for security work or to isolate an instrument — so My Chamber
    * leaves it to its own product page. Every other chamber has to be at the end
    * of some branch.
    */
@@ -196,7 +196,7 @@ test("every chamber in the catalogue is reachable, except the one the matrix omi
   assert.deepEqual(
     unreachable,
     ["Shielded Room"],
-    "the set of chambers MyChamber cannot reach changed",
+    "the set of chambers My Chamber cannot reach changed",
   );
 
   // And nothing in the tree names a chamber the site does not carry. The build

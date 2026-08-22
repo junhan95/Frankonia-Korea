@@ -42,7 +42,11 @@ export default function SiteFooter({ lang, t }: { lang: Lang; t: FooterCopy }) {
           <div>
             <h5>FRANKONIA</h5>
             <p className="foot-desc">{t.ftDesc}</p>
-            <p className="foot-addr">{t.ftAddr}</p>
+            <address className="foot-addr">
+              {t.ftAddr.map((line) => (
+                <span key={line}>{line}</span>
+              ))}
+            </address>
           </div>
           <div>
             <h5>{t.ftCompany}</h5>
@@ -103,7 +107,7 @@ export default function SiteFooter({ lang, t }: { lang: Lang; t: FooterCopy }) {
 }
 
 export type FooterCopy = {
-  ftDesc: string; ftAddr: string; ftCompany: string; ftSol: string;
+  ftDesc: string; ftAddr: readonly string[]; ftCompany: string; ftSol: string;
   ftL1: string; ftL2: string; ftLink: string; ftHq: string;
   ftContact: string; ftImprint: string; ftPriv: string;
 };

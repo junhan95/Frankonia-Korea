@@ -1,5 +1,5 @@
-import ChamberPage from "../../../chamber-content";
-import { downloadsMeta, downloadsPath } from "../../../chamber-sections";
+import DownloadsPage from "../../../downloads-content";
+import { downloadsMeta, downloadsPath } from "../../../downloads-sections";
 import { routeMetadata, siteViewport } from "../../../site-metadata";
 
 export const viewport = siteViewport;
@@ -10,5 +10,5 @@ export function generateMetadata() {
 }
 
 export default function Page() {
-  return <ChamberPage lang="ko" view={{ kind: "downloads" }} />;
+  return <DownloadsPage lang="ko" />;
 }

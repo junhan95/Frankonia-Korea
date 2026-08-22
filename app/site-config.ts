@@ -58,14 +58,6 @@ export const contactPhone = "+49 9177 98-500";
 export const contactPhoneHref = "tel:+49917798500";
 
 /**
- * Applications go somewhere else. The head office's career page names
- * `jobs[at]frankoniagroup.com` twice — once for the open positions and once for
- * speculative applications — and routing a CV to the sales inbox instead would
- * lose it. Used only by the Career page.
- */
-export const jobsEmail = "jobs@frankoniagroup.com";
-
-/**
  * The head office site, for the pages this one deliberately does not copy:
  * the live vacancy PDFs and their application forms. Those are data the head
  * office keeps current, and a copy here would outlive the posting.
@@ -125,9 +117,11 @@ export const localeUrl = (lang: Lang, path = "") =>
   `${siteOrigin}${localeRoute(lang, path)}`;
 
 /**
- * "1 model", not "1 models". Trivial until a category actually holds one —
- * Shielded Room does, and the navigation printed the plural on every page of
- * the site. Korean counts with 종 and needs no equivalent.
+ * "1 model", not "1 models". Nothing calls this any more: the category and
+ * family counts it was written for came off the site, because a line that
+ * says how many items a list holds has to be rewritten every time the
+ * catalogue grows. Kept for the next string that has to count something the
+ * reader supplies rather than something we publish.
  */
 export const plural = (n: number, one: string, many = `${one}s`) =>
   `${n} ${n === 1 ? one : many}`;

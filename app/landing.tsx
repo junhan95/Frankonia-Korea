@@ -41,13 +41,19 @@ const copy = {
     heroP: "1987년 이래 전 세계 80여 개국에 EMC 무향 챔버와 시험 시스템을 공급해 왔습니다. 컨설팅과 설계부터 제작·구축·검증·사후지원까지, 하나의 팀이 프로젝트 전 과정을 책임집니다.",
     heroB1: "솔루션 보기",
     heroB2: "견적·기술 상담",
-    stats: [["1987", "Frankonia 설립"], ["80+", "공급 국가"], ["35+", "챔버 라인업"], ["3", "핵심 솔루션 영역"]],
+    /* "35+ 챔버 라인업" used to sit third. It came out for the same reason the
+       category counts did: the number has to be rewritten every time the
+       catalogue grows, and HQ's August 2026 review asked for chamber figures
+       to come off the site — custom builds mean there are always more than the
+       printed number, and printing one makes the portfolio look smaller than
+       it is. 95% is `trP1`'s figure and does not move with the catalogue. */
+    stats: [["1987", "Frankonia 설립"], ["80+", "공급 국가"], ["95%", "자체 설계·생산"], ["3", "핵심 솔루션 영역"]],
     solK: "OUR SOLUTIONS",
-    solH: "챔버, 장비, 그리고 차폐",
-    solP: "시험실을 이루는 세 가지를 한 회사가 설계하고 만듭니다. 챔버와 그 안에 들어가는 계측 장비가 같은 엔지니어링 팀에서 나오고, 같은 차폐 기술이 EMC 실험실 밖 데이터센터까지 이어집니다.",
+    solH: "EMC 차폐, 그리고 그 안의 계측 장비",
+    solP: "하나의 그룹, 두 곳의 엔지니어링 팀입니다. 챔버와 차폐룸은 Frankonia Heideck이, 시험 시스템은 Frankonia Forchheim이 맡습니다. 그리고 같은 차폐 기술이 EMC 실험실 밖 데이터센터까지 이어집니다.",
     c1h: "챔버",
     c1sub: "Anechoic Chambers",
-    c1p: "차폐룸과 사전 인증용 컴팩트 챔버부터 3·5·10m 반무향·완전무향 계열, 부품·구동계 챔버, 잔향실까지 — 개별 제품의 목록이 아니라 하나의 시스템입니다.",
+    c1p: "차폐룸과 사전 인증용 컴팩트 챔버부터 3.0·5.0·10.0 m 반무향·완전무향 계열, 부품·구동계 챔버, 잔향실까지 — 개별 제품의 목록이 아니라 하나의 시스템입니다.",
     c1list: [
       "Frankosorb® 흡수체 — 35년 이상 무결함 가동",
       "용접·접착 없는 75mm 볼트 체결 — 개조·증설·이전 가능",
@@ -55,10 +61,10 @@ const copy = {
     ],
     c2h: "EMC 시험장비",
     c2sub: "EMC Test Systems",
-    c2p: "방출·내성 시험에 필요한 장비를 여섯 개 제품군으로 공급합니다 — 앰프, 안테나, 전계 센서, 프리앰프, 파워미터, 그리고 사진의 CIT-100처럼 시험 체인 전체를 한 케이스에 담은 완성 시스템.",
+    c2p: "방출·내성 시험에 필요한 장비를 공급합니다 — EMI 리시버, 전계 센서, RF 파워미터, 그리고 사진의 CIT-100처럼 시험 체인 전체를 한 케이스에 담은 완성 시스템.",
     c2list: [
-      "EMI 리시버 9 kHz~6 GHz — CISPR 16-1-1 풀컴플라이언트",
-      "안테나 9 kHz~40 GHz · RF 파워앰프 DC~18 GHz, 최대 12 kW",
+      "EMI 리시버 10 Hz~6 GHz — CISPR 16-1-1 풀컴플라이언트",
+      "전계 센서 10 kHz~26.5 GHz · RF 파워미터 DC~12.4 GHz",
       "IEC/EN 61000-4-6 · ISO 11452-4 · MIL-STD-461 CS114",
     ],
     c3sub: "전자파 보안·차폐",
@@ -70,29 +76,29 @@ const copy = {
     ],
     c3go: "CyberShield 자세히 보기",
     more: "자세히 보기",
-    chH: "부품 하나에서 차량 한 대까지, 챔버 32종",
-    chP: "어느 챔버가 필요한지는 두 값에서 정해집니다 — 규격이 요구하는 측정 거리, 그리고 피시험체가 들어가야 할 Quiet Zone의 크기. 1.0m 부품 챔버부터 ø6.0m Quiet Zone의 10m 차량 챔버까지, 산업군별과 챔버 형식별 양쪽으로 정리해 두었습니다.",
+    chH: "부품 하나에서 차량 한 대까지",
+    chP: "어느 챔버가 필요한지는 두 값에서 정해집니다 — 규격이 요구하는 측정 거리, 그리고 피시험체가 들어가야 할 Quiet Zone의 크기. 1.0 m 부품 챔버부터 ø6.0 m Quiet Zone의 10.0 m 차량 챔버까지, 산업군별과 챔버 형식별 양쪽으로 정리해 두었습니다.",
     chambers: [
-      "부품이 차량에 실리기까지의 경로를 그대로 따라갑니다. 1.0m 거리의 ACTC와 초소형 UCC, 3·5m의 AVTC, 다이나모미터를 내장한 10m SAC-10V — ECE R10 · CISPR 25 · ISO 11452, 최대 18m 차량용 중하중 시험 구역까지.",
-      "MIL-STD 461·DO-160 대응 3종. 차량과 대형 피시험체를 위한 MIL-STD Chamber, 상용·자동차 시험장 요구까지 겸하는 Advanced, 부품 단위의 컴팩트 MIL CHC — 30/80MHz~40GHz.",
-      "네 산업군 중 가장 넓은 17종. 차폐룸 한 칸에서 ø6.0m Quiet Zone의 10m 반무향 챔버까지 — 3·5·10m SAC, 자유공간 FAC, 사전 인증용 CHC. CISPR 16-1-4·IEC 61000-4-3 전 규격 적합.",
+      "부품이 차량에 실리기까지의 경로를 그대로 따라갑니다. 1.0 m 거리의 ACTC와 초소형 UCC, 3.0·5.0 m의 AVTC, 다이나모미터를 내장한 10.0 m SAC-10V — ECE R10 · CISPR 25 · ISO 11452, 최대 18.0 m 차량용 중하중 시험 구역까지.",
+      "MIL-STD 461·DO-160 대응 계열. 차량과 대형 피시험체를 위한 MIL-STD Chamber, 상용·자동차 시험장 요구까지 겸하는 Advanced, 부품 단위의 컴팩트 MIL CHC — 30/80MHz~40GHz.",
+      "네 산업군 중 가장 넓은 계열. 차폐룸 한 칸에서 ø6.0 m Quiet Zone의 10.0 m 반무향 챔버까지 — 3.0·5.0·10.0 m SAC, 자유공간 FAC, 사전 인증용 CHC. CISPR 16-1-4·IEC 61000-4-3 전 규격 적합.",
       "구동계 부품과 하이브리드·전기·연료전지 시스템 전용 시험장. 고정축 외부 부하기 1대의 EDTC-SA, e-axle용 2대의 EDTC-AX, 4사분면 이동식 부하기를 챔버 안에 들이는 EDTC-BB — 최대 2 × 250kW, CISPR 25·ISO 11452 완전 적합.",
-      "흡수체 없이 벽이 반사하고, 스터러가 전계를 통계적으로 균일하게 만듭니다. 증폭기 출력을 크게 올리지 않고도 높은 전계 강도를 얻습니다 — 부품용 S부터 대형 차량용 XXL, ISM·멀티미디어용 e1·e2까지 7종. IEC/EN 61000-4-21·ISO 11452-11, LUF 80MHz부터.",
+      "흡수체 없이 벽이 반사하고, 스터러가 전계를 통계적으로 균일하게 만듭니다. 증폭기 출력을 크게 올리지 않고도 높은 전계 강도를 얻습니다 — 부품용 S부터 대형 차량용 XXL, ISM·멀티미디어용 e1·e2까지. IEC/EN 61000-4-21·ISO 11452-11, LUF 80MHz부터.",
       "라인업 전체가 출발하는 지점. 2.0mm 아연도금 강판 PAN 모듈을 메시 개스킷 위로 75mm 간격 볼트 체결해 어떤 크기로도 구현합니다 — EN 50147-1 기준 10kHz 90dB, 100~400MHz 120dB. 같은 패널이 Frankosorb® 흡수체의 바탕이므로 나중에 무향실로 바꿀 수 있습니다.",
     ],
     eqH: "EMC 시험장비",
-    eqP: "방출 측정부터 전도·방사 내성, 자기장 시험까지 IEC 61000-4 · CISPR · ISO 11452 · MIL-STD-461 구성에 그대로 들어가는 계측 장비를 공급합니다. 아래 통합 시험 시스템은 그중 가장 짧은 길입니다 — 여러 장비를 랙에 쌓아 구성하는 대신, 한 대가 시험을 그대로 수행합니다.",
+    eqP: "방출 측정부터 전도·방사 내성, 자기장 시험까지 IEC 61000-4 · CISPR · ISO 11452 · MIL-STD-461 구성에 그대로 들어가는 계측 장비를 공급합니다. 아래는 그중 본사가 이번에 앞세운 제품군입니다. 통합 시험 시스템은 그 가운데 가장 짧은 길입니다 — 여러 장비를 랙에 쌓아 구성하는 대신, 한 대가 시험을 그대로 수행합니다.",
     eq: [
-      "10kHz~1GHz 고체소자 앰프 36종(최대 12kW)과 500MHz~40GHz 광대역 WBA 34종.",
+      "10kHz~1GHz 고체소자 앰프(최대 12kW)와 500MHz~40GHz 광대역 WBA.",
       "광대역 ALX, 스택 로그페리오딕 MAX, 혼 HAX, 로드 SAX와 루프 LAX — 9kHz~40GHz.",
       "광파이버로 읽어 내는 전계강도계. 10kHz~26.5GHz, 0.14~1500 V/m.",
       "방출 측정용 광대역 프리앰프. 9kHz~40GHz, 이득 28~35dB, 잡음지수 2dB부터.",
       "RF 파워미터와 릴레이 스위칭 유닛. DC~12.4GHz, 18/40GHz까지 확장.",
-      "전도 RF 내성 시험 체인을 19″ 케이스 하나에 담은 CIT 시리즈. 4kHz~1.2GHz.",
+      "전도 RF 내성 시험 체인을 19″ 케이스 하나에 담은 CIT 시리즈, 방사 내성용 ECU-6, PSG-300, MTS-800.",
     ],
     stK: "MODULAR & PRE-FABRICATED SHIELDING STANDARDS",
     stH: "1987년부터 지켜 온 하나의 공법 — 용접도, 접착도 하지 않습니다",
-    stP: "이 사이트의 모든 챔버와 차폐룸이 같은 사전 제작 모듈 표준 위에 지어집니다. 벽체와 도어, 관통부, 환기 개구부를 하나의 차폐 외피로 함께 설계해 접합부에서 성능이 새지 않게 하고, 모든 이음을 볼트로 체결하므로 나중에 바꾸고 늘리고 옮길 수 있습니다.",
+    stP: "Frankonia의 모든 챔버와 차폐룸이 같은 사전 제작 모듈 표준 위에 지어집니다. 벽체와 도어, 관통부, 환기 개구부를 하나의 차폐 외피로 함께 설계해 접합부에서 성능이 새지 않게 하고, 모든 이음을 볼트로 체결하므로 나중에 바꾸고 늘리고 옮길 수 있습니다.",
     st: [
       "2.0 mm 아연도금 강판 PAN 모듈을 고전도 메시 개스킷 위로 75 mm 간격, 규정 토크로 안쪽에서 체결합니다. 모듈이 일반 건물 출입문을 통과하므로 어떤 크기로도 구현하고, 기존 벽에 바짝 붙여 세울 수 있습니다.",
       "차폐가 스스로를 지탱하므로 건물에 추가 하중을 주지 않습니다. 현지 내진 조건이 요구되면 정적 철골 구조를 더하고, 안쪽 면이 평평하도록 역방향으로 설치할 수도 있습니다.",
@@ -134,8 +140,8 @@ const copy = {
     trP2: "요구사항 정의와 사전 검토부터 엔지니어링, 생산, 설치, 인수 시험, 교정과 유지보수까지 한 팀이 담당합니다. 확인할 일이 생겼을 때 연락할 곳도 한 곳입니다.",
     trP3: "Frankosorb® 흡수체는 쾰른 대학, TU Braunschweig EMC 연구소와 함께 개발한 비연소성 박막 기술입니다. 1991년 1세대 이후 지금까지 무결함으로 가동되고 있습니다.",
     trGo: "회사 소개",
-    trShotAlt: "독일 하이데크의 Frankonia 본사와 생산 시설 항공 전경. 붉은 테두리의 흰 건물 여러 동과 지붕을 덮은 태양광 패널, 뒤편으로 마을과 들판이 보인다",
-    trShotCap: "독일 하이데크 본사. 1987년 이곳에서 시작해, 지금도 설계와 생산이 같은 부지에 있습니다.",
+    trShotAlt: "독일 하이데크의 Frankonia 본사 항공 전경. 붉은 테두리의 흰 건물 여러 동과 지붕을 덮은 태양광 패널, 뒤편으로 마을과 들판이 보인다",
+    trShotCap: "독일 하이데크 본사. 1987년 이곳에서 시작했고, 설계와 프로젝트 관리가 이곳에 있습니다.",
     badges: [["95%", "부품·제품 자체 설계·생산"], ["5", "글로벌 거점"], ["1991", "Frankosorb® 1세대 이후 무결함"], ["100%", "턴키 — 설계에서 인수 시험까지"]],
     /* The band used to read "견적 및 기술 상담 — 프로젝트 요구사항을 알려주시면
        최적의 솔루션을 제안해 드립니다", which is a sentence that could close any
@@ -152,7 +158,12 @@ const copy = {
     ctB2: "이메일로 바로 문의",
     ftDesc: "EMC 무향 챔버 · 시험 시스템 · 차폐 솔루션 — 1987년부터 전 세계 80여 개국",
     // 본사 주소. frankonia-solutions.com 연락처와 CyberShield 임프린트가 일치하는 값.
-    ftAddr: "Frankonia Germany EMC Solutions GmbH · Industriestraße 16, 91180 Heideck, Germany · T +49 9177 98-500",
+    // Three lines rather than one ` · `-joined string: as a single run it set
+    // the width of the whole first footer column, which is what HQ flagged in
+    // the August review ("address below the company name to have this column a
+    // bit smaller"). Stacked, it sits under the wordmark in the same 340px the
+    // description already holds to.
+    ftAddr: ["Frankonia Germany EMC Solutions GmbH", "Industriestraße 16, 91180 Heideck, Germany", "T +49 9177 98-500"],
     ftCompany: "회사소개",
     ftSol: "솔루션",
     ftL1: "챔버",
@@ -182,10 +193,10 @@ const copy = {
     heroP: "Since 1987 we have supplied EMC anechoic chambers and test systems to more than 80 countries. One team carries the project from consulting and design through manufacturing, installation, verification and after-sales service.",
     heroB1: "Explore Solutions",
     heroB2: "Request a Quote",
-    stats: [["1987", "Frankonia founded"], ["80+", "Countries supplied"], ["35+", "Chamber models"], ["3", "Core solution areas"]],
+    stats: [["1987", "Frankonia founded"], ["80+", "Countries supplied"], ["95%", "Designed and built in-house"], ["3", "Core solution areas"]],
     solK: "OUR SOLUTIONS",
-    solH: "The room, the instruments, and the shielding",
-    solP: "One company designs and builds all three. The chamber and the measurement equipment that goes inside it come from the same engineering team, and the same shielding technology carries beyond the EMC laboratory to the data centre.",
+    solH: "The EMC shielding and its instruments",
+    solP: "One group, two engineering teams: Frankonia Heideck answers for the chambers and shielded rooms, Frankonia Forchheim for the test systems. The same shielding technology carries beyond the EMC laboratory to the data centre.",
     c1h: "Chambers",
     c1sub: "Anechoic Chambers",
     c1p: "From shielded rooms and compact pre-compliance chambers to the 3, 5 and 10 metre semi- and fully-anechoic families, component and e-drive chambers, and reverberation chambers — one system rather than a catalogue of separate products.",
@@ -196,10 +207,10 @@ const copy = {
     ],
     c2h: "Test Systems",
     c2sub: "EMC Test Systems",
-    c2p: "Six product families covering emission and immunity testing — amplifiers, antennas, field sensors, pre-amplifiers, power meters, and complete systems such as the CIT-100 pictured here, which carries a whole test chain in one case.",
+    c2p: "Instruments for emission and immunity testing — EMI receivers, field sensors, RF power meters, and complete systems such as the CIT-100 pictured here, which carries a whole test chain in one case.",
     c2list: [
-      "EMI receivers 9 kHz–6 GHz — fully CISPR 16-1-1 compliant",
-      "Antennas 9 kHz–40 GHz · RF amplifiers DC–18 GHz, up to 12 kW",
+      "EMI receivers 10 Hz–6 GHz — fully CISPR 16-1-1 compliant",
+      "Field sensors 10 kHz–26.5 GHz · RF power meters DC–12.4 GHz",
       "IEC/EN 61000-4-6 · ISO 11452-4 · MIL-STD-461 CS114",
     ],
     c3sub: "Electromagnetic Security",
@@ -211,29 +222,29 @@ const copy = {
     ],
     c3go: "Explore CyberShield",
     more: "Learn more",
-    chH: "Thirty-two chambers, from a single component to a whole vehicle",
-    chP: "Which chamber you need comes down to two figures — the measurement distance the standard asks for, and the quiet zone the EUT has to sit in. From 1.0 m component chambers to a 10 m vehicle chamber with a ø6.0 m quiet zone, indexed by industry and by chamber form alike.",
+    chH: "From a single component to a whole vehicle",
+    chP: "Which chamber you need comes down to two figures — the measurement distance the standard asks for, and the quiet zone the EUT has to sit in. From 1.0 m component chambers to a 10.0 m vehicle chamber with a ø6.0 m quiet zone, indexed by industry and by chamber form alike.",
     chambers: [
-      "Follows a part from the bench into the vehicle: the ACTC at 1.0 m, the ultra-compact UCC, the AVTC at 3 and 5 m, and the SAC-10V with an integrated dynamometer at 10 m — ECE R10, CISPR 25 and ISO 11452, up to a heavy-load zone for 18 m vehicles.",
-      "Three chambers to MIL-STD 461 and DO-160 — the MIL-STD Chamber for vehicles and large EUTs, the Advanced version that also meets commercial and automotive test site requirements, and the compact MIL CHC at component level. 30/80 MHz to 40 GHz.",
-      "The widest of the four at seventeen chambers, from a single shielded room to a 10 m semi-anechoic with a ø6.0 m quiet zone — SAC at 3, 5 and 10 m, free-space FAC, pre-compliance CHC. Fully compliant to CISPR 16-1-4 and IEC/EN 61000-4-3.",
+      "Follows a part from the bench into the vehicle: the ACTC at 1.0 m, the ultra-compact UCC, the AVTC at 3 and 5.0 m, and the SAC-10V with an integrated dynamometer at 10.0 m — ECE R10, CISPR 25 and ISO 11452, up to a heavy-load zone for 18.0 m vehicles.",
+      "Chambers to MIL-STD 461 and DO-160 — the MIL-STD Chamber for vehicles and large EUTs, the Advanced version that also meets commercial and automotive test site requirements, and the compact MIL CHC at component level. 30/80 MHz to 40 GHz.",
+      "The widest of the four, from a single shielded room to a 10.0 m semi-anechoic with a ø6.0 m quiet zone — SAC at 3, 5 and 10.0 m, free-space FAC, pre-compliance CHC. Fully compliant to CISPR 16-1-4 and IEC/EN 61000-4-3.",
       "Dedicated test sites for drivetrain components and hybrid, electric and fuel-cell systems. EDTC-SA for one external load machine on a fixed shaft, EDTC-AX for two in an e-axle setup, EDTC-BB bringing a four-quadrant mobile load machine inside — up to 2 × 250 kW, fully compliant to CISPR 25 and ISO 11452.",
-      "No absorbers: the walls reflect and a stirrer keeps changing the boundary conditions until the field is statistically uniform — high field strength without a large amplifier, and no argument about antenna alignment. Seven chambers, S to XXL and the e1 and e2, to IEC/EN 61000-4-21 and ISO 11452-11, from 80 MHz LUF.",
+      "No absorbers: the walls reflect and a stirrer keeps changing the boundary conditions until the field is statistically uniform — high field strength without a large amplifier, and no argument about antenna alignment. S to XXL and the e1 and e2, to IEC/EN 61000-4-21 and ISO 11452-11, from 80 MHz LUF.",
       "Where the whole line-up starts. 2.0 mm galvanized steel PAN modules bolted every 75 mm onto a mesh gasket, at any size the room has to be — 90 dB at 10 kHz and 120 dB at 100–400 MHz to EN 50147-1. The same panel carries Frankosorb® absorbers, so a shielded room can become an anechoic chamber later.",
     ],
     eqH: "EMC Test Systems",
-    eqP: "Instruments for emission measurement and for conducted, radiated and magnetic field immunity, built into IEC 61000-4, CISPR, ISO 11452 and MIL-STD-461 setups. The integrated systems below are the shortest way in — one instrument that runs the test itself, rather than a rack assembled from several.",
+    eqP: "Instruments for emission measurement and for conducted, radiated and magnetic field immunity, built into IEC 61000-4, CISPR, ISO 11452 and MIL-STD-461 setups. The families below are the ones the head office is leading with; the integrated systems among them are the shortest way in — one instrument that runs the test itself, rather than a rack assembled from several.",
     eq: [
-      "Thirty-six solid-state amplifiers from 10 kHz to 1 GHz, up to 12 kW, and thirty-four WBA wideband models to 40 GHz.",
+      "Solid-state amplifiers from 10 kHz to 1 GHz, up to 12 kW, and the WBA wideband models from 500 MHz to 40 GHz.",
       "The broadband ALX, the stacked log-periodic MAX, the HAX horns, the SAX rod and the LAX loop — 9 kHz to 40 GHz.",
       "Field strength read back over a fibre optic link. 10 kHz to 26.5 GHz, 0.14 to 1500 V/m.",
       "Broadband pre-amplifiers for emission measurement. 9 kHz to 40 GHz, 28 to 35 dB gain, noise figure from 2 dB.",
       "RF power meters and the relay switching unit. DC to 12.4 GHz, extendable to 18 or 40 GHz.",
-      "The CIT series — a whole conducted RF immunity chain in one 19″ case, 4 kHz to 1.2 GHz.",
+      "The CIT series — a whole conducted RF immunity chain in one 19″ case — with the ECU-6 for radiated immunity, the PSG-300 and the MTS-800.",
     ],
     stK: "MODULAR & PRE-FABRICATED SHIELDING STANDARDS",
     stH: "One standard since 1987 — nothing welded, nothing glued",
-    stP: "Every chamber and shielded room on this site is built on the same prefabricated modular standard. Walls, doors, penetrations and ventilation openings are engineered as one envelope so nothing is lost at the joints — and because every joint is bolted, the room can be modified, extended or moved later.",
+    stP: "Every Frankonia chamber and shielded room is built on the same prefabricated modular standard. Walls, doors, penetration and ventilation openings are engineered as one envelope so nothing is lost at the joints — and because every joint is bolted, the room can be modified, extended or moved later.",
     st: [
       "2.0 mm galvanized steel PAN modules, bolted from the inside every 75 mm to a defined torque onto a high-conductivity mesh gasket. The modules pass through a standard building door, so the shielding can be any size and can stand close to an existing wall.",
       "The shielding carries itself, so the parent building takes no additional structural load. A static steel structure is added where local seismic conditions ask for one, and reverse installation leaves a flat surface inside.",
@@ -275,8 +286,8 @@ const copy = {
     trP2: "One team carries the project from requirements and pre-study through engineering, production, installation, acceptance testing, calibration and maintenance. When there is something to answer for, there is one place to call.",
     trP3: "Frankosorb® is a non-combustible thin-film absorber developed with the University of Cologne and the EMC institute at TU Braunschweig. Since the first generation in 1991 it has run without a defect.",
     trGo: "About Frankonia",
-    trShotAlt: "Aerial view of the Frankonia head office and production site in Heideck, Germany — white buildings with red trim, solar panels across the roofs, the village and open fields behind",
-    trShotCap: "The head office in Heideck, Germany. The company started here in 1987, and design and production still share the site.",
+    trShotAlt: "Aerial view of the Frankonia head office in Heideck, Germany — white buildings with red trim, solar panels across the roofs, the village and open fields behind",
+    trShotCap: "The head office in Heideck, Germany. The company started here in 1987, and design and project management are still on the site.",
     badges: [["95%", "Components and products built in-house"], ["5", "Sites worldwide"], ["1991", "First Frankosorb® generation — no defect since"], ["100%", "Turnkey — design through acceptance testing"]],
     ctK: "CONTACT",
     ctH: "We start from what the test has to prove",
@@ -284,7 +295,7 @@ const copy = {
     ctB1: "Contact us",
     ctB2: "Email us directly",
     ftDesc: "EMC anechoic chambers, test systems and shielding solutions — more than 80 countries since 1987",
-    ftAddr: "Frankonia Germany EMC Solutions GmbH · Industriestraße 16, 91180 Heideck, Germany · T +49 9177 98-500",
+    ftAddr: ["Frankonia Germany EMC Solutions GmbH", "Industriestraße 16, 91180 Heideck, Germany", "T +49 9177 98-500"],
     ftCompany: "Company",
     ftSol: "Solutions",
     ftL1: "Chambers",
@@ -401,25 +412,27 @@ const chamberCards = [
    a probe — those are fitted whole. The rack is a photograph and fills its
    band.
 
-   `show` is which of the six the row prints today, and the answer is
-   Integrated Systems alone — the same cut the header bar makes, and for the
-   same reason: that is the one family whose page carries a body, and a card is
-   a promise about what is on the other side of it. The other five stay
-   declared, with their picture, their model line and their paragraph in both
-   locales, so putting them back when the copy lands is one word per card. They
-   are not deleted and not stranded: `/test-systems/` still lists all six as
-   rows, and every family still has its page. See the note on `testItems` in
-   site-header.tsx.
+   `show` is which of the six the row prints, and the answer is the families
+   that hold the instruments the head office's August 2026 mail asks to have
+   promoted: Field Strength Meters (EFS), Meters & Switching (PMS, RSU) and
+   Integrated Systems (CIT, ECU-6, PSG-300, MTS-800). The amplifiers, the
+   antennas and the pre-amplifiers are the parts a laboratory adds around
+   those, and the mail does not ask for them. They stay declared, with their
+   picture, their model line and their paragraph in both locales, so putting
+   one back is one word per card. They are not deleted and not stranded: every
+   family still has its page and its sitemap entry.
 
-   `eqP`, the band's lead, was rewritten with the same cut. It counted the row
-   — "Six product families, ninety-nine models" — and a lead that counts six
-   over one card is a caption for a row that is not there. It now states the
-   range the branch covers, which is what the standards line was always doing,
-   and hands the reader to the card that is there. If the count goes back with
-   the cards, count it again first: ninety-nine was already out of date when it
-   came out — `testModels` now holds 181 across these six families (200 with
-   emission and coupling, which the row has never carried), the amplifier
-   matrix alone having grown to 139. */
+   The mail's fourth family, Emission Measuring Systems, has never had a card
+   in this row — the row predates that page. It is on `/test-systems/` and in
+   the header dropdown, which is where the other three lead anyway. See the
+   note on `shownTestProducts` in test-system-sections.ts.
+
+   `eqP`, the band's lead, names no count. It used to — "Six product families,
+   ninety-nine models" — and that figure was out of date the month it was
+   written; `testModels` holds far more now, and a landing band is the last
+   place a number should have to be kept in step with a data file. It states
+   the range the branch covers instead, which is what the standards line was
+   always doing. */
 const equipCards = [
   { name: "RF Power Amplifiers", models: "FLL · VLL · VLC · FLH · WBA", path: testProductPath("amplifier"),
     show: false,
@@ -430,19 +443,20 @@ const equipCards = [
   { name: "Antennas", models: "ALX · MAX · HAX · SAX-10 · LAX-10", path: testProductPath("antenna"),
     show: false,
     shot: { src: "/test-systems/images/antenna-hax-18.webp", w: 1200, h: 900, kind: "plate" } },
-  { name: "Field Strength Meters", models: "EFS-10 · 100 · 300 · 500 · Laser", path: testProductPath("efs"),
-    show: false,
+  { name: "Field Strength Meters", models: "EFS-10 · 100 · 300 · 500 · 18 · Laser", path: testProductPath("efs"),
+    show: true,
     shot: { src: "/test-systems/images/efs-probe.webp", w: 360, h: 595, kind: "plate" } },
   { name: "Pre-Amplifiers", models: "FPA-2 · 6A · 6B · 18 · 26 · 40", path: testProductPath("preamp"),
     show: false,
     shot: { src: "/test-systems/images/preamp-fpa.webp", w: 1200, h: 920, kind: "plate" } },
   { name: "Meters & Switching", models: "PMS 1084 · 1084 B · RSU", path: testProductPath("meter"),
-    show: false,
+    show: true,
     shot: { src: "/test-systems/images/meter-rsu.webp", w: 1600, h: 669, kind: "plate" } },
-  /* The CIT-100's own plate, now that the family is the CIT series alone: the
-     MTS-800 stood here while this card named four products, and a card whose
-     caption reads CIT should not be showing a magnetic field system. */
-  { name: "Integrated Systems", models: "CIT-100 · CIT-1000", path: testProductPath("system"),
+  /* The CIT-100's own plate. The MTS-800 stood here once and went back to the
+     magnetic field page when this family was cut to the CIT series; the family
+     is four products again, and the CIT is still the one the caption leads
+     with, so the plate stays where it is. */
+  { name: "Integrated Systems", models: "CIT-100 · CIT-1000 · ECU-6 · PSG-300 · MTS-800", path: testProductPath("system"),
     show: true,
     shot: { src: "/test-systems/images/system-cit-100.webp", w: 1600, h: 609, kind: "plate" } },
 ] as const;

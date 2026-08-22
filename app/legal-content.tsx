@@ -20,7 +20,7 @@ import type { Lang } from "./site-config";
    has none of those, and saying otherwise would be a false statement about
    data processing rather than a stale sentence. So this page states what this
    site actually does, measured rather than assumed: no cookies, no storage,
-   no request to any other host, and a MyChamber enquiry form that composes
+   no request to any other host, and a My Chamber enquiry form that composes
    mail in the reader's own client and posts nothing anywhere. The parts that
    belong to the companies rather than to the site — who the controller is,
    who the data protection officer is, what rights a data subject has — follow
@@ -70,7 +70,7 @@ const copy = {
       ],
       contactHead: "4. Getting in touch",
       contact: [
-        "There is no form on this site that sends anything to a server. The email addresses are ordinary mail links, and the enquiry form on the MyChamber page fills in a message in your own mail program: nothing leaves your device through this website.",
+        "There is no form on this site that sends anything to a server. The email addresses are ordinary mail links, and the enquiry form on the My Chamber page fills in a message in your own mail program: nothing leaves your device through this website.",
         "Your details reach us only when you send that mail yourself. We then use them to answer you and, where your enquiry leads to one, to prepare and perform a contract — Art. 6(1)(b) and (f) GDPR. We keep the correspondence for as long as answering it and the applicable retention rules require.",
       ],
       linksHead: "5. Links to other sites",
@@ -129,7 +129,7 @@ const copy = {
       ],
       contactHead: "4. 문의",
       contact: [
-        "이 사이트에는 서버로 무언가를 전송하는 폼이 없습니다. 이메일 주소는 일반적인 메일 링크이고, MyChamber 페이지의 문의 양식은 방문자의 메일 프로그램에 내용을 채워 넣습니다 — 이 웹사이트를 통해 기기 밖으로 나가는 것은 없습니다.",
+        "이 사이트에는 서버로 무언가를 전송하는 폼이 없습니다. 이메일 주소는 일반적인 메일 링크이고, My Chamber 페이지의 문의 양식은 방문자의 메일 프로그램에 내용을 채워 넣습니다 — 이 웹사이트를 통해 기기 밖으로 나가는 것은 없습니다.",
         "보내주신 정보는 방문자가 그 메일을 직접 보냈을 때에만 저희에게 도달합니다. 저희는 이를 답변을 드리기 위해, 그리고 문의가 계약으로 이어지는 경우 계약의 준비와 이행을 위해 사용합니다 — GDPR 제6조 제1항 (b)호 및 (f)호. 왕래한 문서는 답변에 필요한 기간과 관련 보존 규정이 요구하는 기간 동안 보관합니다.",
       ],
       linksHead: "5. 외부 사이트 링크",

@@ -8,7 +8,6 @@ import {
   chamberTopics,
   chamberTypes,
   chambersPath,
-  downloadsPath,
   industryPath,
   topicMeta,
   topicPath,
@@ -16,6 +15,7 @@ import {
   typePath,
 } from "./chamber-sections";
 import { companySections, sectionMeta, sectionPath } from "./company-sections";
+import { downloadsPath } from "./downloads-sections";
 import { contactPath } from "./contact-sections";
 import { industryLabel } from "./industries";
 import LangSwitch from "./lang-switch";
@@ -23,6 +23,7 @@ import { mychamberMeta, mychamberPath } from "./mychamber-sections";
 import NavDrawer from "./nav-drawer";
 import SiteLink from "./site-link";
 import {
+  shownTestProducts,
   testProductMeta,
   testProductPath,
   testSystemsPath,
@@ -96,37 +97,34 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     { label: t.navSubs.contact.catalog, href: localeRoute(lang, downloadsPath) },
   ];
 
-  // Test Systems offers one entry: Integrated Systems.
+  // Test Systems offers the four product families the head office's August
+  // 2026 mail asks to have promoted, and nothing else.
   //
   // It used to be the chamber branch's mega panel in miniature — a By Test
   // column of four and a By Product column of eight, with the catalogues on a
-  // utility row under them. Fourteen links, and the branch behind them is the
-  // one whose pages are still a skeleton: a reader following "Pre-Amplifiers"
-  // out of the bar arrives at a route, a breadcrumb and a model list with no
-  // body under it. A menu that wide is a promise about what is on the other
-  // side of it, and this branch cannot keep it yet.
+  // utility row under them. Fourteen links, and a menu that wide is a promise
+  // about what is on the other side of it. The bar makes the same cut the
+  // index at `/test-systems/` makes, for the same reason and off the same
+  // list: see the note on `shownTestProducts` in test-system-sections.
   //
-  // So the panel names the one product family that is finished and nothing
-  // else. Nothing is deleted and nothing is stranded: every category and every
-  // product family is still a page, and the overview at `/test-systems/` —
-  // which is what the branch label in the bar leads to — lists all of them as
-  // rows. This is the bar declining to point at them, not the site losing
-  // them. Put the two groups back here when the copy lands; `NavSection` still
-  // takes `groups` and `utils`, and the chamber branch is using both.
-  const testItems: NavLink[] = [
-    {
-      label: testProductMeta[lang].system.label,
-      href: localeRoute(lang, testProductPath("system")),
-    },
-  ];
+  // Nothing is deleted and nothing is stranded — every category and every
+  // product family is still a page and still in the sitemap. This is the bar
+  // declining to point at them. Put the two groups back here when the range
+  // goes back on show; `NavSection` still takes `groups` and `utils`, and the
+  // chamber branch is using both.
+  // No `note`: the single-column panel prints labels alone — see `NavSection`.
+  const testItems: NavLink[] = shownTestProducts.map((p) => ({
+    label: testProductMeta[lang][p].label,
+    href: localeRoute(lang, testProductPath(p)),
+  }));
 
   const sections: NavSection[] = [
     // The parent leads to the first child: Company has no overview page of
     // its own, and a dead parent link is worse than a predictable one.
     { label: t.nav.company, href: company[0].href, items: company },
     { label: t.nav.chamber, href: localeRoute(lang, chambersPath), groups: chamberGroups, utils: chamberUtils },
-    // `items`, not `groups`: one link does not want a titled column, and a
-    // mega panel sized for one would be a 273px sheet of ink around it.
+    // `items`, not `groups`: four links do not want a titled column, and a
+    // mega panel sized for four would be a sheet of ink around them.
     { label: t.nav.equip, href: localeRoute(lang, testSystemsPath), items: testItems },
     // Internal page: the product site cannot be framed, so the CyberShield
     // content is rendered inside this chrome instead. See cybershield-content.
@@ -148,8 +146,8 @@ export default function SiteHeader({ lang, t }: { lang: Lang; t: HeaderCopy }) {
     // The one item in the bar that is marked. It is the only entry that does
     // something rather than going somewhere — five questions and a reader who
     // did not know which of thirty-two chambers to ask about has a model name
-    // and a quotation. Career held this slot and has gone back into the
-    // Company dropdown it belongs to.
+    // and a quotation. Career held this slot once; it is off the site
+    // altogether now — see company-sections.ts.
     {
       label: mychamberMeta[lang].label,
       href: localeRoute(lang, mychamberPath),

@@ -9,12 +9,12 @@ import { localeRoute, type Lang } from "./site-config";
 
 /* The head band. MyCart stood without a photograph until now, on the argument
    that the page's content is the reader's own list; in the bar, though, it sits
-   beside MyChamber and CyberShield, and it was the one entry there whose head
+   beside My Chamber and CyberShield, and it was the one entry there whose head
    was a flat ink band — the exception read as an omission rather than as an
    argument.
    The SAC-5 Plus panorama from Heideck: the third of the head office's three
    360° frames and the only one not already heading a band — the chambers index
-   opens on SAC-10 Hybrid and MyChamber on FAC-3, so MyCart reads as their
+   opens on SAC-10 Hybrid and My Chamber on FAC-3, so My Enquiry reads as their
    sibling without repeating either. The same 4:1 crop that survives a band this
    shallow, and its two antenna masts stand at the edges rather than the middle,
    which keeps the right half — the half the scrim clears — occupied. Framed a

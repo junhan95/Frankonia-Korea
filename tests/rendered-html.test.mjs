@@ -5,6 +5,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { stagingEnv } from "../scripts/staging-env.mjs";
 import { galleryFiles } from "../app/chamber-gallery.ts";
+import { datasheetFiles } from "../app/test-system-datasheets.ts";
 
 /**
  * Assertions against the real static export, because every regression this
@@ -99,7 +100,6 @@ test("the export contains the pages the site map defines", () => {
       "/chambers/type/sac/",
       "/chambers/type/shielded-room/",
       "/company/about/",
-      "/company/career/",
       "/company/events/",
       "/company/publications/",
       "/contact/",
@@ -150,7 +150,6 @@ test("the export contains the pages the site map defines", () => {
       "/ko/chambers/type/sac/",
       "/ko/chambers/type/shielded-room/",
       "/ko/company/about/",
-      "/ko/company/career/",
       "/ko/company/events/",
       "/ko/company/publications/",
       "/ko/contact/",
@@ -255,35 +254,36 @@ test("CyberShield summarises, and hands the reader to the product site", () => {
   }
 });
 
-test("MyChamber holds the marked slot in the bar, and Career keeps a home", () => {
-  // Career came out of the top-level menu to make room for MyChamber. The
-  // failure mode of that swap is not a missing menu item — it is a page nobody
-  // can reach any more, which no other test here would notice.
+test("My Chamber holds the marked slot in the bar, and Career is gone", () => {
+  // Career came off the site in the August 2026 review. The failure mode is not
+  // a menu item that reappears — it is a link left pointing at a route that no
+  // longer exports, which no other test here would notice.
   for (const { route, html } of pages) {
     const ko = localeOf(route) === "ko";
     const mychamber = ko ? `${BASE}/ko/mychamber/` : `${BASE}/mychamber/`;
-    const career = ko ? `${BASE}/ko/company/career/` : `${BASE}/company/career/`;
 
     assert.ok(
       html.includes('class="mi mi--hl"'),
       `${route}: nothing in the navigation bar is marked`,
     );
     assert.ok(
-      html.includes(`<a href="${mychamber}">MyChamber`),
-      `${route}: the bar does not offer MyChamber`,
+      html.includes(`<a href="${mychamber}">My Chamber`),
+      `${route}: the bar does not offer My Chamber`,
     );
-    assert.ok(
-      html.includes(`href="${career}"`),
-      `${route}: the Career page is not reachable from the chrome`,
-    );
-    assert.ok(
-      !html.includes(`<a href="${career}">Career<`) || html.includes('class="dd-panel"'),
-      `${route}: Career is back in the bar rather than in the Company panel`,
+    assert.doesNotMatch(
+      html,
+      /href="[^"]*\/company\/career\//,
+      `${route}: something still links to the removed Career page`,
     );
   }
+
+  assert.ok(
+    !pages.some((page) => page.route.includes("/company/career/")),
+    "the Career page is still in the export",
+  );
 });
 
-test("MyCart is in the bar of every page, and its page ships the empty state", () => {
+test("My Enquiry is in the bar of every page, and its page ships the empty state", () => {
   // The basket lives in the reader's own browser, so the export can only ever
   // contain an empty one — which is the point of asserting it. What the export
   // *must* carry is the way in: the icon is rendered by a client component, and
@@ -291,16 +291,16 @@ test("MyCart is in the bar of every page, and its page ships the empty state", (
   // 130 pages with a hole in the bar until the bundle lands.
   for (const { route, html } of pages) {
     const cart = localeOf(route) === "ko" ? `${BASE}/ko/mycart/` : `${BASE}/mycart/`;
-    assert.ok(html.includes('class="cart-btn"'), `${route}: the bar carries no MyCart control`);
-    assert.ok(html.includes(`href="${cart}"`), `${route}: the MyCart control leads nowhere`);
+    assert.ok(html.includes('class="cart-btn"'), `${route}: the bar carries no My Enquiry control`);
+    assert.ok(html.includes(`href="${cart}"`), `${route}: the My Enquiry control leads nowhere`);
     // Nothing in it, and therefore no count on it.
     assert.doesNotMatch(html, /class="cart-count"/, `${route}: the exported bar shows a basket count`);
   }
 
   // The page itself: the empty state, not a blank frame waiting for script.
   const empty = {
-    "/mycart/": "MyCart is empty",
-    "/ko/mycart/": "MyCart가 비어 있습니다",
+    "/mycart/": "My Enquiry is empty",
+    "/ko/mycart/": "My Enquiry가 비어 있습니다",
   };
   for (const [route, heading] of Object.entries(empty)) {
     const page = pages.find((p) => p.route === route);
@@ -326,7 +326,7 @@ test("a model row offers the basket as well as the enquiry", () => {
   for (const route of ["/chambers/type/sac/", "/ko/chambers/type/sac/", "/test-systems/product/system/"]) {
     const { html } = pages.find((p) => p.route === route);
     const ko = localeOf(route) === "ko";
-    const label = ko ? "MyCart에 담기" : "Add to MyCart";
+    const label = ko ? "My Enquiry에 담기" : "Add to My Enquiry";
     const found = [...html.matchAll(new RegExp(label, "g"))].length;
     const panels = [...html.matchAll(/aria-controls="panel-/g)].length;
     assert.equal(found, panels, `${route}: ${found} add buttons for ${panels} model panels`);
@@ -433,23 +433,57 @@ test("a model row opens onto its figures, and still leads to the model page", ()
   );
 
   // The same list on the other branch: the integrated systems family is the
-  // CIT series and nothing else, and both of them open. The six instruments
-  // that used to sit here — the ECUs, the PSGs, the MTS-800 and the GTEM
-  // cell — came off the page deliberately; this is what stops one of them
-  // drifting back in unnoticed with its copy half-deleted.
+  // four products the head office asked to have promoted — the CIT series,
+  // the ECU-6, the PSG pair and the MTS-800 — and every one of them opens.
+  // The count is here so that a row cannot arrive without its figures, or
+  // leave without the copy that names it going too.
   const systems = pages.find((p) => p.route === "/test-systems/product/system/");
   assert.equal(
     [...systems.html.matchAll(/aria-controls="panel-/g)].length,
-    2,
+    6,
     "/test-systems/product/system/: the panel count changed",
   );
-  for (const name of ["CIT-100", "CIT-1000"]) {
+  for (const name of ["CIT-100", "CIT-1000", "ECU-6", "PSG-300", "PSG-300A", "MTS-800"]) {
     assert.ok(systems.html.includes(`<b>${name}</b>`), `/test-systems/product/system/: ${name} lost its row`);
   }
-  for (const gone of ["ECU-3", "ECU-6", "PSG-300", "MTS-800", "GTEM"]) {
+  // The two that stayed off. Neither is in the head office's promotion list and
+  // neither has a 2026 datasheet, so the only figures the page could print for
+  // them are ones the ECU-6.2 sheet has already overtaken — see
+  // docs/source/test-systems-source.md §6.4. This is what stops one of them
+  // drifting back in unnoticed with its copy half-deleted.
+  for (const gone of ["ECU-3", "GTEM"]) {
     assert.ok(
       !systems.html.includes(gone),
       `/test-systems/product/system/: ${gone} is back on the page`,
+    );
+  }
+
+  // The other three families on show, and the models held back inside them.
+  // `hiddenTestModels` takes a name off the row list; the specification tables
+  // on the same page are trimmed by hand, so this checks the rendered page
+  // rather than the constant — a table left behind naming a held-back
+  // instrument is exactly the half-done edit worth failing on.
+  const shownModels = {
+    "/test-systems/product/emission/": ["ERX-6"],
+    "/test-systems/product/efs/": ["EFS-10", "EFS-100", "EFS-300", "EFS-500", "EFS-Laser", "EFS-18"],
+    "/test-systems/product/meter/": ["PMS 1084", "PMS 1084 B", "RSU"],
+  };
+  for (const [route, names] of Object.entries(shownModels)) {
+    const page = pages.find((p) => p.route === route);
+    assert.equal(
+      [...page.html.matchAll(/aria-controls="panel-/g)].length,
+      names.length,
+      `${route}: the panel count changed`,
+    );
+    for (const name of names) {
+      assert.ok(page.html.includes(`<b>${name}</b>`), `${route}: ${name} lost its row`);
+    }
+  }
+  const emission = pages.find((p) => p.route === "/test-systems/product/emission/");
+  for (const gone of ["ERC-6", "C2-16", "C4-32", "LISN-KFZ", "LISN-MIL", "NFS-100", "LVVL", "ACF-01B"]) {
+    assert.ok(
+      !emission.html.includes(gone),
+      `/test-systems/product/emission/: ${gone} is back on the page`,
     );
   }
   // The amplifier page is the counter-example the count above turns on.
@@ -472,6 +506,78 @@ test("every gallery plate the panels name is actually shipped", async () => {
       await exists(path.join(OUT, src.replace(/^\//, ""))),
       `${src} is in the gallery table but not in the export`,
     );
+  }
+});
+
+test("every datasheet the model rows offer is in the export, at the size the pill prints", async () => {
+  // Two failures this covers, and the second is the one worth the test. A
+  // renamed or mistyped file is a 404 behind a pill that promised a document —
+  // bad, but visible the first time anyone presses it. A file that is there
+  // but is not the size the table claims is a sheet the head office revised
+  // and someone copied in without touching `bytes`, and nothing on the page
+  // would ever say so: the pill would keep printing the old figure over the
+  // new file. The export is the only place that can settle either.
+  assert.equal(datasheetFiles.length, 12, "the datasheet table has changed size");
+  for (const { path: src, bytes } of datasheetFiles) {
+    const file = path.join(OUT, src.replace(/^\//, ""));
+    assert.ok(await exists(file), `${src} is in the datasheet table but not in the export`);
+    const { size } = await stat(file);
+    assert.equal(size, bytes, `${src}: the export holds ${size} bytes, the table says ${bytes}`);
+  }
+});
+
+test("the datasheet pill points at a file on this origin, in both locales", () => {
+  // The panel's other two controls are a `mailto:` and a client-side button;
+  // this is the only one that is a link to something the deploy has to have
+  // carried up. It is also the only place the base path has to be put back on
+  // by hand — `<a href>` is not rewritten the way `next/link` is — so a
+  // regression here shows up only on the GitHub Pages build, which is exactly
+  // the build these assertions run against.
+  for (const route of ["/test-systems/product/system/", "/ko/test-systems/product/system/"]) {
+    const { html } = pages.find((p) => p.route === route);
+    for (const file of ["cit-100", "cit-1000", "ecu-6", "psg-300", "mts-800"]) {
+      assert.ok(
+        html.includes(`href="${BASE}/test-systems/datasheets/${file}.pdf" download`),
+        `${route}: no download link for ${file}.pdf`,
+      );
+    }
+    // Six models on this page and five sheets: PSG-300 and PSG-300A share one.
+    const pills = [...html.matchAll(/class="btn btn-outline btn-doc"/g)].length;
+    assert.equal(pills, 6, `${route}: ${pills} datasheet pills, expected one per model`);
+  }
+});
+
+test("a model with a datasheet but no picture and no figures still opens", () => {
+  // The five CDN rows. The accordion's fallback turns a row with nothing
+  // behind it into a plain line, and before the datasheets arrived that was
+  // right for these: the head office neither photographs a coupling network
+  // nor prints a summary strip for one. It is wrong now — a shut row would be
+  // hiding the one document about that instrument the site has — so the sheet
+  // has to count as content.
+  //
+  // MP50 is the control in the same list: no sheet and no figures either, so
+  // it must still come out as the plain row it was. Without it this test
+  // would pass just as well against an accordion that opened every row.
+  for (const route of ["/test-systems/product/coupling/", "/ko/test-systems/product/coupling/"]) {
+    const { html } = pages.find((p) => p.route === route);
+    // `href="…"` and not the bare path: the flight payload Next inlines below
+    // the markup carries every href a second time, as `\"href\":\"…\"`, and a
+    // pattern loose enough to match both counts each row twice.
+    const cdn = [...html.matchAll(/href="[^"]*\/datasheets\/cdn\.pdf" download/g)].length;
+    assert.equal(cdn, 5, `${route}: ${cdn} CDN sheets offered, expected one per row`);
+    assert.ok(html.includes('id="panel-cdn-af8-af9"'), `${route}: a CDN row did not open`);
+    assert.doesNotMatch(html, /id="panel-mp50"/, `${route}: MP50 opens onto nothing`);
+  }
+});
+
+test("a model the head office publishes no datasheet for offers none", () => {
+  // The rule this holds is in test-system-datasheets.ts: a row with no sheet
+  // draws no pill rather than borrowing a neighbour's. The meter family is the
+  // clean case — three models, no sheet among them — and it is a whole page
+  // that must come out without a single `btn-doc`.
+  for (const route of ["/test-systems/product/meter/", "/ko/test-systems/product/meter/"]) {
+    const { html } = pages.find((p) => p.route === route);
+    assert.doesNotMatch(html, /btn-doc/, `${route}: a meter row is offering a datasheet`);
   }
 });
 
@@ -660,10 +766,59 @@ test("the structured data parses and names the organisation", () => {
   }
 });
 
-test("the sitemap lists every page and nothing else", async () => {
+/**
+ * Routes that build but are deliberately not advertised — the test-system
+ * families the head office's August 2026 mail does not name, the four `test/*`
+ * discipline pages and the standards index. Nothing on the site links to them
+ * and the sitemap does not list them, which together is what "held back"
+ * means; they still resolve, so a bookmark or a quotation that carries the URL
+ * does not break. See the note on `shownTestProducts` in test-system-sections.
+ *
+ * A route arriving here without also coming out of the index band, the header
+ * dropdown and the sitemap is the mistake this list exists to catch — so it is
+ * written out by hand rather than derived from the same constant the pages
+ * read, which would make the test agree with any change automatically.
+ */
+const UNLISTED = new Set([
+  "/test-systems/product/amplifier/",
+  "/test-systems/product/antenna/",
+  "/test-systems/product/preamp/",
+  "/test-systems/product/coupling/",
+  "/test-systems/test/emission/",
+  "/test-systems/test/conducted/",
+  "/test-systems/test/radiated/",
+  "/test-systems/test/magnetic/",
+  "/test-systems/standards/",
+]);
+const unlisted = (route) => UNLISTED.has(route.replace(/^\/ko\//, "/"));
+
+test("the sitemap lists every page on show and nothing else", async () => {
   const xml = await readFile(path.join(OUT, "sitemap.xml"), "utf8");
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]).sort();
-  assert.deepEqual(locs, pages.map((p) => url(p.route)).sort());
+  assert.deepEqual(
+    locs,
+    pages.filter((p) => !unlisted(p.route)).map((p) => url(p.route)).sort(),
+  );
+  // Both locales of every held-back route are still exported: the hold is a
+  // navigation decision, not a deletion.
+  for (const route of UNLISTED) {
+    for (const r of [route, `/ko${route}`]) {
+      assert.ok(pages.some((p) => p.route === r), `${r} stopped building`);
+      assert.ok(!locs.includes(url(r)), `${r} is back in the sitemap`);
+    }
+  }
+});
+
+test("nothing on show links into a held-back page", async () => {
+  const leaks = [];
+  for (const { route, html } of pages) {
+    if (unlisted(route)) continue;
+    for (const [, href] of html.matchAll(/href="(\/[^"]*)"/g)) {
+      const target = href.split("#")[0].split("?")[0].slice(BASE.length);
+      if (unlisted(target)) leaks.push(`${route} -> ${href}`);
+    }
+  }
+  assert.deepEqual(leaks, []);
 });
 
 test("robots.txt keeps crawlers off the staging build", async () => {

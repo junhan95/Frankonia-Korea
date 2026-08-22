@@ -1,10 +1,15 @@
-import { Inter } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 
 /**
  * The Latin typeface, downloaded at build time and served from this origin.
  *
- * It used to arrive from fonts.googleapis.com through an `@import` at the top
- * of globals.css. Two problems with that, and self-hosting answers both:
+ * Open Sans, because that is what the group homepage runs on —
+ * frankonia-solutions.com serves open-sans-v34 at 300/400/600 and sets its
+ * headings in the 300. HQ asked in the August review that this site match it;
+ * it used to be Inter, which is a different voice at the same weights.
+ *
+ * It is not fetched from fonts.googleapis.com at runtime. Two reasons, and
+ * self-hosting answers both:
  *
  *   - Every visitor's IP reached Google before a single glyph was drawn. This
  *     site is operated from Germany, and German courts have treated an
@@ -20,8 +25,8 @@ import { Inter } from "next/font/google";
  * The Korean face is deliberately not here — see fonts-kr.ts for why it is a
  * module of its own.
  */
-export const inter = Inter({
+export const openSans = Open_Sans({
   subsets: ["latin"],
   display: "swap",
-  variable: "--font-inter",
+  variable: "--font-open-sans",
 });

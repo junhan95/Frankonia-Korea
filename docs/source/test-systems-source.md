@@ -479,3 +479,113 @@ ACF-01B.
   받는 편이 옳다.**
 - **본사 확인이 필요한 세 가지** — VLC-600 대 VLC-1100(§2.10), BCI 프로브
   사양표의 열 어긋남(§2.11), LISN-KFZ·LISN-MIL 표의 열 어긋남(§2.13).
+
+---
+
+## 6. 2026년 데이터시트 (2026-08-22 추가)
+
+본사가 2026-08 메일로 **홍보할 제품군**을 지정하고 데이터시트 12종을 첨부했다.
+저장소 밖 `D:\FRANKONIA\FRF\Datasheet\`에 있다. 사이트에는 사본을 두지 않는다 —
+§1의 다운로드 PDF와 같은 판단이다.
+
+메일이 지목한 제품:
+
+| 제품 | 용도 (본사 표현) | 이 사이트 |
+|---|---|---|
+| CIT-100 / CIT-1000 | IEC 61000-4-6 · ISO 11452-4 · CS114 · IEC 61000-4-39 | `product/system` — 이미 있음, 2026 수치로 갱신 |
+| ECU-6 | 방사 내성 — IEC 61000-4-3 · ISO 11452-2 · RS103 | `product/system` — **복원** |
+| ERX-7 | 방출 | **보류** — 아래 참조 |
+| MTS-800 | MIL-STD-461 (CE101 · CS101 · RE101 · RS101 · CS109) | `product/system` — **복원** (`test/magnetic` 페이지는 그대로) |
+| PSG-300 | IEC 61000-4-16 · IEC 61000-4-19 | `product/system` — **복원** |
+| RSU | 릴레이 스위치 | `product/meter` — 이미 있음 |
+| PMS | 파워미터 | `product/meter` — 이미 있음 |
+| EFS | 전계 프로브 | `product/efs` — 이미 있음, **EFS-18 추가** |
+
+### 6.1 2026 데이터시트가 바꾼 수치
+
+옛 웹페이지 값을 데이터시트 값으로 덮었다. 견적서와 대조할 값이므로 어느 쪽을
+따랐는지 남긴다.
+
+| 항목 | 옛 웹페이지 | 2026 데이터시트 | 파일 |
+|---|---|---|---|
+| CIT 내장 앰프 | 25 / 75 W, CIT-1000은 180 W | **25 / 75 / 200 W** (양쪽 모두) | `cit-100_datasheet_2026_05_digital.pdf`, `cit-1000_2026_digital.pdf` |
+| CIT-100 RF 전압계 2·3 | −40 … +30 dBm | **−40 … +33 dBm** | 위와 같음 |
+| ECU 발생기 | ECU-6 9 kHz – 6.5 GHz | **8 kHz – 6.2 GHz**, −65 … +13 dBm | `_ecu6g_2026_digital.pdf` |
+| PSG-300 출력 | 250 W / 14 kg | **260 W / 약 24 kg** | `psg300_2026_digital.pdf` |
+| PSG-300A 출력 전류 | ± 23 Apeak / 30 kg | **± 24 Apeak / 약 32 kg** | 위와 같음 |
+| MTS-800 AD 변환기 | 16 bit, 1.25 MSPS | **16 bit, 1.0 MSPS** | `_mts800_2026_digital.pdf` |
+
+### 6.2 데이터시트 안에서 서로 어긋나는 값
+
+- **CIT-100 앰프 출력.** 사양표는 CIT-100/25, /75 MIL, /75, /200 네 가지를 싣는데
+  바로 옆 본문은 "highest output power can be 75 W"라고 적는다. 표를 따르고
+  `productBody`의 CIT-100 표에 `note`로 남겼다.
+- **ECU 품번.** 표지와 본문은 **ECU-6.2**, 부품표는 **ECU-6**, 후면 패널 사진의
+  명판은 **ECU-6G**다. 본사 메일이 쓰는 대로 `ECU-6`으로 실었고 표에 `note`를
+  달았다.
+- **BCI 프로브.** 표지는 ISO 11452-4를, 본문은 ISO 11452-5:2005를 든다.
+  `product/coupling`의 기존 행은 그대로 두었다 — 2019 카탈로그와 값이 같다.
+
+### 6.3 ERX-7 — 보류
+
+메일은 "ERX-7 (we have new version coming up)"이라고만 적었고, 첨부된 리시버
+데이터시트는 **ERX-6**(`_erx-6_webversion_neu_2026_digital.pdf`, 2026 웹버전)이다.
+ERX-7의 수치는 어디에도 없다. 그래서 `product/emission`은 현행 기종인 **ERX-6 한 대**로
+두었다(§6.4). 페이지의 리드·특징·사양표도 2026 ERX-6 데이터시트에서 다시 옮겼고,
+같은 데이터시트 1쪽의 제품 사진을 `emission-erx-6.webp`로 넣어 2021 카탈로그의
+LISN 사진을 대체했다 — LISN은 이제 싣지 않는 제품이다.
+
+**본사에 ERX-7 데이터시트를 요청해야 한다** — 받는 즉시 `testModels`의 `emission`
+그룹 "EMI test receivers"에 한 행, `modelFacts`와 `modelLead`에 한 항목씩 들어간다.
+
+### 6.4 표시 범위 — 메일에 실린 것만 (전수 검사 2026-08-22)
+
+**전체 복구가 아니다.** EMC Test Systems 브랜치의 서브페이지와 아이템 리스트를
+전수 검사해, 본사 메일이 지목한 제품만 화면에 올렸다. 결정은 두 곳에 있다.
+
+- `shownTestProducts` — 어느 **제품군**을 그릴지. 인덱스·헤더 드롭다운·사이트맵이
+  이 목록 하나를 읽는다.
+- `hiddenTestModels` — 올린 제품군 **안에서** 어느 모델을 뺄지. `modelsByProduct`
+  한 곳에서 걸러지므로 행·개수·드롭다운 캡션·MyCart가 모두 따라온다.
+
+#### 검사 결과 — 표면별
+
+| 자리 | 올린 것 | 내린 것 |
+|---|---|---|
+| `/test-systems/` 인덱스 By Product | 제품군 4개 — Integrated Systems · Emission · Field Strength Meters · Meters & Switching | 앰프 · 안테나 · 프리앰프 · 결합장치 |
+| `/test-systems/` 인덱스 By Test · By Standard | — | 두 축 모두 |
+| `/test-systems/` 리드 2문단 | 신호발생기 · RF 파워미터 · 전계 센서 · EMI 리시버 | RF 파워앰프 · 안테나 · GTEM 셀 |
+| `/test-systems/` "지난 25년간 개발한 제품군" 11줄 | 7줄 | 안테나 · RF 파워앰프 · GTEM 셀 · "ECU 3/6"(→ ECU-6 한 줄로) |
+| 헤더 드롭다운 | 위 제품군 4개 (한 칸 목록) | 두 칸 메가패널 전체 |
+| 랜딩 `#equipment` 카드 | EFS · Meters & Switching · Integrated Systems | 앰프 · 안테나 · 프리앰프 (Emission은 이 줄에 카드가 원래 없다) |
+| 랜딩 EMC 시험장비 밴드 카피 | EMI 리시버 · 전계 센서 · RF 파워미터 | 앰프 · 안테나 · 프리앰프 |
+| `product/emission` 모델 행 | ERX-6 | ERC-6 · C2-16 · C4-32 · LISN-KFZ · LISN-MIL · NFS-100 · LVVL · ACF-01B |
+| `product/emission` 본문·사양표 | ERX-6 리드 2문단 · 주요 특징 · 사양표 1개 | ERC-6 특징, 자동차·군용 LISN 문단, LISN 표, 프로브·루프·클램프 표 |
+| `product/system` · `efs` · `meter` 모델 행 | 전부 (메일 항목) | — |
+| 사이트맵 | 인덱스 + 제품군 4개 | 제품군 4개 · `test/*` 4개 · `standards` |
+
+#### ERC-6 — 한 번 더 볼 항목
+
+`hiddenTestModels`에서 유일하게 판단이 갈리는 항목이다. ERX-6의 저가형이고 같은
+"EMI test receivers" 그룹에 있어, 메일의 "ERX-7 … as system for emission"이 이것까지
+덮는다고 읽을 수도 있다. 메일이 적은 것은 ERX이고 ERC는 다른 품번이라 일단 내렸다.
+그 읽기가 틀렸다면 `hiddenTestModels`에서 이름 한 줄을 빼면 된다.
+
+#### 내린 것은 지운 것이 아니다
+
+라우트·모델 데이터·본문·사진·`modelFacts`·`modelLead` 전부 그대로 남아 있고 URL도
+계속 응답한다. 다만 **사이트 안에서 그 페이지로 가는 링크가 하나도 없고 사이트맵에도
+없다** — 링크 없는 페이지를 사이트맵에 남기면 검색 결과로 들어오게 되므로, "안 보이게
+한다"는 말이 성립하지 않는다. `tests/rendered-html.test.mjs`의 `UNLISTED`와
+"nothing on show links into a held-back page" 테스트가 이 두 조건을 함께 지킨다.
+
+되돌리는 법: `shownTestProducts`에 제품군을 더하거나, `hiddenTestModels`에서 모델
+이름을 빼거나, `showTestAxis`·`showStandardsAxis`(test-system-content.tsx)를 `true`로
+바꾼다. 사이트맵과 헤더는 같은 목록을 읽으므로 따로 손댈 곳이 없고, 테스트의
+`UNLISTED`만 함께 줄이면 된다.
+
+### 6.5 아직 복원하지 않은 것
+
+- **ECU-3.** 본사 홍보 목록에 없고 2026 데이터시트도 없다. 실을 수 있는 값이
+  ECU-6.2 데이터시트가 이미 갈아치운 2016 카탈로그 수치뿐이라 두었다.
+- **GTEM 셀.** §5와 같은 이유다. 수치가 하나도 없다.

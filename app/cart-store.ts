@@ -74,7 +74,7 @@ export type CartItem = {
   /** What the branch or the page pinned down beyond the designation:
    *  MyChamber's variant line, and the answers that led to it. */
   config?: readonly string[];
-  /** Where it was added from, in the reader's words — "MyChamber", the name of
+  /** Where it was added from, in the reader's words — "My Chamber", the name of
    *  a chamber-type index. Printed in the mail so the engineer reading it can
    *  see how the shortlist was arrived at. */
   from?: string;

@@ -26,23 +26,23 @@ export const cartPath = "/mycart";
 
 export const cartMeta = {
   ko: {
-    label: "MyCart",
-    title: "MyCart",
+    label: "My Enquiry",
+    title: "My Enquiry",
     description:
       "관심 있는 챔버와 시험 시스템을 담아 두었다가, 필요한 것만 골라 한 통의 견적 문의로 보냅니다. 담긴 목록은 이 브라우저에만 남고, 보내기 전까지 어디로도 전송되지 않습니다.",
     /** Accessible name of the bar's icon. The count is in the name because the
      *  badge beside it is `aria-hidden` — a number with no word next to it is
      *  not something a screen reader can make sense of. */
-    aria: (n: number) => `MyCart — 담긴 제품 ${n}개`,
-    ariaEmpty: "MyCart — 담긴 제품 없음",
+    aria: (n: number) => `My Enquiry — 담긴 제품 ${n}개`,
+    ariaEmpty: "My Enquiry — 담긴 제품 없음",
   },
   en: {
-    label: "MyCart",
-    title: "MyCart",
+    label: "My Enquiry",
+    title: "My Enquiry",
     description:
       "Keep the chambers and test systems you are weighing up in one place, then send the ones you want as a single quotation enquiry. The list stays in this browser and goes nowhere until you send it.",
-    aria: (n: number) => `MyCart — ${n} item${n === 1 ? "" : "s"}`,
-    ariaEmpty: "MyCart — empty",
+    aria: (n: number) => `My Enquiry — ${n} item${n === 1 ? "" : "s"}`,
+    ariaEmpty: "My Enquiry — empty",
   },
 } as const satisfies Record<
   Lang,

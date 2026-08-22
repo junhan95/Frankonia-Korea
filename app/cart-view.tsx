@@ -46,7 +46,7 @@ const MAIL_LIMIT = 1900;
 
 const copy = {
   ko: {
-    listKicker: "MyCart",
+    listKicker: "My Enquiry",
     listH: "담아 두신 제품",
     listP:
       "담긴 목록은 이 브라우저에만 저장됩니다. 서버로 보내지 않으며, 아래에서 메일을 작성하시기 전까지는 어디로도 전송되지 않습니다.",
@@ -59,17 +59,17 @@ const copy = {
     clearYes: "비우기",
     clearNo: "취소",
     include: "견적에 포함",
-    remove: (name: string) => `${name}을(를) MyCart에서 빼기`,
+    remove: (name: string) => `${name}을(를) My Enquiry에서 빼기`,
     from: "담은 곳",
     config: "구성",
     seePage: "제품 페이지",
     addedKo: "한국어로 담김",
     addedEn: "영어로 담김",
 
-    emptyH: "MyCart가 비어 있습니다",
+    emptyH: "My Enquiry가 비어 있습니다",
     emptyP:
-      "챔버와 시험 시스템 페이지의 모델 목록에서, 또는 MyChamber 질문을 끝까지 따라가신 뒤 결과 카드에서 담으실 수 있습니다. 담긴 제품은 이 브라우저에 남아 다음 방문에도 그대로 있습니다.",
-    emptyMyChamber: "MyChamber로 챔버 찾기",
+      "챔버와 시험 시스템 페이지의 모델 목록에서, 또는 My Chamber 질문을 끝까지 따라가신 뒤 결과 카드에서 담으실 수 있습니다. 담긴 제품은 이 브라우저에 남아 다음 방문에도 그대로 있습니다.",
+    emptyMyChamber: "My Chamber로 챔버 찾기",
     emptyChambers: "챔버 전체 보기",
     emptySystems: "시험 시스템 전체 보기",
 
@@ -93,17 +93,17 @@ const copy = {
     tooLong:
       "본문이 길어 일부 메일 프로그램에서 뒷부분이 잘릴 수 있습니다. 제품 수를 줄이시거나, 본문을 복사해 새 메일에 붙여 넣어 주세요.",
 
-    mailSubject: (n: number, company: string) => `[MyCart] 제품 ${n}건 견적 문의 — ${company}`,
-    mailTitle: "Frankonia MyCart 견적 문의",
+    mailSubject: (n: number, company: string) => `[My Enquiry] 제품 ${n}건 견적 문의 — ${company}`,
+    mailTitle: "Frankonia My Enquiry 견적 문의",
     mailItems: (n: number) => `문의 제품 ${n}건`,
     mailFrom: "문의자",
     mailPhone: "전화",
     mailNote: "추가 요청사항",
-    mailFoot: "이 메일은 Frankonia MyCart에서 선택하신 제품을 바탕으로 자동 작성되었습니다.",
+    mailFoot: "이 메일은 Frankonia My Enquiry에서 선택하신 제품을 바탕으로 자동 작성되었습니다.",
     none: "—",
   },
   en: {
-    listKicker: "MyCart",
+    listKicker: "My Enquiry",
     listH: "What you have put aside",
     listP:
       "The list is held in this browser. It is not sent to a server, and nothing leaves this page until you write the message below.",
@@ -116,17 +116,17 @@ const copy = {
     clearYes: "Empty it",
     clearNo: "Keep it",
     include: "In the enquiry",
-    remove: (name: string) => `Remove ${name} from MyCart`,
+    remove: (name: string) => `Remove ${name} from My Enquiry`,
     from: "Added from",
     config: "Configuration",
     seePage: "Product page",
     addedKo: "Added in Korean",
     addedEn: "Added in English",
 
-    emptyH: "MyCart is empty",
+    emptyH: "My Enquiry is empty",
     emptyP:
-      "Add a model from any list on the chamber and test-system pages, or walk the MyChamber questions to the end and add the result. What you add stays in this browser and will still be here on your next visit.",
-    emptyMyChamber: "Find your chamber with MyChamber",
+      "Add a model from any list on the chamber and test-system pages, or walk the My Chamber questions to the end and add the result. What you add stays in this browser and will still be here on your next visit.",
+    emptyMyChamber: "Find your chamber with My Chamber",
     emptyChambers: "See every chamber",
     emptySystems: "See every test system",
 
@@ -151,13 +151,13 @@ const copy = {
       "The message is long enough that some mail clients will cut the end off it. Take an item or two out, or copy the text and paste it into a new message.",
 
     mailSubject: (n: number, company: string) =>
-      `[MyCart] Quotation request for ${n} item${n === 1 ? "" : "s"} — ${company}`,
-    mailTitle: "Frankonia MyCart enquiry",
+      `[My Enquiry] Quotation request for ${n} item${n === 1 ? "" : "s"} — ${company}`,
+    mailTitle: "Frankonia My Enquiry enquiry",
     mailItems: (n: number) => `${n} item${n === 1 ? "" : "s"} enquired about`,
     mailFrom: "Enquirer",
     mailPhone: "Phone",
     mailNote: "Notes",
-    mailFoot: "Written automatically by Frankonia MyCart from the items selected there.",
+    mailFoot: "Written automatically by Frankonia My Enquiry from the items selected there.",
     none: "—",
   },
 } as const;

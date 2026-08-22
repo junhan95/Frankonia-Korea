@@ -84,7 +84,7 @@ export type QuestionnaireId = "A" | "B" | "C" | "D" | "X";
  */
 export const standards = [
   { id: "cispr25", name: "CISPR 25 / EN 55025", industries: ["automotive", "powertrain"],
-    hint: { ko: "차량 전장부품 방출, 1 m 부품 시험", en: "Vehicle component emission, 1 m component test" } },
+    hint: { ko: "차량 전장부품 방출, 1.0 m 부품 시험", en: "Vehicle component emission, 1.0 m component test" } },
   { id: "cispr12", name: "CISPR 12 / EN 55012", industries: ["automotive"],
     hint: { ko: "완성차 방출", en: "Whole-vehicle emission" } },
   { id: "ecer10", name: "ECE R10", industries: ["automotive"],
@@ -163,7 +163,7 @@ export type ModelsNode = { kind: "models"; leaves: readonly Leaf[] };
  * A branch that ends outside the catalogue.
  *
  * Three kinds reach one. The Special Chambers track, whose four tasks have no
- * catalogue models. The custom quiet zone under a 10 m chamber, which is a
+ * catalogue models. The custom quiet zone under a 10.0 m chamber, which is a
  * dimension rather than a designation. And the matrix's own `custom` ovals —
  * the circle it hangs under every segment box, which is the reader saying that
  * none of the branches under their segment is their problem.
@@ -295,7 +295,7 @@ const automotive = ask(
           {
             id: "full",
             label: { ko: "정식 인증 (Full compliance)", en: "Full compliance" },
-            note: { ko: "CISPR 25 1 m 부품 시험", en: "CISPR 25 at the 1 m component distance" },
+            note: { ko: "CISPR 25 1.0 m 부품 시험", en: "CISPR 25 at the 1.0 m component distance" },
             next: models({
               model: "ACTC",
               why: {
@@ -317,38 +317,38 @@ const automotive = ask(
         { ko: "측정 거리", en: "Measurement distance" },
         { ko: "완성차 측정 거리는 어느 쪽입니까?", en: "Which measurement distance?" },
         {
-          ko: "규격이 정한 안테나–차량 거리입니다. 매트릭스는 3 m와 10 m 두 갈래를 둡니다.",
-          en: "The antenna-to-vehicle distance the standard prescribes. The matrix draws two — 3 m and 10 m.",
+          ko: "규격이 정한 안테나–차량 거리입니다. 매트릭스는 3.0 m와 10.0 m 두 갈래를 둡니다.",
+          en: "The antenna-to-vehicle distance the standard prescribes. The matrix draws two — 3.0 m and 10.0 m.",
         },
         [
           {
             id: "3m",
-            label: { ko: "3 m", en: "3 m" },
+            label: { ko: "3.0 m", en: "3.0 m" },
             note: { ko: "부품과 완성차를 한 방에서", en: "Components and whole vehicles in one room" },
             next: models({
               model: "AVTC",
               why: {
-                ko: "매트릭스가 Automotive 완성차 3 m에 두는 모델입니다 — 부품 시험과 완성차 시험을 함께 받는 3 m 챔버.",
-                en: "The model the matrix puts at automotive 3 m — the 3 m chamber that takes component and full-vehicle tests alike.",
+                ko: "매트릭스가 Automotive 완성차 3.0 m에 두는 모델입니다 — 부품 시험과 완성차 시험을 함께 받는 3.0 m 챔버.",
+                en: "The model the matrix puts at automotive 3.0 m — the 3.0 m chamber that takes component and full-vehicle tests alike.",
               },
             }),
           },
           {
             id: "10m",
-            label: { ko: "10 m", en: "10 m" },
+            label: { ko: "10.0 m", en: "10.0 m" },
             note: { ko: "ECE R10 · CISPR 12 형식승인", en: "ECE R10 and CISPR 12 type approval" },
             next: ask(
               "auto-vehicle-10m",
-              { ko: "10 m 구성", en: "10 m configuration" },
-              { ko: "10 m 챔버는 어떤 구성입니까?", en: "Which 10 m configuration?" },
+              { ko: "10.0 m 구성", en: "10.0 m configuration" },
+              { ko: "10.0 m 챔버는 어떤 구성입니까?", en: "Which 10.0 m configuration?" },
               {
-                ko: "매트릭스는 10 m 아래에 SAC-10V와 SAC-10VC 두 구성을 둡니다. VC는 5.0 m 측정 거리로 시작하면서 10.0 m 대응을 구조적으로 준비해 두는 구성입니다.",
-                en: "The matrix draws two under 10 m — the SAC-10V and the SAC-10VC. The VC starts at a 5.0 m test distance while the shell is prepared for 10.0 m.",
+                ko: "매트릭스는 10.0 m 아래에 SAC-10V와 SAC-10VC 두 구성을 둡니다. VC는 5.0 m 측정 거리로 시작하면서 10.0 m 대응을 구조적으로 준비해 두는 구성입니다.",
+                en: "The matrix draws two under 10.0 m — the SAC-10V and the SAC-10VC. The VC starts at a 5.0 m test distance while the shell is prepared for 10.0 m.",
               },
               [
                 {
                   id: "sac-10v",
-                  label: { ko: "SAC-10V — 처음부터 10 m", en: "SAC-10V — 10 m from the start" },
+                  label: { ko: "SAC-10V — 처음부터 10.0 m", en: "SAC-10V — 10.0 m from the start" },
                   note: { ko: "다이나모미터 통합, 구동 상태 시험", en: "Integrated dynamometer, tested under load" },
                   next: ask(
                     "auto-vehicle-absorber",
@@ -368,12 +368,12 @@ const automotive = ask(
                             note: { ko: "10.0 m 측정 거리에서 QZ ø6.0 m (H = 3.0 m)", en: "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)" },
                           },
                           why: {
-                            ko: "매트릭스가 Automotive 완성차 10 m · 하이브리드에 두는 구성입니다.",
-                            en: "The configuration the matrix puts at automotive vehicle 10 m with a hybrid lining.",
+                            ko: "매트릭스가 Automotive 완성차 10.0 m · 하이브리드에 두는 구성입니다.",
+                            en: "The configuration the matrix puts at automotive vehicle 10.0 m with a hybrid lining.",
                           },
                           caveat: {
-                            ko: "다이나모미터가 통합된 구성으로 구동 상태의 완성차 시험을 전제로 합니다. 12 m·18 m 대형 차량은 SL12·SL18 구성입니다.",
-                            en: "Built around an integrated dynamometer, for whole vehicles tested under load. SL12 and SL18 take 12 m and 18 m vehicles.",
+                            ko: "다이나모미터가 통합된 구성으로 구동 상태의 완성차 시험을 전제로 합니다. 12.0 m·18.0 m 대형 차량은 SL12·SL18 구성입니다.",
+                            en: "Built around an integrated dynamometer, for whole vehicles tested under load. SL12 and SL18 take 12.0 m and 18.0 m vehicles.",
                           },
                         }),
                       },
@@ -389,8 +389,8 @@ const automotive = ask(
                             note: { ko: "10.0 m 측정 거리에서 QZ ø6.0 m (H = 3.0 m)", en: "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)" },
                           },
                           why: {
-                            ko: "매트릭스가 Automotive 완성차 10 m · 피라미드에 두는 구성입니다.",
-                            en: "The configuration the matrix puts at automotive vehicle 10 m with a pyramid lining.",
+                            ko: "매트릭스가 Automotive 완성차 10.0 m · 피라미드에 두는 구성입니다.",
+                            en: "The configuration the matrix puts at automotive vehicle 10.0 m with a pyramid lining.",
                           },
                           caveat: {
                             ko: "다이나모미터가 통합된 구성으로 구동 상태의 완성차 시험을 전제로 합니다. 하이브리드 구성보다 건물 면적이 넓게 필요합니다.",
@@ -403,7 +403,7 @@ const automotive = ask(
                 },
                 {
                   id: "sac-10vc",
-                  label: { ko: "SAC-10VC — 5 m로 시작해 10 m 준비", en: "SAC-10VC — 5 m now, prepared for 10 m" },
+                  label: { ko: "SAC-10VC — 5.0 m로 시작해 10.0 m 준비", en: "SAC-10VC — 5.0 m now, prepared for 10.0 m" },
                   note: { ko: "단계적 투자 구성", en: "The staged-investment build" },
                   next: models({
                     model: "SAC-10V",
@@ -416,8 +416,8 @@ const automotive = ask(
                       },
                     },
                     why: {
-                      ko: "매트릭스가 Automotive 완성차 10 m 아래에 SAC-10V와 나란히 두는 구성입니다. 카탈로그에서는 SAC-10V 모델 페이지의 VC 구성으로 다룹니다.",
-                      en: "The build the matrix draws beside the SAC-10V under automotive vehicle 10 m. In the catalogue it is the VC configuration of the SAC-10V.",
+                      ko: "매트릭스가 Automotive 완성차 10.0 m 아래에 SAC-10V와 나란히 두는 구성입니다. 카탈로그에서는 SAC-10V 모델 페이지의 VC 구성으로 다룹니다.",
+                      en: "The build the matrix draws beside the SAC-10V under automotive vehicle 10.0 m. In the catalogue it is the VC configuration of the SAC-10V.",
                     },
                     caveat: {
                       ko: "지금은 5.0 m 측정 거리로 운용하고, 이후 10.0 m로 확장할 수 있도록 셸과 설비를 준비해 두는 구성입니다. 정확한 치수는 준비 범위에 따라 달라집니다.",
@@ -573,7 +573,7 @@ const automotive = ask(
 
 /* ---- Commercial · Industrial -------------------------------------- */
 
-/** The four quiet zones the matrix tabulates twice under the 10 m branch —
+/** The four quiet zones the matrix tabulates twice under the 10.0 m branch —
  *  once for the hybrid lining and once for the pyramid — plus its "Custom",
  *  which leaves the catalogue and goes to questionnaire Ⓑ. */
 const tenMetreQz = (
@@ -582,12 +582,12 @@ const tenMetreQz = (
   sizes: Readonly<Record<"3m" | "4m" | "5m" | "6m", { name: string; size: string }>>,
 ): AskNode =>
   ask(
-    `comm-10m-qz-${absorber}`,
+    `comm-10.0 m-qz-${absorber}`,
     { ko: "정온 영역", en: "Quiet zone" },
     { ko: "필요한 정온 영역(QZ)은 어느 정도입니까?", en: "How large a quiet zone do you need?" },
     {
-      ko: "피시험체 주변에서 반사가 규격 이내로 억제되는 원기둥 영역의 지름입니다. 챔버 외형 치수를 직접 결정합니다 — 매트릭스가 «3m / 4m / 5m / 6m / Custom»이라고 적어 둔 질문입니다.",
-      en: "The diameter of the cylinder around the EUT in which reflections stay inside the standard's limit. It sets the outer dimensions of the chamber directly — the question the matrix writes as “3m / 4m / 5m / 6m / Custom”.",
+      ko: "피시험체 주변에서 반사가 규격 이내로 억제되는 원기둥 영역의 지름입니다. 챔버 외형 치수를 직접 결정합니다 — 매트릭스가 «3.0 m / 4.0 m / 5.0 m / 6.0 m / Custom»이라고 적어 둔 질문입니다.",
+      en: "The diameter of the cylinder around the EUT in which reflections stay inside the standard's limit. It sets the outer dimensions of the chamber directly — the question the matrix writes as “3.0 m / 4.0 m / 5.0 m / 6.0 m / Custom”.",
     },
     [
       ...(["3m", "4m", "5m", "6m"] as const).map((qz) => ({
@@ -606,12 +606,12 @@ const tenMetreQz = (
           why:
             absorber === "hybrid"
               ? {
-                  ko: "매트릭스가 Commercial 정식 인증 SAC · 10 m · 하이브리드에 두는 모델이고, 정온 영역이 그 안의 구성을 정합니다.",
-                  en: "The model the matrix puts at commercial full compliance SAC, 10 m, hybrid — and the quiet zone picks the build within it.",
+                  ko: "매트릭스가 Commercial 정식 인증 SAC · 10.0 m · 하이브리드에 두는 모델이고, 정온 영역이 그 안의 구성을 정합니다.",
+                  en: "The model the matrix puts at commercial full compliance SAC, 10.0 m, hybrid — and the quiet zone picks the build within it.",
                 }
               : {
-                  ko: "매트릭스가 Commercial 정식 인증 SAC · 10 m · 피라미드에 두는 모델이고, 정온 영역이 그 안의 구성을 정합니다.",
-                  en: "The model the matrix puts at commercial full compliance SAC, 10 m, pyramid — and the quiet zone picks the build within it.",
+                  ko: "매트릭스가 Commercial 정식 인증 SAC · 10.0 m · 피라미드에 두는 모델이고, 정온 영역이 그 안의 구성을 정합니다.",
+                  en: "The model the matrix puts at commercial full compliance SAC, 10.0 m, pyramid — and the quiet zone picks the build within it.",
                 },
         }),
       })),
@@ -662,12 +662,12 @@ const commercial = ask(
         {
           model: "CHC",
           why: {
-            ko: "매트릭스가 Commercial 사전 인증에 두는 «CHC»입니다 — 정식 인증 내성과 사전 인증 방출을 한 방에서 해결하는 가장 작은 3 m 챔버.",
-            en: "The matrix's “CHC” at commercial pre-compliance — the smallest 3 m chamber that puts full compliant immunity and pre-compliance emission in one room.",
+            ko: "매트릭스가 Commercial 사전 인증에 두는 «CHC»입니다 — 정식 인증 내성과 사전 인증 방출을 한 방에서 해결하는 가장 작은 3.0 m 챔버.",
+            en: "The matrix's “CHC” at commercial pre-compliance — the smallest 3.0 m chamber that puts full compliant immunity and pre-compliance emission in one room.",
           },
           caveat: {
-            ko: "내성은 3 m 정식 인증, 방사 방출은 사전 인증 범위입니다. 정온 영역은 ø1.2 m입니다.",
-            en: "Full compliant immunity at 3 m; radiated emission is pre-compliant. The quiet zone is ø1.2 m.",
+            ko: "내성은 3.0 m 정식 인증, 방사 방출은 사전 인증 범위입니다. 정온 영역은 ø1.2 m입니다.",
+            en: "Full compliant immunity at 3.0 m; radiated emission is pre-compliant. The quiet zone is ø1.2 m.",
           },
         },
         {
@@ -703,21 +703,21 @@ const commercial = ask(
         { ko: "측정 거리", en: "Measurement distance" },
         { ko: "측정 거리는 어느 쪽입니까?", en: "Which measurement distance?" },
         {
-          ko: "규격이 정한 안테나–피시험체 거리입니다. 매트릭스는 SAC 분기 아래에 3 m · 5 m · 10 m를 둡니다.",
-          en: "The antenna-to-EUT distance the standard prescribes. The matrix draws 3 m, 5 m and 10 m under the SAC branch.",
+          ko: "규격이 정한 안테나–피시험체 거리입니다. 매트릭스는 SAC 분기 아래에 3.0 m · 5.0 m · 10.0 m를 둡니다.",
+          en: "The antenna-to-EUT distance the standard prescribes. The matrix draws 3.0 m, 5.0 m and 10.0 m under the SAC branch.",
         },
         [
           {
             id: "3m",
-            label: { ko: "3 m", en: "3 m" },
+            label: { ko: "3.0 m", en: "3.0 m" },
             note: { ko: "가장 널리 쓰이는 시험장 거리", en: "The most common test-site distance" },
             carry: { distance: "3m" },
             next: models(
               {
                 model: "SAC-3 Plus",
                 why: {
-                  ko: "매트릭스가 Commercial SAC 3 m에 두는 두 모델 중 돔형입니다 — 이 등급에서 가장 많이 선택되는 챔버.",
-                  en: "The dome shell of the two the matrix puts at commercial SAC 3 m — the most selected chamber in its class.",
+                  ko: "매트릭스가 Commercial SAC 3.0 m에 두는 두 모델 중 돔형입니다 — 이 등급에서 가장 많이 선택되는 챔버.",
+                  en: "The dome shell of the two the matrix puts at commercial SAC 3.0 m — the most selected chamber in its class.",
                 },
                 caveat: {
                   ko: "정온 영역은 ø1.2~2.0 m입니다. ø2.0 m를 넘어야 하면 Square 쪽입니다.",
@@ -735,15 +735,15 @@ const commercial = ask(
           },
           {
             id: "5m",
-            label: { ko: "5 m", en: "5 m" },
-            note: { ko: "3 m와 5 m를 함께 쓰는 구성", en: "Chambers covering 3 m and 5 m together" },
+            label: { ko: "5.0 m", en: "5.0 m" },
+            note: { ko: "3.0 m와 5.0 m를 함께 쓰는 구성", en: "Chambers covering 3.0 m and 5.0 m together" },
             carry: { distance: "5m" },
             next: models(
               {
                 model: "SAC-5 Plus",
                 why: {
-                  ko: "매트릭스가 Commercial SAC 5 m에 두는 두 모델 중 돔형입니다 — 3.0 m와 5.0 m 측정 거리를 함께 씁니다.",
-                  en: "The dome shell of the two the matrix puts at commercial SAC 5 m, covering both the 3.0 m and 5.0 m test distances.",
+                  ko: "매트릭스가 Commercial SAC 5.0 m에 두는 두 모델 중 돔형입니다 — 3.0 m와 5.0 m 측정 거리를 함께 씁니다.",
+                  en: "The dome shell of the two the matrix puts at commercial SAC 5.0 m, covering both the 3.0 m and 5.0 m test distances.",
                 },
               },
               {
@@ -757,18 +757,18 @@ const commercial = ask(
           },
           {
             id: "10m",
-            label: { ko: "10 m", en: "10 m" },
+            label: { ko: "10.0 m", en: "10.0 m" },
             note: { ko: "완성차 · 대형 피시험체 · CISPR 16-1-4", en: "Whole vehicles, large EUTs, CISPR 16-1-4" },
             // The custom quiet zone two questions below lands in Ⓑ, and this
             // is what stops it arriving without the distance it belongs to.
             carry: { distance: "10m" },
             next: ask(
               "comm-10m-build",
-              { ko: "10 m 구성", en: "10 m configuration" },
-              { ko: "10 m 챔버는 어떤 구성으로 지으시겠습니까?", en: "How should the 10 m chamber be built?" },
+              { ko: "10.0 m 구성", en: "10.0 m configuration" },
+              { ko: "10.0 m 챔버는 어떤 구성으로 지으시겠습니까?", en: "How should the 10.0 m chamber be built?" },
               {
-                ko: "매트릭스는 10 m 아래에 하이브리드 · 피라미드 · Special 세 갈래를 둡니다. 앞의 둘은 라이닝 방식이고, Special은 같은 측정 거리를 다각형 셸로 짓는 두 구성입니다.",
-                en: "The matrix draws three under 10 m — hybrid, pyramid, and Special. The first two are linings; Special is the same measurement distance built into a polygonal shell.",
+                ko: "매트릭스는 10.0 m 아래에 하이브리드 · 피라미드 · Special 세 갈래를 둡니다. 앞의 둘은 라이닝 방식이고, Special은 같은 측정 거리를 다각형 셸로 짓는 두 구성입니다.",
+                en: "The matrix draws three under 10.0 m — hybrid, pyramid, and Special. The first two are linings; Special is the same measurement distance built into a polygonal shell.",
               },
               [
                 {
@@ -801,8 +801,8 @@ const commercial = ask(
                     {
                       model: "SAC-10 Plus",
                       why: {
-                        ko: "매트릭스가 10 m «Special»에 두는 «SAC-10 Plus»입니다 — 같은 Triton 셸을 단일 축으로 쓰는 가장 저렴한 10 m 구성.",
-                        en: "The matrix's “SAC-10 Plus” at 10 m Special — the same Triton shell on a single axis, the least expensive way to a 10 m chamber.",
+                        ko: "매트릭스가 10.0 m «Special»에 두는 «SAC-10 Plus»입니다 — 같은 Triton 셸을 단일 축으로 쓰는 가장 저렴한 10.0 m 구성.",
+                        en: "The matrix's “SAC-10 Plus” at 10.0 m Special — the same Triton shell on a single axis, the least expensive way to a 10.0 m chamber.",
                       },
                       caveat: {
                         ko: "정온 영역은 ø3.0 m 고정입니다. 더 큰 QZ가 필요하시면 하이브리드 또는 피라미드 분기입니다.",
@@ -812,8 +812,8 @@ const commercial = ask(
                     {
                       model: "SAC-10 Plus Triton",
                       why: {
-                        ko: "매트릭스가 나란히 적어 둔 «Triton»입니다 — 하나의 다각형 셸 안에 10 m 축 1개와 3 m 축 2개를 두어 세 시험을 병행합니다.",
-                        en: "The matrix's “Triton”, written beside it — one 10 m axis and two 3 m axes in a single polygonal shell, three tests in parallel.",
+                        ko: "매트릭스가 나란히 적어 둔 «Triton»입니다 — 하나의 다각형 셸 안에 10.0 m 축 1개와 3.0 m 축 2개를 두어 세 시험을 병행합니다.",
+                        en: "The matrix's “Triton”, written beside it — one 10.0 m axis and two 3.0 m axes in a single polygonal shell, three tests in parallel.",
                       },
                       caveat: {
                         ko: "안테나와 바닥 흡수체를 옮기지 않고 세 시험을 병행합니다. 한 건물에서 처리량을 최대로 끌어올려야 할 때의 답이며, 정온 영역은 ø3.0 m입니다.",
@@ -832,7 +832,7 @@ const commercial = ask(
       id: "fac",
       label: { ko: "정식 인증 — 완전무향 FAC", en: "Full compliance — fully anechoic (FAC)" },
       note: { ko: "접지면 없는 자유공간 · IEC/EN 61000-4-22", en: "Free space, no ground plane — IEC / EN 61000-4-22" },
-      // Every fully anechoic chamber in the range is a 3 m one.
+      // Every fully anechoic chamber in the range is a 3.0 m one.
       carry: { distance: "3m" },
       next: ask(
         "comm-fac-build",
@@ -1115,8 +1115,8 @@ export const tree: AskNode = ask(
   { ko: "적용 분야", en: "Application" },
   { ko: "어떤 분야의 챔버가 필요하십니까?", en: "Which field is the chamber for?" },
   {
-    ko: "본사 Chamber Matrix의 첫 갈래입니다. 이후 질문은 여기서 고르신 분야의 가지를 그대로 따라갑니다 — 가장 긴 경로도 다섯 문항입니다.",
-    en: "The first branch of the head office Chamber Matrix. Everything after this follows the branch of the field you choose — five questions on the longest path.",
+    ko: "본사 Chamber Matrix의 첫 갈래입니다. 이후 질문은 여기서 고르신 분야의 가지를 그대로 따라갑니다 — 가장 긴 경로도 몇 문항이면 끝납니다.",
+    en: "The first branch of the head office Chamber Matrix. Everything after this follows the branch of the field you choose, and even the longest path is a handful of questions.",
   },
   [
     {

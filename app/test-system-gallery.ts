@@ -21,10 +21,11 @@ import type { Lang } from "./site-config";
  *
  * **A model missing from this table is not an omission.** Most of the
  * instruments here are not photographed by the head office — the four EFS
- * probes share one picture of a probe, the PMS 1084 B shares its sibling's
- * enclosure, and the seventy amplifiers have no photograph at all
- * (test-systems-assets.md). A row with no frame still opens: its panel is the
- * figures alone, which is the half of the panel the source actually supports.
+ * probes share one picture of a probe, the PSG-300A and the PMS 1084 B share
+ * their sibling's enclosure, and the seventy amplifiers have no photograph at
+ * all (test-systems-assets.md). A row with no frame still opens: its panel is
+ * the figures alone, which is the half of the panel the source actually
+ * supports.
  */
 
 type Frame = Pick<Plate, "src" | "w" | "h">;
@@ -46,6 +47,11 @@ const frames: Record<string, readonly Frame[]> = {
   RSU: [p("meter-rsu.webp", 1600, 669)],
   "CIT-100": [p("system-cit-100.webp", 1600, 609)],
   "CIT-1000": [p("system-cit-1000.webp", 726, 356)],
+  "ERX-6": [p("emission-erx-6.webp", 1400, 1003)],
+  "ECU-6": [p("system-ecu-6.webp", 1032, 519)],
+  "PSG-300": [p("system-psg-300.webp", 1400, 554)],
+  "MTS-800": [p("system-mts-800.webp", 1400, 782)],
+  "EFS-18": [p("efs-18.webp", 1200, 921)],
 };
 
 /**
@@ -81,6 +87,15 @@ const alt: Record<Lang, Record<string, string>> = {
     "CIT-100": "The CIT-100 in a 19-inch case, front panel lettered “Conducted Immunity Test System”",
     "CIT-1000":
       "The CIT-1000 front panel: a red Frankonia nameplate above the RF-IN and RF-OUT connectors, a wide touch screen running the control software, “Conducted Immunity Test System” lettered beneath it, and a red POWER rocker switch beside the CIT-1000 name strip",
+    "ERX-6":
+      "The ERX-6 in three-quarter view: a grey bench case with a carrying bail, a red side panel lettered ERX-6, and an 8.4-inch touch screen showing a frequency scan with the FREQ. SCAN, TRANSDUCER, LIMIT LINES, CURVES, SETTINGS, MARKER, SAVE SETTINGS and RUN keys down its right edge",
+    "ECU-6":
+      "The ECU-6 in a 4U rack case, front panel lettered “EMC CONTROL UNIT”, with an interlock button, a yellow OLED readout showing frequency and forward and reverse power, an RF-ON lamp and a power switch",
+    "PSG-300": "The PSG-300 front panel, lettered “Power Signal Generator DC … 300 kHz”",
+    "MTS-800":
+      "The MTS-800 front panel, lettered “Magnetic Test System”, with banana jacks, BNC inputs and a mains switch",
+    "EFS-18":
+      "The EFS-18 on a small flexible tripod: a white spherical sensor head marked “EFS-18 1MHz – 18GHz E-Field”, with its cable coiled beside the base and ending in a small charging module",
   },
   ko: {
     "ALX-4000E":
@@ -102,6 +117,15 @@ const alt: Record<Lang, Record<string, string>> = {
     "CIT-100": "19인치 케이스에 든 CIT-100, 전면 패널에 “Conducted Immunity Test System” 표기",
     "CIT-1000":
       "CIT-1000 전면 패널 — 왼쪽 위 빨간 FRANKONIA 명판 아래로 RF-IN·RF-OUT 커넥터, 가운데에 제어 소프트웨어가 떠 있는 넓은 터치스크린과 그 아래 “Conducted Immunity Test System” 표기, 오른쪽 CIT-1000 이름 띠 옆에 빨간 POWER 로커 스위치",
+    "ERX-6":
+      "비스듬히 본 ERX-6 — 손잡이 베일이 달린 회색 벤치 케이스, ERX-6이라 적힌 빨간 측면 패널, 주파수 스캔 화면과 오른쪽 가장자리를 따라 늘어선 FREQ. SCAN·TRANSDUCER·LIMIT LINES·CURVES·SETTINGS·MARKER·SAVE SETTINGS·RUN 키가 보이는 8.4인치 터치스크린",
+    "ECU-6":
+      "4U 랙 케이스에 든 ECU-6 — 전면 패널에 “EMC CONTROL UNIT” 표기, 인터록 버튼과 주파수·진행·반사 전력을 띄운 노란 OLED 표시부, RF-ON 표시등, 전원 스위치",
+    "PSG-300": "PSG-300 전면 패널, “Power Signal Generator DC … 300 kHz” 표기",
+    "MTS-800":
+      "“Magnetic Test System” 표기가 있는 MTS-800 전면 패널 — 바나나 잭, BNC 입력, 전원 스위치",
+    "EFS-18":
+      "작은 플렉시블 삼각대에 올린 EFS-18 — “EFS-18 1MHz – 18GHz E-Field”라 적힌 흰색 구형 센서 헤드, 받침 옆으로 감아 놓은 케이블 끝에 작은 충전 모듈",
   },
 };
 

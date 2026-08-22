@@ -71,6 +71,12 @@ export type AccordionRow = {
    *  row out of twelve has made the choice the contact page would otherwise ask
    *  them to type out again. */
   quoteHref?: string;
+  /** The head office's datasheet for this model, as a file on this origin —
+   *  `href` already carries the base path, `size` is what the pill prints
+   *  after the label. Optional per row, not per list: on the EMC Test Systems
+   *  branch some instruments have a published sheet and their neighbours in
+   *  the same list do not, so the pill appears row by row. */
+  doc?: { href: string; size: string };
   /** This model as MyCart holds it. The enquiry above asks about one model
    *  now; this puts it aside for the reader who is specifying a laboratory and
    *  will ask about six at once. Assembled by the caller, which is the side of
@@ -83,7 +89,9 @@ export default function ModelAccordion({
   rows,
   more,
   quote,
+  docLabel,
   gallery,
+  plates = "cutout",
 }: {
   /** Only the basket button needs it — every other label on this component is
    *  handed in already translated. */
@@ -98,12 +106,33 @@ export default function ModelAccordion({
   more?: string;
   /** Label on the panel's enquiry button. */
   quote: string;
+  /** Label on the panel's datasheet button, and — as with `more` — the switch
+   *  that draws it: a list whose caller passes no label draws no pill even if
+   *  a row carries a `doc`. The chamber branch is in that case; the head
+   *  office publishes chamber figures in the catalogue rather than as a sheet
+   *  per model. */
+  docLabel?: string;
   /** Names for the gallery's three controls. `frame` labels the picture
    *  itself, which is a button — a control with no text of its own needs one,
    *  and "picture 2 of 3, press for the next" is what it does. A pattern with
    *  `{at}` and `{of}` rather than a function, because this crosses the
    *  server/client boundary and a function cannot. */
   gallery: { prev: string; next: string; frame: string };
+  /** What kind of picture the gallery holds, which decides how a frame that is
+   *  not the box's shape is fitted into it.
+   *
+   *  `"cutout"` is the EMC Test Systems case: one studio photograph of an
+   *  instrument, cut out on white. The box takes that frame's own ratio and the
+   *  picture is contained, because cropping a product shot cuts the product.
+   *
+   *  `"photo"` is the chamber case, and it is the one HQ wrote about in the
+   *  August review — "there is a white frame for the pictures of some chambers
+   *  … should be same for every picture". Chamber frames arrive in every ratio
+   *  the head office happened to shoot (3:2, 1:1, 2:1, and two portraits), and
+   *  a box sized to frame one letterboxed the rest against white. Photographs
+   *  of a room have no edge that has to survive, so these share one 3:2 box
+   *  across every model and fill it. */
+  plates?: "photo" | "cutout";
 }) {
   const [open, setOpen] = useState<string | null>(null);
   /** Which frame each opened row is showing, by row id. Absent means the
@@ -144,7 +173,10 @@ export default function ModelAccordion({
   };
 
   return (
-    <div className="hairline-list">
+    // `--models` is the chamber/instrument list specifically, not every
+    // hairline list on the site: it is the one HQ reviewed, and the descriptor
+    // placement below is wrong for the contact page's office rows.
+    <div className="hairline-list hairline-list--models">
       {rows.map((row, i) => {
         const idx = String(i + 1).padStart(2, "0");
         const desc = (
@@ -158,11 +190,18 @@ export default function ModelAccordion({
           </span>
         );
 
-        // A row with nothing to show stays what it was. No model is in this
-        // state today; the branch is here so that a model added to the list
-        // before its page exists degrades to a link rather than to a control
-        // that opens an empty box.
-        if (!row.shots?.length && !row.facts) {
+        // A row with nothing to show stays what it was — the seventy
+        // amplifiers, whose source publishes a band and a designation and
+        // nothing else, are the case this exists for.
+        //
+        // A datasheet counts as something to show. The five CDN rows are in
+        // that state, and the two LISNs would be if they were not held back:
+        // the head office neither photographs them nor prints a summary strip
+        // for them, but it does publish a sheet, and a row that stayed shut
+        // would be hiding the one document about that instrument this site
+        // has. Their panel is the controls alone, and it takes the full width
+        // rather than the plate's half — see `.hl-facts:only-child`.
+        if (!row.shots?.length && !row.facts && !row.doc) {
           const Row = row.href ? "a" : "div";
           return (
             <Row className="hl-row" key={row.id} href={row.href}>
@@ -218,12 +257,18 @@ export default function ModelAccordion({
                 >
                   {row.shots?.length ? (
                     <figure
-                      className="hl-shot"
-                      /* The first frame's ratio, held for all of them. The
-                         frames are 3:2 photographs and 1:1 renders together,
-                         and a box that resized between them would move the
-                         buttons out from under the reader's pointer. */
-                      style={{ aspectRatio: `${row.shots[0].w} / ${row.shots[0].h}` }}
+                      className={`hl-shot hl-shot--${plates}`}
+                      /* One shape for every row on a photographic list, so the
+                         gallery reads as one gallery; the frame's own ratio on
+                         a cutout list, where there is only ever one frame and
+                         it must not be cropped. Either way the box is sized
+                         before the picture arrives, so neither the fold nor a
+                         step through the gallery moves the page. */
+                      style={
+                        plates === "photo"
+                          ? undefined
+                          : { aspectRatio: `${row.shots[0].w} / ${row.shots[0].h}` }
+                      }
                     >
                       {/* A single frame is a picture, not a control. The head
                           office photographs an instrument once, so every row in
@@ -323,6 +368,35 @@ export default function ModelAccordion({
                         <a className="btn btn-red" href={row.quoteHref}>
                           {quote}
                           <span aria-hidden="true">→</span>
+                        </a>
+                      )}
+                      {/* The head office's sheet for this model, off this
+                          origin. `download` rather than a plain link, because
+                          a browser that opens a PDF inline leaves the reader
+                          in a viewer with the site behind it — and the file
+                          name is the designation, so what lands in their
+                          downloads folder is `cit-100.pdf`. Same-origin, so
+                          the attribute is honoured. `nav-progress` already
+                          knows to leave a `download` anchor alone: a download
+                          is not a navigation and the progress bar would never
+                          have anything to finish on. */}
+                      {row.doc && docLabel && (
+                        <a
+                          className="btn btn-outline btn-doc"
+                          href={row.doc.href}
+                          download
+                        >
+                          <svg className="btn-doc-ico" viewBox="0 0 20 20" aria-hidden="true">
+                            <path d="M10 2.6v10.2" />
+                            <path d="M5.8 8.9L10 13.1l4.2-4.2" />
+                            <path d="M3.2 15.9h13.6" />
+                          </svg>
+                          {docLabel}
+                          {/* Not the `.btn span` glyph the pills lean out on
+                              hover — this is a figure, and a figure that
+                              slides is a figure a reader re-reads. The lean is
+                              cancelled in `.btn:hover .btn-doc-size`. */}
+                          <span className="btn-doc-size">{row.doc.size}</span>
                         </a>
                       )}
                       {/* Last of the three, and the quietest: the enquiry

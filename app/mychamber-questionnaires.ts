@@ -132,7 +132,7 @@ const eutSizeOptionalField: QField = {
 /**
  * Quiet zone, and the reason it is here.
  *
- * The 10 m branch of the tree offers ø3.0 to ø6.0 m and a "Custom" that lands
+ * The 10.0 m branch of the tree offers ø3.0 to ø6.0 m and a "Custom" that lands
  * in this questionnaire — so this is the field that reader came to fill in.
  * Optional because the other three branches into Ⓑ have no quiet zone to
  * state, and a required field they cannot answer would stop them sending.
@@ -285,9 +285,9 @@ export const questionnaires: readonly Questionnaire[] = [
         optional: true,
         label: { ko: "측정 거리", en: "Measurement distance" },
         options: [
-          { id: "3m", label: { ko: "3 m", en: "3 m" } },
-          { id: "5m", label: { ko: "5 m", en: "5 m" } },
-          { id: "10m", label: { ko: "10 m", en: "10 m" } },
+          { id: "3m", label: { ko: "3.0 m", en: "3.0 m" } },
+          { id: "5m", label: { ko: "5.0 m", en: "5.0 m" } },
+          { id: "10m", label: { ko: "10.0 m", en: "10.0 m" } },
           { id: "undecided", label: { ko: "미정", en: "Not decided" } },
         ],
       },

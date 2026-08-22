@@ -35,18 +35,21 @@ export function Lead({ body }: { body: PageBody }) {
 /**
  * A plate.
  *
- * A wide plate is capped at its own natural width rather than the 1000px
+ * A wide plate is capped at its own natural width rather than the 900px
  * `.figure-wide` allows: the military plate is 744px across in the catalogue
- * and the EFS probe 360px, and stretching either to fill the band would print a
- * soft image at a size the source cannot support. Enlarging a source is the one
- * thing the asset ledgers rule out (`withoutEnlargement`), and the rule holds at
- * render time too.
+ * and the EFS probe 360px, and stretching either to fill the measure would
+ * print a soft image at a size the source cannot support. Enlarging a source is
+ * the one thing the asset ledgers rule out (`withoutEnlargement`), and the rule
+ * holds at render time too.
+ *
+ * 900 is the text's measure — see `.figure-wide` in globals.css for why the
+ * plates share it.
  */
 export function Figure({ plate, wide = false }: { plate: Plate; wide?: boolean }) {
   return (
     <figure
       className={wide ? "figure figure-wide" : "figure"}
-      style={wide ? { maxWidth: Math.min(plate.w, 1000) } : undefined}
+      style={wide ? { maxWidth: Math.min(plate.w, 900) } : undefined}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -209,7 +212,14 @@ export function Groups({ body }: { body: PageBody }) {
           </ul>
         </div>
       ))}
-      {body.close && <p className="callout">{body.close}</p>}
+      {/* The line that closes the benefit list. It used to be a `.callout` —
+          a filled grey tile with a primary rule, which is the right treatment
+          for a pull-quote inside prose and the wrong one directly under a
+          hairline list: HQ read it as "the grey line looks a bit out of place"
+          in the August review and asked for a proposal. This is it — the same
+          sentence, carried on the list's own grammar rather than in a box of
+          its own. */}
+      {body.close && <p className="callout callout--close">{body.close}</p>}
     </>
   );
 }

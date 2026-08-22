@@ -14,8 +14,14 @@
    markup ported from the mockup still uses them — never give an alias a value
    of its own. 임의 변경 금지. */
 :root {
-  --primary: #e60000;
-  --primary-dark: #bd0000;
+  /* The CI red, taken from the wordmark itself (public/frankonia-logo.svg is
+     filled #d91920) rather than the pure-channel red this file started with.
+     HQ asked for it in the August review: #e60000 read as too dominant next
+     to the ink, and it sits at 4.35:1 on white — under the AA floor the rest
+     of this palette holds. #d91920 is the same red the group logo and
+     frankonia-solutions.com use, and it clears 5.1:1. 임의 변경 금지. */
+  --primary: #d91920;
+  --primary-dark: #ae1419;
   --ink: #25282b;
   --canvas: #ffffff;
   --canvas-soft: #f2f2f2;
@@ -57,7 +63,7 @@ body {
      undefined custom property makes the whole declaration invalid at
      computed-value time, so without it every English page would lose this
      font stack entirely and render in the browser's default serif. */
-  font-family: var(--font-inter), var(--font-noto-kr, "Noto Sans KR"), Inter, "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-open-sans), var(--font-noto-kr, "Noto Sans KR"), "Open Sans", "Noto Sans KR", "Helvetica Neue", Arial, sans-serif;
   color: var(--ink);
   background: var(--bg);
   line-height: 1.5;
@@ -385,12 +391,19 @@ nav.menu .mi--hl > a:hover { background: var(--primary); border-color: var(--pri
    it only returns 3.00), so the type crosses the 18.66px bold threshold that
    makes 3:1 the applicable floor instead. Brand red is kept; the same eyebrow
    on light surfaces is 4.81:1 and stays at 15px via .kicker. */
-.hero .tag { display: inline-block; color: var(--primary); font-size: 19px; line-height: 1.5; font-weight: 800; letter-spacing: .01em; text-transform: uppercase; margin-bottom: 22px; }
+/* The eyebrow and the emphasis inside the headline used to be primary red, on
+   top of a red CTA — three red things stacked in the first screen. HQ read the
+   cover as "red is very dominant" in the August review and asked for it to sit
+   closer to frankonia-solutions.com, whose own cover carries no accent colour
+   at all. The label stays; it is set in the scrim's own white now, one step
+   down in size and weight so it reads as a kicker rather than a shout, and the
+   single red object left above the fold is the primary CTA. */
+.hero .tag { display: inline-block; color: rgba(255, 255, 255, .72); font-size: 15px; line-height: 1.5; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 22px; }
 /* `.cs h1` — the one place on a page that shouts. */
 .hero h1 { max-width: 900px; font-size: clamp(38px, 4.3vw, 66px); line-height: 1.04; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; margin-bottom: 26px; word-break: keep-all; }
 /* 한글은 66px/-1px에서 자형이 무너진다 — 스케일과 자간만 완화하고 굵기·대문자 규칙은 그대로 둔다. */
 html[lang="ko"] .hero h1 { font-size: clamp(32px, 3.4vw, 52px); line-height: 1.12; letter-spacing: -.5px; }
-.hero h1 em { font-style: normal; color: var(--primary); }
+.hero h1 em { font-style: normal; color: #fff; }
 /* `.cs .hero-body` */
 .hero p { font-size: 20px; line-height: 1.5; color: rgba(255, 255, 255, .78); margin-bottom: 38px; max-width: 600px; }
 .btns { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
@@ -466,6 +479,12 @@ button.btn:disabled:hover { transform: none; background: var(--primary); border-
    the left edge, card radius. */
 .callout { border-left: 3px solid var(--primary); background: var(--canvas-soft); border-radius: var(--radius); padding: 40px 44px; margin-top: 44px; color: var(--body-dark); font-size: 15.5px; line-height: 1.7; max-width: 880px; }
 .alt .callout { background: var(--canvas); }
+/* The check list's closing statement. No fill and no rule of its own: it
+   continues the list it follows, one step up in size and in the ink rather
+   than the body grey, so it reads as the conclusion of the ticks above rather
+   than as a separate object sitting beside them. */
+.callout--close { max-width: 900px; border-left: 0; border-radius: 0; background: none; padding: 0; margin-top: 26px; color: var(--ink); font-size: 17px; line-height: 1.65; }
+.alt .callout--close { background: none; }
 
 /* Empty state — for lists that are real but not yet populated, so the page
    reads as deliberately empty rather than broken. */
@@ -610,6 +629,56 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
 .lc p { font-size: 15px; line-height: 1.55; color: var(--body-dark); }
 .lc .models { margin-top: 12px; font-size: 13px; color: var(--mute); letter-spacing: .3px; }
 
+/* Download cards — a PDF cover, the document's title, and the whole card is
+   the link. Built on `.lc`'s grammar (soft ground, hairline border, lift and
+   red heading on hover) rather than beside it, because a reader arriving from
+   the chamber index should not have to learn a second kind of card; what
+   differs is what the picture is and the meta line under the copy. */
+.dl-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.dl { display: flex; flex-direction: column; background: var(--canvas-soft); border: 1px solid var(--mute); border-radius: var(--radius); padding: 22px 22px 26px; transition: border-color .25s ease, background .25s ease, transform .3s cubic-bezier(.22, .61, .36, 1); }
+.dl:hover { border-color: var(--primary); background: var(--canvas); transform: translateY(-4px); }
+.dl:focus-visible { border-radius: var(--radius); }
+.alt .dl { background: var(--canvas); }
+.alt .dl:hover { background: var(--canvas-soft); }
+/* One height for fifteen covers of four different shapes — A4 portrait, the
+   square photobook, the near-square service brochure and the two 612×859
+   catalogues. Fixed height with `contain` is what makes them read as one shelf
+   of documents; a fixed *ratio* would crop the title off the A4 ones or letter-
+   box the square one against the card's own ground. White, because that is the
+   paper the covers are printed on and anything else would show as a border
+   around three of them and not the rest. */
+.dl-shot { position: relative; height: 250px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; background: #fff; border: 1px solid var(--line); border-radius: 2px; overflow: hidden; }
+.dl-shot img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+/* EN / DE, on the four documents that exist in both. The badge is the only
+   thing that separates two otherwise identical cards, so it sits on the cover
+   rather than in the meta line where it would be the fourth item in a row of
+   greys. */
+.dl-lang { position: absolute; top: 0; right: 0; padding: 4px 9px; background: var(--ink); color: var(--white); font-size: 11px; font-weight: 800; letter-spacing: .6px; }
+.dl:hover .dl-lang { background: var(--primary); }
+/* `flex: 1` so the meta line sits on the card's floor whatever the blurb runs
+   to — four cards in a row whose format-and-weight lines are at four different
+   heights is the row that made this a flex column rather than a block. */
+.dl-body { display: flex; flex-direction: column; flex: 1; }
+.dl h4 { font-size: 17px; font-weight: 700; line-height: 1.4; margin-bottom: 9px; transition: color .25s ease; }
+.dl:hover h4 { color: var(--primary); }
+.dl p { font-size: 14px; line-height: 1.55; color: var(--body-dark); }
+/* What a reader on a metered connection is actually deciding on. Separated by
+   a hairline rather than by punctuation, the way `.hl-contact` splits its
+   pair. `tabular-nums` so "16.3 MB" and "1.7 MB" line up down the column. */
+.dl-meta { margin-top: auto; padding-top: 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 0 10px; font-size: 12.5px; font-variant-numeric: tabular-nums; letter-spacing: .3px; color: var(--muted); }
+.dl-meta span + span::before { content: ""; display: inline-block; width: 1px; height: 10px; margin-right: 10px; background: var(--line); vertical-align: -1px; }
+/* The one item in the meta line that is not a measurement: it says the click
+   leaves this site. Ink rather than grey, because it is the thing a reader
+   might not expect and the rest of the line is what they already assumed.
+
+   On its own row, and with the hairline taken back off. Four items do not fit
+   one line in a 275px card, so it was wrapping anyway — and a wrapped item
+   carries its separator with it, which put a stray rule at the start of the
+   second line. Breaking it deliberately fixes that and reads better besides:
+   the first row is the file, the second is where the file is. */
+.dl-offsite { flex-basis: 100%; margin-top: 5px; color: var(--body-dark); font-weight: 700; }
+.dl-meta span + span.dl-offsite::before { content: none; }
+
 /* Numbered columns — the reference's `.asset-grid` / `.threat-grid`: a rule
    across the top of the row, a primary index, then the copy. The red rule
    grows across the card's top edge on hover. */
@@ -659,6 +728,15 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
 .hl-spec span { display: block; }
 .alt .hl-spec { color: var(--body-text); }
 .alt .hl-row .hl-desc { color: var(--body-dark); }
+/* Model rows: the descriptor sits under the designation, left-aligned, rather
+   than pushed to the right edge of the row. HQ read the right-aligned version
+   as "too many different formats on one small area" — the row was running an
+   index, a bold designation, a right-aligned sentence and a right-aligned
+   figure strip across one line. This is the layout the row already used below
+   700px; it now holds at every width. The contact page's office rows keep the
+   two-column reading, which is what an address list wants. */
+.hairline-list--models .hl-row { flex-wrap: wrap; }
+.hairline-list--models .hl-row .hl-desc { flex-basis: 100%; margin-left: 46px; margin-top: 6px; text-align: left; }
 .cs-note { color: var(--body-dark); font-size: 14px; margin-top: 30px; }
 @media (max-width: 700px) {
   .hl-row { flex-wrap: wrap; }
@@ -716,6 +794,14 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
 .hl-shot { position: relative; margin: 0; overflow: hidden; border-radius: var(--radius); background: #fff; }
 .hl-frame { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; }
 .hl-shot img { display: block; width: 100%; height: 100%; object-fit: contain; }
+/* Chamber galleries: one 3:2 box on every model, filled. The head office's
+   frames run 3:2, 1:1, 2:1 and two portraits, and `contain` in a box sized to
+   the first of them left white bars around the others — which is what HQ
+   flagged in the August review. A photograph of a room has no edge that has to
+   survive the crop, so these fill instead. The cutout case below keeps
+   `contain`: an instrument on white is the thing being shown, edge to edge. */
+.hl-shot--photo { aspect-ratio: 3 / 2; }
+.hl-shot--photo img { object-fit: cover; }
 /* The frame not being shown is `hidden`, and `hidden` is a rule of one class's
    worth of specificity in the user-agent sheet — which the line above outweighs.
    Without this the whole gallery renders at once, stacked, and `overflow`
@@ -743,6 +829,14 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
   color: var(--body-dark); font-size: 12px; font-variant-numeric: tabular-nums;
 }
 .hl-facts { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+/* A panel with no plate beside it. The grid above is plate-left/figures-right,
+   so where the head office photographs nothing the figures were left holding
+   the left-hand column with half the panel empty next to them — 410px of
+   content in a 900px box on the PSG-300A, and it would have been three pills
+   in the same box on the five CDN rows, which have neither a photograph nor a
+   summary strip and open only for their datasheet. Nothing is to the right of
+   them, so they take the whole width. */
+.hl-panel-body > .hl-facts:only-child { grid-column: 1 / -1; }
 .hl-lead { color: var(--body-dark); font-size: 15px; line-height: 1.7; }
 /* The model page's summary pairs, set as text. Label left, figure right, one
    hairline each — the same grammar as the row above them, an octave down. The
@@ -750,12 +844,34 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
    numerals so the column of dimensions does not jitter between rows. */
 .hl-figures { align-self: stretch; border-top: 1px solid var(--line); }
 .hl-figures > div { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding: 9px 1px; border-bottom: 1px solid var(--line); }
-.hl-figures dt { flex: none; color: var(--body-text); font-size: 13px; line-height: 1.5; }
-.hl-figures dd { margin: 0; color: var(--ink); font-size: 15px; font-weight: 700; line-height: 1.5; text-align: right; font-variant-numeric: tabular-nums; }
+/* Label bold, figure plain — the opposite of how this started, and HQ's call
+   in the August review ("for the table it would have the text on the left in
+   bold or nothing at all"). It was 13px light against 15px bold, which put two
+   sizes and two weights into a strip four lines tall; one size and one weight
+   difference is what is left. */
+.hl-figures dt { flex: none; color: var(--ink); font-size: 14px; font-weight: 700; line-height: 1.5; }
+.hl-figures dd { margin: 0; color: var(--body-dark); font-size: 14px; font-weight: 400; line-height: 1.5; text-align: right; font-variant-numeric: tabular-nums; }
 /* The pills, one size down: they sit under a strip of 13px labels, not at the
    foot of a band. */
 .hl-actions { gap: 12px; }
 .hl-actions .btn { padding: 9px 20px; gap: 12px; font-size: 15px; line-height: 22px; }
+/* The datasheet pill in a model panel. Its gap is tighter than the other two
+   pills' because it holds three things rather than one — arrow, label,
+   size — and the pill's own 12px between each of them read as three items
+   side by side rather than as one label. */
+.btn-doc { gap: 9px; }
+.btn-doc-ico { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+/* The size, after the label and quieter than it: it is a caution, not a
+   promise, and the reader who needs it is the one on a phone about to pull
+   down 5 MB. `--mute` on the outline pill's white fill is 2.4:1, which is
+   under the floor for text — `--body-text` is the same grey the running copy
+   uses and clears it. On hover the pill's own colour wins, so the figure
+   travels with the label instead of staying grey against red. */
+.btn-doc-size { font-size: 13px; color: var(--body-text); font-variant-numeric: tabular-nums; }
+.btn-doc:hover .btn-doc-size { color: inherit; }
+/* Cancel the trailing-glyph lean `.btn:hover span` applies. See the note in
+   model-accordion.tsx. */
+.btn:hover .btn-doc-size { transform: none; }
 @media (max-width: 700px) {
   .hl-panel-body { grid-template-columns: 1fr; gap: 20px; padding-bottom: 26px; }
   .hl-caret { top: 25px; }
@@ -823,7 +939,11 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
 .sub-head, .check-col h3 { font-size: 24px; font-weight: 300; line-height: 1.2; margin-bottom: 26px; }
 .sub-head b, .check-col h3 b { font-weight: 700; }
 .list-group + .list-group { margin-top: 64px; }
-.check-list { list-style: none; border-top: 1px solid var(--ink); }
+/* Held to the same 900 the prose, the hairline lists, the entry lists and the
+   plates use. Without it this was the one block on the page that ran the full
+   band, so a benefit list and the paragraph above it ended 260px apart —
+   part of what HQ read as too many formats in one place. */
+.check-list { list-style: none; border-top: 1px solid var(--ink); max-width: 900px; }
 .check-list li { display: flex; align-items: baseline; gap: 14px; padding: 16px 4px; border-bottom: 1px solid var(--line); font-size: 16px; line-height: 1.5; color: var(--body-dark); transition: padding-left .25s ease, background .25s ease, color .25s ease; }
 .check-list li:hover { padding-left: 10px; color: var(--ink); background: var(--canvas); }
 /* `align-items: baseline` would drop the glyph onto the text baseline and hang
@@ -872,8 +992,17 @@ button.go { background: none; border: 0; border-bottom: 1px solid var(--mute); f
 
 /* Figure variants — a single wide plate under a text block, and a row of
    small plates side by side. */
-.figure-wide { max-width: 1000px; margin-top: 44px; }
-.figure-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+/* The plates hold the text's own measure. They used to run three different
+   widths on one page — prose to 900, the wide plate to 1000, the row of three
+   to the full 1400 band — so nothing under a paragraph shared a right edge
+   with it or with anything else. HQ wrote it up twice in the August review:
+   "the picture on the top … flush with the right picture", and "the picture
+   should have the same size on every page and should be flush with the text".
+   One measure answers both. A plate whose source is narrower than 900 still
+   renders at its own width — enlarging a source is the one thing the asset
+   ledgers rule out, and the rule holds at render time (see `Figure`). */
+.figure-wide { max-width: 900px; margin-top: 44px; }
+.figure-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; }
 /* A row of plates opens the same air above itself a single wide plate does —
    less when it is the second plate block in a row, because the two read as one
    figure group rather than two. */
@@ -1204,7 +1333,7 @@ h2[tabindex]:focus-visible { outline: 2px solid var(--primary); outline-offset: 
 .cart-clear:hover { color: var(--primary); }
 /* The ✕ that takes one line back out, in the panel and on the page. */
 .cart-x { flex: none; display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; padding: 0; background: none; border: 0; border-radius: 50%; color: var(--mute); cursor: pointer; transition: background .2s, color .2s; }
-.cart-x:hover { background: rgba(230, 0, 0, .12); color: var(--primary); }
+.cart-x:hover { background: rgba(217, 25, 32, .12); color: var(--primary); }
 .cart-x svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
 
 /* --- The add button --- */
@@ -1280,7 +1409,7 @@ h2[tabindex]:focus-visible { outline: 2px solid var(--primary); outline-offset: 
 /* Footer */
 /* `.cs footer`: ink band, 55px of padding, 55% white running text. */
 footer { background: var(--ink); color: rgba(255, 255, 255, .55); padding: 55px 0 40px; font-size: 14px; line-height: 1.6; }
-.foot { display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 34px; }
+.foot { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 34px; }
 /* The reference's column heads (`.cs .company-column h3`) are primary
    ExtraBold micro-caps over a hairline. */
 footer h5 { color: var(--primary); font-size: 12px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid rgba(255, 255, 255, .2); }
@@ -1288,7 +1417,11 @@ footer ul { list-style: none; }
 footer li { padding: 4px 0; }
 footer a:hover { color: #fff; }
 .foot-desc { max-width: 340px; }
-.foot-addr { margin-top: 12px; }
+/* One line per element, held to the description's measure. The address used to
+   be a single ` · `-joined run with no max-width, so it stretched the first
+   column across the footer — see the note on `ftAddr` in landing.tsx. */
+.foot-addr { margin-top: 12px; max-width: 340px; font-style: normal; }
+.foot-addr span { display: block; }
 .copy { border-top: 1px solid rgba(255, 255, 255, .2); padding-top: 22px; font-size: 13px; color: rgba(255, 255, 255, .55); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
 /* The end of the copy row was empty between the notice and the domain; the
    four accounts fill it as icons rather than a fifth link column, so the
@@ -1390,6 +1523,10 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
 /* 1100: two-column content collapses. */
 @media (max-width: 1100px) {
   .sol-grid, .line-grid, .line-grid.three { grid-template-columns: 1fr 1fr; }
+  /* Two, not three: a download card's title runs to nine words on the longest
+     of them ("Immunity test to conducted common- and differential mode
+     disturbances") and needs the width more than the row needs the density. */
+  .dl-grid { grid-template-columns: 1fr 1fr; }
   .trust { grid-template-columns: 1fr; gap: 55px; }
   .foot { grid-template-columns: 1fr 1fr; }
   /* The two check columns stay side by side here — each row is a short label,
@@ -1431,6 +1568,16 @@ footer a:focus-visible, .mobile-menu a:focus-visible { outline-color: #fff; }
   .hero p { font-size: 17px; }
   .btns { align-items: stretch; flex-direction: column; gap: 12px; }
   .sol-grid, .line-grid, .line-grid.three { grid-template-columns: 1fr; }
+  /* Two on a phone, not one. These cards carry a picture whose only job is to
+     be recognised — fifteen full-width covers at 250px each is a screen of
+     scrolling per document, and paired they are still 160px wide, which is
+     wider than the thumbnail the head office prints on a desktop. The frame
+     comes down with them so a pair reads as one row. */
+  .dl-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+  .dl { padding: 14px 14px 18px; }
+  .dl-shot { height: 190px; margin-bottom: 14px; }
+  .dl h4 { font-size: 15px; }
+  .dl p { font-size: 13px; }
   .badges, .badges-wide, .badges-four { grid-template-columns: 1fr; }
   /* After the rule above, which it overrides at equal specificity. The landing
      page's badges go single-column here because a headline metric at 24px

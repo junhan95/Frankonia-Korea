@@ -1,7 +1,7 @@
 import PageShell, { type HeadShot } from "./page-shell";
 import StructuredData from "./structured-data";
 import { contactMeta, contactPath, offices } from "./contact-sections";
-import { downloadsPath } from "./chamber-sections";
+import { downloadsPath } from "./downloads-sections";
 import { mychamberMeta, mychamberPath } from "./mychamber-sections";
 import SiteLink from "./site-link";
 import { localeRoute, type Lang } from "./site-config";
@@ -30,7 +30,7 @@ const copy = {
     officesKicker: "OFFICES",
     officesTitle: "사업장 다섯 곳",
     officesLead:
-      "설계와 생산은 독일 하이데크에 있고, 프로젝트는 가까운 사업장이 받습니다. 어느 주소로 보내셔도 담당 엔지니어에게 전달됩니다.",
+      "본사와 설계·프로젝트 관리는 독일 하이데크에 있고, 프로젝트는 가까운 사업장이 받습니다. 어느 주소로 보내셔도 담당 엔지니어에게 전달됩니다.",
     /** The Korean office has no premises to publish yet. Said outright rather
      *  than left as a blank line, which reads as a field someone forgot. */
     addressPending: "주소 준비 중",
@@ -47,7 +47,7 @@ const copy = {
       [
         "02",
         "피시험체와 Quiet Zone",
-        "가장 큰 피시험체의 치수와 무게, 그리고 필요한 측정 거리(1 · 3 · 5 · 10 m). 부품 한 점이면 1.0 m 챔버에서 끝나고, 차량이면 ø6.0 m Quiet Zone까지 올라갑니다.",
+        "가장 큰 피시험체의 치수와 무게, 그리고 필요한 측정 거리(1.0 · 3.0 · 5.0 · 10.0 m). 부품 한 점이면 1.0 m 챔버에서 끝나고, 차량이면 ø6.0 m Quiet Zone까지 올라갑니다.",
       ],
       [
         "03",
@@ -66,7 +66,7 @@ const copy = {
     officesKicker: "OFFICES",
     officesTitle: "Five offices",
     officesLead:
-      "Design and production are in Heideck, Germany; the office nearest you takes the project. Whichever address you write to, it reaches the engineer who answers it.",
+      "The head office, with design and project management, is in Heideck, Germany; the office nearest you takes the project. Whichever address you write to, it reaches the engineer who answers it.",
     addressPending: "Address to follow",
     askKicker: "WHAT TO SEND",
     askTitle: "Three things that make the first reply a useful one",
@@ -81,7 +81,7 @@ const copy = {
       [
         "02",
         "The EUT and the quiet zone",
-        "Dimensions and weight of the largest device under test, and the measurement distance you need (1, 3, 5 or 10 m). A single component ends at a 1.0 m chamber; a vehicle takes it up to a ø6.0 m quiet zone.",
+        "Dimensions and weight of the largest device under test, and the measurement distance you need (1, 3, 5 or 10.0 m). A single component ends at a 1.0 m chamber; a vehicle takes it up to a ø6.0 m quiet zone.",
       ],
       [
         "03",

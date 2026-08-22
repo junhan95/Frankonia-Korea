@@ -138,7 +138,7 @@ export type ChamberModel = {
  * All 27 chambers. `industry` is the head office's own tag, read off the
  * portfolio grid. `type` is ours — derived from the model name and the head
  * office's per-model tag text (`semi-anechoic-…`, `fully-anechoic-…`,
- * `pre-compliant-3m-compact-…`).
+ * `pre-compliant-3.0 m-compact-…`).
  *
  * Three of them — AVTC and the two MIL-STD chambers — carry no form in their
  * tag, so they are placed by what they are (large vehicle-scale chambers) and
@@ -149,9 +149,9 @@ export const chamberModels: readonly ChamberModel[] = [
     spec: { size: "6,380 × 5,480 × 3,750 mm", note: "CISPR 25 component level at 1.0 m test distance", range: "150 kHz / 26 MHz – 18 GHz (40 GHz option)" } },
   { name: "UCC", desc: "Ultra-compact hybrid chamber for pre-compliance component testing, an alternative to the GTEM cell", industry: "automotive", type: "component", source: "ucc", slug: "ucc",
     spec: { size: "4,580 × 3,080 × 2,550 mm", note: "Pre-compliant component level at 1.0 m test distance", range: "150 kHz / 26 MHz – 18 GHz (40 GHz option)" } },
-  { name: "SAC-10V", desc: "10 m Semi Anechoic Chamber for ECE R10 vehicle testing with integrated dynamometer", industry: "automotive", type: "sac", source: "sac-10-v", slug: "sac-10-v",
+  { name: "SAC-10V", desc: "10.0 m Semi Anechoic Chamber for ECE R10 vehicle testing with integrated dynamometer", industry: "automotive", type: "sac", source: "sac-10-v", slug: "sac-10-v",
     spec: { size: "22,580 × 15,680 × 8,700 mm", note: "Quiet zone ø6.0 m at 10.0 m test distance (H = 3.0 m)", range: "9 kHz / 150 kHz – 18 GHz (40 GHz option)" } },
-  { name: "AVTC", desc: "3 m Automotive Vehicle Testing Chamber for component and full-vehicle tests", industry: "automotive", type: "sac", source: "avtc", slug: "avtc",
+  { name: "AVTC", desc: "3.0 m Automotive Vehicle Testing Chamber for component and full-vehicle tests", industry: "automotive", type: "sac", source: "avtc", slug: "avtc",
     spec: { size: "11,480 × 9,380 × 6,000 mm", note: "Quiet zone ø3.0 m at 3.0 m test distance (H = 2.5 m)", range: "9 kHz / 150 kHz – 18 GHz (40 GHz option)" } },
 
   { name: "MIL CHC", desc: "Compact Hybrid Chamber for military component testing", industry: "military", type: "chc", source: "mil-chc", slug: "mil-chc",
@@ -161,29 +161,29 @@ export const chamberModels: readonly ChamberModel[] = [
   { name: "MIL-STD Chamber Advanced", desc: "Military Testing Chamber for Vehicles and large EUTs, also compliant with commercial and automotive test site requirements", industry: "military", type: "sac", source: "mil-std-chamber-advanced", slug: "mil-std-chamber-advanced",
     spec: { size: "Custom size", range: "9 kHz / 26 MHz – 40 GHz long-pyramid, or 30 MHz – 40 GHz hybrid" } },
 
-  { name: "SAC-3 Plus", desc: "3 m Semi Anechoic Chamber in dome design — the most selected chamber in its class, for full compliant emission and immunity", industry: "commercial", type: "sac", source: "sac-3-plus", slug: "sac-3-plus",
+  { name: "SAC-3 Plus", desc: "3.0 m Semi Anechoic Chamber in dome design — the most selected chamber in its class, for full compliant emission and immunity", industry: "commercial", type: "sac", source: "sac-3-plus", slug: "sac-3-plus",
     spec: { size: "9,680 × 6,530 × 6,000 mm", note: "Quiet zone ø2.0 m at 3.0 m test distance (H = 2.0 m); ø1.2–2.0 m across the S, M and L sizes", range: "9 kHz / 30 MHz – 18 GHz (40 GHz option)" } },
-  { name: "SAC-3 Square", desc: "3 m Semi Anechoic Chamber in the traditional square design", industry: "commercial", type: "sac", source: "sac-3-square", slug: "sac-3-square",
+  { name: "SAC-3 Square", desc: "3.0 m Semi Anechoic Chamber in the traditional square design", industry: "commercial", type: "sac", source: "sac-3-square", slug: "sac-3-square",
     spec: { size: "9,680 × 6,530 × 6,000 mm", note: "Quiet zone ø2.0 m at 3.0 m test distance (H = 2.5 m)", range: "9 kHz / 30 MHz – 18 GHz (40 GHz option)" } },
-  { name: "SAC-5 Plus", desc: "5 m Semi Anechoic Chamber in dome design, covering both 3.0 m and 5.0 m test distances", industry: "commercial", type: "sac", source: "sac-5-plus", slug: "sac-5-plus",
+  { name: "SAC-5 Plus", desc: "5.0 m Semi Anechoic Chamber in dome design, covering both 3.0 m and 5.0 m test distances", industry: "commercial", type: "sac", source: "sac-5-plus", slug: "sac-5-plus",
     spec: { size: "12,680 × 7,730 × 6,300 mm", note: "Quiet zone ø2.0 m at 3.0 m and 5.0 m test distance (H = 2.5 m)", range: "9 kHz / 30 MHz – 18 GHz (40 GHz option)" } },
-  { name: "SAC-5 Square", desc: "5 m Semi Anechoic Chamber in the traditional square design, covering 3.0 m and 5.0 m test distances", industry: "commercial", type: "sac", source: "sac-5-square", slug: "sac-5-square",
+  { name: "SAC-5 Square", desc: "5.0 m Semi Anechoic Chamber in the traditional square design, covering 3.0 m and 5.0 m test distances", industry: "commercial", type: "sac", source: "sac-5-square", slug: "sac-5-square",
     spec: { size: "12,680 × 7,730 × 6,000 mm", note: "Quiet zone ø2.0 m at 3.0 m and 5.0 m test distance (H = 2.5 m)", range: "9 kHz / 30 MHz – 18 GHz (40 GHz option)" } },
-  { name: "SAC-10 Plus", desc: "10 m Semi Anechoic Chamber with a single test axis — the cost-saving configuration of the Triton shell", industry: "commercial", type: "sac", source: "sac-10-plus", slug: "sac-10-plus",
+  { name: "SAC-10 Plus", desc: "10.0 m Semi Anechoic Chamber with a single test axis — the cost-saving configuration of the Triton shell", industry: "commercial", type: "sac", source: "sac-10-plus", slug: "sac-10-plus",
     spec: { size: "19,205 × 12,080 × 8,325 mm", note: "Quiet zone ø3.0 m at 10.0 m test distance (H = 3.0 m)", range: "9 kHz / 30 MHz – 18 GHz (40 GHz option)" } },
-  { name: "SAC-10 Plus Triton", desc: "10 m Semi Anechoic Chamber with three independent test axes in one polygonal shell — the most compact 10 m chamber Frankonia builds", industry: "commercial", type: "sac", source: "triton", slug: "sac-10-plus-triton",
+  { name: "SAC-10 Plus Triton", desc: "10.0 m Semi Anechoic Chamber with three independent test axes in one polygonal shell — the most compact 10.0 m chamber Frankonia builds", industry: "commercial", type: "sac", source: "triton", slug: "sac-10-plus-triton",
     spec: { size: "19,205 × 12,080 × 8,325 mm", note: "Quiet zone ø3.0 m (H = 3.0 m) — one 10.0 m axis and two 3.0 m axes, antennas and floor absorbers staying in place", range: "9 kHz / 30 MHz – 18 GHz (40 GHz option)" } },
-  { name: "SAC-10/H Hybrid", desc: "10 m Semi Anechoic Chamber lined with Frankosorb hybrid absorbers, sized to the quiet zone required", industry: "commercial", type: "sac", source: "sac-10-h-hybrid", slug: "sac-10-h-hybrid",
+  { name: "SAC-10/H Hybrid", desc: "10.0 m Semi Anechoic Chamber lined with Frankosorb hybrid absorbers, sized to the quiet zone required", industry: "commercial", type: "sac", source: "sac-10-h-hybrid", slug: "sac-10-h-hybrid",
     spec: { size: "18,380 × 12,830 × 8,550 mm (ø3.0 m) up to 21,680 × 15,680 × 8,700 mm (ø6.0 m)", note: "Quiet zone ø3.0 m to ø6.0 m at 10.0 m test distance (H = 3.0 m)", range: "9 kHz / 30 MHz – 18 GHz (40 GHz option)" } },
-  { name: "SAC-10/P Pyramid", desc: "10 m Semi Anechoic Chamber fully lined with Frankosorb long-pyramid absorbers, a cost-efficient alternative to the hybrid lining", industry: "commercial", type: "sac", source: "sac-10-p-pyramid", slug: "sac-10-p-pyramid",
+  { name: "SAC-10/P Pyramid", desc: "10.0 m Semi Anechoic Chamber fully lined with Frankosorb long-pyramid absorbers, a cost-efficient alternative to the hybrid lining", industry: "commercial", type: "sac", source: "sac-10-p-pyramid", slug: "sac-10-p-pyramid",
     spec: { size: "21,680 × 13,730 × 8,550 mm (ø3.0 m) up to 24,980 × 17,180 × 9,000 mm (ø6.0 m)", note: "Quiet zone ø3.0 m to ø6.0 m at 10.0 m test distance (H = 3.0 m)", range: "9 kHz / 30 MHz – 18 GHz (40 GHz option)" } },
-  { name: "FAC-3", desc: "3 m Fully Anechoic Chamber for free-space EMC tests on table-top EUTs", industry: "commercial", type: "fac", source: "fac-3", slug: "fac-3",
+  { name: "FAC-3", desc: "3.0 m Fully Anechoic Chamber for free-space EMC tests on table-top EUTs", industry: "commercial", type: "fac", source: "fac-3", slug: "fac-3",
     spec: { size: "8,705 × 4,655 × 3,750 mm", note: "Quiet zone ø1.5 m at 3.0 m test distance (H = 1.5 m), table-top products", range: "9 kHz / 30 MHz – 18 GHz (40 GHz option)" } },
-  { name: "FAC-3 L", desc: "Extended 3 m Fully Anechoic Chamber for floor-standing as well as table-top EUTs, with height scan", industry: "commercial", type: "fac", source: "fac-3-l", slug: "fac-3-l",
+  { name: "FAC-3 L", desc: "Extended 3.0 m Fully Anechoic Chamber for floor-standing as well as table-top EUTs, with height scan", industry: "commercial", type: "fac", source: "fac-3-l", slug: "fac-3-l",
     spec: { size: "9,380 × 5,780 × 6,000 mm", note: "Quiet zone ø1.5 m at 3.0 m test distance (H = 2.0 m), floor-standing and table-top products", range: "9 kHz / 30 MHz – 18 GHz (40 GHz option)" } },
   { name: "SAC-3 / FAC-3 Transformer", desc: "One chamber convertible between semi-anechoic with ground plane and fully anechoic with floor absorbers", industry: "commercial", type: "fac", source: "sac-3-fac-3-transformer", slug: "sac-3-fac-3-transformer",
     spec: { size: "9,680 × 6,530 × 6,000 mm", note: "SAC setup: quiet zone ø2.0 m (H = 2.5 m) · FAC setup: ø1.5 m (H = 1.5 m), both at 3.0 m", range: "9 kHz / 30 MHz – 18 GHz (40 GHz option)" } },
-  { name: "CHC", desc: "3 m Compact Hybrid Chamber — pre-compliant emission and full compliant immunity at 3.0 m", industry: "commercial", type: "chc", source: "chc", slug: "chc",
+  { name: "CHC", desc: "3.0 m Compact Hybrid Chamber — pre-compliant emission and full compliant immunity at 3.0 m", industry: "commercial", type: "chc", source: "chc", slug: "chc",
     spec: { size: "7,355 × 3,755 × 3,300 mm", note: "Quiet zone ø1.2 m at 3.0 m test distance", range: "9 kHz / 30 MHz – 18 GHz (40 GHz option)" } },
   { name: "CHC Plus", desc: "Compact Hybrid Chamber in the advanced setup, adding compliant emission measurement from 1 GHz to 18 GHz", industry: "commercial", type: "chc", source: "chc-plus", slug: "chc-plus",
     spec: { size: "7,355 × 3,755 × 3,300 mm", note: "Quiet zone ø1.2 m at 3.0 m test distance, compliant emission above 1 GHz", range: "9 kHz / 30 MHz – 18 GHz (40 GHz option)" } },
@@ -253,44 +253,44 @@ export const chamberIndustryMeta = {
     automotive: {
       note: "ACTC · UCC · AVTC · RVC",
       description:
-        "차량·전장부품 EMC 시험용 챔버 9종. 무향 챔버 4종에 차량·부품용 잔향실(RVC S~XXL) 5종을 더해, ECE R10, CISPR 25/EN 55025, ISO 11452-2, CISPR 12/EN 55012 시험에 대응합니다.",
+        "차량·전장부품 EMC 시험용 챔버. 무향 챔버에 차량·부품용 잔향실(RVC S~XXL)을 더해, ECE R10, CISPR 25/EN 55025, ISO 11452-2, CISPR 12/EN 55012 시험에 대응합니다.",
     },
     military: {
       note: "MIL CHC · MIL-STD Chamber",
       description:
-        "MIL-STD-461 RS-103 대응 군수·방산 EMC 시험 챔버 3종. 부품 단위부터 차량·대형 피시험체까지.",
+        "MIL-STD-461 RS-103 대응 군수·방산 EMC 시험 챔버. 부품 단위부터 차량·대형 피시험체까지.",
     },
     commercial: {
       note: "SAC · FAC · CHC · RVC",
       description:
-        "일반 산업·전자기기용 EMC 챔버 17종. 3m·5m·10m 반무향, 완전무향, 컴팩트 챔버 전 계열에 차폐룸과 ISM·멀티미디어용 잔향실(RVC e1·e2)까지.",
+        "일반 산업·전자기기용 EMC 챔버. 3.0 m·5.0 m·10.0 m 반무향, 완전무향, 컴팩트 챔버 전 계열에 차폐룸과 ISM·멀티미디어용 잔향실(RVC e1·e2)까지.",
     },
     powertrain: {
       note: "EDTC-SA · AX · BB",
       description:
-        "전기차 구동계 시험용 EMC 챔버 3종. 단일 모터(EDTC-SA), 축 구성(EDTC-AX), EMC-BlueBox(EDTC-BB).",
+        "전기차 구동계 시험용 EMC 챔버. 단일 모터(EDTC-SA), 축 구성(EDTC-AX), EMC-BlueBox(EDTC-BB).",
     },
   },
   en: {
     automotive: {
       note: "ACTC · UCC · AVTC · RVC",
       description:
-        "Nine chambers for vehicle and automotive EMC testing — four anechoic plus the five reverberation chambers from RVC S to XXL — covering ECE R10, CISPR 25 / EN 55025, ISO 11452-2 and CISPR 12 / EN 55012.",
+        "Chambers for vehicle and automotive EMC testing — anechoic chambers plus the RVC S to XXL reverberation chambers — covering ECE R10, CISPR 25 / EN 55025, ISO 11452-2 and CISPR 12 / EN 55012.",
     },
     military: {
       note: "MIL CHC · MIL-STD Chamber",
       description:
-        "Three defence-grade EMC chambers for MIL-STD-461 RS-103, from component level up to vehicles and large EUTs.",
+        "Defence-grade EMC chambers for MIL-STD-461 RS-103, from component level up to vehicles and large EUTs.",
     },
     commercial: {
       note: "SAC · FAC · CHC · RVC",
       description:
-        "Seventeen chambers for industrial and consumer electronics — the full 3m, 5m and 10m semi-anechoic, fully anechoic and compact range, plus the shielded room and the RVC e1 and e2 reverberation chambers.",
+        "Chambers for industrial and consumer electronics — the full 3.0 m, 5.0 m and 10.0 m semi-anechoic, fully anechoic and compact range, plus the shielded room and the RVC e1 and e2 reverberation chambers.",
     },
     powertrain: {
       note: "EDTC-SA · AX · BB",
       description:
-        "Three EMC chambers for electric drivetrain testing: single motor (EDTC-SA), axis setup (EDTC-AX) and EMC-BlueBox (EDTC-BB).",
+        "EMC chambers for electric drivetrain testing: single motor (EDTC-SA), axis setup (EDTC-AX) and EMC-BlueBox (EDTC-BB).",
     },
   },
 } as const satisfies Record<Lang, Record<ChamberIndustry, IndustryEntry>>;
@@ -299,33 +299,33 @@ export const typeMeta = {
   ko: {
     sac: {
       label: "반무향 챔버 SAC",
-      note: "접지면 위 방출·내성 정식 인증 — 3·5·10 m",
+      note: "접지면 위 방출·내성 정식 인증 — 3.0·5.0·10.0 m",
       description:
-        "반무향 EMC 챔버 12종. 3m·5m·10m 측정거리의 SAC 전 계열과 차량용 대형 챔버를 한자리에서 비교합니다.",
+        "반무향 EMC 챔버. 3.0 m·5.0 m·10.0 m 측정거리의 SAC 전 계열과 차량용 대형 챔버를 한자리에서 비교합니다.",
     },
     fac: {
       label: "완전무향 챔버 FAC",
       note: "접지면 없는 자유공간 조건",
       description:
-        "완전무향 EMC 챔버 3종. 테이블탑 FAC-3, 플로어스탠딩 FAC-3 L, 반무향·완전무향 변환형 Transformer.",
+        "완전무향 EMC 챔버. 테이블탑 FAC-3, 플로어스탠딩 FAC-3 L, 반무향·완전무향 변환형 Transformer.",
     },
     chc: {
       label: "컴팩트 챔버 CHC",
       note: "좁은 공간에서의 사전 인증",
       description:
-        "사전 인증(pre-compliance)용 3m 컴팩트 챔버 3종. CHC, CHC Plus, 군수용 MIL CHC.",
+        "사전 인증(pre-compliance)용 3.0 m 컴팩트 챔버. CHC, CHC Plus, 군수용 MIL CHC.",
     },
     component: {
       label: "부품·구동계 챔버",
       note: "부품과 구동계, 챔버 밖 계측",
       description:
-        "부품 단위 시험 챔버 6종. 전장부품용 ACTC·UCC·CTC와 전기차 구동계용 EDTC 시리즈.",
+        "부품 단위 시험 챔버. 전장부품용 ACTC·UCC·CTC와 전기차 구동계용 EDTC 시리즈.",
     },
     rvc: {
       label: "잔향실 RVC",
       note: "흡수체 없이 만드는 통계적 전자기장",
       description:
-        "잔향실 7종. 상용·산업용 RVC e1·e2와 차량·부품용 RVC S~XXL — IEC/EN 61000-4-21, ISO 11452-11 대응, Frankonia 스터러 기반.",
+        "잔향실. 상용·산업용 RVC e1·e2와 차량·부품용 RVC S~XXL — IEC/EN 61000-4-21, ISO 11452-11 대응, Frankonia 스터러 기반.",
     },
     "shielded-room": {
       label: "차폐룸",
@@ -337,33 +337,33 @@ export const typeMeta = {
   en: {
     sac: {
       label: "Semi-Anechoic SAC",
-      note: "Full compliant over a ground plane — 3, 5 and 10 m",
+      note: "Full compliant over a ground plane — 3, 5 and 10.0 m",
       description:
-        "Twelve semi-anechoic EMC chambers — the full SAC range at 3m, 5m and 10m measurement distance, plus the vehicle-scale chambers.",
+        "Semi-anechoic EMC chambers — the full SAC range at 3.0 m, 5.0 m and 10.0 m measurement distance, plus the vehicle-scale chambers.",
     },
     fac: {
       label: "Fully Anechoic FAC",
       note: "Free-space conditions, no ground plane",
       description:
-        "Three fully anechoic EMC chambers: table-top FAC-3, floor-standing FAC-3 L, and the transformable SAC-3 / FAC-3 combination.",
+        "Fully anechoic EMC chambers: table-top FAC-3, floor-standing FAC-3 L, and the transformable SAC-3 / FAC-3 combination.",
     },
     chc: {
       label: "Compact CHC",
       note: "Pre-compliance where the floor area is tight",
       description:
-        "Three 3m compact chambers for pre-compliance testing: CHC, CHC Plus and the military MIL CHC.",
+        "Compact 3.0 m chambers for pre-compliance testing: CHC, CHC Plus and the military MIL CHC.",
     },
     component: {
       label: "Component & E-Drive",
       note: "Components and drivetrains, instruments outside",
       description:
-        "Six component-level chambers — ACTC, UCC and CTC for automotive components, and the EDTC series for electric drivetrains.",
+        "Component-level chambers — ACTC, UCC and CTC for automotive components, and the EDTC series for electric drivetrains.",
     },
     rvc: {
       label: "Reverberation RVC",
       note: "A statistical field, made without absorbers",
       description:
-        "Seven reverberation chambers: RVC e1 and e2 for industry, RVC S to XXL for components and vehicles — to IEC/EN 61000-4-21 and ISO 11452-11, with Frankonia performance stirrers.",
+        "Reverberation chambers: RVC e1 and e2 for industry, RVC S to XXL for components and vehicles — to IEC/EN 61000-4-21 and ISO 11452-11, with Frankonia performance stirrers.",
     },
     "shielded-room": {
       label: "Shielded Room",
@@ -389,7 +389,7 @@ export const topicMeta = {
     automation: {
       label: "자동화 장비",
       description:
-        "FTM 턴테이블(ø1.2~11.0m), FAM·FBM 안테나 마스트, FC06.1 컨트롤러 — CISPR 16-1-4 대응 EMC 시험 자동화.",
+        "FTM 턴테이블(ø1.2~11.0 m), FAM·FBM 안테나 마스트, FC06.1 컨트롤러 — CISPR 16-1-4 대응 EMC 시험 자동화.",
     },
     services: {
       label: "엔지니어링 서비스",
@@ -399,7 +399,7 @@ export const topicMeta = {
     references: {
       label: "구축 사례",
       description:
-        "28개국 106건의 구축 사례, 그리고 설치 현장 3곳의 360° 파노라마.",
+        "전 세계에 구축된 Frankonia 챔버의 고객사 목록과, 설치 현장의 360° 파노라마.",
     },
   },
   en: {
@@ -426,7 +426,7 @@ export const topicMeta = {
     references: {
       label: "References",
       description:
-        "106 installations across 28 countries, with 360° panoramas from three of them.",
+        "Frankonia installations worldwide, listed by country, with 360° panoramas from the sites.",
     },
   },
 } as const satisfies Record<Lang, Record<ChamberTopic, Entry>>;
@@ -441,27 +441,27 @@ export const topicMeta = {
  */
 export const modelMeta: Record<Lang, Record<string, Entry>> = {
   ko: {
-    "sac-3-plus": { label: "SAC-3 Plus", description: "3m 돔 설계 반무향실. 자기 등급에서 가장 많이 선택된 모델로, Quiet Zone ø1.2~2.0m의 네 가지 크기와 CISPR 16-1-4 · ANSI C63.4 정식 인증을 제공합니다." },
-    "sac-3-square": { label: "SAC-3 Square", description: "3m 정방형 반무향실. Quiet Zone ø2.0m 또는 ø3.0m, 대형 턴테이블과 이동식 다이나모미터 통합이 가능합니다." },
-    "sac-5-plus": { label: "SAC-5 Plus", description: "5m 돔 설계 반무향실. 3.0m와 5.0m 측정 거리를 함께 쓰며 Quiet Zone은 ø3.0m까지입니다." },
-    "sac-5-square": { label: "SAC-5 Square", description: "5m 정방형 반무향실. 3.0m·5.0m 측정 거리에 Quiet Zone ø2.0~4.0m, XL 구성은 대형 턴테이블을 수용합니다." },
-    "sac-10-plus": { label: "SAC-10 Plus", description: "단일 시험 축의 10m 반무향실. 다각형 셸로 만든 Frankonia의 가장 콤팩트한 10m 챔버입니다." },
-    "sac-10-plus-triton": { label: "SAC-10 Plus Triton", description: "하나의 다각형 셸에 10.0m 축 1개와 3.0m 축 2개를 담은 10m 반무향실. 안테나와 바닥 흡수체를 연결한 채로 둘 수 있습니다." },
-    "sac-10-h-hybrid": { label: "SAC-10/H Hybrid", description: "Frankosorb® 하이브리드 라이닝의 10m 반무향실. Quiet Zone ø3.0~6.0m에 맞춰 네 가지 크기로 제작됩니다." },
-    "sac-10-p-pyramid": { label: "SAC-10/P Pyramid", description: "P2400 롱피라미드 흡수체로 전면 라이닝한 10m 반무향실. 하이브리드 라이닝의 비용 효율적인 대안입니다." },
-    "sac-10-v": { label: "SAC-10V", description: "다이나모미터를 내장한 ECE R10 차량 시험용 10m 반무향실. 하이브리드와 롱피라미드 두 계열, 최대 18m 차량까지 수용합니다." },
-    avtc: { label: "AVTC", description: "3m·5m 차량 시험 챔버. 부품(CISPR 25) · 차량(CISPR 12) · 상용 제품(CISPR 16-1-4) 시험을 한 챔버에서 수행합니다." },
-    actc: { label: "ACTC", description: "1.0m 거리의 CISPR 25 자동차 부품 시험 챔버. ISO 11452 정식 인증에 대응하며 L 구성은 차량 시험까지 가능합니다." },
-    ucc: { label: "UCC", description: "1.0m 거리의 초소형 하이브리드 챔버. CISPR 25 사전 인증용이며 GTEM 셀의 대안입니다." },
+    "sac-3-plus": { label: "SAC-3 Plus", description: "3.0 m 돔 설계 반무향실. 자기 등급에서 가장 많이 선택된 모델로, Quiet Zone ø1.2~2.0 m의 네 가지 크기와 CISPR 16-1-4 · ANSI C63.4 정식 인증을 제공합니다." },
+    "sac-3-square": { label: "SAC-3 Square", description: "3.0 m 정방형 반무향실. Quiet Zone ø2.0 m 또는 ø3.0 m, 대형 턴테이블과 이동식 다이나모미터 통합이 가능합니다." },
+    "sac-5-plus": { label: "SAC-5 Plus", description: "5.0 m 돔 설계 반무향실. 3.0 m와 5.0 m 측정 거리를 함께 쓰며 Quiet Zone은 ø3.0 m까지입니다." },
+    "sac-5-square": { label: "SAC-5 Square", description: "5.0 m 정방형 반무향실. 3.0 m·5.0 m 측정 거리에 Quiet Zone ø2.0~4.0 m, XL 구성은 대형 턴테이블을 수용합니다." },
+    "sac-10-plus": { label: "SAC-10 Plus", description: "단일 시험 축의 10.0 m 반무향실. 다각형 셸로 만든 Frankonia의 가장 콤팩트한 10.0 m 챔버입니다." },
+    "sac-10-plus-triton": { label: "SAC-10 Plus Triton", description: "하나의 다각형 셸에 10.0 m 축 1개와 3.0 m 축 2개를 담은 10.0 m 반무향실. 안테나와 바닥 흡수체를 연결한 채로 둘 수 있습니다." },
+    "sac-10-h-hybrid": { label: "SAC-10/H Hybrid", description: "Frankosorb® 하이브리드 라이닝의 10.0 m 반무향실. Quiet Zone ø3.0~6.0 m에 맞춰 네 가지 크기로 제작됩니다." },
+    "sac-10-p-pyramid": { label: "SAC-10/P Pyramid", description: "P2400 롱피라미드 흡수체로 전면 라이닝한 10.0 m 반무향실. 하이브리드 라이닝의 비용 효율적인 대안입니다." },
+    "sac-10-v": { label: "SAC-10V", description: "다이나모미터를 내장한 ECE R10 차량 시험용 10.0 m 반무향실. 하이브리드와 롱피라미드 두 계열, 최대 18.0 m 차량까지 수용합니다." },
+    avtc: { label: "AVTC", description: "3.0 m·5.0 m 차량 시험 챔버. 부품(CISPR 25) · 차량(CISPR 12) · 상용 제품(CISPR 16-1-4) 시험을 한 챔버에서 수행합니다." },
+    actc: { label: "ACTC", description: "1.0 m 거리의 CISPR 25 자동차 부품 시험 챔버. ISO 11452 정식 인증에 대응하며 L 구성은 차량 시험까지 가능합니다." },
+    ucc: { label: "UCC", description: "1.0 m 거리의 초소형 하이브리드 챔버. CISPR 25 사전 인증용이며 GTEM 셀의 대안입니다." },
     ctc: { label: "CTC", description: "산업·자동차·군수 부품의 내성 시험에 특화된 부품 시험 챔버. IEC 61000-4-3 · CISPR 25 · ISO 11452 · MIL-STD 461 · DO-160 정식 인증." },
-    chc: { label: "CHC", description: "3.0m 거리 Quiet Zone ø1.2m의 컴팩트 하이브리드 챔버. 사전 인증 방출과 정식 인증 내성 시험을 함께 수행합니다." },
+    chc: { label: "CHC", description: "3.0 m 거리 Quiet Zone ø1.2 m의 컴팩트 하이브리드 챔버. 사전 인증 방출과 정식 인증 내성 시험을 함께 수행합니다." },
     "chc-plus": { label: "CHC Plus", description: "1GHz~18GHz 구간의 정식 인증 방출 측정을 더한 컴팩트 하이브리드 챔버." },
-    "fac-3": { label: "FAC-3", description: "테이블탑 피시험체용 3m 완전무향실. 접지면 없는 자유공간 조건에서 CISPR 16-1-4 · IEC/EN 61000-4-22 정식 인증." },
-    "fac-3-l": { label: "FAC-3 L", description: "거치형과 테이블탑 피시험체를 모두 수용하는 확장형 3m 완전무향실. 안테나 마스트를 이용한 높이 스캔이 가능합니다." },
-    "sac-3-fac-3-transformer": { label: "SAC-3 / FAC-3 Transformer", description: "접지면을 갖춘 반무향과 바닥 흡수체를 깐 완전무향 사이를 전환하는 3m 챔버. 두 구성 각각의 성능이 보증됩니다." },
-    rvc: { label: "잔향실 RVC", description: "Frankonia 스터러 패키지를 갖춘 잔향실 7종. 소형 부품용 RVC S부터 대형 차량용 RVC XXL까지, IEC/EN 61000-4-21 · ISO 11452-11 · ISO 11451-5." },
-    "mil-chc": { label: "MIL CHC", description: "MIL-STD 461 · DO-160 부품 시험용 컴팩트 하이브리드 챔버. 1.0m 거리, 9kHz/30MHz~40GHz." },
-    "mil-std-chamber": { label: "MIL-STD Chamber", description: "대형 피시험체와 차량을 위한 군용 챔버. MIL-STD 461 기준 1.0m 거리, 숏피라미드 흡수체로 80MHz~40GHz." },
+    "fac-3": { label: "FAC-3", description: "테이블탑 피시험체용 3.0 m 완전무향실. 접지면 없는 자유공간 조건에서 CISPR 16-1-4 · IEC/EN 61000-4-22 정식 인증." },
+    "fac-3-l": { label: "FAC-3 L", description: "거치형과 테이블탑 피시험체를 모두 수용하는 확장형 3.0 m 완전무향실. 안테나 마스트를 이용한 높이 스캔이 가능합니다." },
+    "sac-3-fac-3-transformer": { label: "SAC-3 / FAC-3 Transformer", description: "접지면을 갖춘 반무향과 바닥 흡수체를 깐 완전무향 사이를 전환하는 3.0 m 챔버. 두 구성 각각의 성능이 보증됩니다." },
+    rvc: { label: "잔향실 RVC", description: "Frankonia 스터러 패키지를 갖춘 잔향실. 소형 부품용 RVC S부터 대형 차량용 RVC XXL까지, IEC/EN 61000-4-21 · ISO 11452-11 · ISO 11451-5." },
+    "mil-chc": { label: "MIL CHC", description: "MIL-STD 461 · DO-160 부품 시험용 컴팩트 하이브리드 챔버. 1.0 m 거리, 9kHz/30MHz~40GHz." },
+    "mil-std-chamber": { label: "MIL-STD Chamber", description: "대형 피시험체와 차량을 위한 군용 챔버. MIL-STD 461 기준 1.0 m 거리, 숏피라미드 흡수체로 80MHz~40GHz." },
     "mil-std-chamber-advanced": { label: "MIL-STD Chamber Advanced", description: "군용 규격과 상용·자동차 시험장 요건을 함께 만족하는 군용 챔버. 롱피라미드 또는 하이브리드 라이닝." },
     "edtc-sa": { label: "EDTC-SA", description: "고정축 외부 부하기 1대를 전제로 제작하는 구동계 시험 챔버. CISPR 25 방출과 ISO 11452 내성 시험용." },
     "edtc-ax": { label: "EDTC-AX", description: "e-액슬 시험용 구동계 챔버. 고정축 외부 부하기 2대를 수용하는 특허 구성입니다." },
@@ -469,25 +469,25 @@ export const modelMeta: Record<Lang, Record<string, Entry>> = {
     "shielded-room": { label: "Shielded Room", description: "모듈형 사전 제작 PAN 타입 차폐룸. 크기 제한이 없고 10kHz~40GHz에서 최대 120dB의 차폐 성능을 보증합니다." },
   },
   en: {
-    "sac-3-plus": { label: "SAC-3 Plus", description: "3 m semi-anechoic chamber in dome design — the most selected chamber in its class, in four sizes from a ø1.2 m to a ø2.0 m quiet zone, full compliant to CISPR 16-1-4 and ANSI C63.4." },
-    "sac-3-square": { label: "SAC-3 Square", description: "3 m semi-anechoic chamber in the traditional square design, with a ø2.0 m or ø3.0 m quiet zone and room for a large turntable or a mobile dynamometer." },
-    "sac-5-plus": { label: "SAC-5 Plus", description: "5 m semi-anechoic chamber in dome design, covering both the 3.0 m and 5.0 m measuring distance with a quiet zone up to ø3.0 m." },
-    "sac-5-square": { label: "SAC-5 Square", description: "5 m semi-anechoic chamber in the traditional square design — 3.0 m and 5.0 m measuring distances, quiet zone ø2.0 m to ø4.0 m." },
-    "sac-10-plus": { label: "SAC-10 Plus", description: "10 m semi-anechoic chamber with a single test axis — the most compact 10 m chamber Frankonia builds, in a polygonal shell." },
-    "sac-10-plus-triton": { label: "SAC-10 Plus Triton", description: "10 m semi-anechoic chamber with one 10.0 m and two 3.0 m test axes in one polygonal shell, antennas and floor absorbers staying connected between them." },
-    "sac-10-h-hybrid": { label: "SAC-10/H Hybrid", description: "10 m semi-anechoic chamber lined with Frankosorb® hybrid absorbers, built in four sizes for a ø3.0 m to ø6.0 m quiet zone." },
-    "sac-10-p-pyramid": { label: "SAC-10/P Pyramid", description: "10 m semi-anechoic chamber fully lined with P2400 long-pyramid absorbers — the cost-efficient alternative to a hybrid lining." },
-    "sac-10-v": { label: "SAC-10V", description: "10 m semi-anechoic chamber for ECE R10 vehicle testing with an integrated dynamometer, in hybrid and long-pyramid versions for vehicles up to 18 m." },
-    avtc: { label: "AVTC", description: "3 m and 5 m automotive vehicle testing chamber — components to CISPR 25, vehicles to CISPR 12 and commercial products to CISPR 16-1-4 in one solution." },
+    "sac-3-plus": { label: "SAC-3 Plus", description: "3.0 m semi-anechoic chamber in dome design — the most selected chamber in its class, in four sizes from a ø1.2 m to a ø2.0 m quiet zone, full compliant to CISPR 16-1-4 and ANSI C63.4." },
+    "sac-3-square": { label: "SAC-3 Square", description: "3.0 m semi-anechoic chamber in the traditional square design, with a ø2.0 m or ø3.0 m quiet zone and room for a large turntable or a mobile dynamometer." },
+    "sac-5-plus": { label: "SAC-5 Plus", description: "5.0 m semi-anechoic chamber in dome design, covering both the 3.0 m and 5.0 m measuring distance with a quiet zone up to ø3.0 m." },
+    "sac-5-square": { label: "SAC-5 Square", description: "5.0 m semi-anechoic chamber in the traditional square design — 3.0 m and 5.0 m measuring distances, quiet zone ø2.0 m to ø4.0 m." },
+    "sac-10-plus": { label: "SAC-10 Plus", description: "10.0 m semi-anechoic chamber with a single test axis — the most compact 10.0 m chamber Frankonia builds, in a polygonal shell." },
+    "sac-10-plus-triton": { label: "SAC-10 Plus Triton", description: "10.0 m semi-anechoic chamber with one 10.0 m and two 3.0 m test axes in one polygonal shell, antennas and floor absorbers staying connected between them." },
+    "sac-10-h-hybrid": { label: "SAC-10/H Hybrid", description: "10.0 m semi-anechoic chamber lined with Frankosorb® hybrid absorbers, built in four sizes for a ø3.0 m to ø6.0 m quiet zone." },
+    "sac-10-p-pyramid": { label: "SAC-10/P Pyramid", description: "10.0 m semi-anechoic chamber fully lined with P2400 long-pyramid absorbers — the cost-efficient alternative to a hybrid lining." },
+    "sac-10-v": { label: "SAC-10V", description: "10.0 m semi-anechoic chamber for ECE R10 vehicle testing with an integrated dynamometer, in hybrid and long-pyramid versions for vehicles up to 18.0 m." },
+    avtc: { label: "AVTC", description: "3.0 m and 5.0 m automotive vehicle testing chamber — components to CISPR 25, vehicles to CISPR 12 and commercial products to CISPR 16-1-4 in one solution." },
     actc: { label: "ACTC", description: "CISPR 25 automotive component testing chamber at 1.0 m, full compliant to ISO 11452, with an L configuration large enough for vehicle tests." },
     ucc: { label: "UCC", description: "Ultra-compact hybrid chamber at 1.0 m for pre-compliance testing to the CISPR 25 method — an alternative to the GTEM cell." },
     ctc: { label: "CTC", description: "Component test chamber focused on immunity testing for industrial, automotive and military components — IEC 61000-4-3, CISPR 25, ISO 11452, MIL-STD 461 and DO-160." },
     chc: { label: "CHC", description: "Compact hybrid chamber with a ø1.2 m quiet zone at 3.0 m — pre-compliance emission and full compliant immunity in one room." },
     "chc-plus": { label: "CHC Plus", description: "The compact hybrid chamber in the advanced setup, adding compliant emission measurement from 1 GHz to 18 GHz." },
-    "fac-3": { label: "FAC-3", description: "3 m fully anechoic chamber for table-top EUTs — free-space conditions without a ground plane, full compliant to CISPR 16-1-4 and IEC/EN 61000-4-22." },
-    "fac-3-l": { label: "FAC-3 L", description: "Extended 3 m fully anechoic chamber for floor-standing as well as table-top EUTs, with a height scan on a FAM or FBM antenna mast." },
-    "sac-3-fac-3-transformer": { label: "SAC-3 / FAC-3 Transformer", description: "One 3 m chamber converted between semi-anechoic with a ground plane and fully anechoic with floor absorbers, each configuration with its own guaranteed performance." },
-    rvc: { label: "Reverberation Chambers", description: "Seven reverberation chambers with the Frankonia stirrer package, from the RVC S for components to the RVC XXL for large vehicles — IEC/EN 61000-4-21, ISO 11452-11 and ISO 11451-5." },
+    "fac-3": { label: "FAC-3", description: "3.0 m fully anechoic chamber for table-top EUTs — free-space conditions without a ground plane, full compliant to CISPR 16-1-4 and IEC/EN 61000-4-22." },
+    "fac-3-l": { label: "FAC-3 L", description: "Extended 3.0 m fully anechoic chamber for floor-standing as well as table-top EUTs, with a height scan on a FAM or FBM antenna mast." },
+    "sac-3-fac-3-transformer": { label: "SAC-3 / FAC-3 Transformer", description: "One 3.0 m chamber converted between semi-anechoic with a ground plane and fully anechoic with floor absorbers, each configuration with its own guaranteed performance." },
+    rvc: { label: "Reverberation Chambers", description: "Reverberation chambers with the Frankonia stirrer package, from the RVC S for components to the RVC XXL for large vehicles — IEC/EN 61000-4-21, ISO 11452-11 and ISO 11451-5." },
     "mil-chc": { label: "MIL CHC", description: "Compact hybrid chamber for MIL-STD 461 and DO-160 component testing at 1.0 m, 9 kHz / 30 MHz to 40 GHz." },
     "mil-std-chamber": { label: "MIL-STD Chamber", description: "Military testing chamber for vehicles and large EUTs — MIL-STD 461 at 1.0 m, short-pyramid absorbers from 80 MHz to 40 GHz." },
     "mil-std-chamber-advanced": { label: "MIL-STD Chamber Advanced", description: "Military chamber that also meets commercial and automotive test site requirements, lined with long-pyramid or hybrid absorbers." },
@@ -503,28 +503,15 @@ export const chambersOverviewMeta = {
     label: "챔버",
     title: "Anechoic Chambers",
     description:
-      "Frankosorb® 흡수체 기반의 모듈형 EMC 챔버 32종. 산업군별로도, 챔버 형식별로도 찾아보실 수 있습니다.",
+      "Frankosorb® 흡수체 기반의 모듈형 EMC 챔버. 산업군별로도, 챔버 형식별로도 찾아보실 수 있습니다.",
   },
   en: {
     label: "Anechoic Chambers",
     title: "Anechoic Chambers",
     description:
-      "Thirty-two modular EMC chambers built on Frankosorb® absorber technology — browse by industry or by chamber type.",
+      "Modular EMC chambers built on Frankosorb® absorber technology — browse by industry or by chamber type.",
   },
 } as const satisfies Record<Lang, { label: string; title: string; description: string }>;
-
-export const downloadsMeta = {
-  ko: {
-    label: "자료실",
-    description:
-      "Frankonia 챔버 카탈로그, 포토북, 서비스 포트폴리오, ISO 9001 인증서 다운로드.",
-  },
-  en: {
-    label: "Downloads",
-    description:
-      "Frankonia chamber catalogue, photobook, service portfolio and ISO 9001 certificate downloads.",
-  },
-} as const satisfies Record<Lang, { label: string; description: string }>;
 
 /** Column headings for the Chambers mega dropdown. The captions under each
  *  link come from the industry's and the type's own meta. */
@@ -549,15 +536,6 @@ export const topicPath = (t: ChamberTopic) => `/chambers/${t}`;
 /** A model page sits a segment deeper than the two index axes, which is what
  *  keeps it out of `/chambers/[topic]`'s way. */
 export const modelPath = (slug: string) => `/chambers/model/${slug}`;
-
-/**
- * One downloads hub for the whole site, not one per branch. The head office
- * splits catalogues (Download Area, under Anechoic Chambers) from papers
- * (Publications, under Company); this keeps that split but stops the Contact
- * menu's "catalogue" entry pointing at the papers page, which is where it
- * used to land.
- */
-export const downloadsPath = "/downloads";
 
 /**
  * The three installations the head office publishes a 360° panorama of, in its
@@ -688,16 +666,6 @@ export const referenceCountryLabel = {
     switzerland: "Switzerland", ukraine: "Ukraine", international: "International",
   },
 } as const satisfies Record<Lang, Record<ReferenceCountry, string>>;
-
-/** Entries, and countries excluding `international`. Counted rather than
- *  written down, so the figures on the page cannot drift from the list above.
- *  The one place they are still written by hand is
- *  `topicMeta.references.description`, which metadata reads as a static
- *  string. */
-export const referenceTotals = {
-  entries: referenceGroups.reduce((n, g) => n + g.customers.length, 0),
-  countries: referenceGroups.filter((g) => g.country !== "international").length,
-};
 
 /**
  * Page copy for a chamber page, carried over from the 2026 catalogue.
@@ -959,7 +927,7 @@ export const topicBody: Record<Lang, Partial<Record<ChamberTopic, TopicBody>>> =
     frankosorb: {
       lead: [
         "Frankonia의 Frankosorb® 나노 박막 흡수체 기술이 세계 시장에 자리 잡은 이래, 안정적인 성능 특성을 평가하는 고객이 계속 늘고 있습니다. Frankosorb®는 35년 이상 가동하는 동안 오작동·결함·품질 저하·성능 손실이 없었고, 교체 보수도 필요하지 않았습니다.",
-        "이 기술은 페라이트 흡수체와 결합한 하이브리드 방식으로도, 길이 2.4m까지의 단독 피라미드 방식으로도 제공됩니다. 장피라미드 흡수체의 가장 큰 장점은 26MHz~40GHz 전 대역을 단독으로 커버한다는 점입니다 — 페라이트 흡수체를 따로 두지 않아도 되므로 그 자체가 비용 절감입니다.",
+        "이 기술은 페라이트 흡수체와 결합한 하이브리드 방식으로도, 길이 2.4 m까지의 단독 피라미드 방식으로도 제공됩니다. 장피라미드 흡수체의 가장 큰 장점은 26MHz~40GHz 전 대역을 단독으로 커버한다는 점입니다 — 페라이트 흡수체를 따로 두지 않아도 되므로 그 자체가 비용 절감입니다.",
       ],
       figure: { src: "/chambers/images/topic-frankosorb.webp", w: 1280, h: 533 },
       groups: [
@@ -1052,7 +1020,7 @@ export const topicBody: Record<Lang, Partial<Record<ChamberTopic, TopicBody>>> =
       figure: { src: "/chambers/images/topic-automation.webp", w: 1600, h: 1067 },
       groups: [
         { title: "턴테이블 — FTM 시리즈", items: [
-          "ø1.2m~ø12.0m 매립형 턴테이블, 최대 80톤",
+          "ø1.2 m~ø12.0 m 매립형 턴테이블, 최대 80톤",
           "에너지 체인, 데이터·전기·유체용 로터리 조인트, 배기·냉각 계통, 고객 지정 품목 통합",
           "다이나모미터 통합 — 고정형, 프리롤러, 이동식 온톱",
           "독립 소프트웨어(SCPI 명령)를 갖춘 FC06.1 컨트롤러",
@@ -1191,7 +1159,7 @@ export const overviewBody: Record<Lang, TopicBody> = {
   },
   ko: {
     lead: [
-      "Frankonia는 1987년부터 EMC·안테나 시험실을 지어 왔습니다. 이 페이지에 실린 제품군은 개별 제품의 목록이 아니라 하나의 시스템입니다 — 차폐룸, 사전 인증용 컴팩트 챔버, 3m·5m·10m의 반무향·완전무향 계열, 부품과 구동계 챔버, 그리고 단일 부품부터 대형 차량까지 수용하는 잔향실.",
+      "Frankonia는 1987년부터 EMC·안테나 시험실을 지어 왔습니다. 이 페이지에 실린 제품군은 개별 제품의 목록이 아니라 하나의 시스템입니다 — 차폐룸, 사전 인증용 컴팩트 챔버, 3.0 m·5.0 m·10.0 m의 반무향·완전무향 계열, 부품과 구동계 챔버, 그리고 단일 부품부터 대형 차량까지 수용하는 잔향실.",
       "전부 모듈형 사전 제작입니다. 용접도 접착도 하지 않고, 도전성 메시 개스킷 위로 패널을 75mm 간격으로 안쪽에서 볼트 체결합니다. 인수 후 오랜 시간이 지나도 개조·증설·이전·재매각이 가능한 이유입니다. 차폐 성능은 시스템 전체에서 동일하며, 그 바탕이 되는 흡수체 기술도 하나입니다 — 35년 이상 결함 없이 가동해 온 Frankosorb®.",
     ],
     figure: {
@@ -1256,7 +1224,7 @@ export const industryBody: Record<Lang, Partial<Record<ChamberIndustry, TopicBod
     automotive: {
       lead: [
         "The automotive range follows a part from the bench to the vehicle. The ACTC tests components at 1.0 m to CISPR 25 and ISO 11452, with the permanent plug-in contact strip and the bonded test table the standard asks for; the UCC does the same work pre-compliantly in an ultra-compact shell, as an alternative to the GTEM cell and for research.",
-        "The AVTC brings components, whole vehicles and commercial products into one chamber at 3.0 m or 5.0 m, and the SAC-10V is the 10 m vehicle chamber with an integrated dynamometer for ECE R10 — up to a heavy-load test zone for vehicles 18 m long.",
+        "The AVTC brings components, whole vehicles and commercial products into one chamber at 3.0 m or 5.0 m, and the SAC-10V is the 10.0 m vehicle chamber with an integrated dynamometer for ECE R10 — up to a heavy-load test zone for vehicles 18.0 m long.",
         "Beside them stand five reverberation chambers, from a component in the RVC S to a large vehicle in the RVC XXL, listed with the rest of the range below.",
       ],
       figure: {
@@ -1287,11 +1255,11 @@ export const industryBody: Record<Lang, Partial<Record<ChamberIndustry, TopicBod
           rows: [
             ["SAC-10VC-6/H", "23,030 × 14,480 × 6,300 mm", "QZ ø6.0 m at 5.0 m test distance (H = 2.5 m)\nPrepared for a 10.0 m test distance for vehicle tests"],
             ["SAC-10V-6/H", "22,580 × 15,680 × 8,700 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)"],
-            ["SAC-10V-6/H (SL12)", "24,380 × 16,580 × 9,000 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 12 m long vehicles"],
-            ["SAC-10V-6/H (SL18)", "26,780 × 18,080 × 9,000 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 18 m long vehicles"],
+            ["SAC-10V-6/H (SL12)", "24,380 × 16,580 × 9,000 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 12.0 m long vehicles"],
+            ["SAC-10V-6/H (SL18)", "26,780 × 18,080 × 9,000 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 18.0 m long vehicles"],
             ["SAC-10V-6/P", "26,480 × 20,180 × 9,000 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)"],
-            ["SAC-10V-6/P (SL12)", "26,480 × 20,180 × 10,500 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 12 m long vehicles"],
-            ["SAC-10V-6/P (SL18)", "30,080 × 20,180 × 10,500 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 18 m long vehicles"],
+            ["SAC-10V-6/P (SL12)", "26,480 × 20,180 × 10,500 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 12.0 m long vehicles"],
+            ["SAC-10V-6/P (SL18)", "30,080 × 20,180 × 10,500 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 18.0 m long vehicles"],
           ] },
       ],
       groups: [
@@ -1310,7 +1278,7 @@ export const industryBody: Record<Lang, Partial<Record<ChamberIndustry, TopicBod
           "Floor absorber board for an efficient and fast modification of the test setup (AVTC)",
           "Upgradeable for E-Drive throughout: load machine, EMC-BlueBox, battery test system",
           "Optimised Frankosorb® hybrid lining — Ferrite with H450 in the ACTC and UCC, Ferrite with H1000 and H600 in the AVTC",
-          "Heavy load test zones for 12 m and 18 m vehicles in the SAC-10V SL12 and SL18",
+          "Heavy load test zones for 12.0 m and 18.0 m vehicles in the SAC-10V SL12 and SL18",
         ] },
       ],
     },
@@ -1361,7 +1329,7 @@ export const industryBody: Record<Lang, Partial<Record<ChamberIndustry, TopicBod
     },
     commercial: {
       lead: [
-        "The commercial range is the widest of the four: seventeen chambers, from a bare shielded room to a 10 m semi-anechoic chamber with a ø6.0 m quiet zone. Which one a laboratory needs follows from two figures — the measuring distance the standard asks for, and the quiet zone the EUT has to sit inside.",
+        "The commercial range is the widest of the four: seventeen chambers, from a bare shielded room to a 10.0 m semi-anechoic chamber with a ø6.0 m quiet zone. Which one a laboratory needs follows from two figures — the measuring distance the standard asks for, and the quiet zone the EUT has to sit inside.",
         "From 3.0 m upwards the chambers are full compliant for emission to CISPR 16-1-4 and ANSI C63.4 and for immunity to IEC/EN 61000-4-3. Below that, the compact chambers trade compliant emission for a room that fits an existing building: the CHC is pre-compliant for emission and full compliant for immunity, and the CHC Plus adds compliant emission above 1 GHz.",
       ],
       figure: {
@@ -1394,7 +1362,7 @@ export const industryBody: Record<Lang, Partial<Record<ChamberIndustry, TopicBod
         ] },
         { title: "Shared construction", items: [
           "Modular, prefabricated PAN type shielding — nothing welded, nothing glued",
-          "Optimised Frankosorb® hybrid absorber lining, or a full long-pyramid lining at 10 m",
+          "Optimised Frankosorb® hybrid absorber lining, or a full long-pyramid lining at 10.0 m",
           "Non-combustible absorbers to EN 13501-1 class A2 - s1 d0, class B as the alternative",
           "Upgradeable for E-Drive across the SAC families: load machine, EMC-BlueBox, battery test system",
           "CE conformity per Machinery Directive 2006/42/EC for the product as standard, or for the complete laboratory as an option",
@@ -1460,9 +1428,9 @@ export const industryBody: Record<Lang, Partial<Record<ChamberIndustry, TopicBod
   ko: {
     automotive: {
       lead: [
-        "자동차 계열은 부품이 차량에 실리기까지의 경로를 그대로 따라갑니다. ACTC는 1.0m 거리에서 CISPR 25와 ISO 11452에 따라 부품을 시험하며, 규격이 요구하는 상시 플러그인 접촉 스트립과 접지 연결된 시험대를 갖춥니다. UCC는 같은 시험을 사전 인증 수준으로, 초소형 챔버에서 수행합니다 — GTEM 셀의 대안이자 연구용 솔루션입니다.",
-        "AVTC는 부품과 완성차, 상용 제품 시험을 3.0m 또는 5.0m 거리의 한 챔버에 모읍니다. SAC-10V는 다이나모미터를 내장한 10m 차량 챔버로 ECE R10에 대응하며, 최대 18m 길이 차량을 위한 중하중 시험 구역까지 구성할 수 있습니다.",
-        "여기에 잔향실 5종이 더해집니다. RVC S의 부품부터 RVC XXL의 대형 차량까지, 아래 라인업에 함께 실려 있습니다.",
+        "자동차 계열은 부품이 차량에 실리기까지의 경로를 그대로 따라갑니다. ACTC는 1.0 m 거리에서 CISPR 25와 ISO 11452에 따라 부품을 시험하며, 규격이 요구하는 상시 플러그인 접촉 스트립과 접지 연결된 시험대를 갖춥니다. UCC는 같은 시험을 사전 인증 수준으로, 초소형 챔버에서 수행합니다 — GTEM 셀의 대안이자 연구용 솔루션입니다.",
+        "AVTC는 부품과 완성차, 상용 제품 시험을 3.0 m 또는 5.0 m 거리의 한 챔버에 모읍니다. SAC-10V는 다이나모미터를 내장한 10.0 m 차량 챔버로 ECE R10에 대응하며, 최대 18.0 m 길이 차량을 위한 중하중 시험 구역까지 구성할 수 있습니다.",
+        "여기에 잔향실이 더해집니다. RVC S의 부품부터 RVC XXL의 대형 차량까지, 아래 라인업에 함께 실려 있습니다.",
       ],
       figure: {
         src: "/chambers/images/ind-automotive-vehicle.webp", w: 1600, h: 1095,
@@ -1492,11 +1460,11 @@ export const industryBody: Record<Lang, Partial<Record<ChamberIndustry, TopicBod
           rows: [
             ["SAC-10VC-6/H", "23,030 × 14,480 × 6,300 mm", "QZ ø6.0 m at 5.0 m test distance (H = 2.5 m)\nPrepared for a 10.0 m test distance for vehicle tests"],
             ["SAC-10V-6/H", "22,580 × 15,680 × 8,700 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)"],
-            ["SAC-10V-6/H (SL12)", "24,380 × 16,580 × 9,000 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 12 m long vehicles"],
-            ["SAC-10V-6/H (SL18)", "26,780 × 18,080 × 9,000 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 18 m long vehicles"],
+            ["SAC-10V-6/H (SL12)", "24,380 × 16,580 × 9,000 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 12.0 m long vehicles"],
+            ["SAC-10V-6/H (SL18)", "26,780 × 18,080 × 9,000 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 18.0 m long vehicles"],
             ["SAC-10V-6/P", "26,480 × 20,180 × 9,000 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)"],
-            ["SAC-10V-6/P (SL12)", "26,480 × 20,180 × 10,500 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 12 m long vehicles"],
-            ["SAC-10V-6/P (SL18)", "30,080 × 20,180 × 10,500 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 18 m long vehicles"],
+            ["SAC-10V-6/P (SL12)", "26,480 × 20,180 × 10,500 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 12.0 m long vehicles"],
+            ["SAC-10V-6/P (SL18)", "30,080 × 20,180 × 10,500 mm", "QZ ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 18.0 m long vehicles"],
           ] },
       ],
       groups: [
@@ -1505,7 +1473,7 @@ export const industryBody: Record<Lang, Partial<Record<ChamberIndustry, TopicBod
           "ISO 11452·ISO 11451에 따른 전 규격 면역(EMS) 적합",
           "CISPR 16-1-4·ANSI C63.4에 따른 전 규격 방출 적합 — NSA ±3.5 dB (30 MHz~1 GHz), SVSWR +5.5 dB (1~18 GHz), NSIL ±4.0 dB (9 kHz~30 MHz)",
           "IEC/EN 61000-4-3에 따른 전 규격 면역 적합 — FU 0/+6 dB, 16개 측정점의 75 % (26/80 MHz~18 GHz)",
-          "다이나모미터를 갖춘 ECE R10 — AVTC는 3.0m, SAC-10V는 10.0m 거리",
+          "다이나모미터를 갖춘 ECE R10 — AVTC는 3.0 m, SAC-10V는 10.0 m 거리",
           "SAC-10V의 CISPR 36 대응",
           "ACTC 균일 전계 0.5 × 0.5 m at 1.0 m, FU 0/+6 dB 100 % · ACTC L 균일 전계 1.5 × 1.5 m at 3.0 m",
         ] },
@@ -1515,15 +1483,15 @@ export const industryBody: Record<Lang, Partial<Record<ChamberIndustry, TopicBod
           "시험 배치를 빠르게 바꾸기 위한 바닥 흡수체 보드(AVTC)",
           "전 계열 E-Drive 확장 가능 — 부하기, EMC-BlueBox, 배터리 시험 시스템",
           "최적화된 Frankosorb® 하이브리드 라이닝 — ACTC·UCC는 페라이트와 H450, AVTC는 페라이트와 H1000·H600",
-          "SAC-10V SL12·SL18의 12m·18m 차량용 중하중 시험 구역",
+          "SAC-10V SL12·SL18의 12.0 m·18.0 m 차량용 중하중 시험 구역",
         ] },
       ],
     },
     military: {
       lead: [
-        "MIL-STD Chamber는 MIL-STD 461에 따른 1.0m 측정거리의 대형 군용 챔버로, 대형 피시험체와 차량의 방사 방출·면역 시험에 대응합니다. 80 MHz에서 40 GHz까지의 단피라미드 흡수체로 라이닝됩니다.",
+        "MIL-STD Chamber는 MIL-STD 461에 따른 1.0 m 측정거리의 대형 군용 챔버로, 대형 피시험체와 차량의 방사 방출·면역 시험에 대응합니다. 80 MHz에서 40 GHz까지의 단피라미드 흡수체로 라이닝됩니다.",
         "MIL-STD Advanced는 같은 MIL-STD 461 기반 위에 상용·자동차 시험장 요구사항 적합성을 더한 구성으로, 장피라미드 또는 하이브리드 라이닝을 선택할 수 있습니다. 두 솔루션 모두 대형·고중량 피시험체에 대한 고객 요구에 맞춰 전면 맞춤 설계됩니다.",
-        "경량 장비의 부품 단위 시험에는 컴팩트 챔버가 있습니다. Frankosorb® 하이브리드 흡수체를 적용한 MIL CHC와 단피라미드 흡수체를 적용한 MIL CPC로, 둘 다 1.0m 거리에서 MIL-STD 461과 DO-160에 전 규격 적합합니다.",
+        "경량 장비의 부품 단위 시험에는 컴팩트 챔버가 있습니다. Frankosorb® 하이브리드 흡수체를 적용한 MIL CHC와 단피라미드 흡수체를 적용한 MIL CPC로, 둘 다 1.0 m 거리에서 MIL-STD 461과 DO-160에 전 규격 적합합니다.",
       ],
       figure: {
         src: "/chambers/images/ind-military-milchc.webp", w: 744, h: 590,
@@ -1566,8 +1534,8 @@ export const industryBody: Record<Lang, Partial<Record<ChamberIndustry, TopicBod
     },
     commercial: {
       lead: [
-        "일반 산업·전자기기 계열은 네 산업군 중 가장 넓습니다. 차폐룸 한 칸에서 ø6.0m Quiet Zone을 갖춘 10m 반무향 챔버까지 17종이며, 어느 것이 필요한지는 두 값에서 결정됩니다 — 규격이 요구하는 측정 거리, 그리고 피시험체가 들어가야 할 Quiet Zone의 크기입니다.",
-        "3.0m 이상의 챔버는 CISPR 16-1-4·ANSI C63.4 방출과 IEC/EN 61000-4-3 면역에 전 규격 적합합니다. 그 아래의 컴팩트 챔버는 적합 방출 대신 기존 건물에 들어가는 크기를 택한 구성입니다. CHC는 방출 사전 인증·면역 전 규격 적합이고, CHC Plus는 1 GHz 이상의 적합 방출을 더합니다.",
+        "일반 산업·전자기기 계열은 네 산업군 중 가장 넓습니다. 차폐룸 한 칸에서 ø6.0 m Quiet Zone을 갖춘 10.0 m 반무향 챔버까지 이어지며, 어느 것이 필요한지는 두 값에서 결정됩니다 — 규격이 요구하는 측정 거리, 그리고 피시험체가 들어가야 할 Quiet Zone의 크기입니다.",
+        "3.0 m 이상의 챔버는 CISPR 16-1-4·ANSI C63.4 방출과 IEC/EN 61000-4-3 면역에 전 규격 적합합니다. 그 아래의 컴팩트 챔버는 적합 방출 대신 기존 건물에 들어가는 크기를 택한 구성입니다. CHC는 방출 사전 인증·면역 전 규격 적합이고, CHC Plus는 1 GHz 이상의 적합 방출을 더합니다.",
       ],
       figure: {
         src: "/chambers/images/ind-commercial-sac.webp", w: 1600, h: 988,
@@ -1599,7 +1567,7 @@ export const industryBody: Record<Lang, Partial<Record<ChamberIndustry, TopicBod
         ] },
         { title: "공통 구조", items: [
           "모듈형 사전 제작 PAN 타입 차폐 — 용접 없음, 접착 없음",
-          "최적화된 Frankosorb® 하이브리드 라이닝, 또는 10m 계열의 장피라미드 전면 라이닝",
+          "최적화된 Frankosorb® 하이브리드 라이닝, 또는 10.0 m 계열의 장피라미드 전면 라이닝",
           "EN 13501-1 class A2 - s1 d0 불연 흡수체, 대안으로 class B",
           "SAC 계열 전반의 E-Drive 확장 — 부하기, EMC-BlueBox, 배터리 시험 시스템",
           "기계류 지침 2006/42/EC에 따른 CE 적합성 — 제품 단위 기본, 시험실 전체는 옵션",
@@ -1669,7 +1637,7 @@ export const industryBody: Record<Lang, Partial<Record<ChamberIndustry, TopicBod
  *
  * Where an industry page asks what a sector has to prove, a type page asks what
  * a shape of room can do — and the catalogue answers that spread by spread, so
- * these bodies follow its spreads: the dome and square SACs and the two 10 m
+ * these bodies follow its spreads: the dome and square SACs and the two 10.0 m
  * linings (p.18–37), the fully anechoic pair and the Transformer (p.16, p.26),
  * the compact hybrids (p.12), the component and e-drive chambers (p.40, p.48),
  * the reverberation range (p.50) and the shielded room the whole system starts
@@ -1679,9 +1647,9 @@ export const typeBody: Record<Lang, Partial<Record<ChamberType, TopicBody>>> = {
   en: {
     sac: {
       lead: [
-        "A semi-anechoic chamber is lined with absorbers above and reflective below: the floor is a conductive ground plane, which is the test site CISPR 16-1-4 and ANSI C63.4 describe. Twelve of Frankonia's chambers are built that way, at 3, 5 and 10 metres.",
+        "A semi-anechoic chamber is lined with absorbers above and reflective below: the floor is a conductive ground plane, which is the test site CISPR 16-1-4 and ANSI C63.4 describe. Frankonia's semi-anechoic chambers are built that way, at 3, 5 and 10 metres.",
         "Two shells exist for the same distances. The dome design — the SAC-3 Plus and the SAC-5 Plus — shapes the roof so that the Frankosorb® layout minimises reflections; since its introduction the SAC-3 Plus has been the most selected chamber in its class. The square design keeps the traditional shell, reaches a ø4.0 m quiet zone, and takes a larger turntable or a mobile dynamometer.",
-        "At 10 m the question becomes the lining and the number of axes. The SAC-10 Plus is a single axis. The Triton folds one 10.0 m and two 3.0 m axes into one polygonal shell, with the antennas and floor absorbers staying connected between them — which is what cuts the setup time. The SAC-10/H is lined hybrid, the SAC-10/P entirely with P2400 long pyramids as the cost-efficient alternative.",
+        "At 10.0 m the question becomes the lining and the number of axes. The SAC-10 Plus is a single axis. The Triton folds one 10.0 m and two 3.0 m axes into one polygonal shell, with the antennas and floor absorbers staying connected between them — which is what cuts the setup time. The SAC-10/H is lined hybrid, the SAC-10/P entirely with P2400 long pyramids as the cost-efficient alternative.",
       ],
       figure: {
         src: "/chambers/images/type-sac-dome.webp", w: 1600, h: 1095,
@@ -1710,13 +1678,13 @@ export const typeBody: Record<Lang, Partial<Record<ChamberType, TopicBody>>> = {
             ["SAC-5 Square L", "12,680 × 8,180 × 6,000 mm", "QZ ø3.0 m at 3.0 m and 5.0 m test distance (H = 2.5 m)"],
             ["SAC-5 Square XL", "13,280 × 9,380 × 6,300 mm", "QZ ø4.0 m at 5.0 m test distance (H = 2.5 m)\nQZ ø3.0 m at 3.0 m test distance (H = 2.5 m)\nReady for a larger turntable or mobile dynamometer"],
           ] },
-        { title: "10 m — single and multiple test axes",
+        { title: "10.0 m — single and multiple test axes",
           head: ["Configuration", "External dimension (L × W × H)", "Test axes"],
           rows: [
             ["SAC-10 Plus", "19,205 × 12,080 × 8,325 mm", "QZ ø3.0 m at 10.0 m test distance (H = 3.0 m)\nSingle test axis — the cost-saving configuration of the same shell"],
             ["SAC-10 Plus Triton", "19,205 × 12,080 × 8,325 mm", "QZ ø3.0 m with multiple test axes (H = 3.0 m)\n1 × 10.0 m test distance (axis 1 = EMI and EMS)\n1 × 3.0 m test distance (axis 2 = EMI and EMS)\n1 × 3.0 m test distance (axis 3 = EMS)"],
           ] },
-        { title: "10 m — sized to the quiet zone",
+        { title: "10.0 m — sized to the quiet zone",
           note: "/H is lined with Frankosorb® hybrid absorbers — Ferrite with H1000, H600 and the H1300 Turbine; /P is fully lined with P2400 long pyramids. Frequency range 9 kHz / 30 MHz to 18 GHz, 40 GHz as an option.",
           head: ["Configuration", "External dimension (L × W × H)", "Quiet zone"],
           rows: [
@@ -1733,14 +1701,14 @@ export const typeBody: Record<Lang, Partial<Record<ChamberType, TopicBody>>> = {
       groups: [
         { title: "Performance and compliance", items: [
           "Full compliant emission (EMI) according to CISPR 16-1-4 and ANSI C63.4, ETSI upgradeable — NSA ±3.5 dB (30 MHz to 1 GHz), SVSWR +5.5 dB (1 GHz to 18 GHz), NSIL ±4.0 dB (9 kHz to 30 MHz)",
-          "Full compliant immunity (EMS) according to IEC/EN 61000-4-3 — FU 0/+6 dB at 75 % of 16 measuring points, from 30/80 MHz at 3 m and 5 m and from 26/80 MHz at 10 m, up to 18 GHz",
+          "Full compliant immunity (EMS) according to IEC/EN 61000-4-3 — FU 0/+6 dB at 75 % of 16 measuring points, from 30/80 MHz at 3.0 m and 5.0 m and from 26/80 MHz at 10.0 m, up to 18 GHz",
           "Full compliant according to CISPR 25 and MIL-STD 461 in the Triton",
           "Full compliant with military and automotive standards in the SAC-10/H and SAC-10/P",
         ] },
         { title: "What separates them", items: [
           "Dome design: an innovatively shaped roof with an optimised Frankosorb® layout, minimised reflections, and outstanding NSA, SVSWR and FU — the most selected chamber in its class since its introduction",
           "Square design: the traditional shell, a quiet zone from ø2.0 m up to ø4.0 m, a large turntable or mobile dynamometer, and immunity floor absorbers stored in the chamber on trolleys",
-          "Triton: three independent axes in a polygonal shell, antennas and floor absorbers staying connected, and a guided floor absorber arrangement that cuts setup time while reproducibility stays stable — the most compact and lightweight 10 m chamber existing",
+          "Triton: three independent axes in a polygonal shell, antennas and floor absorbers staying connected, and a guided floor absorber arrangement that cuts setup time while reproducibility stays stable — the most compact and lightweight 10.0 m chamber existing",
           "SAC-10/H: adjustable size, characteristics and configuration for different EUT requirements, single or double test axis, specialised for out-of-the-range test environments",
           "SAC-10/P: a full long-pyramid lining as a cost-efficient alternative to hybrid without limitations, with floor absorber storage below the pyramids",
           "All SAC families are upgradeable for E-Drive — load machine, BlueBox, battery test system — and usable for automotive and military standard tests",
@@ -1969,9 +1937,9 @@ export const typeBody: Record<Lang, Partial<Record<ChamberType, TopicBody>>> = {
   ko: {
     sac: {
       lead: [
-        "반무향 챔버는 위는 흡수체, 아래는 반사면입니다. 바닥이 도전성 접지면이며, 이것이 CISPR 16-1-4와 ANSI C63.4가 규정하는 시험장의 형태입니다. Frankonia의 챔버 12종이 이 구조로, 3m·5m·10m 측정거리에 걸쳐 있습니다.",
-        "같은 거리를 두 가지 외형으로 구현합니다. 돔형인 SAC-3 Plus와 SAC-5 Plus는 지붕 형상을 설계해 Frankosorb® 배치가 반사를 최소화하도록 만든 구성으로, SAC-3 Plus는 출시 이후 동급에서 가장 많이 선택된 챔버입니다. 각형은 전통적인 외형을 유지하면서 ø4.0m Quiet Zone까지 확보하고, 더 큰 턴테이블이나 이동식 다이나모미터를 수용합니다.",
-        "10m에서는 질문이 라이닝과 시험 축의 수로 바뀝니다. SAC-10 Plus는 단일 축입니다. Triton은 10.0m 1축과 3.0m 2축을 하나의 다각형 셸에 접어 넣고, 축 사이에서 안테나와 바닥 흡수체를 연결된 채로 둡니다 — 시험 준비 시간이 크게 줄어드는 이유입니다. SAC-10/H는 하이브리드, SAC-10/P는 P2400 장피라미드 전면 라이닝으로 비용 효율적인 대안입니다.",
+        "반무향 챔버는 위는 흡수체, 아래는 반사면입니다. 바닥이 도전성 접지면이며, 이것이 CISPR 16-1-4와 ANSI C63.4가 규정하는 시험장의 형태입니다. Frankonia의 반무향 챔버가 이 구조로, 3.0 m·5.0 m·10.0 m 측정거리에 걸쳐 있습니다.",
+        "같은 거리를 두 가지 외형으로 구현합니다. 돔형인 SAC-3 Plus와 SAC-5 Plus는 지붕 형상을 설계해 Frankosorb® 배치가 반사를 최소화하도록 만든 구성으로, SAC-3 Plus는 출시 이후 동급에서 가장 많이 선택된 챔버입니다. 각형은 전통적인 외형을 유지하면서 ø4.0 m Quiet Zone까지 확보하고, 더 큰 턴테이블이나 이동식 다이나모미터를 수용합니다.",
+        "10.0 m에서는 질문이 라이닝과 시험 축의 수로 바뀝니다. SAC-10 Plus는 단일 축입니다. Triton은 10.0 m 1축과 3.0 m 2축을 하나의 다각형 셸에 접어 넣고, 축 사이에서 안테나와 바닥 흡수체를 연결된 채로 둡니다 — 시험 준비 시간이 크게 줄어드는 이유입니다. SAC-10/H는 하이브리드, SAC-10/P는 P2400 장피라미드 전면 라이닝으로 비용 효율적인 대안입니다.",
       ],
       figure: {
         src: "/chambers/images/type-sac-dome.webp", w: 1600, h: 1095,
@@ -2000,13 +1968,13 @@ export const typeBody: Record<Lang, Partial<Record<ChamberType, TopicBody>>> = {
             ["SAC-5 Square L", "12,680 × 8,180 × 6,000 mm", "QZ ø3.0 m at 3.0 m and 5.0 m test distance (H = 2.5 m)"],
             ["SAC-5 Square XL", "13,280 × 9,380 × 6,300 mm", "QZ ø4.0 m at 5.0 m test distance (H = 2.5 m)\nQZ ø3.0 m at 3.0 m test distance (H = 2.5 m)\nReady for a larger turntable or mobile dynamometer"],
           ] },
-        { title: "10 m — 단일 축과 다중 축",
+        { title: "10.0 m — 단일 축과 다중 축",
           head: ["구성", "외형 치수 (L × W × H)", "시험 축"],
           rows: [
             ["SAC-10 Plus", "19,205 × 12,080 × 8,325 mm", "QZ ø3.0 m at 10.0 m test distance (H = 3.0 m)\n단일 축 — 같은 셸의 비용 절감형 구성"],
             ["SAC-10 Plus Triton", "19,205 × 12,080 × 8,325 mm", "QZ ø3.0 m with multiple test axes (H = 3.0 m)\n1 × 10.0 m test distance (axis 1 = EMI and EMS)\n1 × 3.0 m test distance (axis 2 = EMI and EMS)\n1 × 3.0 m test distance (axis 3 = EMS)"],
           ] },
-        { title: "10 m — Quiet Zone에 맞춘 크기",
+        { title: "10.0 m — Quiet Zone에 맞춘 크기",
           note: "/H는 페라이트와 H1000·H600·H1300 Turbine의 Frankosorb® 하이브리드 라이닝, /P는 P2400 장피라미드 전면 라이닝입니다. 주파수 범위 9 kHz / 30 MHz ~ 18 GHz, 40 GHz 옵션.",
           head: ["구성", "외형 치수 (L × W × H)", "Quiet Zone"],
           rows: [
@@ -2023,14 +1991,14 @@ export const typeBody: Record<Lang, Partial<Record<ChamberType, TopicBody>>> = {
       groups: [
         { title: "성능과 적합성", items: [
           "CISPR 16-1-4·ANSI C63.4에 따른 전 규격 방출(EMI) 적합, ETSI 업그레이드 가능 — NSA ±3.5 dB (30 MHz~1 GHz), SVSWR +5.5 dB (1~18 GHz), NSIL ±4.0 dB (9 kHz~30 MHz)",
-          "IEC/EN 61000-4-3에 따른 전 규격 면역(EMS) 적합 — FU 0/+6 dB, 16개 측정점의 75 % (3m·5m 계열은 30/80 MHz, 10m 계열은 26/80 MHz부터 18 GHz까지)",
+          "IEC/EN 61000-4-3에 따른 전 규격 면역(EMS) 적합 — FU 0/+6 dB, 16개 측정점의 75 % (3.0 m·5.0 m 계열은 30/80 MHz, 10.0 m 계열은 26/80 MHz부터 18 GHz까지)",
           "Triton의 CISPR 25·MIL-STD 461 전 규격 적합",
           "SAC-10/H·SAC-10/P의 군수·자동차 규격 전 규격 적합",
         ] },
         { title: "무엇이 다른가", items: [
           "돔형 — 새롭게 설계한 지붕 형상과 최적화된 Frankosorb® 배치로 반사를 최소화하고 NSA·SVSWR·FU에서 뛰어난 성능을 냅니다. 출시 이후 동급에서 가장 많이 선택된 챔버입니다",
-          "각형 — 전통적 외형, ø2.0m에서 ø4.0m까지의 Quiet Zone, 대형 턴테이블 또는 이동식 다이나모미터, 그리고 면역용 바닥 흡수체를 챔버 안 대차에 보관",
-          "Triton — 다각형 셸 안의 독립된 3개 축. 안테나와 바닥 흡수체가 연결된 채로 유지되고, 유도식 바닥 흡수체 배치가 준비 시간을 크게 줄이면서 재현성은 그대로 유지합니다. 현존하는 가장 작고 가벼운 10m 챔버입니다",
+          "각형 — 전통적 외형, ø2.0 m에서 ø4.0 m까지의 Quiet Zone, 대형 턴테이블 또는 이동식 다이나모미터, 그리고 면역용 바닥 흡수체를 챔버 안 대차에 보관",
+          "Triton — 다각형 셸 안의 독립된 3개 축. 안테나와 바닥 흡수체가 연결된 채로 유지되고, 유도식 바닥 흡수체 배치가 준비 시간을 크게 줄이면서 재현성은 그대로 유지합니다. 현존하는 가장 작고 가벼운 10.0 m 챔버입니다",
           "SAC-10/H — 피시험체 요구에 따라 크기·특성·구성을 조정할 수 있고, 단일 또는 이중 시험 축을 선택합니다. 통상 범위를 벗어난 시험 환경에 특화됩니다",
           "SAC-10/P — 제약 없이 하이브리드를 대체하는 장피라미드 전면 라이닝. 피라미드 아래 공간에 바닥 흡수체를 보관합니다",
           "SAC 전 계열이 E-Drive로 확장 가능하며(부하기, BlueBox, 배터리 시험 시스템), 자동차·군수 규격 시험에도 사용됩니다",
@@ -2040,7 +2008,7 @@ export const typeBody: Record<Lang, Partial<Record<ChamberType, TopicBody>>> = {
     fac: {
       lead: [
         "완전무향 챔버는 바닥에도 흡수체를 둡니다. 접지면이 없고 더할 반사파도 없으므로, 측정은 자유공간 조건에서 이루어집니다 — CISPR 16-1-4가 접지면 없는 시험장으로 규정하는 조건입니다.",
-        "FAC-3은 테이블탑 피시험체를 위한 컴팩트 구성으로, 높이 1.5m에서 ø1.5m Quiet Zone을 확보합니다. FAC-3 L은 여기에 플로어스탠딩 제품까지 포함하도록 확장하고, FAM 또는 FBM 안테나 마스트를 이용한 높이 스캔을 더합니다.",
+        "FAC-3은 테이블탑 피시험체를 위한 컴팩트 구성으로, 높이 1.5 m에서 ø1.5 m Quiet Zone을 확보합니다. FAC-3 L은 여기에 플로어스탠딩 제품까지 포함하도록 확장하고, FAM 또는 FBM 안테나 마스트를 이용한 높이 스캔을 더합니다.",
         "Transformer는 둘을 겸하는 한 챔버입니다. 접지면을 둔 반무향 챔버로 운용하다가, 최적화된 바닥 흡수체 개조 키트를 깔면 테이블탑 피시험체용 완전무향 시험장이 됩니다 — 두 구성은 각자의 Quiet Zone과 각자의 적합성 수치를 그대로 갖습니다.",
       ],
       figure: {
@@ -2079,9 +2047,9 @@ export const typeBody: Record<Lang, Partial<Record<ChamberType, TopicBody>>> = {
     },
     chc: {
       lead: [
-        "컴팩트 하이브리드 챔버는 이 라인업에서 가장 작은 완결형 시험장입니다. 길이 7.4m의 셸 안에서 3.0m 측정거리와 ø1.2m Quiet Zone을 확보합니다. 방출은 사전 인증, 면역은 전 규격 적합 — 개발 부서 업무의 대부분을 감당하는 조합을, 적합 방출 시험장이 요구하는 공간의 일부만으로 구현한 구성입니다.",
+        "컴팩트 하이브리드 챔버는 이 라인업에서 가장 작은 완결형 시험장입니다. 길이 7.4 m의 셸 안에서 3.0 m 측정거리와 ø1.2 m Quiet Zone을 확보합니다. 방출은 사전 인증, 면역은 전 규격 적합 — 개발 부서 업무의 대부분을 감당하는 조합을, 적합 방출 시험장이 요구하는 공간의 일부만으로 구현한 구성입니다.",
         "CHC Plus는 여기에 1 GHz~18 GHz 적합 방출 측정을 더한 상위 구성입니다. 두 모델의 L 버전은 흡수체를 두른 칸막이벽을 추가해, RF 전력 증폭기·안테나·바닥 흡수체를 챔버 안에 두고 보관할 수 있게 합니다.",
-        "MIL CHC는 같은 발상을 방산 업무에 옮긴 것입니다. 30 MHz~40 GHz의 Frankosorb® 하이브리드 흡수체 구성으로, 1.0m 거리에서 MIL-STD 461과 DO-160에 부품 단위 전 규격 적합합니다.",
+        "MIL CHC는 같은 발상을 방산 업무에 옮긴 것입니다. 30 MHz~40 GHz의 Frankosorb® 하이브리드 흡수체 구성으로, 1.0 m 거리에서 MIL-STD 461과 DO-160에 부품 단위 전 규격 적합합니다.",
       ],
       figure: {
         src: "/chambers/images/type-chc-panel.webp", w: 1122, h: 591,
@@ -2119,13 +2087,13 @@ export const typeBody: Record<Lang, Partial<Record<ChamberType, TopicBody>>> = {
     component: {
       lead: [
         "부품 챔버는 제품이 아니라 부품을 시험합니다. 피시험체는 정해진 거리의 시험대 위에 놓이고, 하니스는 차폐체에 접지되며, 배치는 규격이 밀리미터 단위로 지정합니다. 전장부품은 CISPR 25와 ISO 11452, 방산은 MIL-STD 461과 DO-160, 면역은 공통으로 IEC/EN 61000-4-3입니다.",
-        "ACTC는 1.0m 거리의 CISPR 25 전 규격 적합 챔버로, 흡수체 사이에 상시 설치된 플러그인 접촉 스트립이 시험대와 차폐체의 전기적 연결을 유지합니다. UCC는 같은 시험을 초소형 챔버에서 사전 인증 수준으로 수행합니다 — GTEM 셀의 대안이자, 분야를 가리지 않는 연구·학술 용도의 대안이기도 합니다. CTC는 산업용 제품과 전장부품, 군수 시험을 한 방에서 소화하는 전 규격 면역 챔버입니다.",
-        "EDTC 3종은 같은 원칙을 구동 중인 파워트레인까지 확장한 것으로, 고정축 외부 부하기 또는 이동식 EMC-BlueBox를 중심으로 구성됩니다.",
+        "ACTC는 1.0 m 거리의 CISPR 25 전 규격 적합 챔버로, 흡수체 사이에 상시 설치된 플러그인 접촉 스트립이 시험대와 차폐체의 전기적 연결을 유지합니다. UCC는 같은 시험을 초소형 챔버에서 사전 인증 수준으로 수행합니다 — GTEM 셀의 대안이자, 분야를 가리지 않는 연구·학술 용도의 대안이기도 합니다. CTC는 산업용 제품과 전장부품, 군수 시험을 한 방에서 소화하는 전 규격 면역 챔버입니다.",
+        "EDTC 계열은 같은 원칙을 구동 중인 파워트레인까지 확장한 것으로, 고정축 외부 부하기 또는 이동식 EMC-BlueBox를 중심으로 구성됩니다.",
       ],
       figure: {
         src: "/chambers/images/type-component-cispr25.webp", w: 1600, h: 988,
         alt: "부품 시험 배치. 흡수체로 둘러싸인 챔버 안에 접지면을 갖춘 목재 시험대가 놓이고, 왼쪽의 붉은 안테나 대차가 시험대를 향한다. 뒤쪽 벽은 페라이트와 피라미드를 섞은 하이브리드 라이닝이다.",
-        caption: "CISPR 25가 지정하는 배치 — 접지된 목재 시험대, 고정된 1.0m 거리, 그리고 시험대 가장자리를 따라 배선된 하니스.",
+        caption: "CISPR 25가 지정하는 배치 — 접지된 목재 시험대, 고정된 1.0 m 거리, 그리고 시험대 가장자리를 따라 배선된 하니스.",
       },
       tables: [
         { title: "구성",
@@ -2294,7 +2262,7 @@ const absorbersKo = (lining: string) => [
 ];
 
 /** The full-compliance SAC performance block. `fu` is the only figure that
- *  moves between models — 30/80 MHz on most, 26/80 MHz on the 10 m chambers and
+ *  moves between models — 30/80 MHz on most, 26/80 MHz on the 10.0 m chambers and
  *  the vehicle and military ranges. */
 const sacPerformanceEn = (fu: "26" | "30" = "30") => [
   "Full compliant emission (EMI) according to CISPR 16-1-4 and ANSI C63.4",
@@ -2569,11 +2537,11 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
     "sac-10-plus": {
       lead: [
         "SAC-10 Plus는 10.0 m 측정 거리에서 ø3.0 m Quiet Zone을 제공하는 단일 시험 축 챔버입니다. 독창적인 다각형 형상과 최적화된 Frankosorb® 흡수체 배치가 공간과 비용을 함께 아낍니다.",
-        "CISPR 16-1-4와 ANSI C63.4의 시험장 요건을 만족하는 챔버 가운데 Frankonia가 만드는 가장 콤팩트한 10 m 챔버입니다.",
+        "CISPR 16-1-4와 ANSI C63.4의 시험장 요건을 만족하는 챔버 가운데 Frankonia가 만드는 가장 콤팩트한 10.0 m 챔버입니다.",
       ],
       figure: {
         src: "/chambers/models/sac-10-plus-1.webp", w: 1600, h: 1067,
-        alt: "10 m 반무향실 내부. 벽과 천장이 흰 피라미드 흡수체로 덮여 있고, 중앙에 붉은 함체가 달린 흰 안테나 마스트가 서 있습니다. 바닥은 회색 접지면입니다.",
+        alt: "10.0 m 반무향실 내부. 벽과 천장이 흰 피라미드 흡수체로 덮여 있고, 중앙에 붉은 함체가 달린 흰 안테나 마스트가 서 있습니다. 바닥은 회색 접지면입니다.",
         caption: "시험 축은 하나입니다. 축을 더 두지 않는 대신 셸이 작아집니다 — Triton과 갈라지는 지점입니다.",
       },
       overview: [
@@ -2616,10 +2584,10 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
         "독창적인 다각형 형상과 최적화된 Frankosorb® 흡수체 배치가 공간과 비용을 아끼면서 여러 시험 축을 성립시킵니다.",
       ],
       close:
-        "SAC-10 Plus Triton은 현존하는 가장 콤팩트하고 가벼운 10 m 챔버입니다. CISPR 16-1-4 · ANSI C63.4 기준 방출 시험과 IEC/EN 61000-4-3 · CISPR 25 · MIL-STD 461 기준 내성 시험 모두 정식 인증 수준으로 수행합니다.",
+        "SAC-10 Plus Triton은 현존하는 가장 콤팩트하고 가벼운 10.0 m 챔버입니다. CISPR 16-1-4 · ANSI C63.4 기준 방출 시험과 IEC/EN 61000-4-3 · CISPR 25 · MIL-STD 461 기준 내성 시험 모두 정식 인증 수준으로 수행합니다.",
       figure: {
         src: "/chambers/models/triton-2.webp", w: 1600, h: 1067,
-        alt: "다각형 셸의 10 m 반무향실 내부. 벽이 각을 이루며 꺾이고 전면이 피라미드 흡수체로 덮여 있습니다. 앞쪽 바닥에 흰 바닥 흡수체가 여러 장 세워져 있고, 바닥 중앙에는 대형 턴테이블 원과 노란 안전 표시가 있습니다.",
+        alt: "다각형 셸의 10.0 m 반무향실 내부. 벽이 각을 이루며 꺾이고 전면이 피라미드 흡수체로 덮여 있습니다. 앞쪽 바닥에 흰 바닥 흡수체가 여러 장 세워져 있고, 바닥 중앙에는 대형 턴테이블 원과 노란 안전 표시가 있습니다.",
         caption: "바닥 흡수체는 정해진 대기 위치에 세워 둡니다. 축을 바꿀 때 안테나와 흡수체를 다시 설치하지 않는 것이 이 챔버가 아끼는 시간입니다.",
       },
       overview: [
@@ -2668,7 +2636,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
       ],
       figure: {
         src: "/chambers/models/sac-10-h-hybrid-1.webp", w: 1600, h: 1067,
-        alt: "10 m 반무향실 내부. 벽 하단은 격자 무늬의 페라이트 타일이고 그 위와 천장은 흰 피라미드 흡수체입니다. 바닥은 회색 접지면이고 노란 표시가 시험 구역을 둘러쌉니다.",
+        alt: "10.0 m 반무향실 내부. 벽 하단은 격자 무늬의 페라이트 타일이고 그 위와 천장은 흰 피라미드 흡수체입니다. 바닥은 회색 접지면이고 노란 표시가 시험 구역을 둘러쌉니다.",
         caption: "하이브리드 라이닝은 이 두 층을 뜻합니다 — 아래는 페라이트, 위는 흡수체. 층이 나뉘는 만큼 셸이 작아집니다.",
       },
       overview: [
@@ -2722,7 +2690,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
         "롱피라미드 흡수체 기술은 방출과 내성 시험 모두에서 뛰어난 성능을 내며, 전 주파수 범위에 걸쳐 가장 높은 균일도와 임피던스 정확도를 제공합니다.",
       figure: {
         src: "/chambers/models/sac-10-p-pyramid-2.webp", w: 1024, h: 500,
-        alt: "10 m 반무향실 내부 광각. 벽과 천장 전체가 긴 피라미드 흡수체로 덮여 있고 페라이트 타일 구간이 없습니다. 바닥 접지면에 턴테이블 원호가 보입니다.",
+        alt: "10.0 m 반무향실 내부 광각. 벽과 천장 전체가 긴 피라미드 흡수체로 덮여 있고 페라이트 타일 구간이 없습니다. 바닥 접지면에 턴테이블 원호가 보입니다.",
         caption: "페라이트가 없습니다. P2400 롱피라미드 하나로 26 MHz부터 40 GHz까지 덮는 것이 이 구성의 논지입니다.",
       },
       overview: [
@@ -3289,8 +3257,8 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           rows: [
             ["SAC-10VC-6/H", "23,030 × 14,480 × 6,300 mm", "ø6.0 m, 5.0 m 측정 거리 (H = 2.5 m)\n차량 시험용 10.0 m 측정 거리 대응 준비"],
             ["SAC-10V-6/H", "22,580 × 15,680 × 8,700 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)"],
-            ["SAC-10V-6/H (SL12)", "24,380 × 16,580 × 9,000 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)\n최대 12 m 길이 차량의 중하중 시험 구역"],
-            ["SAC-10V-6/H (SL18)", "26,780 × 18,080 × 9,000 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)\n최대 18 m 길이 차량의 중하중 시험 구역"],
+            ["SAC-10V-6/H (SL12)", "24,380 × 16,580 × 9,000 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)\n최대 12.0 m 길이 차량의 중하중 시험 구역"],
+            ["SAC-10V-6/H (SL18)", "26,780 × 18,080 × 9,000 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)\n최대 18.0 m 길이 차량의 중하중 시험 구역"],
           ],
         },
         {
@@ -3299,8 +3267,8 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           head: ["구성", "외형 치수 (L × W × H)", "Quiet Zone과 시험 구역"],
           rows: [
             ["SAC-10V-6/P", "26,480 × 20,180 × 9,000 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)"],
-            ["SAC-10V-6/P (SL12)", "26,480 × 20,180 × 10,500 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)\n최대 12 m 길이 차량의 중하중 시험 구역"],
-            ["SAC-10V-6/P (SL18)", "30,080 × 20,180 × 10,500 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)\n최대 18 m 길이 차량의 중하중 시험 구역"],
+            ["SAC-10V-6/P (SL12)", "26,480 × 20,180 × 10,500 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)\n최대 12.0 m 길이 차량의 중하중 시험 구역"],
+            ["SAC-10V-6/P (SL18)", "30,080 × 20,180 × 10,500 mm", "ø6.0 m, 10.0 m 측정 거리 (H = 3.0 m)\n최대 18.0 m 길이 차량의 중하중 시험 구역"],
           ],
         },
       ],
@@ -3674,7 +3642,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
         { label: "최저 사용 주파수", value: "80 – 200 MHz" },
         { label: "최대 작업 체적", value: "8.0 × 5.0 × 3.0 m" },
         { label: "주파수 범위", value: "10 kHz – 18 GHz" },
-        { label: "모델", value: "7종", family: true },
+        { label: "모델", value: "RVC S – XXL · e1 · e2", family: true },
       ],
       tables: [
         {
@@ -3981,11 +3949,11 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
     "sac-10-plus": {
       lead: [
         "The SAC-10 Plus is a single test axis chamber with a Quiet Zone (QZ) of ø3.0 m at 10.0 m measuring distance. The innovative polygonal shape along with its optimized Frankosorb® absorber layout is a space-saving, cost-saving and efficient solution.",
-        "It is Frankonia's most compact 10 m chamber available to meet the CISPR 16-1-4 and ANSI C63.4 test site requirements.",
+        "It is Frankonia's most compact 10.0 m chamber available to meet the CISPR 16-1-4 and ANSI C63.4 test site requirements.",
       ],
       figure: {
         src: "/chambers/models/sac-10-plus-1.webp", w: 1600, h: 1067,
-        alt: "Inside a 10 m semi-anechoic chamber. Walls and ceiling are lined with pyramid absorbers and a white antenna mast with a red head unit stands in the middle of the grey reflecting floor.",
+        alt: "Inside a 10.0 m semi-anechoic chamber. Walls and ceiling are lined with pyramid absorbers and a white antenna mast with a red head unit stands in the middle of the grey reflecting floor.",
         caption: "One test axis. Not adding the others is what makes the shell smaller — this is where the Triton parts company.",
       },
       overview: [
@@ -4028,10 +3996,10 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
         "The innovative polygonal shape along with its optimized Frankosorb® absorber layout is a space-saving, cost-saving and efficient solution with multiple test axes.",
       ],
       close:
-        "The SAC-10 Plus Triton is the most compact and lightweight 10 m chamber existing. It is full compliant for emission tests validated according to CISPR 16-1-4 and ANSI C63.4, as well as full compliant for immunity tests according to IEC/EN 61000-4-3, CISPR 25 and MIL-STD 461.",
+        "The SAC-10 Plus Triton is the most compact and lightweight 10.0 m chamber existing. It is full compliant for emission tests validated according to CISPR 16-1-4 and ANSI C63.4, as well as full compliant for immunity tests according to IEC/EN 61000-4-3, CISPR 25 and MIL-STD 461.",
       figure: {
         src: "/chambers/models/triton-2.webp", w: 1600, h: 1067,
-        alt: "Inside a polygonal 10 m semi-anechoic chamber. The walls turn at angles and are lined with pyramid absorbers. Several panels of white floor absorbers stand upright at the near side, and a large turntable circle with yellow markings is set into the floor.",
+        alt: "Inside a polygonal 10.0 m semi-anechoic chamber. The walls turn at angles and are lined with pyramid absorbers. Several panels of white floor absorbers stand upright at the near side, and a large turntable circle with yellow markings is set into the floor.",
         caption: "The floor absorbers stand in defined parking positions. Not re-rigging the antennas and absorbers between axes is the time this chamber saves.",
       },
       overview: [
@@ -4080,7 +4048,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
       ],
       figure: {
         src: "/chambers/models/sac-10-h-hybrid-1.webp", w: 1600, h: 1067,
-        alt: "Inside a 10 m semi-anechoic chamber. The lower walls are a grid of ferrite tiles; above them and across the ceiling the lining is white pyramid absorber. Yellow markings run around the test area on the grey reflecting floor.",
+        alt: "Inside a 10.0 m semi-anechoic chamber. The lower walls are a grid of ferrite tiles; above them and across the ceiling the lining is white pyramid absorber. Yellow markings run around the test area on the grey reflecting floor.",
         caption: "The hybrid lining is these two layers — ferrite below, absorber above. Splitting them is what keeps the shell small.",
       },
       overview: [
@@ -4134,7 +4102,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
         "The innovative long-pyramid absorber technology achieves exceptional performance for emissions and immunity testing and offers the highest homogeneity and impedance accuracy for the complete frequency range.",
       figure: {
         src: "/chambers/models/sac-10-p-pyramid-2.webp", w: 1024, h: 500,
-        alt: "A wide view inside a 10 m semi-anechoic chamber. Walls and ceiling are lined entirely with long pyramid absorbers, with no ferrite tile section. The arc of a turntable is visible in the reflecting floor.",
+        alt: "A wide view inside a 10.0 m semi-anechoic chamber. Walls and ceiling are lined entirely with long pyramid absorbers, with no ferrite tile section. The arc of a turntable is visible in the reflecting floor.",
         caption: "No ferrite. That one P2400 long pyramid covers 26 MHz to 40 GHz on its own is the whole argument for this lining.",
       },
       overview: [
@@ -4701,8 +4669,8 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           rows: [
             ["SAC-10VC-6/H", "23,030 × 14,480 × 6,300 mm", "ø6.0 m at 5.0 m test distance (H = 2.5 m)\nPrepared for a 10.0 m test distance for vehicle tests"],
             ["SAC-10V-6/H", "22,580 × 15,680 × 8,700 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)"],
-            ["SAC-10V-6/H (SL12)", "24,380 × 16,580 × 9,000 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 12 m long vehicles"],
-            ["SAC-10V-6/H (SL18)", "26,780 × 18,080 × 9,000 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 18 m long vehicles"],
+            ["SAC-10V-6/H (SL12)", "24,380 × 16,580 × 9,000 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 12.0 m long vehicles"],
+            ["SAC-10V-6/H (SL18)", "26,780 × 18,080 × 9,000 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 18.0 m long vehicles"],
           ],
         },
         {
@@ -4711,8 +4679,8 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
           head: ["Configuration", "External dimension (L × W × H)", "Quiet zone and test zone"],
           rows: [
             ["SAC-10V-6/P", "26,480 × 20,180 × 9,000 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)"],
-            ["SAC-10V-6/P (SL12)", "26,480 × 20,180 × 10,500 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 12 m long vehicles"],
-            ["SAC-10V-6/P (SL18)", "30,080 × 20,180 × 10,500 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 18 m long vehicles"],
+            ["SAC-10V-6/P (SL12)", "26,480 × 20,180 × 10,500 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 12.0 m long vehicles"],
+            ["SAC-10V-6/P (SL18)", "30,080 × 20,180 × 10,500 mm", "ø6.0 m at 10.0 m test distance (H = 3.0 m)\nHeavy load test zone up to 18.0 m long vehicles"],
           ],
         },
       ],
@@ -5086,7 +5054,7 @@ export const modelBody: Record<Lang, Partial<Record<string, ModelBody>>> = {
         { label: "Lowest usable freq.", value: "80 – 200 MHz" },
         { label: "Max. working volume", value: "8.0 × 5.0 × 3.0 m" },
         { label: "Frequency range", value: "10 kHz – 18 GHz" },
-        { label: "Models", value: "Seven", family: true },
+        { label: "Models", value: "RVC S – XXL · e1 · e2", family: true },
       ],
       tables: [
         {

@@ -138,7 +138,7 @@ const copy = {
     ],
     cutawayAlt: "구조, 도어, 필터, 덕트, 전력실을 포함한 CyberShield 차폐 데이터홀 단면도",
     cutawayCaption:
-      "차폐 경계를 이루는 21가지 솔루션. CyberShield 사이트에서 항목을 선택하면 각각의 역할과 필요성을 확인할 수 있습니다.",
+      "차폐 경계를 이루는 개별 솔루션 전체. CyberShield 사이트에서 항목을 선택하면 각각의 역할과 필요성을 확인할 수 있습니다.",
 
     verifyKicker: "추정이 아닌 검증",
     verifyTitle: "약속이 아니라 측정으로 증명합니다.",
@@ -165,7 +165,7 @@ const copy = {
       "표준 PAN 타입 시스템의 보증 성능 범위입니다. 프로젝트에 적용되는 범위는 사양서와 현장 인수 시험을 통해 확정됩니다.",
 
     ecoKicker: "하나의 연속된 차폐 경계",
-    ecoTitle: "여섯 개의 제품군, 누설 없는 하나의 차폐 경계.",
+    ecoTitle: "모든 제품군이 모여, 누설 없는 하나의 차폐 경계.",
     ecoBody:
       "모든 구성요소를 동일한 차폐 외피의 일부로 설계합니다. 접합부, 도어, 관통부에서 성능이 손실되지 않습니다.",
     eco: [
@@ -192,10 +192,10 @@ const copy = {
     fullBody:
       "CyberShield는 별도의 제품 사이트를 두고 있습니다. 아래 링크는 새 탭에서, 현재 보고 계신 언어로 열립니다. 이 요약 페이지는 그대로 남습니다.",
     fullList: [
-      "차폐실 단면도 — 경계를 이루는 21가지 솔루션을 항목별로 설명",
+      "차폐실 단면도 — 경계를 이루는 개별 솔루션을 항목별로 설명",
       "10 kHz–40 GHz 측정 차폐 성능 곡선과 인용한 근거 자료",
       "일반적인 차폐 방식과의 항목별 비교",
-      "초기 상담부터 검증 인도까지 6단계 도입 절차",
+      "초기 상담부터 검증 인도까지 단계별 도입 절차",
       "공급 범위 구분, 프로젝트 사례, 자주 묻는 질문",
       "동일한 담당자에게 전달되는 프로젝트 문의 양식",
     ],
@@ -276,7 +276,7 @@ const copy = {
     ],
     cutawayAlt: "Cutaway view of a CyberShield shielded data hall with its structure, doors, filters, ducts and power room",
     cutawayCaption:
-      "Twenty-one engineered solutions make up the shielding boundary. Pick any one on the CyberShield site to see what it does and why it is there.",
+      "Every engineered solution that makes up the shielding boundary. Pick any one on the CyberShield site to see what it does and why it is there.",
 
     verifyKicker: "VERIFIED, NOT ASSUMED",
     verifyTitle: "Performance you don't have to take on faith.",
@@ -303,7 +303,7 @@ const copy = {
       "Values describe the guaranteed performance envelope of the standard PAN type system. The scope that applies to your project is confirmed in the specification and by on-site acceptance testing.",
 
     ecoKicker: "ONE CONTINUOUS BARRIER",
-    ecoTitle: "Six product lines. One zero-leak boundary.",
+    ecoTitle: "Every product line. One zero-leak boundary.",
     ecoBody:
       "Every component is engineered as part of the same shielding envelope, so performance is not lost at the joints, the doors or the penetrations.",
     eco: [
@@ -330,10 +330,10 @@ const copy = {
     fullBody:
       "CyberShield keeps a site of its own. The link below opens in a new tab, in the language you are reading now — this summary stays where it is.",
     fullList: [
-      "The room in cutaway — twenty-one engineered solutions, each explained where it sits",
+      "The room in cutaway — every engineered solution explained where it sits",
       "The measured attenuation curve from 10 kHz to 40 GHz, with the publications behind it",
       "How CyberShield compares with conventional shielding, criterion by criterion",
-      "The six steps from first consultation to verified handover",
+      "The steps from first consultation to verified handover",
       "Scope of supply, project scenarios and the questions every project starts with",
       "A project enquiry form addressed to the same specialists",
     ],

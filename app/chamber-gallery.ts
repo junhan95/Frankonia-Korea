@@ -38,7 +38,7 @@ const p = (file: string, w: number, h: number): Frame =>
 const frames: Record<string, readonly Frame[]> = {
   actc: [p("actc-0.webp", 1400, 1400), p("actc-2.webp", 1400, 934)],
   ucc: [p("ucc-0.webp", 1400, 1400), p("ucc-1.webp", 1400, 1050)],
-  ctc: [p("ctc-2.webp", 1400, 1050), p("ctc-3.webp", 1400, 1050)],
+  ctc: [p("ctc-2.webp", 1050, 700), p("ctc-3.webp", 1400, 1050)],
   chc: [p("chc-0.webp", 1400, 1400), p("chc-1.webp", 1400, 933)],
   "chc-plus": [p("chc-plus-0.webp", 1400, 1050), p("chc-plus-1.webp", 1400, 933)],
   avtc: [p("avtc-3.webp", 1400, 933), p("avtc-5.webp", 1400, 933)],
@@ -53,7 +53,7 @@ const frames: Record<string, readonly Frame[]> = {
     p("mil-std-chamber-advanced-4.webp", 1400, 1050),
   ],
   "sac-3-plus": [p("sac-3-plus-0.webp", 1400, 1120), p("sac-3-plus-2.webp", 1400, 933)],
-  "sac-3-square": [p("sac-3-square-0.webp", 1400, 1050), p("sac-3-square-2.webp", 933, 1400)],
+  "sac-3-square": [p("sac-3-square-0.webp", 1400, 1050), p("sac-3-square-2.webp", 933, 622)],
   "sac-5-plus": [p("sac-5-plus-0.webp", 1400, 1120), p("sac-5-plus-2.webp", 1400, 933)],
   "sac-5-square": [p("sac-5-square-0.webp", 1400, 875), p("sac-5-square-2.webp", 1400, 933)],
   "sac-10-plus": [p("sac-10-plus-0.webp", 1400, 1400), p("sac-10-plus-2.webp", 1400, 933)],
@@ -66,8 +66,8 @@ const frames: Record<string, readonly Frame[]> = {
     p("sac-3-fac-3-transformer-0.webp", 1400, 1050),
     p("sac-3-fac-3-transformer-2.webp", 1400, 930),
   ],
-  rvc: [p("reverberation-solutions-1.webp", 656, 873), p("reverberation-solutions-2.webp", 656, 876)],
-  "shielded-room": [p("shielded-room-6.webp", 564, 1000), p("shielded-room-2.webp", 1400, 933)],
+  rvc: [p("reverberation-solutions-1.webp", 656, 437), p("reverberation-solutions-2.webp", 656, 437)],
+  "shielded-room": [p("shielded-room-6.webp", 846, 564), p("shielded-room-2.webp", 1400, 933)],
 };
 
 /**

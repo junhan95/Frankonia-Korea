@@ -7,8 +7,6 @@ import {
   chamberIndustryMeta,
   chambersOverviewMeta,
   chambersPath,
-  downloadsMeta,
-  downloadsPath,
   industryBody,
   industryPath,
   modelBody,
@@ -21,7 +19,6 @@ import {
   panoramaSize,
   referenceCountryLabel,
   referenceGroups,
-  referenceTotals,
   topicBody,
   topicMeta,
   topicPath,
@@ -42,16 +39,18 @@ import { CheckColumn, Groups, Lead, Tables } from "./page-parts";
 import PageShell, { type HeadShot } from "./page-shell";
 import StructuredData, { type TrailStep } from "./structured-data";
 import SiteLink from "./site-link";
-import { asset, contactEmail, localeRoute, plural, type Lang } from "./site-config";
+import { asset, contactEmail, localeRoute, type Lang } from "./site-config";
 
 /**
- * Every page in the Anechoic Chambers branch, plus the downloads hub.
+ * Every page in the Anechoic Chambers branch.
  *
  * The overview, the four industry indexes, the six chamber-type indexes and the
- * five technology topics all carry their copy from the 2026 catalogue. Only the
- * downloads hub still does not: it states what it is, from the same meta the
- * navigation and the search snippet read, and then offers the documents by
- * email rather than letting the page read as broken.
+ * five technology topics all carry their copy from the 2026 catalogue.
+ *
+ * The downloads hub used to render through here too, as a seventh view with no
+ * body — which meant it fell through to `Stub` and offered its files by email.
+ * It has its own files and its own component now (app/downloads-content.tsx);
+ * it was never part of this branch except in where its route was written.
  */
 
 export type ChamberView =
@@ -61,23 +60,26 @@ export type ChamberView =
   | { kind: "topic"; slug: ChamberTopic }
   /** One model, by `ChamberModel.slug` — a string rather than a union because
    *  the slugs are derived from the model list, not declared beside it. */
-  | { kind: "model"; slug: string }
-  | { kind: "downloads" };
+  | { kind: "model"; slug: string };
 
 const copy = {
   ko: {
     eyebrow: "ANECHOIC CHAMBERS",
-    eyebrowDownloads: "DOWNLOADS",
     byIndustry: "산업군별",
     byType: "챔버 형식별",
     browse: "찾아보기",
     models: "모델",
     specs: "사양",
     specsTitle: "구성과 치수",
-    modelCount: (n: number) => `${n}종`,
-    modelsTitle: (n: number) => `해당 모델 ${n}종`,
-    /** Counted from `referenceGroups`, not written down — see `referenceTotals`. */
-    referenceCount: (entries: number, countries: number) => `${entries}건 · ${countries}개국`,
+    /* No count in either of these, and none in the reference kicker below.
+       A line that says how many models a category holds has to be rewritten
+       every time the catalogue grows, and HQ's August 2026 review asked for
+       chamber figures to come off the site besides: with custom builds there
+       are always more than the number printed, and the number reads as the
+       whole portfolio. The industry rows carry `chamberIndustryMeta.note`
+       instead, the same way the chamber-type rows carry `typeMeta.note`. */
+    modelsTitle: "해당 모델",
+    referenceKicker: "전 세계 설치 현장",
     /**
      * Over the tables. Three things a reader needs at this point, in the order
      * they need them: these are standard sizes and yours will probably differ,
@@ -118,17 +120,14 @@ const copy = {
   },
   en: {
     eyebrow: "ANECHOIC CHAMBERS",
-    eyebrowDownloads: "DOWNLOADS",
     byIndustry: "By Industry",
     byType: "By Chamber Type",
     browse: "Browse",
     models: "Models",
     specs: "Specifications",
     specsTitle: "Configurations and dimensions",
-    modelCount: (n: number) => plural(n, "model"),
-    modelsTitle: (n: number) => `${plural(n, "model")} in this category`,
-    referenceCount: (entries: number, countries: number) =>
-      `${plural(entries, "entry", "entries")} · ${plural(countries, "country", "countries")}`,
+    modelsTitle: "Models in this category",
+    referenceKicker: "Installations worldwide",
     specsNote:
       "Frankonia standard configurations. The dimensions are external — the size of the chamber itself, not the usable volume inside it. Both size and layout can be adapted to your site and to the standards you test against; contact us for a drawing and a quotation.",
     overview: "At a glance",
@@ -168,7 +167,7 @@ export default function ChamberPage({ lang, view }: { lang: Lang; view: ChamberV
    * The bands of the page, in reading order.
    *
    * Which ones exist varies by page — an index has a model list and no
-   * panoramas, References has panoramas and no tables, downloads has neither —
+   * panoramas, References has panoramas and no tables, a topic page neither —
    * so the alternating `.alt` fill is counted here rather than written into
    * each band. That is the one thing a hand-written class cannot get right:
    * whether a band has a neighbour above it is not knowable where the band is
@@ -220,7 +219,7 @@ export default function ChamberPage({ lang, view }: { lang: Lang; view: ChamberV
       <StructuredData lang={lang} page="path" path={path} trail={trail} description={description} />
       <PageShell
         lang={lang}
-        eyebrow={view.kind === "downloads" ? t.eyebrowDownloads : t.eyebrow}
+        eyebrow={t.eyebrow}
         title={title}
         intro={description}
         /* The index only. Every page below it — a type, an industry, a model —
@@ -255,7 +254,7 @@ function Axes({ lang }: { lang: Lang }) {
           <SiteLink className="hl-row" key={industry} href={localeRoute(lang, industryPath(industry))}>
             <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
             <b>{industryLabel[lang][industry]}</b>
-            <span className="hl-desc">{t.modelCount(modelsByIndustry(industry).length)}</span>
+            <span className="hl-desc">{chamberIndustryMeta[lang][industry].note}</span>
           </SiteLink>
         ))}
       </div>
@@ -264,12 +263,11 @@ function Axes({ lang }: { lang: Lang }) {
         <h2>{t.byType}</h2>
       </div>
       <div className="hairline-list">
-        {/* What the form is for, the same line the dropdown carries. The count
-            that used to sit here is on the page the row opens — and six rows
-            reading "12 models · 3 models · 3 models" told a reader nothing
-            about which of the six was theirs. The industry rows above keep
-            their counts: those are the same 27 chambers divided up, so how
-            many fall into each is the thing that differs. */}
+        {/* What the form is for, the same line the dropdown carries. Both axes
+            read a `note` now — six rows reading "12 models · 3 models · 3
+            models" told a reader nothing about which of the six was theirs,
+            and the industry rows have since given up their counts for the
+            same reason. */}
         {chamberTypes.map((type, i) => (
           <SiteLink className="hl-row" key={type} href={localeRoute(lang, typePath(type))}>
             <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
@@ -296,7 +294,7 @@ function Models({
     <>
       <div className="sec-head">
         <span className="kicker">{t.models}</span>
-        <h2>{t.modelsTitle(models.length)}</h2>
+        <h2>{t.modelsTitle}</h2>
       </div>
       <ModelList lang={lang} models={models} here={here} />
     </>
@@ -396,9 +394,7 @@ function References({ lang, references }: { lang: Lang; references: NonNullable<
   return (
     <>
       <div className="sec-head">
-        <span className="kicker">
-          {t.referenceCount(referenceTotals.entries, referenceTotals.countries)}
-        </span>
+        <span className="kicker">{t.referenceKicker}</span>
         <h2>{references.title}</h2>
       </div>
       {/* `EntryList`, not `.hairline-list`: a country's customers run to a dozen
@@ -510,6 +506,7 @@ function ModelList({
 
   return (
     <ModelAccordion
+      plates="photo"
       lang={lang}
       rows={rows}
       /* No `more`, so the panel does not offer the model page. The label is
@@ -614,17 +611,6 @@ function resolve(lang: Lang, view: ChamberView): {
           : [root, { name: typeMeta[lang][type].label, path: typePath(type) }, { name: label, path }],
         models,
         body: modelBody[lang][view.slug],
-      };
-    }
-    case "downloads": {
-      const { label, description } = downloadsMeta[lang];
-      return {
-        label,
-        title: label,
-        description,
-        path: downloadsPath,
-        trail: [{ name: label, path: downloadsPath }],
-        models: [],
       };
     }
   }

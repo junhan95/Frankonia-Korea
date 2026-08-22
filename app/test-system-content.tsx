@@ -3,10 +3,11 @@ import { industryLabel, industries } from "./industries";
 import { Groups, Lead, Tables } from "./page-parts";
 import PageShell, { type HeadShot } from "./page-shell";
 import StructuredData, { type TrailStep } from "./structured-data";
-import { contactEmail, headOfficeUrl, localeRoute, type Lang } from "./site-config";
+import { asset, contactEmail, headOfficeUrl, localeRoute, type Lang } from "./site-config";
 import { chambersPath, industryPath as chamberIndustryPath,
   isChamberIndustry } from "./chamber-sections";
 import ModelAccordion, { type AccordionRow } from "./model-accordion";
+import { datasheetFor } from "./test-system-datasheets";
 import { modelShots } from "./test-system-gallery";
 import {
   categoryBody,
@@ -16,6 +17,7 @@ import {
   overviewBody,
   productBody,
   productsOfCategory,
+  shownTestProducts,
   standardsByIndustry,
   testCategories,
   testCategoryMeta,
@@ -46,9 +48,11 @@ import type { PageBody } from "./page-body";
  * where the band is declared, and which bands exist varies by page.
  *
  * The document-request band is the one that appears on every page rather than
- * only on the empty ones. It is not an under-construction notice: the head
- * office puts a datasheet PDF under each of these products and this site does
- * not carry those files, so the band is how a reader gets one.
+ * only on the empty ones. It is not an under-construction notice: it is the
+ * way to the head office's nine branch catalogues, and to an engineer for
+ * everything they do not cover — drawings, standards, a configuration. The
+ * per-model datasheets no longer go through it; those are served from this
+ * origin, off a pill inside the model row (test-system-datasheets.ts).
  */
 
 export type TestSystemView =
@@ -64,26 +68,36 @@ const copy = {
     byTest: "시험 항목별",
     byProduct: "제품군별",
     byStandard: "규격별",
-    standardsCount: (n: number) => `${n}건`,
+    /* Counts are out of the index copy, here and in `modelsTitle` below.
+       "해당 모델 10종" and "규격 24건" both have to be rewritten the moment a
+       model or a standard is added, and neither answers the question the row
+       is asked — which of these is mine. The rows carry the family's own
+       `note` instead, the way the chamber branch carries `typeMeta.note`. */
+    standardsNote: "산업군별로 묶어 정리",
     standardsKicker: "STANDARDS",
     equipmentKicker: "EQUIPMENT",
     equipmentTitle: "시험 구성 장비",
     modelsKicker: "MODELS",
-    modelsTitle: (n: number) => `해당 모델 ${n}종`,
+    modelsTitle: "해당 모델",
     /** In the panel a row opens. The mail is addressed to the model already, so
      *  a reader who has just picked one out of ten is not asked to name it
      *  again. Same wording as the chamber branch — it is the same button. */
     modelQuote: "견적 문의",
     modelQuoteSubject: (name: string) => `[견적 문의] ${name}`,
+    /** 패널의 데이터시트 버튼. 본사 데이터시트 원본 PDF를 이 서버에서 바로 내려
+     *  받습니다 — 어느 사양서인지는 모델명이 이미 말해 주므로 라벨에 다시 적지
+     *  않고, 파일 크기만 뒤에 붙습니다. */
+    modelDoc: "데이터시트",
     /** Printed in MyCart and in the enquiry it writes, so a shortlist says
      *  which part of the catalogue each line came out of. */
     cartFrom: "EMC 시험 시스템",
     galleryPrev: "이전 사진",
     galleryNext: "다음 사진",
     galleryFrame: "사진 {at} / {of} — 눌러서 다음 사진",
-    count: (n: number) => `${n}종`,
-    /** Kept for a family whose models are not listed yet: "0종" would read as
-     *  an error. The label points at the way to get the specification instead. */
+    /** Still needed for a family whose models are not listed yet: the row would
+     *  otherwise open on nothing. The label points at the way to get the
+     *  specification instead. Families that do have models carry their own
+     *  `testProductMeta.note` in this slot rather than a count. */
     countPending: "모델 문의",
     specsKicker: "SPECIFICATIONS",
     specsTitle: "사양",
@@ -95,7 +109,7 @@ const copy = {
     stubCta: "자료 요청 · 기술 문의",
     /** 본사 다운로드 영역으로 보냅니다. 사본을 두지 않는 이유는 `Documents`
      *  주석에 있습니다. */
-    downloadsCta: "본사 카탈로그 9종",
+    downloadsCta: "본사 카탈로그 다운로드",
     subject: (label: string) => `[자료 요청] ${label}`,
   },
   en: {
@@ -104,19 +118,19 @@ const copy = {
     byTest: "By Test",
     byProduct: "By Product",
     byStandard: "By Standard",
-    standardsCount: (n: number) => `${n} standards`,
+    standardsNote: "Grouped by the industry that tests to them",
     standardsKicker: "STANDARDS",
     equipmentKicker: "EQUIPMENT",
     equipmentTitle: "What the setup is built from",
     modelsKicker: "MODELS",
-    modelsTitle: (n: number) => `${n} models in this family`,
+    modelsTitle: "Models in this family",
     modelQuote: "Request a quote",
     modelQuoteSubject: (name: string) => `[Quote request] ${name}`,
+    modelDoc: "Datasheet",
     cartFrom: "EMC Test Systems",
     galleryPrev: "Previous picture",
     galleryNext: "Next picture",
     galleryFrame: "Picture {at} of {of} — press for the next",
-    count: (n: number) => `${n} models`,
     countPending: "models on request",
     specsKicker: "SPECIFICATIONS",
     specsTitle: "Specifications",
@@ -127,7 +141,7 @@ const copy = {
     stubBody:
       "Tell us which specification, drawing or standard you need for this, and an engineer will go through it and come back to you.",
     stubCta: "Request documents",
-    downloadsCta: "The nine catalogues",
+    downloadsCta: "The head office catalogues",
     subject: (label: string) => `[Document request] ${label}`,
   },
 } as const;
@@ -190,34 +204,47 @@ export default function TestSystemPage({ lang, view }: { lang: Lang; view: TestS
   );
 }
 
-const modelCount = (t: (typeof copy)[Lang], n: number) =>
-  n > 0 ? t.count(n) : t.countPending;
+/** What a family's row says beside its name. Its own note while it has models
+ *  to open onto, and `countPending` while it has none — the row is a door, and
+ *  a door to an empty room has to say so. It used to be a model count in both
+ *  cases; see the note over `standardsNote`. */
+const productNote = (t: (typeof copy)[Lang], lang: Lang, product: TestProduct) =>
+  modelsByProduct(product).length > 0 ? testProductMeta[lang][product].note : t.countPending;
 
 /**
- * What the index band currently puts on show — a hold, not a deletion.
+ * What the index band puts on show — a hold, not a deletion.
  *
- * The branch has three ways in and eight product families behind them, and for
- * now the index prints one row: Integrated Systems. Nothing under it has been
- * taken away. `/test-systems/test/*`, `/test-systems/standards` and the seven
- * other family pages all still build, still carry their models, and are still
- * reachable from the header dropdown and the sitemap — the rows that led to
- * them are simply not drawn here yet.
+ * The branch has three ways in and eight product families behind them. The
+ * index prints the four families that hold the instruments the head office's
+ * August 2026 mail asks to have promoted, and nothing else:
  *
- * Putting a row back is editing this block and nothing else: `showTestAxis` and
- * `showStandardsAxis` to `true` restore those two lists whole, and
- * `shownProducts` back to `testProducts` restores the family list in the order
- * `test-system-sections` declares. `Axes` reads these and hangs the band's
- * kicker on whichever list survives first, so any subset reads as a finished
- * band rather than as one with its head cut off.
+ * - Integrated Systems — CIT-100 / CIT-1000, ECU-6, PSG-300, MTS-800
+ * - Emission Measuring Systems — the ERX receivers
+ * - Field Strength Meters — the EFS probes
+ * - Meters & Switching — PMS and RSU
+ *
+ * The amplifiers, antennas, pre-amplifiers and coupling devices are the parts
+ * a laboratory adds around those, and the mail does not ask for them. The two
+ * other ways in stay down with them: `test/*` names equipment families by
+ * discipline, and the standards index is a second door into the same rooms.
+ * Nothing under any of it has been taken away — every category, every family
+ * and `/test-systems/standards` still builds, still carries its models, and is
+ * still in the sitemap. The rows that led to them are simply not drawn here.
+ *
+ * `showTestAxis` and `showStandardsAxis` to `true` restore those two lists
+ * whole; the family list is `shownTestProducts` in test-system-sections, which
+ * the header dropdown reads too, so a family goes back on show in one place
+ * rather than two. `Axes` reads these and hangs the band's kicker on whichever
+ * list survives first, so any subset reads as a finished band rather than as
+ * one with its head cut off.
  */
 const showTestAxis = false;
 const showStandardsAxis = false;
-const shownProducts: readonly TestProduct[] = ["system"];
 
 /** The overview's ways in, in the order the dropdown lists them. */
 function Axes({ lang }: { lang: Lang }) {
   const t = copy[lang];
-  const products = testProducts.filter((product) => shownProducts.includes(product));
+  const products = testProducts.filter((product) => shownTestProducts.includes(product));
 
   /* Built as a list rather than written out in sequence because which lists
      exist is now a decision made above rather than a fact of the page: the
@@ -247,7 +274,7 @@ function Axes({ lang }: { lang: Lang }) {
         <SiteLink className="hl-row" key={product} href={localeRoute(lang, testProductPath(product))}>
           <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
           <b>{testProductMeta[lang][product].label}</b>
-          <span className="hl-desc">{modelCount(t, modelsByProduct(product).length)}</span>
+          <span className="hl-desc">{productNote(t, lang, product)}</span>
         </SiteLink>
       )),
     });
@@ -266,7 +293,7 @@ function Axes({ lang }: { lang: Lang }) {
         <SiteLink className="hl-row" href={localeRoute(lang, testStandardsPath)}>
           <span className="hl-idx">01</span>
           <b>{testStandardsMeta[lang].label}</b>
-          <span className="hl-desc">{t.standardsCount(testStandards.length)}</span>
+          <span className="hl-desc">{t.standardsNote}</span>
         </SiteLink>
       ),
     });
@@ -304,7 +331,7 @@ function Equipment({ lang, slug }: { lang: Lang; slug: TestCategory }) {
           <SiteLink className="hl-row" key={product} href={localeRoute(lang, testProductPath(product))}>
             <span className="hl-idx">{String(i + 1).padStart(2, "0")}</span>
             <b>{testProductMeta[lang][product].label}</b>
-            <span className="hl-desc">{modelCount(t, modelsByProduct(product).length)}</span>
+            <span className="hl-desc">{productNote(t, lang, product)}</span>
           </SiteLink>
         ))}
       </div>
@@ -334,7 +361,7 @@ function Models({ lang, slug }: { lang: Lang; slug: TestProduct }) {
     <>
       <div className="sec-head">
         <span className="kicker">{t.modelsKicker}</span>
-        <h2>{t.modelsTitle(total)}</h2>
+        <h2>{t.modelsTitle}</h2>
       </div>
       {groups.map((group, i) => (
         <div key={group.title ?? "ungrouped"}>
@@ -417,10 +444,18 @@ function Standards({ lang }: { lang: Lang }) {
  * catalogue PDFs for this branch — 40 MB of them — and they are the answer to
  * most of what a reader would otherwise write in to ask. They are **linked, not
  * copied**: a copy here would go stale the day the head office revises one,
- * which is the same call the career page makes about its job postings
- * (docs/source/company-career.md). The enquiry keeps the red fill, because a
+ * which is the same call the site makes about the head office's job postings.
+ * The enquiry keeps the red fill, because a
  * reader who needs a drawing for their own site will not find it in a
  * catalogue.
+ *
+ * The per-model datasheets *are* copied, into `public/test-systems/datasheets/`
+ * and onto the pill inside each model row. That is not a reversal of the call
+ * above — the note at the top of test-system-datasheets.ts sets out why a
+ * two-page sheet for one instrument and a forty-page branch catalogue are
+ * different things — but it does mean this band is no longer the only way a
+ * reader gets a document out of this branch, and it should not be written as
+ * though it were.
  */
 function Documents({ lang, label }: { lang: Lang; label: string }) {
   const t = copy[lang];
@@ -457,9 +492,15 @@ function Documents({ lang, label }: { lang: Lang; label: string }) {
  * column in the specification table slide out underneath, and the enquiry
  * inside the panel is already addressed to the model the reader picked.
  *
- * Unlike the chamber branch there is no second control beside it. These
+ * Unlike the chamber branch there is no link to a model page beside it. These
  * instruments have no page of their own — the family page is the page — so no
  * row carries an `href` and `ModelAccordion` is given no label for one.
+ *
+ * What it has instead, and the chamber branch does not, is the datasheet: the
+ * head office publishes a sheet per instrument and none per chamber, so this
+ * is the one branch where a row can hand a reader the source document rather
+ * than a paraphrase of it. Eighteen of the models have one; the rest draw the
+ * two controls they always did (test-system-datasheets.ts).
  *
  * A row with nothing to open stays the plain row it was, which is not an
  * omission but the shape of the source: the head office's amplifier matrix
@@ -484,6 +525,10 @@ function ModelList({
   const family = localeRoute(lang, testProductPath(slug));
   const rows: AccordionRow[] = models.map((model) => {
     const body = testModelBody(lang, model.name);
+    // Absent for most models, and deliberately so — see the note on `byModel`
+    // in test-system-datasheets. `asset()` because this becomes a raw
+    // `<a href>`, which Next does not rewrite for the base path.
+    const doc = datasheetFor(model.name);
     return {
       // The name alone. Every designation in `testModels` is distinct — they
       // are part numbers — so unlike the chamber branch, where seven models
@@ -499,6 +544,7 @@ function ModelList({
       quoteHref: `mailto:${contactEmail}?subject=${encodeURIComponent(
         t.modelQuoteSubject(model.name),
       )}`,
+      doc: doc && { href: asset(doc.href), size: doc.size },
       cart: {
         id: `system:${model.name}`,
         name: model.name,
@@ -515,6 +561,7 @@ function ModelList({
       lang={lang}
       rows={rows}
       quote={t.modelQuote}
+      docLabel={t.modelDoc}
       /* Never read today — every instrument the head office photographs, it
          photographs once, so no row here has a second frame to step to. Given
          anyway, so that the day a model gets a second picture the stepper it

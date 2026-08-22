@@ -6,7 +6,6 @@ import {
   chamberTopics,
   chamberTypes,
   chambersPath,
-  downloadsPath,
   industryPath,
   modelPath,
   topicPath,
@@ -14,14 +13,12 @@ import {
 } from "./chamber-sections";
 import { companySections, sectionPath } from "./company-sections";
 import { contactPath } from "./contact-sections";
+import { downloadsPath } from "./downloads-sections";
 import { legalPath, legalSections } from "./legal-sections";
 import { mychamberPath } from "./mychamber-sections";
 import {
-  testCategories,
-  testCategoryPath,
+  shownTestProducts,
   testProductPath,
-  testProducts,
-  testStandardsPath,
   testSystemsPath,
 } from "./test-system-sections";
 import { languages, localeUrl } from "./site-config";
@@ -98,12 +95,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     // looking for, but it is not a way into the range.
     ...chamberModelSlugs.flatMap((s) => perLocale(modelPath(s), lastModified, 0.65, "monthly")),
     ...chamberTopics.flatMap((t) => perLocale(topicPath(t), lastModified, 0.6, "yearly")),
-    // The test-system branch, ranked the same way: overview, then its two
-    // index axes, then the standards index.
+    // The test-system branch: the overview, then the product families that are
+    // on show.
+    //
+    // The four families that are held back, the four `test/*` discipline pages
+    // and the standards index are not listed. They still build and still
+    // resolve — this is the same hold the index band and the header dropdown
+    // make, carried through to the one place that would otherwise hand a
+    // crawler a door the site itself does not offer. Listing a page nothing
+    // links to is how it gets indexed and arrived at from a search result,
+    // which is precisely what "not on show" has to rule out. Put a family back
+    // in `shownTestProducts` and it comes back here with it; the two axes come
+    // back by restoring the two lines below. See the note on
+    // `shownTestProducts` in test-system-sections.
     ...perLocale(testSystemsPath, lastModified, 0.9, "monthly"),
-    ...testCategories.flatMap((c) => perLocale(testCategoryPath(c), lastModified, 0.7, "monthly")),
-    ...testProducts.flatMap((p) => perLocale(testProductPath(p), lastModified, 0.7, "monthly")),
-    ...perLocale(testStandardsPath, lastModified, 0.6, "yearly"),
+    ...shownTestProducts.flatMap((p) => perLocale(testProductPath(p), lastModified, 0.7, "monthly")),
     ...perLocale(downloadsPath, lastModified, 0.5, "yearly"),
     // With the branch overviews rather than below them: every CTA in the
     // header, the footer and the closing band of all 86 pages leads here, and

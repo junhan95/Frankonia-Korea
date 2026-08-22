@@ -29,9 +29,10 @@ export const testCategories = ["emission", "conducted", "radiated", "magnetic"] 
  * column, the index, and the equipment list on a test page.
  *
  * Integrated systems lead. The five families under them are components of a
- * setup the buyer assembles; the CIT series is the setup, bought whole. A
- * reader who can use one should meet it before the parts list, and a reader
- * who cannot loses one line to reach the amplifiers.
+ * setup the buyer assembles; the CIT series, the ECU-6, the PSG-300 and the
+ * MTS-800 are the setup, bought whole. A reader who can use one should meet it
+ * before the parts list, and a reader who cannot loses one line to reach the
+ * amplifiers.
  * The rest keep the signal chain's own order: what drives the field, what
  * radiates it, what measures it, what conditions the measurement, what routes
  * it.
@@ -49,6 +50,24 @@ export const testProducts = [
 
 export type TestCategory = (typeof testCategories)[number];
 export type TestProduct = (typeof testProducts)[number];
+
+/**
+ * Which families are on show — a hold, not a deletion.
+ *
+ * The head office's August 2026 mail names the instruments it wants promoted:
+ * the CIT series, the ECU-6, the ERX receivers, the MTS-800, the PSG-300, the
+ * RSU, the PMS and the EFS probes. They sit in four of the eight families, and
+ * those four are what the index at `/test-systems/` and the header dropdown
+ * draw. The amplifiers, antennas, pre-amplifiers and coupling devices are the
+ * parts a laboratory adds around them, and the mail does not ask for them.
+ *
+ * Nothing under the four that are down has been taken away: every family is
+ * still a page, still carries its models and its body in both locales, and is
+ * still in the sitemap. Putting one back on show is adding it to this list.
+ * The order is `testProducts`'s own, so it does not need restating here — the
+ * index filters rather than maps.
+ */
+export const shownTestProducts: readonly TestProduct[] = ["system", "emission", "efs", "meter"];
 
 export const isTestCategory = (v: string): v is TestCategory =>
   (testCategories as readonly string[]).includes(v);
@@ -297,6 +316,12 @@ export const testModels: readonly TestModel[] = [
   { name: "EFS-300", desc: "300 kHz – 18 GHz, 1.5 – 1500 V/m", product: "efs" },
   { name: "EFS-500", desc: "300 kHz – 26.5 GHz, 0.4 – 800 V/m", product: "efs" },
   { name: "EFS-Laser", desc: "10 kHz – 6 GHz, 0.1 V/m – 10 kV/m, laser-powered", product: "efs" },
+  // Last rather than in numeric order: it is not an EFS-10 with a wider band
+  // but the next generation of the probe — a triaxial diode-dipole sensor with
+  // its own housing, its own software and its own datasheet
+  // (EFS-18-datasheet_2026.pdf). Filing it between the EFS-10 and the EFS-100
+  // would put it inside a table it does not share a single row with.
+  { name: "EFS-18", desc: "1 MHz – 18 GHz, 0.8 – 340 V/m, triaxial isotropic", product: "efs" },
 
   // Pre-amplifiers for emission measurement.
   { name: "FPA-2", desc: "9 kHz – 2 GHz, +30 dB, NF 2.5 dB", product: "preamp" },
@@ -311,20 +336,34 @@ export const testModels: readonly TestModel[] = [
   { name: "PMS 1084 B", desc: "10 kHz – 500 MHz", product: "meter" },
   { name: "RSU", desc: "DC – 12.4 GHz, extendable to 18 / 40 GHz", product: "meter" },
 
-  // Integrated systems — the CIT series, and only the CIT series.
+  // Integrated systems.
   //
-  // The head office files eight products under this family: the two CITs, the
-  // ECU-3 and ECU-6 control units, the PSG-300 and 300A power signal
-  // generators, the MTS-800 magnetic field system and the GTEM cells. This
-  // site presents the two. The other six are instruments a laboratory adds to
-  // a bench it already has, and the page they shared was answering three
-  // different questions at once — what a complete immunity system is, what a
-  // signal generator is for, and how to make a magnetic field. The CIT series
-  // is the one that answers the first, which is what "Integrated Systems"
-  // means. Their copy, figures, tables and photographs came out with them;
-  // `git log` on this file is where they are if the branch grows back.
-  { name: "CIT-100", desc: "Compact immunity test system, 4 kHz – 1.2 GHz, 25 / 75 W", product: "system" },
-  { name: "CIT-1000", desc: "Compact immunity test system, 4 kHz – 1.2 GHz, 25 – 180 W, touch-screen PC", product: "system" },
+  // This family was held back to the CIT series for a while, on the reasoning
+  // that its page was answering three questions at once. The head office's
+  // August 2026 mail settles which products it wants promoted, and four of
+  // them are here: the CIT series for IEC/EN 61000-4-6, ISO 11452-4 and CS114;
+  // the ECU-6 for radiated immunity to IEC 61000-4-3, ISO 11452-2 and RS103;
+  // the PSG-300 for IEC/EN 61000-4-16 and -4-19; the MTS-800 for the MIL-STD
+  // 461 magnetic methods. So the family is four products and the page answers
+  // four questions, each under its own heading.
+  //
+  // Figures come from the 2026 datasheets that arrived with that mail
+  // (D:\FRANKONIA\FRF\Datasheet) rather than from the older website pages, and
+  // they moved: the CIT amplifier options are 25 / 75 / 200 W where the site
+  // said 25 / 75 and 180, the ECU generator reaches 6.2 GHz where the 2016
+  // catalogue said 6.5, and the PSG-300 is rated 260 W where it said 250.
+  // See docs/source/test-systems-source.md §6.
+  //
+  // ECU-3 and the GTEM cells are the two the old list held that are still not
+  // here. Neither is in the head office's promotion list and neither has a
+  // 2026 datasheet — the only figures this site could print for them are the
+  // ones off a website page that the ECU-6.2 datasheet has already overtaken.
+  { name: "CIT-100", desc: "Compact immunity test system, 4 kHz – 1.2 GHz, 25 / 75 / 200 W", product: "system" },
+  { name: "CIT-1000", desc: "Compact immunity test system, 4 kHz – 1.2 GHz, 25 / 75 / 200 W, touch-screen PC", product: "system" },
+  { name: "ECU-6", desc: "EMC test and control unit, generator 8 kHz – 6.2 GHz", product: "system" },
+  { name: "PSG-300", desc: "Precision power generator, DC – 300 kHz, 5 A / 260 W", product: "system" },
+  { name: "PSG-300A", desc: "Precision power generator, DC – 300 kHz, 16 A / 800 W", product: "system" },
+  { name: "MTS-800", desc: "Magnetic field generator and analyzer, DC – 250 kHz, up to 1000 A/m", product: "system" },
 
   // Emission measuring systems, from the 2021 catalogue of that name. The
   // receivers are the family the overview paragraph has named since the branch
@@ -336,7 +375,7 @@ export const testModels: readonly TestModel[] = [
   { name: "LISN-KFZ", desc: "Automotive LISN, 100 kHz – 150 MHz, 70 A", product: "emission", group: "Line impedance stabilization networks" },
   { name: "LISN-MIL", desc: "MIL-STD-461 LISN, 150 kHz – 100 MHz, 70 A", product: "emission", group: "Line impedance stabilization networks" },
   { name: "NFS-100", desc: "Near-field probe set, E 80 – 500 MHz / H 10 – 500 MHz", product: "emission", group: "Probes and clamps" },
-  { name: "LVVL", desc: "2 m large loop antenna, 9 kHz – 30 MHz, three axes", product: "emission", group: "Probes and clamps" },
+  { name: "LVVL", desc: "2.0 m large loop antenna, 9 kHz – 30 MHz, three axes", product: "emission", group: "Probes and clamps" },
   { name: "ACF-01B", desc: "Absorbing clamp, 30 – 1000 MHz, 17 dB ± 4 dB", product: "emission", group: "Probes and clamps" },
 
   // Coupling and decoupling accessories, from the conducted immunity catalogue.
@@ -355,8 +394,46 @@ export const testModels: readonly TestModel[] = [
   { name: "MP50", desc: "Bulk current monitoring probe", product: "coupling", group: "Clamps and probes" },
 ];
 
+/**
+ * Models held off the page inside a family that is otherwise on show.
+ *
+ * `shownTestProducts` decides which families are drawn; this decides which
+ * models inside them are. The two are separate because one family — Emission
+ * Measuring Systems — carries the instrument the head office's August 2026
+ * mail asks for (the ERX receiver) alongside eight it does not: four LISNs,
+ * the near-field probe set, the large loop antenna and the absorbing clamp.
+ * Dropping the whole family would take the mail's own emission product with
+ * it; leaving it whole would put eight unasked-for instruments on a page the
+ * mail is the reason for.
+ *
+ * ERC-6 is on this list and it is the one entry worth a second look. It is the
+ * ERX-6's cheaper sibling and sits in the same "EMI test receivers" group, so
+ * an argument can be made that the mail's "ERX-7 … as system for emission"
+ * covers it. The mail names ERX and ERC is a different designation, so it is
+ * held; taking it off this list is the whole change if that reading is wrong.
+ *
+ * Nothing here is deleted. Every model keeps its entry in `testModels`, its
+ * figures in `modelFacts`, its paragraph in `modelLead` and its photograph in
+ * the gallery, so a name coming off this list is one line and no re-typing.
+ * The specification tables on those families' pages follow the same cut by
+ * hand — see the note on `productBody`.
+ */
+export const hiddenTestModels: readonly string[] = [
+  "ERC-6",
+  "C2-16",
+  "C4-32",
+  "LISN-KFZ",
+  "LISN-MIL",
+  "NFS-100",
+  "LVVL",
+  "ACF-01B",
+];
+
+/** A family's models, less the ones held back. Every count, row, dropdown
+ *  caption and basket entry on the branch comes through here, so the hold is
+ *  made once rather than at each surface. */
 export const modelsByProduct = (product: TestProduct) =>
-  testModels.filter((m) => m.product === product);
+  testModels.filter((m) => m.product === product && !hiddenTestModels.includes(m.name));
 
 /**
  * A product family's models, split under the source's own headings.
@@ -452,7 +529,7 @@ export const testCategoryMeta = {
       label: "방출 Emission",
       note: "9kHz~40GHz",
       description:
-        "방사·전도 방출 측정 구성 — 안테나, EMI 리시버와 LISN, FPA 프리앰프 6종, RF 파워미터. 9kHz부터 40GHz까지 커버합니다.",
+        "방사·전도 방출 측정 구성 — 안테나, EMI 리시버와 LISN, FPA 프리앰프, RF 파워미터. 9kHz부터 40GHz까지 커버합니다.",
     },
     conducted: {
       label: "전도 내성 Conducted",
@@ -478,7 +555,7 @@ export const testCategoryMeta = {
       label: "Emission",
       note: "9 kHz – 40 GHz",
       description:
-        "Radiated and conducted emission setups — antennas, the EMI receivers and their LISNs, the six FPA pre-amplifiers and RF power meters, covering 9 kHz to 40 GHz.",
+        "Radiated and conducted emission setups — antennas, the EMI receivers and their LISNs, the FPA pre-amplifiers and RF power meters, covering 9 kHz to 40 GHz.",
     },
     conducted: {
       label: "Conducted Immunity",
@@ -507,25 +584,25 @@ export const testProductMeta = {
       label: "RF 파워앰프",
       note: "내성 시험 구동용 고체소자·광대역 — 최대 12kW",
       description:
-        "RF 파워앰프 139종 — 10kHz~6GHz 고체소자 앰프 105종(최대 12kW)과 500MHz~40GHz 광대역 WBA 34종.",
+        "내성 시험 구동용 RF 파워앰프 — 10kHz~6GHz 고체소자 앰프(최대 12kW)와 500MHz~40GHz 광대역 WBA.",
     },
     antenna: {
       label: "안테나",
       note: "방출과 내성, 송신과 수신 양쪽",
       description:
-        "방출·내성 시험용 안테나 10종 — 광대역 ALX, 스택 로그페리오딕 MAX, 혼 HAX, 액티브 로드 SAX-10과 루프 LAX-10. 9kHz부터 40GHz까지.",
+        "방출·내성 시험용 안테나 — 광대역 ALX, 스택 로그페리오딕 MAX, 혼 HAX, 액티브 로드 SAX-10과 루프 LAX-10. 9kHz부터 40GHz까지.",
     },
     efs: {
       label: "전계강도계 EFS",
       note: "챔버 안 전계 측정 — 광파이버 전송",
       description:
-        "EFS-10·100·300·500과 EFS-Laser — 10kHz~26.5GHz, 0.14~1500 V/m, 광파이버 전송.",
+        "EFS-10·100·300·500, EFS-Laser, 그리고 신세대 EFS-18 — 10kHz~26.5GHz, 0.14~1500 V/m, 광파이버 전송.",
     },
     preamp: {
       label: "프리앰프 FPA",
       note: "수신기 앞단에서 방출 신호 증폭",
       description:
-        "방출 측정용 광대역 프리앰프 6종 — FPA-2·6A·6B·18·26·40, 9kHz~40GHz, 이득 28~35dB.",
+        "방출 측정용 광대역 프리앰프 — FPA-2·6A·6B·18·26·40, 9kHz~40GHz, 이득 28~35dB.",
     },
     meter: {
       label: "파워미터·스위칭",
@@ -535,15 +612,15 @@ export const testProductMeta = {
     },
     system: {
       label: "통합 시험 시스템",
-      note: "19″ 케이스 하나로 완결되는 전도 내성 시험",
+      note: "랙 한 대로 완결되는 시험 구성",
       description:
-        "CIT 시리즈 컴팩트 내성 시험 시스템 — IEC/EN 61000-4-6 전도 RF 내성과 ISO 11452-4 · MIL-STD 461 CS114 BCI 시험을 위한 CIT-100과 상위 기종 CIT-1000.",
+        "CIT-100·CIT-1000 컴팩트 전도 내성 시험 시스템, 방사 내성용 ECU-6 EMC 컨트롤 유닛, IEC/EN 61000-4-16·-4-19용 PSG-300·300A 정밀 파워 제너레이터, MIL-STD 461 자기장 시험용 MTS-800.",
     },
     emission: {
       label: "방출 계측 시스템",
-      note: "방출을 재는 쪽 — 리시버, LISN, 프로브",
+      note: "방출을 재는 쪽 — 풀컴플라이언스 EMI 리시버",
       description:
-        "EMI 테스트 리시버 ERX-6·ERC-6, LISN 4종, 근접전계 프로브 NFS-100, 대형 루프 안테나 LVVL, 흡수 클램프 ACF-01B.",
+        "EMI 테스트 리시버 ERX-6 — 10 Hz~6 GHz(옵션 7 GHz), CISPR 16-1-1 Ed 3.1과 MIL-STD 461G용 FFT 하드웨어 기본 탑재.",
     },
     coupling: {
       label: "결합·분리 액세서리",
@@ -557,25 +634,25 @@ export const testProductMeta = {
       label: "RF Power Amplifiers",
       note: "Immunity drive, solid-state and wideband — to 12 kW",
       description:
-        "A hundred and thirty-nine RF power amplifiers — a hundred and five solid-state models from 10 kHz to 6 GHz, up to 12 kW, and thirty-four WBA wideband models from 500 MHz to 40 GHz.",
+        "RF power amplifiers for immunity drive — solid-state models from 10 kHz to 6 GHz, up to 12 kW, and the WBA wideband models from 500 MHz to 40 GHz.",
     },
     antenna: {
       label: "Antennas",
       note: "Transmit and receive, emission and immunity",
       description:
-        "Ten antennas for emission and immunity testing — the broadband ALX, the stacked log-periodic MAX, the HAX horns, and the SAX-10 rod and LAX-10 loop, covering 9 kHz to 40 GHz.",
+        "Antennas for emission and immunity testing — the broadband ALX, the stacked log-periodic MAX, the HAX horns, and the SAX-10 rod and LAX-10 loop, covering 9 kHz to 40 GHz.",
     },
     efs: {
       label: "Field Strength Meters",
       note: "Reads the field inside the chamber, over fibre",
       description:
-        "EFS-10, 100, 300 and 500 plus the EFS-Laser — 10 kHz to 26.5 GHz, 0.14 to 1500 V/m, over a fibre optic link.",
+        "EFS-10, 100, 300 and 500, the EFS-Laser and the new-generation EFS-18 — 10 kHz to 26.5 GHz, 0.14 to 1500 V/m, over a fibre optic link.",
     },
     preamp: {
       label: "Pre-Amplifiers",
       note: "Lifts the emission signal ahead of the receiver",
       description:
-        "Six broadband pre-amplifiers for emission measurement — FPA-2, 6A, 6B, 18, 26 and 40, from 9 kHz to 40 GHz with 28 to 35 dB gain.",
+        "Broadband pre-amplifiers for emission measurement — FPA-2, 6A, 6B, 18, 26 and 40, from 9 kHz to 40 GHz with 28 to 35 dB gain.",
     },
     meter: {
       label: "Meters & Switching",
@@ -585,15 +662,15 @@ export const testProductMeta = {
     },
     system: {
       label: "Integrated Systems",
-      note: "A whole conducted immunity test in one 19″ case",
+      note: "A whole test in one rack unit",
       description:
-        "The CIT series of compact immunity test systems — the CIT-100 and its larger sibling the CIT-1000, for conducted RF immunity to IEC/EN 61000-4-6 and BCI testing to ISO 11452-4 and MIL-STD 461 CS114.",
+        "The CIT-100 and CIT-1000 compact conducted immunity test systems, the ECU-6 control unit for radiated immunity, the PSG-300 and 300A precision power generators for IEC/EN 61000-4-16 and -4-19, and the MTS-800 magnetic field system for MIL-STD 461.",
     },
     emission: {
       label: "Emission Measuring Systems",
-      note: "The measuring half — receivers, LISNs, probes",
+      note: "The measuring half — the full-compliance EMI receiver",
       description:
-        "The ERX-6 and ERC-6 EMI test receivers, four LISNs, the NFS-100 near-field probe set, the LVVL large loop antenna and the ACF-01B absorbing clamp.",
+        "The ERX-6 EMI test receiver — 10 Hz to 6 GHz (7 GHz as an option), with the FFT hardware for CISPR 16-1-1 Ed 3.1 and MIL-STD 461G fitted as standard.",
     },
     coupling: {
       label: "Coupling & Decoupling",
@@ -619,13 +696,13 @@ export const testSystemsOverviewMeta = {
     label: "EMC 시험장비",
     title: "EMC Test Systems",
     description:
-      "RF 파워앰프부터 전계강도계·프리앰프·통합 시험 시스템까지, 방출·내성 시험에 필요한 장비를 공급합니다.",
+      "EMI 리시버부터 전계강도계·RF 파워미터·통합 시험 시스템까지, 방출·내성 시험에 필요한 장비를 공급합니다.",
   },
   en: {
     label: "EMC Test Systems",
     title: "EMC Test Systems",
     description:
-      "From RF power amplifiers to field strength meters, pre-amplifiers and integrated systems — the instruments an emission or immunity setup is built from.",
+      "From EMI receivers to field strength meters, RF power meters and integrated systems — the instruments an emission or immunity setup is built from.",
   },
 } as const satisfies Record<Lang, { label: string; title: string; description: string }>;
 
@@ -633,12 +710,12 @@ export const testStandardsMeta = {
   ko: {
     label: "규격별 찾기",
     description:
-      "Frankonia 시험 장비가 대응하는 EMC 규격 24건. 그 규격으로 시험하는 산업군별로 묶어 정리했습니다.",
+      "Frankonia 시험 장비가 대응하는 EMC 규격 전체. 그 규격으로 시험하는 산업군별로 묶어 정리했습니다.",
   },
   en: {
     label: "Standards",
     description:
-      "The 24 EMC standards Frankonia's test equipment addresses, grouped by the industry that tests to them.",
+      "The EMC standards Frankonia's test equipment addresses, grouped by the industry that tests to them.",
   },
 } as const satisfies Record<Lang, { label: string; description: string }>;
 
@@ -662,10 +739,15 @@ export const overviewBody: Record<Lang, PageBody> = {
   en: {
     lead: [
       "Our Test System division offers a wide range of EMC Test Systems for emission and immunity testing as well as the planning, delivery and installation of turn-key EMC-Laboratories acc. to industrial, automotive and military standards.",
-      "Next to the complete systems we offer also single instruments/components, like RF-Power-Amplifiers, Antennas, Signal Generators, RF-Power-Meters, E-Field Sensors, GTEM-Cells, EMI-Receiver and many other accessories for EMC-testing.",
+      "Next to the complete systems we offer also single instruments/components, like Signal Generators, RF-Power-Meters, E-Field Sensors, EMI-Receiver and many other accessories for EMC-testing.",
     ],
     groups: [
       {
+        /* The head office's own list, less the lines whose products are not on
+           show. Four came out with them — antennas, RF power amplifiers, the
+           GTEM cells and the “ECU 3/6” line, which named a control unit this
+           page carries as the ECU-6 alone. The remaining seven are verbatim.
+           See the note on `shownTestProducts`. */
         title: "During the last 25 years, the following product lines were developed",
         items: [
           "Compact Immunity Test System for immunity testing acc. to IEC/EN 61000-4-6 with integrated signal generator, RF-power-amplifier, directional coupler and 3-channel RF-power-meter",
@@ -673,10 +755,7 @@ export const overviewBody: Record<Lang, PageBody> = {
           "Radiated immunity test systems acc. to IEC/EN 61000-4-3, ISO 11452-2, MIL-STD 461, RS 103",
           "Full-compliant EMI-Receiver with FFT for emission measurements from 9 kHz to 6 GHz",
           "Control software for automated emission and immunity testing",
-          "Complete range of antennas for emission and immunity testing in the frequency range from 9 kHz up to 40 GHz",
-          "Wide range of RF-Power-Amplifiers from DC to 18 GHz and output power up to 12.000 W",
-          "EMC Control-Unit “ECU 3/6” with integrated signal-generator, relay-switching-unit, directional couplers, RF-power-meters, EUT-monitoring",
-          "GTEM-Cells",
+          "EMC Control-Unit with integrated signal-generator, relay-switching-unit, directional couplers, RF-power-meters, EUT-monitoring",
           "E-field-sensors, battery- or laser-powered",
           "Low-frequency- / Magnetic-field-test-system for emission and immunity tests, for example magnetic-field-testing up to 1000 A/m, MIL-STD 461 testing, parts CE101, CS101, CS109, RE101, RS101",
         ],
@@ -686,10 +765,13 @@ export const overviewBody: Record<Lang, PageBody> = {
   ko: {
     lead: [
       "Frankonia 시험장비 사업부는 방출·내성 시험을 위한 EMC 시험 시스템 전반을 공급하고, 산업·자동차·군수 규격에 따른 턴키 EMC 실험실의 설계·납품·설치까지 맡습니다.",
-      "완성 시스템과 별도로 RF 파워앰프, 안테나, 신호발생기, RF 파워미터, 전계 센서, GTEM 셀, EMI 리시버를 비롯한 EMC 시험용 단품과 액세서리도 공급합니다.",
+      "완성 시스템과 별도로 신호발생기, RF 파워미터, 전계 센서, EMI 리시버를 비롯한 EMC 시험용 단품과 액세서리도 공급합니다.",
     ],
     groups: [
       {
+        /* 본사 원본 목록에서 화면에 올리지 않는 제품 줄을 뺐다 — 안테나, RF
+           파워앰프, GTEM 셀, 그리고 이 페이지가 ECU-6 하나로만 싣는 “ECU 3/6”
+           줄. 나머지 일곱 줄은 원문 그대로다. `shownTestProducts` 주석 참조. */
         title: "지난 25년간 개발한 제품군",
         items: [
           "IEC/EN 61000-4-6 내성 시험용 컴팩트 내성 시험 시스템 — 신호발생기, RF 파워앰프, 방향성 결합기, 3채널 RF 파워미터 내장",
@@ -697,10 +779,7 @@ export const overviewBody: Record<Lang, PageBody> = {
           "IEC/EN 61000-4-3, ISO 11452-2, MIL-STD 461 RS 103 대응 방사 내성 시험 시스템",
           "9 kHz~6 GHz 방출 측정용 FFT 탑재 풀컴플라이언트 EMI 리시버",
           "방출·내성 시험 자동화 제어 소프트웨어",
-          "9 kHz~40 GHz 방출·내성 시험용 안테나 전 라인업",
-          "DC~18 GHz, 출력 12,000 W까지의 RF 파워앰프",
-          "신호발생기·릴레이 스위칭 유닛·방향성 결합기·RF 파워미터·EUT 모니터링을 통합한 EMC 컨트롤 유닛 “ECU 3/6”",
-          "GTEM 셀",
+          "신호발생기·릴레이 스위칭 유닛·방향성 결합기·RF 파워미터·EUT 모니터링을 통합한 EMC 컨트롤 유닛",
           "배터리 또는 레이저 급전 전계 센서",
           "방출·내성 시험용 저주파·자기장 시험 시스템 — 최대 1000 A/m 자기장 시험, MIL-STD 461 CE101·CS101·CS109·RE101·RS101",
         ],
@@ -813,7 +892,7 @@ export const categoryBody: Record<Lang, Partial<Record<TestCategory, PageBody>>>
             ["Amplifier — distortion", "< 0.10 %\nDC – 100 kHz, load ≥ 4 Ω"],
             ["Analyzer — voltage input", "DC – 250 kHz\n1 MΩ / 50 Ω switchable"],
             ["Analyzer — current input", "DC – 250 kHz\nshunts 10 mΩ / 1 Ω / 100 Ω, max 20 A continuous"],
-            ["AD converter", "16 bit, 1.25 MSPS"],
+            ["AD converter", "16 bit, 1.0 MSPS"],
             ["Connection to computer", "USB"],
             ["Dimensions (W×H×D)", "449 × 177 × 580 mm"],
             ["Weight", "approx. 34 kg net"],
@@ -927,7 +1006,7 @@ export const categoryBody: Record<Lang, Partial<Record<TestCategory, PageBody>>>
             ["Amplifier — distortion", "< 0.10 %\nDC – 100 kHz, load ≥ 4 Ω"],
             ["Analyzer — voltage input", "DC – 250 kHz\n1 MΩ / 50 Ω switchable"],
             ["Analyzer — current input", "DC – 250 kHz\nshunts 10 mΩ / 1 Ω / 100 Ω, max 20 A continuous"],
-            ["AD converter", "16 bit, 1.25 MSPS"],
+            ["AD converter", "16 bit, 1.0 MSPS"],
             ["Connection to computer", "USB"],
             ["Dimensions (W×H×D)", "449 × 177 × 580 mm"],
             ["Weight", "approx. 34 kg net"],
@@ -966,19 +1045,18 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
     emission: {
       lead: [
         "The ERX-6 combines the advantages of a traditional EMI-receiver with the ultra-fast FFT-technology (time domain). Furthermore it offers the full functionality of a real-time spectrum analyzer, which is very helpful to see immediate results of modifications on an EUT.",
-        "Although the ERC-6 is the less expensive little brother of our flagship ERX-6, it is more than worth to have an intensive look on it. Only properties that are not required for full-compliance EMI measurements according to CISPR 16-1 have been reduced or omitted, which makes it a good alternative to the high-end devices for many users, such as in-house developing departments.",
-        "Around the receiver sits the rest of an emission measurement: the LISN that gives the mains a defined impedance, the near-field probes that locate the source, the large loop antenna for luminaires and the absorbing clamp for CISPR 14.",
+        "By default it is equipped with hardware that significantly accelerates the measurement according to CISPR 16-1-1 Ed 3.1 and MIL-STD 461G; for standards that do not allow an FFT-based instrument it has a classic stepped scan mode, and single frequency points can be measured as at a final maximization. The delivery includes a control software that runs on the receiver's own touch screen, so no external PC is required.",
       ],
-      /* The one photograph in the 2021 catalogue that is a product and not a
-         screenshot or a schematic — see docs/source/test-systems-assets.md.
-         A LISN rather than a receiver is not the plate this page would have
-         chosen, but it is the plate the source has. */
+      /* The head office's own hero shot from the 2026 ERX-6 datasheet. It
+         replaces the 2021 catalogue's LISN photograph, which was the only
+         product plate that source had and stopped being the right one when the
+         page became the receiver's — see docs/source/test-systems-assets.md. */
       figure: {
-        src: "/test-systems/images/emission-lisn.webp",
-        w: 723,
-        h: 802,
-        alt: "A LISN in a grey metal case, its front plate lettered “0.1 MHz - 150 MHz, 400 A, 5 µH” over Measure and Output jacks, with brass and red wing terminals for GND and the EuT line below",
-        caption: "The mains has no impedance worth measuring against. This is what gives it one — and the receiver output beside it is the whole point of the box.",
+        src: "/test-systems/images/emission-erx-6.webp",
+        w: 1400,
+        h: 1003,
+        alt: "The ERX-6 in three-quarter view: a grey bench case with a carrying bail, a red side panel lettered ERX-6, and an 8.4-inch touch screen showing a frequency scan with the FREQ. SCAN, TRANSDUCER, LIMIT LINES, CURVES, SETTINGS, MARKER, SAVE SETTINGS and RUN keys down its right edge",
+        caption: "Quasi-peak over a whole band in seconds rather than hours — and the receiver runs the scan from its own screen, with no PC beside it.",
       },
       groups: [
         {
@@ -994,81 +1072,28 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             "Measurements acc. to CISPR, MIL, DO, VG and ETSI standards",
           ],
         },
-        {
-          title: "ERC-6 key features",
-          items: [
-            "Frequency range 9 kHz – 6 GHz",
-            "Traditional EMI-receiver mode according to CISPR 16-1",
-            "Fast, FFT-based (time domain) EMI-receiver mode acc. to CISPR 16-1-1, Ed. 3.1",
-            "Integrated touch-PC with 10″ monitor",
-            "Integrated 20 dB (15 dB above 1 GHz) pre-amplifier",
-            "Full-compliant according to CISPR 16-1",
-            "Peak, Quasi-Peak, Average, RMS and CISPR-Average detectors, RMS-average optional",
-          ],
-        },
-        {
-          // Prose rather than a table: the head office's own LISN-KFZ and
-          // LISN-MIL tables print their label column and their value column out
-          // of step with one another, and a figure that cannot be tied to its
-          // label with certainty does not go on the page. These four lines are
-          // from the description beside those tables, which is unambiguous.
-          title: "The automotive and military LISNs",
-          items: [
-            "LISN-KFZ — measurement of interference voltage in vehicles, aircraft and ships over 100 kHz – 150 MHz; also usable for bulk current injection and for transient measurements according to ISO 7637-2",
-            "LISN-KFZ — impedance realised according to CISPR 16 / 25 and MIL-STD-461F, (5 µH + 1 Ω) ∥ 50 Ω; 70 A continuous and more than 100 A for a short time",
-            "LISN-MIL — designed according to MIL-STD-461E and 461F, 50 µH + 5 Ω ∥ 50 Ω over 150 kHz – 100 MHz",
-            "With the optionally available external capacitor CAP 10 the LISN-KFZ can be used for DO-160 and DEF-STAN 59 as well",
-          ],
-        },
       ],
       tables: [
         {
-          title: "EMI test receivers",
-          head: ["", "ERX-6", "ERC-6"],
+          title: "ERX-6",
+          note: "Figures from the 2026 datasheet. The ERX-7 the head office announced in August 2026 is not published yet — see docs/source/test-systems-source.md §6.3.",
+          head: ["", "Specification"],
           rows: [
-            ["Frequency range", "10 Hz – 6 GHz\n7 GHz with option ERX-FE7", "9 kHz – 6 GHz"],
-            ["Operating modes", "EMI receiver, FFT-based receiver,\nspectrum analyzer, oscilloscope", "EMI receiver,\nFFT-based receiver"],
-            ["Detectors", "Quasi-Peak, Average, RMS, RMS-Average,\nCISPR-AVG, CISPR-RMS", "Peak, Quasi-peak, Average, RMS,\nCISPR-Average (RMS-average option)"],
-            ["Pre-amplifier", "typ. 20 dB, noise figure typ. 3.5 dB", "20 dB, 15 dB above 1 GHz"],
-            ["RF input", "N type, 50 Ω", "BNC 50 Ω (9 kHz – 30 MHz)\nN 50 Ω (30 MHz – 6 GHz)"],
-            ["Attenuator", "0 – 50 dB in 10 dB steps", "0 – 35 dB / 0 – 55 dB in 5 dB steps"],
-            ["Display", "8.4″ touchscreen, 800 × 600", "integrated 10″ touch PC"],
-            ["Interfaces", "Ethernet/LAN, USB, VGA, HDMI, audio", "USB, RS-232, user port"],
-            ["Power supply", "+11 … +14 V DC; 230 V ± 20 % 50 Hz\nor 110 V ± 10 % 60 Hz", "100 – 240 VAC, 50/60 Hz, 25 W"],
-            ["Dimensions", "—", "2 RU, 482 × 95 × 485 mm"],
-            ["Weight", "approx. 8 kg", "7 kg"],
-          ],
-        },
-        {
-          title: "Line impedance stabilization networks",
-          note: "Both are V-networks of 50 Ω ∥ (5 Ω + 50 µH), fully compliant with CISPR 16, VDE 0876 and FCC part 15.",
-          head: ["", "C2-16", "C4-32"],
-          rows: [
-            ["Frequency range", "9 kHz – 30 MHz", "9 kHz – 30 MHz"],
-            ["Lines", "single-phase, two-line", "three-phase, three-line"],
-            ["Continuous rated output current", "16 A, SCHUKO socket", "32 A IEC, 16 A SCHUKO"],
-            ["Max. operating voltage", "250 VAC / 350 VDC", "230 VAC / 325 VDC (L-PE, N-PE)\n400 VAC / 565 VDC (L-L, L-N)"],
-            ["AC supply frequency range", "DC – 60 Hz", "DC – 60 Hz"],
-            ["RF output", "BNC female", "BNC female"],
-            ["Rated temperature", "−10 … +45 °C", "−10 … +40 °C"],
-            ["Dimensions (W × H × D)", "230 × 105 × 285 mm", "342 × 254 × 510 mm"],
-            ["Weight", "5.5 kg", "16.5 kg"],
-          ],
-        },
-        {
-          title: "Probes, loop antenna and absorbing clamp",
-          head: ["", "NFS-100", "LVVL", "ACF-01B"],
-          rows: [
-            ["Frequency range", "E 80 – 500 MHz\nH 10 – 500 MHz", "9 kHz – 30 MHz", "30 – 1000 MHz"],
-            ["Standard", "—", "CISPR-15 / EN 55015, §7.2 and annex B", "CISPR 16-1-3, EN 55014-1"],
-            ["Configuration", "E probe, H probe, BNC adaptor,\nsensitivity plots, hard carry case", "three independent loops, 2 m diameter,\nselected by patch panel switch", "clamp on wheels, 6 dB attenuator\nrecommended at the output"],
-            ["Insertion loss / coupling", "—", "—", "17 dB ± 4 dB"],
-            ["Decoupling typ.", "—", "—", "5 … 20 dB over 1 – 30 MHz\n> 20 dB over 30 MHz – 1 GHz"],
-            ["Impedance / connection", "50 Ω nom., BNC", "50 Ω BNC", "50 Ω"],
-            ["Max. input", "isolation voltage 1 kV", "—", "30 A peak current, 5 W peak"],
-            ["Max. cable diameter", "—", "—", "20 mm"],
-            ["Dimensions", "E 180 mm, H 183 mm overall\nouter diameter H 69 mm", "2.6 × 2.1 × 2.1 m (H × W × W)", "600 × 105 × 80 mm"],
-            ["Weight", "—", "—", "6.5 kg"],
+            ["Frequency range", "10 Hz – 6 GHz\n7 GHz with option ERX-FE7"],
+            ["Operating modes", "EMI receiver (superheterodyne), FFT-based receiver,\nspectrum analyzer"],
+            ["Detectors", "Quasi-Peak, Average, RMS, RMS-Average,\nCISPR-AVG, CISPR-RMS"],
+            ["Displayed average noise level", "−163 dBm over 30 – 1000 MHz (LNA off)\n−169 dBm (LNA on)"],
+            ["Noise indication", "< −6 dBµV over 30 – 1000 MHz (LNA off)\n< −12 dBµV (LNA on)"],
+            ["Scan speed, quasi-peak, dwell 1 s", "Band A 2 s, Band B 2 s, Band C/D 30 s\nBand E (1 – 6 GHz) 2 s at dwell 100 ms"],
+            ["Pre-amplifier", "typ. 20 dB, noise figure typ. 3.5 dB"],
+            ["IF bandwidths", "3 dB: 1 Hz – 30 MHz\n6 dB CISPR: 200 Hz, 9 kHz, 120 kHz, 1 MHz\n6 dB MIL/DO: 10 Hz, 100 Hz, 1 kHz, 100 kHz, 1 MHz"],
+            ["Total measurement uncertainty", "0.5 dB, CW signal, S/N > 20 dB, 95 % confidence"],
+            ["RF input", "N type, 50 Ω"],
+            ["Attenuator", "0 – 50 dB in 10 dB steps"],
+            ["Display", "8.4″ touchscreen, 800 × 600"],
+            ["Interfaces", "Ethernet/LAN, USB, VGA, HDMI, audio; SCPI remote control"],
+            ["Power supply", "+11 … +14 V DC; 230 V ± 20 % 50 Hz\nor 110 V ± 10 % 60 Hz, approx. 60 W"],
+            ["Weight", "approx. 8 kg"],
           ],
         },
       ],
@@ -1294,7 +1319,7 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             ["Loop diameter", "—", "0.5 m"],
             ["Power supply", "9.6 V / 1100 mAh NiMH", "12 V NiMH 1.9 Ah"],
             ["Operation time", "typ. at least 50 hours", "typ. 12 hours"],
-            ["Dimensions", "rod 1 m including thread connection\namplifier top plate 220 × 120 mm", "520 × 585 × 120 mm"],
+            ["Dimensions", "rod 1.0 m including thread connection\namplifier top plate 220 × 120 mm", "520 × 585 × 120 mm"],
             ["Weight", "rod approx. 0.2 kg\namplifier approx. 0.7 kg", "1.9 kg"],
             ["Threads for tripods", "1/4″, 3/8″", "1/4″, 3/8″"],
           ],
@@ -1306,6 +1331,7 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
         "The Frankonia EFS field strength meters especially have been designed for field strength measurements / field homogeneity measurements during radiated immunity tests according to IEC/EN 61000-4-3 / -20. But it could also be used to measure the radiation exposure of the environment, for example at workplaces or flats.",
         "The EFS is an isotropic miniature E-field sensor to ensure that the E-field will not be influenced by the size of the sensor itself. It even does not need any metering unit, because of its direct fibre optic output which allows direct connection of the sensor to the USB-interface of the control PC or laptop.",
         "The EFS-Laser is a smart, fast, extremely accurate electric field probe, which provides linearization, temperature compensation, control and communication functions. Noise reduction and temperature compensation allow accurate measurements down to 0.1 V/m. The probe is laser-powered to allow continuous, galvanically isolated operation without recharging or battery replacement.",
+        "EFS-18 is the new generation: an isotropic electric field sensor based on triaxial diode dipoles, designed for the characterization of the electric field in TEM and GTEM cells, in anechoic chambers, and for monitoring areas and critical points for electromagnetic safety. The supplied EMCViewer software shows the isotropic value, the single axis components and the amplitude/time response, and can manage up to eight sensors at once; the battery runs for more than 50 hours, and for four more after a twenty-minute charge.",
       ],
       figure: {
         src: "/test-systems/images/efs-probe.webp",
@@ -1324,6 +1350,7 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             "Field strength measurements from 0.14 V/m to 500 V/m",
             "Up to 100 hours operating time before recharging",
             "EFS-Laser: laser powered — no more empty batteries, continuous real-time data streaming, temperature compensation",
+            "EFS-18: triaxial isotropic sensor, 1 MHz to 18 GHz, 20 ms sampling rate, up to eight sensors connected simultaneously",
           ],
         },
       ],
@@ -1343,9 +1370,9 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             ["Internal battery", "3 V / 5 mAh rechargeable Li-Mn", "3 V / 5 mAh rechargeable Li-Mn"],
             ["Operation time", "100 hours at 0.4 S/s, 28 Hz filter", "100 hours at 0.4 S/s, 28 Hz filter"],
             ["Communication", "bidirectional fibre optic link", "bidirectional fibre optic link"],
-            ["Fibre optic length", "10 m standard, 20 / 40 m optional", "10 m standard, 20 / 40 m optional"],
+            ["Fibre optic length", "10.0 m standard, 20 / 40.0 m optional", "10.0 m standard, 20 / 40.0 m optional"],
             ["Dimensions", "53 mm overall, body 17 mm diameter", "53 mm overall, body 17 mm diameter"],
-            ["Weight", "25 g including 1 m pigtail", "25 g including 1 m pigtail"],
+            ["Weight", "25 g including 1.0 m pigtail", "25 g including 1.0 m pigtail"],
           ],
         },
         {
@@ -1362,7 +1389,7 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             ["Sampling rate", "22 S/s to 0.03 S/s", "22 S/s to 0.03 S/s"],
             ["Operation time", "100 hours at 0.4 S/s, 28 Hz filter", "100 hours at 0.4 S/s, 28 Hz filter"],
             ["Dimensions", "53 mm overall, body 17 mm diameter", "53 mm overall, body 17 mm diameter"],
-            ["Weight", "25 g including 1 m pigtail", "25 g including 1 m pigtail"],
+            ["Weight", "25 g including 1.0 m pigtail", "25 g including 1.0 m pigtail"],
           ],
         },
         {
@@ -1378,9 +1405,28 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             ["Linearity error", "< 0.1 dB"],
             ["Sampling rate", "burst 2 MSample/s, streaming > 500 kSample/s"],
             ["Laser wavelength / output power", "850 nm / 750 mW"],
-            ["Fibre optic cable length", "15 m, up to 100 m on request"],
+            ["Fibre optic cable length", "15.0 m, up to 100 m on request"],
             ["PC interface", "USB 2.0"],
             ["Sensor dimensions (W × D × H)", "67 × 67 × 124 mm"],
+          ],
+        },
+        {
+          title: "EFS-18",
+          head: ["", "Specification"],
+          rows: [
+            ["Sensor type", "Triaxial isotropic, diode dipole"],
+            ["Data read", "X, Y, Z and ISO"],
+            ["Bandwidth", "1 MHz – 18 GHz"],
+            ["Amplitude frequency response", "± 1.5 dB (10 MHz – 1 GHz)\n± 3 dB (1 – 16 GHz)"],
+            ["Sensitivity", "0.8 V/m"],
+            ["Dynamic range", "0.8 – 340 V/m (52 dB)"],
+            ["Linearity at 100 MHz", "2 – 300 V/m, 0.5 dB"],
+            ["Isotropy at 100 MHz", "0.5 dB"],
+            ["Temperature stability", "0.5 dB over the operating temperature range"],
+            ["Max. sampling rate", "50 sps"],
+            ["Operating temperature", "5 – 45 °C, 5 – 90 % humidity without condensation"],
+            ["Dimensions / weight", "length 145 mm, ø 32 – 60 mm / 100 g"],
+            ["Recommended calibration interval", "24 months"],
           ],
         },
       ],
@@ -1464,8 +1510,11 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
     },
     system: {
       lead: [
-        "The CIT-100 is a complete test system for conducted RF-immunity testing and BCI-testing acc. to IEC/EN 61000-4-6, ISO 11452-4, MIL-STD 461, CS114 and similar standards. The system consists of a built-in signal generator (4 kHz – 1.2 GHz), an RF-power amplifier (25 / 75 W), a 3-channel RF-power-meter, a directional coupler and the control software.",
+        "The CIT-100 is a complete test system for conducted RF-immunity testing and BCI-testing acc. to IEC/EN 61000-4-6, ISO 11452-4, MIL-STD 461, CS114 and similar standards. The system consists of a built-in signal generator (4 kHz – 1.2 GHz), an RF-power amplifier (25 / 75 / 200 W), a 3-channel RF-power-meter, a directional coupler and the control software.",
         "The CIT-1000 is the larger of the two. The generator, directional coupler and RF voltmeter reach 1.2 GHz, so it can drive a radiated immunity test to IEC/EN 61000-4-3 as well with an external power amplifier connected; the frequency extension for MIL-STD 461 reaches down to 4 kHz through the external CIT-4K and its 250 W amplifier; and it runs stand-alone from an integrated touch-screen PC.",
+        "The ECU-6 is a central EMC test and control unit, which combines in just one compact box many major test components like signal generator, power meter, directional couplers and relay switching unit, which are needed for EMC tests. That reduces the cabling work and possible cabling mistakes to a minimum. It is the unit a radiated immunity system to IEC 61000-4-3, ISO 11452-2 and MIL-STD 461 RS103 is built around: it switches automatically between up to three external amplifiers, up to three antennas or coupling devices, and up to two receivers or spectrum analyzers.",
+        "The PSG-300 is an ultra-wideband linear power amplifier developed for signal frequencies from DC to 300 kHz, for immunity tests to conducted common mode disturbances acc. to IEC/EN 61000-4-16 and differential mode disturbances acc. to IEC/EN 61000-4-19. A built-in waveform generator provides sine, square and triangle signals, which are amplified internally by the power stage; the output stage delivers 5 A and 260 W, or 16 A and 800 W in the PSG-300A.",
+        "The MTS-800 is a space-saving test system for generating and analyzing magnetic fields from DC to 250 kHz. Thanks to the integrated 800 W power amplifier, the high field strengths required by many military and automotive standards are reached without additional effort — MIL-STD-461 CE101, CS101, CS109, RE101 and RS101, and ISO 11452-8, up to 1000 A/m with the optional triaxial Helmholtz coil.",
       ],
       figure: {
         src: "/test-systems/images/system-cit-100.webp",
@@ -1474,6 +1523,29 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
         alt: "The CIT-100 in a 19-inch case, front panel lettered “Conducted Immunity Test System”",
         caption: "The whole 61000-4-6 chain in one case — and every instrument in it still reachable on its own connector.",
       },
+      figureRow: [
+        {
+          src: "/test-systems/images/system-ecu-6.webp",
+          w: 1032,
+          h: 519,
+          alt: "The ECU-6 in a 4U rack case, front panel lettered “EMC CONTROL UNIT”, with an interlock button, a yellow OLED readout and a power switch",
+          caption: "ECU-6 — the generator, the power meter and the switching between three amplifiers, in the box the cables would otherwise run between.",
+        },
+        {
+          src: "/test-systems/images/system-psg-300.webp",
+          w: 1400,
+          h: 554,
+          alt: "The PSG-300 front panel, lettered “Power Signal Generator DC … 300 kHz”",
+          caption: "PSG-300 — 260 W, and 800 W in the PSG-300A.",
+        },
+        {
+          src: "/test-systems/images/system-mts-800.webp",
+          w: 1400,
+          h: 782,
+          alt: "The MTS-800 front panel, lettered “Magnetic Test System”, with banana jacks, BNC inputs and a mains switch",
+          caption: "MTS-800 — magnetic fields to 1000 A/m, generated and measured by the same unit.",
+        },
+      ],
       groups: [
         {
           title: "CIT-100",
@@ -1489,17 +1561,51 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
         {
           title: "CIT-1000",
           items: [
-            "Everything the CIT-100 does, with amplifier modules of 25, 75 and 180 W",
+            "Everything the CIT-100 does, with integrated amplifier modules of 25, 75 and 200 W",
             "Generator, directional coupler and RF voltmeter to 1.2 GHz — radiated immunity to IEC/EN 61000-4-3 with an external amplifier",
             "Frequency extension to 4 kHz for MIL-STD 461, through the external CIT-4K with its 250 W amplifier",
             "Stand-alone from an integrated touch-screen PC, no external computer needed",
-            "Temperature input for the BCI clamp",
+            "Temperature measuring input for control and display of the BCI clamp temperature",
+          ],
+        },
+        {
+          title: "ECU-6",
+          items: [
+            "Radiated immunity tests according to IEC 61000-4-3, ISO 11452-2 and MIL-STD 461 RS103",
+            "Conducted immunity tests according to IEC/EN 61000-4-6, 10 kHz – 230 MHz",
+            "BCI-testing according to ISO 11452-4 and MIL-STD 461 CS114",
+            "Automatic switching between up to three external power amplifiers and the connected coupling units or antennas",
+            "Automatic switching between up to two EMI receivers or spectrum analyzers and three different antennas",
+            "Easy integration into any control software by SCPI commands, and an integrated interlock safety system",
+          ],
+        },
+        {
+          title: "PSG-300 and PSG-300A",
+          items: [
+            "Immunity testing according to IEC/EN 61000-4-16, IEC/EN 61000-4-19, IEC/EN 61543 and IEC 60255",
+            "Frequency range from DC to 300 kHz, available as 5 A / 260 W (PSG-300) or 16 A / 800 W (PSG-300A)",
+            "Function generator for DC, sine, triangle and square signals; external signals can be fed in separately",
+            "Simulation of DC and AC supply lines, control of piezo actors, generation of magnetic fields with Helmholtz or similar coils",
+            "Option: control input for an external voltage source, suitable for short tests up to 300 V",
+            "Software-based remote control over USB, with an interface command set for automated test systems",
+          ],
+        },
+        {
+          title: "MTS-800",
+          items: [
+            "Magnetic field measurements and tests from DC to 250 kHz, field strengths up to 1000 A/m to 1000 Hz",
+            "Signal generator, 800 W power amplifier and 16-bit spectrum analyzer at 1 MS/s in one unit — each usable stand-alone",
+            "ISO 11452-8 and MIL-STD-461 CE101, CS101, CS109, RE101 and RS101",
+            "SAE J1113-2 and J1113-22, Ford ES-XW7T-1A278-AC, PSA B21 7110, Renault 36-00-808, DC-11224 and DC-10614",
+            "Fully automated testing with the optional triaxial Helmholtz coil — no need to turn the EUT during a test",
+            "Windows application software with preconfigured parameters and limit values, and room for custom test sequences",
           ],
         },
       ],
       tables: [
         {
           title: "CIT-100",
+          note: "The 2026 datasheet's own amplifier table prints four variants — CIT-100/25, /75 MIL, /75 and /200 — while the paragraph beside it still reads “highest output power can be 75 W”. The table is followed here; confirm the module against the quotation.",
           head: ["", "Specification"],
           rows: [
             ["RF generator — outputs", "2 × SMA, one usable at a time"],
@@ -1509,11 +1615,65 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             ["RF generator — harmonics / spurious", "< 30 dBc / < 45 dBc"],
             ["LF generator (modulation)", "1 Hz to 100 kHz, sine / square / triangular, 0 … 1 V"],
             ["Amplitude modulation", "internal 0 – 100 %, resolution 1 %"],
-            ["Internal RF power amplifier", "25 W and 75 W modules available as standard"],
+            ["Internal RF power amplifier", "25 W, 75 W and 200 W modules\n25 W: 100 kHz – 250 MHz; 75 W MIL: (4) 10 kHz – 250 (400) MHz;\n75 W and 200 W: 100 kHz – 400 MHz"],
             ["RF voltmeter 1 (test level)", "4 kHz to 1.2 GHz, −40 to +30 dBm"],
-            ["RF voltmeter 2 + 3 (forward, reverse)", "4 kHz to 1.2 GHz, −40 to +30 dBm\nplus directional coupler typ. 40 dB"],
+            ["RF voltmeter 2 + 3 (forward, reverse)", "4 kHz to 1.2 GHz, −40 to +33 dBm\nplus directional coupler typ. 40 dB"],
             ["EUT monitor input", "0 – 10 V, resolution 2.5 mV, 100 kΩ"],
             ["Interfaces", "USB 2.0, LAN 100 Mbit, GPIB optional"],
+          ],
+        },
+        {
+          title: "ECU-6",
+          note: "The 2026 datasheet writes the unit ECU-6.2 and the part list ECU-6; the power meter, the directional coupler and the antenna outputs are ordered as options against it, so the coupling attenuation of a given system depends on which coupler is fitted.",
+          head: ["", "Specification"],
+          rows: [
+            ["Signal generator — frequency range", "8 kHz – 6.2 GHz, resolution 0.001 Hz"],
+            ["Signal generator — output level", "−65 dBm to +13 dBm, accuracy ± 1 dBm"],
+            ["Signal generator — outputs", "50 Ω SMA female, relay switched 1:3"],
+            ["Amplitude modulation", "10 Hz – 20 kHz, depth 0 – 95 %, sine or triangle"],
+            ["Pulse modulation", "on/off ratio 70 dB, pulse width 1 µs to 10 s"],
+            ["RF power meter", "max. 7 channels\nLF module 10 kHz – 500 MHz, RF module 100 kHz – 6 GHz\n−60 … +20 dBm (10 kHz – 4 GHz), −45 … +20 dBm (4 – 6 GHz)"],
+            ["Relay switching unit — max. power", "2000 W (8 kHz – 100 MHz), 1000 W (100 – 600 MHz),\n600 W (600 MHz – 1 GHz), 400 W (1 – 3 GHz), 300 W (3 – 6 GHz)"],
+            ["EUT monitor input", "2 × 0 – 10 V, resolution 2.5 mV, < 1 kΩ, BNC female"],
+            ["Temperature measurement", "PT1000, 5 – 100 °C, SMB female"],
+            ["Remote control", "USB-B, LAN 10/100 Mbit (TCP/IP), GPIB — SCPI"],
+            ["Dimensions (W×H×D) / weight", "449 × 177 × 580 mm / 18 kg"],
+          ],
+        },
+        {
+          title: "PSG-300 and PSG-300A",
+          note: "The optional external power source is a control input for a voltage source of up to 300 V for short tests. Isolating transformers IT-06, IT-16 and IT-20 (1380 VA to 4600 VA) are available to EN 61558.",
+          head: ["", "PSG-300", "PSG-300A"],
+          rows: [
+            ["Frequency range", "DC – 1 MHz (small signal −3 dB)", "DC – 1 MHz (small signal −3 dB)"],
+            ["Performance range", "DC – 300 kHz", "DC – 300 kHz"],
+            ["Slew rate", "100 V/µs", "100 V/µs"],
+            ["Voltage amplification", "10 ± 0.1 % (± 0.01 % / °C)", "10 ± 0.1 % (± 0.01 % / °C)"],
+            ["Output voltage", "50 Vrms / ± 75 Vpeak", "50 Vrms / ± 75 Vpeak"],
+            ["Output current", "5 Arms / ± 7.5 Apeak", "16 Arms / ± 24 Apeak"],
+            ["Output power", "260 W", "800 W"],
+            ["Distortion", "< 0.10 %\nDC – 100 kHz, load ≥ 4 Ω", "< 0.10 %\nDC – 100 kHz, load ≥ 4 Ω"],
+            ["Generator frequency range", "DC, 0.05 Hz – 300 kHz\nresolution 0.05 Hz", "DC, 0.05 Hz – 300 kHz\nresolution 0.05 Hz"],
+            ["Waveform", "sine, square, triangular", "sine, square, triangular"],
+            ["Remote control", "USB", "USB"],
+            ["Dimensions (W × H × D)", "449 × 133 × 436 mm (3 RU)", "449 × 177 × 585.5 mm (4 RU)"],
+            ["Weight", "approx. 24 kg", "approx. 32 kg"],
+          ],
+        },
+        {
+          title: "MTS-800",
+          note: "The full specification, the MIL-STD-461 method table and the accessories are on the magnetic field test page.",
+          head: ["", "Specification"],
+          rows: [
+            ["Generator — frequency range", "DC – 250 kHz"],
+            ["Generator — signal", "Sine / triangular / square / DC, 0 – 10 V AC, −10 to +10 V DC"],
+            ["Amplifier — frequency range", "DC – 1 MHz"],
+            ["Amplifier — output", "16 Arms, 50 Vrms / 75 Vdc, distortion < 0.10 %"],
+            ["Analyzer — voltage input", "DC – 250 kHz, 1 MΩ / 50 Ω switchable"],
+            ["Analyzer — current input", "DC – 250 kHz, shunts 10 mΩ / 1 Ω / 100 Ω, max. 20 A continuous"],
+            ["AD converter", "16 bit, 1.0 MSPS"],
+            ["Connection to PC", "USB; EUT control over 9-pin Sub-D, RS-232"],
+            ["Dimensions (W×H×D) / weight", "449 × 177 × 580 mm / approx. 34 kg net"],
           ],
         },
       ],
@@ -1523,15 +1683,14 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
     emission: {
       lead: [
         "ERX-6은 전통적인 EMI 리시버의 장점에 초고속 FFT(시간영역) 기술을 결합한 계측기입니다. 여기에 실시간 스펙트럼 분석기의 모든 기능까지 갖춰, EUT를 손본 결과를 그 자리에서 확인할 수 있습니다.",
-        "ERC-6은 상위 기종 ERX-6의 저가형이지만 그냥 지나칠 물건이 아닙니다. CISPR 16-1 풀컴플라이언스 방출 측정에 필요하지 않은 기능만 줄이거나 뺐기 때문에, 사내 개발 부서처럼 많은 사용자에게 고급기의 좋은 대안이 됩니다.",
-        "리시버 주위를 채우는 것이 방출 측정의 나머지입니다 — 전원선에 규정된 임피던스를 만들어 주는 LISN, 방출원을 짚어내는 근접전계 프로브, 조명기기용 대형 루프 안테나, 그리고 CISPR 14용 흡수 클램프.",
+        "CISPR 16-1-1 Ed 3.1과 MIL-STD 461G 측정을 크게 가속하는 하드웨어를 기본 탑재합니다. FFT 기반 계측기를 허용하지 않는 규격에는 전통적인 스텝 스캔 모드를 쓰고, 최종 최대화처럼 단일 주파수 지점만 측정할 수도 있습니다. 리시버 자체 터치스크린에서 돌아가는 제어 소프트웨어를 기본 포함하므로 외부 PC가 필요 없습니다.",
       ],
       figure: {
-        src: "/test-systems/images/emission-lisn.webp",
-        w: 723,
-        h: 802,
-        alt: "회색 금속 케이스에 든 LISN — 전면 명판에 “0.1 MHz - 150 MHz, 400 A, 5 µH”와 Measure·Output 단자, 그 아래 GND용 황동 나비너트와 EuT 라인용 빨간 나비너트",
-        caption: "상용 전원에는 기준 삼을 임피던스가 없습니다. 그것을 만들어 주는 장치이고, 옆에 달린 리시버 출력이 이 상자의 존재 이유입니다.",
+        src: "/test-systems/images/emission-erx-6.webp",
+        w: 1400,
+        h: 1003,
+        alt: "비스듬히 본 ERX-6 — 손잡이 베일이 달린 회색 벤치 케이스, ERX-6이라 적힌 빨간 측면 패널, 그리고 주파수 스캔 화면과 오른쪽 가장자리를 따라 늘어선 FREQ. SCAN·TRANSDUCER·LIMIT LINES·CURVES·SETTINGS·MARKER·SAVE SETTINGS·RUN 키가 보이는 8.4인치 터치스크린",
+        caption: "대역 전체의 Quasi-peak 측정이 몇 시간이 아니라 몇 초에 끝납니다. 게다가 옆에 PC를 두지 않고 리시버 화면에서 그대로 돌립니다.",
       },
       groups: [
         {
@@ -1547,79 +1706,28 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             "CISPR · MIL · DO · VG · ETSI 규격 측정 대응",
           ],
         },
-        {
-          title: "ERC-6 주요 특징",
-          items: [
-            "주파수 범위 9 kHz~6 GHz",
-            "CISPR 16-1에 따른 전통적 EMI 리시버 모드",
-            "CISPR 16-1-1 Ed. 3.1에 따른 고속 FFT(시간영역) 리시버 모드",
-            "10″ 모니터 터치 PC 내장",
-            "20 dB(1 GHz 이상 15 dB) 프리앰프 내장",
-            "CISPR 16-1 풀컴플라이언트",
-            "Peak · Quasi-Peak · Average · RMS · CISPR-Average 검파기, RMS-average는 옵션",
-          ],
-        },
-        {
-          // 표가 아니라 문장으로 싣는 이유는 en 쪽 주석에 적어 두었다 — 본사
-          // 원본 표의 라벨 열과 값 열이 한 행씩 어긋나 있어, 라벨에 확실히
-          // 붙일 수 없는 수치는 페이지에 올리지 않는다.
-          title: "자동차·군용 LISN",
-          items: [
-            "LISN-KFZ — 차량·항공기·선박의 방해 전압을 100 kHz~150 MHz에서 측정합니다. BCI 시험과 ISO 7637-2 과도현상 측정에도 쓸 수 있습니다.",
-            "LISN-KFZ — 임피던스는 CISPR 16 / 25와 MIL-STD-461F에 따라 (5 µH + 1 Ω) ∥ 50 Ω으로 구현했습니다. 연속 70 A, 단시간 100 A 이상.",
-            "LISN-MIL — MIL-STD-461E·461F에 따라 설계했으며 150 kHz~100 MHz에서 50 µH + 5 Ω ∥ 50 Ω입니다.",
-            "옵션인 외부 커패시터 CAP 10을 쓰면 LISN-KFZ를 DO-160과 DEF-STAN 59에도 쓸 수 있습니다.",
-          ],
-        },
       ],
       tables: [
         {
-          title: "EMI 테스트 리시버",
-          head: ["", "ERX-6", "ERC-6"],
+          title: "ERX-6",
+          note: "2026년 데이터시트 수치입니다. 본사가 2026-08에 예고한 ERX-7은 아직 공개된 자료가 없습니다 — docs/source/test-systems-source.md §6.3 참조.",
+          head: ["", "사양"],
           rows: [
-            ["Frequency range", "10 Hz – 6 GHz\n7 GHz with option ERX-FE7", "9 kHz – 6 GHz"],
-            ["Operating modes", "EMI receiver, FFT-based receiver,\nspectrum analyzer, oscilloscope", "EMI receiver,\nFFT-based receiver"],
-            ["Detectors", "Quasi-Peak, Average, RMS, RMS-Average,\nCISPR-AVG, CISPR-RMS", "Peak, Quasi-peak, Average, RMS,\nCISPR-Average (RMS-average option)"],
-            ["Pre-amplifier", "typ. 20 dB, noise figure typ. 3.5 dB", "20 dB, 15 dB above 1 GHz"],
-            ["RF input", "N type, 50 Ω", "BNC 50 Ω (9 kHz – 30 MHz)\nN 50 Ω (30 MHz – 6 GHz)"],
-            ["Attenuator", "0 – 50 dB in 10 dB steps", "0 – 35 dB / 0 – 55 dB in 5 dB steps"],
-            ["Display", "8.4″ touchscreen, 800 × 600", "integrated 10″ touch PC"],
-            ["Interfaces", "Ethernet/LAN, USB, VGA, HDMI, audio", "USB, RS-232, user port"],
-            ["Power supply", "+11 … +14 V DC; 230 V ± 20 % 50 Hz\nor 110 V ± 10 % 60 Hz", "100 – 240 VAC, 50/60 Hz, 25 W"],
-            ["Dimensions", "—", "2 RU, 482 × 95 × 485 mm"],
-            ["Weight", "approx. 8 kg", "7 kg"],
-          ],
-        },
-        {
-          title: "LISN 전원 임피던스 안정화 회로망",
-          note: "두 기종 모두 50 Ω ∥ (5 Ω + 50 µH) V-네트워크이며 CISPR 16, VDE 0876, FCC part 15에 완전히 대응합니다.",
-          head: ["", "C2-16", "C4-32"],
-          rows: [
-            ["Frequency range", "9 kHz – 30 MHz", "9 kHz – 30 MHz"],
-            ["Lines", "single-phase, two-line", "three-phase, three-line"],
-            ["Continuous rated output current", "16 A, SCHUKO socket", "32 A IEC, 16 A SCHUKO"],
-            ["Max. operating voltage", "250 VAC / 350 VDC", "230 VAC / 325 VDC (L-PE, N-PE)\n400 VAC / 565 VDC (L-L, L-N)"],
-            ["AC supply frequency range", "DC – 60 Hz", "DC – 60 Hz"],
-            ["RF output", "BNC female", "BNC female"],
-            ["Rated temperature", "−10 … +45 °C", "−10 … +40 °C"],
-            ["Dimensions (W × H × D)", "230 × 105 × 285 mm", "342 × 254 × 510 mm"],
-            ["Weight", "5.5 kg", "16.5 kg"],
-          ],
-        },
-        {
-          title: "프로브 · 루프 안테나 · 흡수 클램프",
-          head: ["", "NFS-100", "LVVL", "ACF-01B"],
-          rows: [
-            ["Frequency range", "E 80 – 500 MHz\nH 10 – 500 MHz", "9 kHz – 30 MHz", "30 – 1000 MHz"],
-            ["Standard", "—", "CISPR-15 / EN 55015, §7.2 and annex B", "CISPR 16-1-3, EN 55014-1"],
-            ["Configuration", "E probe, H probe, BNC adaptor,\nsensitivity plots, hard carry case", "three independent loops, 2 m diameter,\nselected by patch panel switch", "clamp on wheels, 6 dB attenuator\nrecommended at the output"],
-            ["Insertion loss / coupling", "—", "—", "17 dB ± 4 dB"],
-            ["Decoupling typ.", "—", "—", "5 … 20 dB over 1 – 30 MHz\n> 20 dB over 30 MHz – 1 GHz"],
-            ["Impedance / connection", "50 Ω nom., BNC", "50 Ω BNC", "50 Ω"],
-            ["Max. input", "isolation voltage 1 kV", "—", "30 A peak current, 5 W peak"],
-            ["Max. cable diameter", "—", "—", "20 mm"],
-            ["Dimensions", "E 180 mm, H 183 mm overall\nouter diameter H 69 mm", "2.6 × 2.1 × 2.1 m (H × W × W)", "600 × 105 × 80 mm"],
-            ["Weight", "—", "—", "6.5 kg"],
+            ["Frequency range", "10 Hz – 6 GHz\n7 GHz with option ERX-FE7"],
+            ["Operating modes", "EMI receiver (superheterodyne), FFT-based receiver,\nspectrum analyzer"],
+            ["Detectors", "Quasi-Peak, Average, RMS, RMS-Average,\nCISPR-AVG, CISPR-RMS"],
+            ["Displayed average noise level", "−163 dBm over 30 – 1000 MHz (LNA off)\n−169 dBm (LNA on)"],
+            ["Noise indication", "< −6 dBµV over 30 – 1000 MHz (LNA off)\n< −12 dBµV (LNA on)"],
+            ["Scan speed, quasi-peak, dwell 1 s", "Band A 2 s, Band B 2 s, Band C/D 30 s\nBand E (1 – 6 GHz) 2 s at dwell 100 ms"],
+            ["Pre-amplifier", "typ. 20 dB, noise figure typ. 3.5 dB"],
+            ["IF bandwidths", "3 dB: 1 Hz – 30 MHz\n6 dB CISPR: 200 Hz, 9 kHz, 120 kHz, 1 MHz\n6 dB MIL/DO: 10 Hz, 100 Hz, 1 kHz, 100 kHz, 1 MHz"],
+            ["Total measurement uncertainty", "0.5 dB, CW signal, S/N > 20 dB, 95 % confidence"],
+            ["RF input", "N type, 50 Ω"],
+            ["Attenuator", "0 – 50 dB in 10 dB steps"],
+            ["Display", "8.4″ touchscreen, 800 × 600"],
+            ["Interfaces", "Ethernet/LAN, USB, VGA, HDMI, audio; SCPI remote control"],
+            ["Power supply", "+11 … +14 V DC; 230 V ± 20 % 50 Hz\nor 110 V ± 10 % 60 Hz, approx. 60 W"],
+            ["Weight", "approx. 8 kg"],
           ],
         },
       ],
@@ -1844,7 +1952,7 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             ["Loop diameter", "—", "0.5 m"],
             ["Power supply", "9.6 V / 1100 mAh NiMH", "12 V NiMH 1.9 Ah"],
             ["Operation time", "typ. 50시간 이상", "typ. 12시간"],
-            ["Dimensions", "로드 1 m (나사 결합부 포함)\n앰프 상판 220 × 120 mm", "520 × 585 × 120 mm"],
+            ["Dimensions", "로드 1.0 m (나사 결합부 포함)\n앰프 상판 220 × 120 mm", "520 × 585 × 120 mm"],
             ["Weight", "로드 약 0.2 kg\n앰프 약 0.7 kg", "1.9 kg"],
             ["Threads for tripods", "1/4″, 3/8″", "1/4″, 3/8″"],
           ],
@@ -1856,6 +1964,7 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
         "Frankonia EFS 전계강도계는 IEC/EN 61000-4-3 / -20에 따른 방사 내성 시험 중의 전계강도 측정과 전계 균일도 측정을 위해 설계되었습니다. 작업장이나 주거 공간의 전자파 노출량 측정에도 쓸 수 있습니다.",
         "EFS는 등방성 초소형 E-field 센서로, 센서 자체의 크기가 전계에 영향을 주지 않도록 만들어졌습니다. 광파이버 출력을 직접 내보내므로 별도의 계측 유닛조차 필요 없고, 제어 PC나 노트북의 USB 인터페이스에 곧바로 연결합니다.",
         "EFS-Laser는 선형화·온도보상·제어·통신 기능을 갖춘 빠르고 정확한 전계 프로브입니다. 잡음 저감과 온도보상으로 0.1 V/m까지 정확히 측정하며, 레이저 급전 방식이라 충전이나 배터리 교체 없이 절연 상태로 연속 동작합니다.",
+        "EFS-18은 다이오드 다이폴 기반 삼축 등방성 센서를 쓴 신세대 기종입니다. TEM·GTEM 셀과 무향실 내부 전계 특성 측정, 그리고 작업 구역과 중요 지점의 전자파 안전 모니터링을 위해 설계되었습니다. 함께 제공되는 EMCViewer 소프트웨어가 등방성 값과 축별 성분, 진폭·시간 응답을 보여 주며 센서를 최대 8대까지 동시에 관리합니다. 배터리는 50시간 넘게 가고, 20분만 충전해도 4시간을 더 씁니다.",
       ],
       figure: {
         src: "/test-systems/images/efs-probe.webp",
@@ -1874,6 +1983,7 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             "전계강도 측정 0.14~500 V/m",
             "충전 없이 최대 100시간 동작",
             "EFS-Laser는 레이저 급전 — 배터리 방전 없음, 실시간 연속 데이터 스트리밍, 온도 보상",
+            "EFS-18은 삼축 등방성 센서 — 1 MHz~18 GHz, 20 ms 샘플링, 센서 8대까지 동시 연결",
           ],
         },
       ],
@@ -1893,9 +2003,9 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             ["Internal battery", "3 V / 5 mAh rechargeable Li-Mn", "3 V / 5 mAh rechargeable Li-Mn"],
             ["Operation time", "100 hours at 0.4 S/s, 28 Hz filter", "100 hours at 0.4 S/s, 28 Hz filter"],
             ["Communication", "bidirectional fibre optic link", "bidirectional fibre optic link"],
-            ["Fibre optic length", "10 m standard, 20 / 40 m optional", "10 m standard, 20 / 40 m optional"],
+            ["Fibre optic length", "10.0 m standard, 20 / 40.0 m optional", "10.0 m standard, 20 / 40.0 m optional"],
             ["Dimensions", "53 mm overall, body 17 mm diameter", "53 mm overall, body 17 mm diameter"],
-            ["Weight", "25 g including 1 m pigtail", "25 g including 1 m pigtail"],
+            ["Weight", "25 g including 1.0 m pigtail", "25 g including 1.0 m pigtail"],
           ],
         },
         {
@@ -1912,7 +2022,7 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             ["Sampling rate", "22 S/s to 0.03 S/s", "22 S/s to 0.03 S/s"],
             ["Operation time", "100 hours at 0.4 S/s, 28 Hz filter", "100 hours at 0.4 S/s, 28 Hz filter"],
             ["Dimensions", "53 mm overall, body 17 mm diameter", "53 mm overall, body 17 mm diameter"],
-            ["Weight", "25 g including 1 m pigtail", "25 g including 1 m pigtail"],
+            ["Weight", "25 g including 1.0 m pigtail", "25 g including 1.0 m pigtail"],
           ],
         },
         {
@@ -1928,9 +2038,28 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             ["Linearity error", "< 0.1 dB"],
             ["Sampling rate", "burst 2 MSample/s, streaming > 500 kSample/s"],
             ["Laser wavelength / output power", "850 nm / 750 mW"],
-            ["Fibre optic cable length", "15 m, 요청 시 100 m까지"],
+            ["Fibre optic cable length", "15.0 m, 요청 시 100 m까지"],
             ["PC interface", "USB 2.0"],
             ["Sensor dimensions (W × D × H)", "67 × 67 × 124 mm"],
+          ],
+        },
+        {
+          title: "EFS-18",
+          head: ["", "사양"],
+          rows: [
+            ["Sensor type", "Triaxial isotropic, diode dipole"],
+            ["Data read", "X, Y, Z and ISO"],
+            ["Bandwidth", "1 MHz – 18 GHz"],
+            ["Amplitude frequency response", "± 1.5 dB (10 MHz – 1 GHz)\n± 3 dB (1 – 16 GHz)"],
+            ["Sensitivity", "0.8 V/m"],
+            ["Dynamic range", "0.8 – 340 V/m (52 dB)"],
+            ["Linearity at 100 MHz", "2 – 300 V/m, 0.5 dB"],
+            ["Isotropy at 100 MHz", "0.5 dB"],
+            ["Temperature stability", "동작 온도 범위에서 0.5 dB"],
+            ["Max. sampling rate", "50 sps"],
+            ["Operating temperature", "5 – 45 °C, 습도 5 – 90 % 비결로"],
+            ["Dimensions / weight", "길이 145 mm, ø 32 – 60 mm / 100 g"],
+            ["Recommended calibration interval", "24 months"],
           ],
         },
       ],
@@ -2014,8 +2143,11 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
     },
     system: {
       lead: [
-        "CIT-100은 IEC/EN 61000-4-6, ISO 11452-4, MIL-STD 461 CS114 등에 따른 전도 RF 내성 시험과 BCI 시험을 위한 완성형 시험 시스템입니다. 신호발생기(4 kHz~1.2 GHz), RF 파워앰프(25 / 75 W), 3채널 RF 파워미터, 방향성 결합기와 제어 소프트웨어가 내장되어 있습니다.",
+        "CIT-100은 IEC/EN 61000-4-6, ISO 11452-4, MIL-STD 461 CS114 등에 따른 전도 RF 내성 시험과 BCI 시험을 위한 완성형 시험 시스템입니다. 신호발생기(4 kHz~1.2 GHz), RF 파워앰프(25 / 75 / 200 W), 3채널 RF 파워미터, 방향성 결합기와 제어 소프트웨어가 내장되어 있습니다.",
         "CIT-1000은 둘 중 상위 기종입니다. 발생기·방향성 결합기·RF 전압계가 1.2 GHz까지 올라가 외부 파워앰프를 연결하면 IEC/EN 61000-4-3 방사 내성 시험까지 구동합니다. MIL-STD 461용 저역 확장은 250 W 앰프를 갖춘 외장 CIT-4K로 4 kHz까지 내려가며, 터치스크린 PC를 내장해 단독으로 동작합니다.",
+        "ECU-6은 EMC 시험에 필요한 주요 구성요소 — 신호발생기, 파워미터, 방향성 결합기, 릴레이 스위칭 유닛 — 을 한 상자에 모은 중앙 EMC 시험·제어 유닛입니다. 배선 작업과 배선 실수를 최소로 줄여 줍니다. IEC 61000-4-3, ISO 11452-2, MIL-STD 461 RS103 방사 내성 시스템은 이 유닛을 중심으로 구성합니다. 외부 앰프 최대 3대, 안테나·결합장치 최대 3계통, 리시버·스펙트럼 분석기 최대 2대 사이를 자동으로 전환합니다.",
+        "PSG-300은 DC~300 kHz 신호를 위한 초광대역 선형 파워앰프로, IEC/EN 61000-4-16 커먼모드와 IEC/EN 61000-4-19 차동모드 전도 내성 시험에 씁니다. 내장 발생기가 사인·구형·삼각파를 만들어 내부 출력단에서 증폭하며, 출력단은 5 A · 260 W, 상위 기종 PSG-300A는 16 A · 800 W를 냅니다.",
+        "MTS-800은 DC~250 kHz 자기장을 발생시키고 분석하는 공간 절약형 시험 시스템입니다. 800 W 파워앰프를 내장해 군용·자동차 규격이 요구하는 높은 자계강도를 별도 장비 없이 얻습니다 — MIL-STD-461 CE101·CS101·CS109·RE101·RS101과 ISO 11452-8, 옵션 삼축 Helmholtz 코일과 함께 최대 1000 A/m.",
       ],
       figure: {
         src: "/test-systems/images/system-cit-100.webp",
@@ -2024,6 +2156,29 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
         alt: "19인치 케이스에 든 CIT-100, 전면 패널에 “Conducted Immunity Test System” 표기",
         caption: "61000-4-6 시험 체인 전체가 한 케이스에. 그러면서 안의 계측기를 각각 개별 커넥터로 따로 쓸 수 있습니다.",
       },
+      figureRow: [
+        {
+          src: "/test-systems/images/system-ecu-6.webp",
+          w: 1032,
+          h: 519,
+          alt: "4U 랙 케이스에 든 ECU-6 — 전면 패널에 “EMC CONTROL UNIT” 표기, 인터록 버튼과 노란 OLED 표시부, 전원 스위치",
+          caption: "ECU-6 — 발생기·파워미터, 그리고 앰프 3대 사이의 전환까지. 그 사이를 오갈 케이블을 한 상자가 대신합니다.",
+        },
+        {
+          src: "/test-systems/images/system-psg-300.webp",
+          w: 1400,
+          h: 554,
+          alt: "“Power Signal Generator DC … 300 kHz” 표기가 있는 PSG-300 전면 패널",
+          caption: "PSG-300 — 260 W, PSG-300A는 800 W.",
+        },
+        {
+          src: "/test-systems/images/system-mts-800.webp",
+          w: 1400,
+          h: 782,
+          alt: "“Magnetic Test System” 표기가 있는 MTS-800 전면 패널 — 바나나 잭, BNC 입력, 전원 스위치",
+          caption: "MTS-800 — 1000 A/m까지의 자기장을 한 대가 만들고 또 측정합니다.",
+        },
+      ],
       groups: [
         {
           title: "CIT-100",
@@ -2039,17 +2194,51 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
         {
           title: "CIT-1000",
           items: [
-            "CIT-100이 하는 것 전부에, 25 · 75 · 180 W 앰프 모듈",
+            "CIT-100이 하는 것 전부에, 25 · 75 · 200 W 내장 앰프 모듈",
             "발생기·방향성 결합기·RF 전압계 1.2 GHz — 외부 앰프를 붙이면 IEC/EN 61000-4-3 방사 내성 시험까지",
             "MIL-STD 461용 저역 확장 4 kHz — 250 W 앰프를 갖춘 외장 CIT-4K",
             "터치스크린 PC 내장, 외부 컴퓨터 없이 단독 운용",
-            "BCI 클램프 온도 입력",
+            "BCI 클램프 온도 측정·표시 입력",
+          ],
+        },
+        {
+          title: "ECU-6",
+          items: [
+            "IEC 61000-4-3, ISO 11452-2, MIL-STD 461 RS103 방사 내성 시험",
+            "IEC/EN 61000-4-6 전도 내성 시험, 10 kHz~230 MHz",
+            "ISO 11452-4와 MIL-STD 461 CS114 BCI 시험",
+            "외부 파워앰프 최대 3대와 여기에 연결된 결합장치·안테나 사이 자동 전환",
+            "EMI 리시버·스펙트럼 분석기 최대 2대와 안테나 3계통 사이 자동 전환",
+            "SCPI 명령으로 어떤 제어 소프트웨어에도 통합 가능, 인터록 안전 시스템 내장",
+          ],
+        },
+        {
+          title: "PSG-300 · PSG-300A",
+          items: [
+            "IEC/EN 61000-4-16, IEC/EN 61000-4-19, IEC/EN 61543, IEC 60255 내성 시험",
+            "DC~300 kHz, 5 A · 260 W(PSG-300) 또는 16 A · 800 W(PSG-300A)",
+            "DC·사인·삼각·구형파 함수 발생기 내장, 외부 신호도 별도 입력으로 인가 가능",
+            "DC/AC 전원선 시뮬레이션, 피에조 액추에이터 구동, Helmholtz 등 코일로 자기장 발생",
+            "옵션 — 단시간 시험용 외부 전원(최대 300 V) 제어 입력",
+            "USB 원격 제어 소프트웨어 제공, 명령어 세트로 자동 시험 시스템에 통합",
+          ],
+        },
+        {
+          title: "MTS-800",
+          items: [
+            "DC~250 kHz 자기장 측정·시험, 1000 Hz까지 최대 1000 A/m",
+            "신호발생기, 800 W 파워앰프, 1 MS/s 16비트 스펙트럼 분석기를 한 대에 — 각각 단독 사용 가능",
+            "ISO 11452-8과 MIL-STD-461 CE101·CS101·CS109·RE101·RS101",
+            "SAE J1113-2·J1113-22, Ford ES-XW7T-1A278-AC, PSA B21 7110, Renault 36-00-808, DC-11224, DC-10614",
+            "옵션 삼축 Helmholtz 코일로 완전 자동 시험 — 시험 중 EUT를 돌릴 필요 없음",
+            "규격별 파라미터와 한계값이 들어 있는 Windows 응용 소프트웨어, 사용자 정의 시퀀스도 추가 가능",
           ],
         },
       ],
       tables: [
         {
           title: "CIT-100",
+          note: "2026년 데이터시트의 앰프 표는 CIT-100/25, /75 MIL, /75, /200 네 가지를 싣고 있으나, 바로 옆 본문은 여전히 “최대 출력 75 W”라고 적고 있습니다. 여기서는 표를 따랐습니다. 모듈 사양은 견적서와 대조해 확인하시기 바랍니다.",
           head: ["", "사양"],
           rows: [
             ["RF generator — outputs", "2 × SMA, 동시 사용은 하나만"],
@@ -2059,11 +2248,65 @@ export const productBody: Record<Lang, Partial<Record<TestProduct, PageBody>>> =
             ["RF generator — harmonics / spurious", "< 30 dBc / < 45 dBc"],
             ["LF generator (modulation)", "1 Hz to 100 kHz, sine / square / triangular, 0 … 1 V"],
             ["Amplitude modulation", "internal 0 – 100 %, resolution 1 %"],
-            ["Internal RF power amplifier", "25 W · 75 W 모듈 기본 제공"],
+            ["Internal RF power amplifier", "25 W · 75 W · 200 W 모듈\n25 W: 100 kHz – 250 MHz / 75 W MIL: (4) 10 kHz – 250 (400) MHz\n75 W · 200 W: 100 kHz – 400 MHz"],
             ["RF voltmeter 1 (test level)", "4 kHz to 1.2 GHz, −40 to +30 dBm"],
-            ["RF voltmeter 2 + 3 (forward, reverse)", "4 kHz to 1.2 GHz, −40 to +30 dBm\n방향성 결합기 typ. 40 dB 포함"],
+            ["RF voltmeter 2 + 3 (forward, reverse)", "4 kHz to 1.2 GHz, −40 to +33 dBm\n방향성 결합기 typ. 40 dB 포함"],
             ["EUT monitor input", "0 – 10 V, resolution 2.5 mV, 100 kΩ"],
             ["Interfaces", "USB 2.0, LAN 100 Mbit, GPIB 옵션"],
+          ],
+        },
+        {
+          title: "ECU-6",
+          note: "2026년 데이터시트는 기기를 ECU-6.2로, 부품표는 ECU-6으로 적습니다. 파워미터·방향성 결합기·안테나 출력은 옵션으로 주문하는 구성이라, 결합 감쇠는 어떤 커플러를 장착하느냐에 따라 달라집니다.",
+          head: ["", "사양"],
+          rows: [
+            ["Signal generator — frequency range", "8 kHz – 6.2 GHz, resolution 0.001 Hz"],
+            ["Signal generator — output level", "−65 dBm to +13 dBm, accuracy ± 1 dBm"],
+            ["Signal generator — outputs", "50 Ω SMA female, relay switched 1:3"],
+            ["Amplitude modulation", "10 Hz – 20 kHz, depth 0 – 95 %, sine or triangle"],
+            ["Pulse modulation", "on/off ratio 70 dB, pulse width 1 µs to 10 s"],
+            ["RF power meter", "max. 7 channels\nLF module 10 kHz – 500 MHz, RF module 100 kHz – 6 GHz\n−60 … +20 dBm (10 kHz – 4 GHz), −45 … +20 dBm (4 – 6 GHz)"],
+            ["Relay switching unit — max. power", "2000 W (8 kHz – 100 MHz), 1000 W (100 – 600 MHz),\n600 W (600 MHz – 1 GHz), 400 W (1 – 3 GHz), 300 W (3 – 6 GHz)"],
+            ["EUT monitor input", "2 × 0 – 10 V, resolution 2.5 mV, < 1 kΩ, BNC female"],
+            ["Temperature measurement", "PT1000, 5 – 100 °C, SMB female"],
+            ["Remote control", "USB-B, LAN 10/100 Mbit (TCP/IP), GPIB — SCPI"],
+            ["Dimensions (W×H×D) / weight", "449 × 177 × 580 mm / 18 kg"],
+          ],
+        },
+        {
+          title: "PSG-300 · PSG-300A",
+          note: "외부 전원 옵션은 단시간 시험용으로 최대 300 V 전압원을 물리는 제어 입력입니다. EN 61558에 따른 절연 트랜스 IT-06·IT-16·IT-20(1380 VA~4600 VA)도 함께 공급합니다.",
+          head: ["", "PSG-300", "PSG-300A"],
+          rows: [
+            ["Frequency range", "DC – 1 MHz (small signal −3 dB)", "DC – 1 MHz (small signal −3 dB)"],
+            ["Performance range", "DC – 300 kHz", "DC – 300 kHz"],
+            ["Slew rate", "100 V/µs", "100 V/µs"],
+            ["Voltage amplification", "10 ± 0.1 % (± 0.01 % / °C)", "10 ± 0.1 % (± 0.01 % / °C)"],
+            ["Output voltage", "50 Vrms / ± 75 Vpeak", "50 Vrms / ± 75 Vpeak"],
+            ["Output current", "5 Arms / ± 7.5 Apeak", "16 Arms / ± 24 Apeak"],
+            ["Output power", "260 W", "800 W"],
+            ["Distortion", "< 0.10 %\nDC – 100 kHz, load ≥ 4 Ω", "< 0.10 %\nDC – 100 kHz, load ≥ 4 Ω"],
+            ["Generator frequency range", "DC, 0.05 Hz – 300 kHz\nresolution 0.05 Hz", "DC, 0.05 Hz – 300 kHz\nresolution 0.05 Hz"],
+            ["Waveform", "sine, square, triangular", "sine, square, triangular"],
+            ["Remote control", "USB", "USB"],
+            ["Dimensions (W × H × D)", "449 × 133 × 436 mm (3 RU)", "449 × 177 × 585.5 mm (4 RU)"],
+            ["Weight", "approx. 24 kg", "approx. 32 kg"],
+          ],
+        },
+        {
+          title: "MTS-800",
+          note: "전체 사양과 MIL-STD-461 시험방법 표, 부속품은 자기장 시험 페이지에 있습니다.",
+          head: ["", "사양"],
+          rows: [
+            ["Generator — frequency range", "DC – 250 kHz"],
+            ["Generator — signal", "Sine / triangular / square / DC, 0 – 10 V AC, −10 to +10 V DC"],
+            ["Amplifier — frequency range", "DC – 1 MHz"],
+            ["Amplifier — output", "16 Arms, 50 Vrms / 75 Vdc, distortion < 0.10 %"],
+            ["Analyzer — voltage input", "DC – 250 kHz, 1 MΩ / 50 Ω switchable"],
+            ["Analyzer — current input", "DC – 250 kHz, shunts 10 mΩ / 1 Ω / 100 Ω, max. 20 A continuous"],
+            ["AD converter", "16 bit, 1.0 MSPS"],
+            ["Connection to PC", "USB; EUT control over 9-pin Sub-D, RS-232"],
+            ["Dimensions (W×H×D) / weight", "449 × 177 × 580 mm / approx. 34 kg net"],
           ],
         },
       ],
@@ -2099,6 +2342,7 @@ export const factLabel = {
     dynamic: "동적 범위",
     overload: "과부하 한계",
     fieldStrength: "전계강도",
+    magField: "자계강도",
     isotropy: "등방성",
     channels: "채널",
     measuring: "측정 범위",
@@ -2109,6 +2353,12 @@ export const factLabel = {
     amplifier: "내장 앰프",
     voltmeter: "RF 전압계",
     eutMonitor: "EUT 모니터 입력",
+    powerBw: "전력 대역폭",
+    generator: "내장 발생기",
+    output: "출력 전압·전류",
+    level: "출력 레벨",
+    powerOut: "출력",
+    adc: "AD 변환기",
     interface: "인터페이스",
     supply: "전원",
     operation: "동작 시간",
@@ -2129,6 +2379,7 @@ export const factLabel = {
     dynamic: "Dynamic range",
     overload: "Overload",
     fieldStrength: "Field strength",
+    magField: "Magnetic field strength",
     isotropy: "Isotropy",
     channels: "Channels",
     measuring: "Measuring range",
@@ -2139,6 +2390,12 @@ export const factLabel = {
     amplifier: "Internal amplifier",
     voltmeter: "RF voltmeters",
     eutMonitor: "EUT monitor input",
+    powerBw: "Power bandwidth",
+    generator: "Generator",
+    output: "Output voltage and current",
+    level: "Output level",
+    powerOut: "Power output",
+    adc: "AD converter",
     interface: "Interface",
     supply: "Power supply",
     operation: "Operation time",
@@ -2291,6 +2548,13 @@ const modelFacts: Record<string, readonly { key: TestFactKey; value: string }[]>
     { key: "isotropy", value: "< 1 dB at 900 MHz" },
     { key: "interface", value: "USB 2.0" },
   ],
+  "EFS-18": [
+    { key: "band", value: "1 MHz – 18 GHz" },
+    { key: "dynamic", value: "0.8 – 340 V/m (52 dB)" },
+    { key: "isotropy", value: "0.5 dB at 100 MHz" },
+    { key: "operation", value: "> 50 h, 2.5 h recharge" },
+    { key: "weight", value: "100 g" },
+  ],
 
   // Pre-amplifiers. The first three are a table; the last three are the model
   // list's own line, which is all the head office publishes of them.
@@ -2400,7 +2664,7 @@ const modelFacts: Record<string, readonly { key: TestFactKey; value: string }[]>
   ],
   LVVL: [
     { key: "band", value: "9 kHz – 30 MHz" },
-    { key: "loopDia", value: "2 m, three axes" },
+    { key: "loopDia", value: "2.0 m, three axes" },
     { key: "connector", value: "50 Ω BNC" },
     { key: "dimensions", value: "2.6 × 2.1 × 2.1 m" },
   ],
@@ -2437,20 +2701,49 @@ const modelFacts: Record<string, readonly { key: TestFactKey; value: string }[]>
     { key: "connector", value: "Type N female" },
   ],
 
-  // Integrated systems — the CIT series. See the note on `testModels`.
+  // Integrated systems. See the note on `testModels`: these are the 2026
+  // datasheets' figures, not the older website pages'.
   "CIT-100": [
     { key: "band", value: "4 kHz – 1.2 GHz" },
-    { key: "amplifier", value: "25 W / 75 W modules" },
-    { key: "voltmeter", value: "3 ch, −40 … +30 dBm" },
+    { key: "amplifier", value: "25 / 75 / 200 W modules" },
+    { key: "voltmeter", value: "3 ch, −40 … +33 dBm" },
     { key: "eutMonitor", value: "0 – 10 V, 100 kΩ" },
     { key: "interface", value: "USB 2.0, LAN, GPIB opt." },
   ],
   "CIT-1000": [
     { key: "band", value: "4 kHz – 1.2 GHz" },
-    { key: "amplifier", value: "25 / 75 / 180 W modules" },
+    { key: "amplifier", value: "25 / 75 / 200 W modules" },
     { key: "voltmeter", value: "3 ch, −40 … +33 dBm" },
     { key: "eutMonitor", value: "0 – 10 V, 100 kΩ" },
     { key: "interface", value: "USB 2.0, LAN, GPIB opt." },
+  ],
+  "ECU-6": [
+    { key: "generator", value: "8 kHz – 6.2 GHz" },
+    { key: "level", value: "−65 … +13 dBm" },
+    { key: "outputs", value: "3 × SMA, relay switched" },
+    { key: "channels", value: "power meter, max. 7" },
+    { key: "weight", value: "18 kg" },
+  ],
+  "PSG-300": [
+    { key: "powerBw", value: "DC – 300 kHz" },
+    { key: "generator", value: "DC, 0.05 Hz – 300 kHz" },
+    { key: "output", value: "50 Vrms / 5 Arms" },
+    { key: "powerOut", value: "260 W" },
+    { key: "weight", value: "approx. 24 kg" },
+  ],
+  "PSG-300A": [
+    { key: "powerBw", value: "DC – 300 kHz" },
+    { key: "generator", value: "DC, 0.05 Hz – 300 kHz" },
+    { key: "output", value: "50 Vrms / 16 Arms" },
+    { key: "powerOut", value: "800 W" },
+    { key: "weight", value: "approx. 32 kg" },
+  ],
+  "MTS-800": [
+    { key: "band", value: "DC – 250 kHz" },
+    { key: "magField", value: "up to 1000 A/m" },
+    { key: "amplifier", value: "800 W, 16 Arms, 50 Vrms" },
+    { key: "adc", value: "16 bit, 1.0 MSPS" },
+    { key: "weight", value: "approx. 34 kg" },
   ],
 };
 
@@ -2465,11 +2758,13 @@ const modelLead: Record<Lang, Record<string, string>> = {
     "MAX-9":
       "The MAX-9 is especially suitable for immunity testing acc. to IEC 61000-4-3 because of its good field uniformity. Its further outstanding characteristics are the wide bandwidth, the nearly constant high gain, very good impedance matching as well as equal beamwidth in E- and H-plane.",
     "SAX-10":
-      "The active monopole antenna SAX-10 consists of a vertical rod and an impedance matching amplifier. The rod has a standard length of 1 m and can be considered as short compared to the wave length in the frequency range 9 kHz – 30 MHz; the conversion factor is independent of the frequency because of the extremely high impedance of the matching amplifier. To avoid absolutely any influence by the mains, the SAX-10 has built-in NiMH rechargeable batteries.",
+      "The active monopole antenna SAX-10 consists of a vertical rod and an impedance matching amplifier. The rod has a standard length of 1.0 m and can be considered as short compared to the wave length in the frequency range 9 kHz – 30 MHz; the conversion factor is independent of the frequency because of the extremely high impedance of the matching amplifier. To avoid absolutely any influence by the mains, the SAX-10 has built-in NiMH rechargeable batteries.",
     "LAX-10":
       "Active, shielded loop antenna with a nearly constant antenna factor over the entire frequency range, battery driven to minimize disturbance influence from the power line. It can be used for the frequency selective measurement of magnetic fields in the long wave, mid wave and short wave frequency ranges, for testing according to CISPR, MIL, FCC, EN, ISO, ANSI, ETSI and many other standards.",
     "EFS-Laser":
       "The EFS-Laser is a smart, fast, extremely accurate electric field probe, which provides linearization, temperature compensation, control and communication functions. Noise reduction and temperature compensation allow accurate measurements down to 0.1 V/m. The probe is laser-powered to allow continuous, galvanically isolated operation without recharging or battery replacement.",
+    "EFS-18":
+      "EFS-18 is a new generation isotropic electric field sensor based on diode dipoles. The characteristics of bandwidth, sensitivity and speed make this sensor unique in their kind. It has been designed to be used in the characterization of the electric field in TEM and GTEM cells, in anechoic chambers, and for monitoring applications of areas and critical points for electromagnetic safety. The EMCViewer software supplied with the probe shows the isotropic value, the single axes components and the amplitude/time response, and can manage up to eight sensors simultaneously.",
     "FPA-2":
       "The FPA-2 and FPA-6A are ESD protected to prevent defects by unintentional electrostatic discharge. Pre-amplifiers are generally ESD-sensitive devices, so it remains important to discharge coaxial cables before they are connected.",
     "FPA-6A":
@@ -2483,18 +2778,24 @@ const modelLead: Record<Lang, Record<string, string>> = {
       "The CIT-100 is a complete test system for conducted RF-immunity testing and BCI-testing acc. to IEC/EN 61000-4-6, ISO 11452-4, MIL-STD 461, CS114 and similar standards. A signal generator, an RF-power amplifier, a 3-channel RF-power-meter, a directional coupler and the control software sit in one 19″ case, and every instrument in it can also be used separately over its own connector.",
     "CIT-1000":
       "The CIT-1000 is the CIT-100's larger sibling: the same complete system for conducted RF immunity and BCI testing, extended where the smaller unit stops. The generator, directional coupler and RF voltmeter reach 1.2 GHz, so the unit can drive a radiated immunity test to IEC/EN 61000-4-3 as well; an external power amplifier can be connected for that; and the frequency extension for MIL-STD 461 reaches down to 4 kHz through the external CIT-4K with its 250 W amplifier. It runs stand-alone from an integrated touch-screen PC, and a temperature input reads the BCI clamp.",
+    "ECU-6":
+      "The ECU-6 is a central EMC test and control unit, which combines in just one compact box many major test components like signal generator, power meter, directional couplers and relay switching unit, which are needed for EMC tests. That reduces the cabling work and possible cabling mistakes to a minimum. It allows to control and to switch automatically between up to three external amplifiers and up to three different outputs for antennas or coupling devices, and it includes EUT-monitoring and an interlock safety system. The integrated signal generator covers 8 kHz to 6.2 GHz, with amplitude, pulse and frequency modulation.",
+    "PSG-300":
+      "The PSG-300 is an ultra-wideband linear power amplifier developed for signal frequencies from DC to 300 kHz. It is particularly suitable for demanding applications involving dynamic high-power signal generation, and for immunity tests according to IEC/EN 61000-4-16, IEC/EN 61000-4-19, IEC/EN 61543 and IEC 60255. The integrated output stage provides up to 260 W — 800 W in the PSG-300A — with a fixed gain factor of 10, and a built-in waveform generator supplies sine, square and triangle signals which the power stage amplifies internally.",
+    "MTS-800":
+      "The MTS-800 is a space-saving test system for generating and analyzing magnetic fields in the frequency range from DC to 250 kHz. Thanks to the integrated power amplifier, the high field strengths required by many military and automotive standards can be reliably achieved without additional effort. It consists of a signal generator (DC – 250 kHz), a power amplifier with 800 W output power over DC – 1 MHz, and a 16-bit spectrum analyzer sampling at 1 MS/s; with the optional triaxial Helmholtz coil, testing is fully automated and the EUT never has to be turned.",
     "ERX-6":
       "The ERX-6 combines the advantages of a traditional EMI-receiver with the ultra-fast FFT-technology (time domain). It measures in 162 MHz frequency segments and outperforms comparable top-of-the-range devices many times over. The delivery already includes a control software that runs on the receiver's own touch screen, so no external PC is required.",
     "ERC-6":
       "The ERC-6 is the less expensive little brother of the ERX-6: only properties that are not required for full-compliance EMI measurements according to CISPR 16-1 have been reduced or omitted. The receiver can be operated from its integrated 10″ touch PC or from external software, which then also drives the antenna mast and the turntable.",
     "ACF-01B":
-      "The absorbing clamp is used for measurements according to CISPR 13 / 14 / EN 55014-1. The power cord of the equipment under test is extended to 6 m, fed through the clamp's opening and laid on a non-metallic table; the clamp, which is moveable on wheels, is then driven along the cable and the maximum resonance detected is the measuring value. Because the clamp is constructed to have 17 dB coupling attenuation, the receiver voltage in dBµV equals the interference power in dBpW.",
+      "The absorbing clamp is used for measurements according to CISPR 13 / 14 / EN 55014-1. The power cord of the equipment under test is extended to 6.0 m, fed through the clamp's opening and laid on a non-metallic table; the clamp, which is moveable on wheels, is then driven along the cable and the maximum resonance detected is the measuring value. Because the clamp is constructed to have 17 dB coupling attenuation, the receiver voltage in dBµV equals the interference power in dBpW.",
     "ABCL-20":
       "The ABCL-20 is recommended as an additional decoupling network — a ferrite tube clamp — for immunity testing according to IEC/EN 61000-4-6 when the clamp injection method is used. It shall be used on all cables between EUT and AE except the cable under test. It prevents the test signal applied to the EUT from affecting other devices, equipment or systems which are under test, and improves the reproducibility of the test results.",
     "BCI probe":
       "The bulk current injection probe is used to inject RF current into cables of electrical equipment to test the susceptibility against radiated electromagnetic energy. It was designed to meet ISO 11452-4:2005 and IEC 61000-4-6 for automotive BCI testing with secondary currents of 300 mA and more, and can be clamped around test conductors supporting cable harness diameters up to 40 mm.",
     LVVL:
-      "The LVVL is a fully compliant, calibrated 2 m large loop antenna that complies with CISPR-15 / EN 55015 section 7.2 and annex B, over a calibrated frequency range of 9 kHz to 30 MHz. It is a complete 3-axis antenna with a switching unit to select each loop in turn; the loops are 2 metres in diameter with the lowest point 0.5 metres above ground, and are fitted with specially designed current transducers in fully screened housings.",
+      "The LVVL is a fully compliant, calibrated 2.0 m large loop antenna that complies with CISPR-15 / EN 55015 section 7.2 and annex B, over a calibrated frequency range of 9 kHz to 30 MHz. It is a complete 3-axis antenna with a switching unit to select each loop in turn; the loops are 2 metres in diameter with the lowest point 0.5 metres above ground, and are fitted with specially designed current transducers in fully screened housings.",
   },
   ko: {
     "ALX-4000E":
@@ -2504,11 +2805,13 @@ const modelLead: Record<Lang, Record<string, string>> = {
     "MAX-9":
       "MAX-9는 전계 균일도가 좋아 IEC 61000-4-3 내성 시험에 특히 적합합니다. 넓은 대역폭, 거의 일정하게 높은 이득, 우수한 임피던스 정합, E면과 H면이 같은 빔폭도 이 안테나의 특징입니다.",
     "SAX-10":
-      "SAX-10 액티브 모노폴 안테나는 수직 로드와 임피던스 정합 앰프로 이루어집니다. 로드 표준 길이는 1 m로, 9 kHz~30 MHz 대역의 파장에 비하면 짧다고 볼 수 있습니다. 정합 앰프의 임피던스가 대단히 높아 변환 계수가 주파수에 좌우되지 않습니다. 상용 전원의 영향을 완전히 배제하기 위해 NiMH 충전지를 내장했습니다.",
+      "SAX-10 액티브 모노폴 안테나는 수직 로드와 임피던스 정합 앰프로 이루어집니다. 로드 표준 길이는 1.0 m로, 9 kHz~30 MHz 대역의 파장에 비하면 짧다고 볼 수 있습니다. 정합 앰프의 임피던스가 대단히 높아 변환 계수가 주파수에 좌우되지 않습니다. 상용 전원의 영향을 완전히 배제하기 위해 NiMH 충전지를 내장했습니다.",
     "LAX-10":
       "전 대역에서 안테나 팩터가 거의 일정한 액티브 차폐 루프 안테나입니다. 전원선에서 들어오는 방해를 최소화하기 위해 배터리로 구동합니다. 장파·중파·단파 대역 자기장의 주파수 선택 측정에 쓰며, CISPR·MIL·FCC·EN·ISO·ANSI·ETSI를 비롯한 여러 규격 시험에 대응합니다.",
     "EFS-Laser":
       "EFS-Laser는 선형화·온도 보상·제어·통신 기능을 갖춘 정밀 전계 프로브입니다. 잡음 저감과 온도 보상으로 0.1 V/m까지 정확하게 측정합니다. 프로브는 레이저로 급전하므로 충전이나 배터리 교체 없이 갈바닉 절연 상태로 연속 동작합니다.",
+    "EFS-18":
+      "EFS-18은 다이오드 다이폴을 쓴 신세대 등방성 전계 센서입니다. 대역폭·감도·속도의 조합이 이 종류의 센서에서는 독보적입니다. TEM·GTEM 셀과 무향실 내부의 전계 특성 측정, 그리고 작업 구역과 중요 지점의 전자파 안전 모니터링을 위해 설계되었습니다. 함께 제공되는 EMCViewer 소프트웨어가 등방성 값과 축별 성분, 진폭·시간 응답을 보여 주며, 센서를 최대 8대까지 동시에 관리합니다.",
     "FPA-2":
       "FPA-2와 FPA-6A는 의도치 않은 정전기 방전으로 인한 고장을 막기 위해 ESD 보호가 되어 있습니다. 프리앰프는 본래 정전기에 민감한 장비이므로, 동축 케이블은 연결하기 전에 방전시켜야 합니다.",
     "FPA-6A":
@@ -2522,18 +2825,24 @@ const modelLead: Record<Lang, Record<string, string>> = {
       "CIT-100은 IEC/EN 61000-4-6, ISO 11452-4, MIL-STD 461 CS114 등에 따른 전도 RF 내성 시험과 BCI 시험을 위한 완성형 시험 시스템입니다. 신호발생기, RF 파워앰프, 3채널 RF 파워미터, 방향성 결합기와 제어 소프트웨어가 19″ 케이스 하나에 들어 있고, 내장된 계측기는 각각의 커넥터로 따로 쓸 수도 있습니다.",
     "CIT-1000":
       "CIT-1000은 CIT-100의 상위 기종입니다. 전도 RF 내성과 BCI 시험을 위한 완성형 시스템이라는 점은 같고, 작은 기종이 멈추는 곳에서 더 나아갑니다. 발생기·방향성 결합기·RF 전압계가 1.2 GHz까지 올라가 IEC/EN 61000-4-3 방사 내성 시험까지 구동할 수 있고, 그때는 외부 파워앰프를 연결합니다. MIL-STD 461용 저역 확장은 250 W 앰프를 갖춘 외장 CIT-4K로 4 kHz까지 내려갑니다. 터치스크린 PC를 내장해 단독으로 동작하며, 온도 입력으로 BCI 클램프 온도를 읽습니다.",
+    "ECU-6":
+      "ECU-6은 EMC 시험에 필요한 주요 구성요소 — 신호발생기, 파워미터, 방향성 결합기, 릴레이 스위칭 유닛 — 을 한 상자에 모은 중앙 시험·제어 유닛입니다. 배선 작업과 배선 실수를 최소로 줄여 줍니다. 외부 앰프 최대 3대와 안테나·결합장치 최대 3계통 사이를 자동으로 전환하며, EUT 모니터링과 인터록 안전 시스템을 함께 갖췄습니다. 내장 신호발생기는 8 kHz~6.2 GHz를 덮고 진폭·펄스·주파수 변조를 지원합니다.",
+    "PSG-300":
+      "PSG-300은 DC~300 kHz 신호를 위해 개발된 초광대역 선형 파워앰프입니다. 높은 출력으로 빠르게 변하는 신호를 다뤄야 하는 용도, 그리고 IEC/EN 61000-4-16, IEC/EN 61000-4-19, IEC/EN 61543, IEC 60255 내성 시험에 특히 적합합니다. 내장 출력단은 최대 260 W — 상위 기종 PSG-300A는 800 W — 를 내며 이득은 10으로 고정되어 있고, 내장 파형 발생기가 만든 사인·구형·삼각파를 출력단이 그대로 증폭합니다.",
+    "MTS-800":
+      "MTS-800은 DC~250 kHz 자기장을 발생시키고 분석하는 공간 절약형 시험 시스템입니다. 파워앰프를 내장해, 여러 군용·자동차 규격이 요구하는 높은 자계강도를 별도 장비 없이 안정적으로 얻습니다. 신호발생기(DC~250 kHz), DC~1 MHz 대역 800 W 파워앰프, 1 MS/s 16비트 스펙트럼 분석기로 이뤄져 있습니다. 옵션 삼축 Helmholtz 코일과 함께 쓰면 시험이 완전 자동으로 진행되고, 시험 중 EUT를 돌릴 일이 없습니다.",
     "ERX-6":
       "ERX-6은 전통적인 EMI 리시버의 장점에 초고속 FFT(시간영역) 기술을 결합한 계측기입니다. 162 MHz 세그먼트 단위로 측정해 동급 최상위 기종을 여러 배 앞섭니다. 리시버 자체 터치스크린에서 돌아가는 제어 소프트웨어를 기본 포함하므로 외부 PC가 필요 없습니다.",
     "ERC-6":
       "ERC-6은 ERX-6의 저가형입니다. CISPR 16-1 풀컴플라이언스 방출 측정에 필요하지 않은 기능만 줄이거나 뺐습니다. 내장 10″ 터치 PC로 조작하거나 외부 소프트웨어로 운용할 수 있고, 후자의 경우 안테나 마스트와 턴테이블까지 함께 제어합니다.",
     "ACF-01B":
-      "흡수 클램프는 CISPR 13 / 14, EN 55014-1 측정에 씁니다. 시험 대상 기기의 전원 코드를 6 m로 연장해 클램프 개구에 통과시키고 비금속 테이블 위에 올린 뒤, 바퀴 달린 클램프를 케이블을 따라 전원 쪽으로 밀며 검출되는 최대 공진값을 측정값으로 삼습니다. 결합 감쇠가 17 dB가 되도록 만들었기 때문에 리시버 전압(dBµV)이 곧 방해 전력(dBpW)이 됩니다.",
+      "흡수 클램프는 CISPR 13 / 14, EN 55014-1 측정에 씁니다. 시험 대상 기기의 전원 코드를 6.0 m로 연장해 클램프 개구에 통과시키고 비금속 테이블 위에 올린 뒤, 바퀴 달린 클램프를 케이블을 따라 전원 쪽으로 밀며 검출되는 최대 공진값을 측정값으로 삼습니다. 결합 감쇠가 17 dB가 되도록 만들었기 때문에 리시버 전압(dBµV)이 곧 방해 전력(dBpW)이 됩니다.",
     "ABCL-20":
       "ABCL-20은 클램프 주입 방식으로 IEC/EN 61000-4-6 내성 시험을 할 때 추가 분리 회로망으로 쓰는 페라이트 튜브 클램프입니다. 시험 대상 케이블을 제외한 EUT–AE 사이 모든 케이블에 물립니다. EUT에 가한 시험 신호가 함께 시험 중인 다른 기기·장비·시스템에 영향을 주는 것을 막아 시험 결과의 재현성을 높여 줍니다.",
     "BCI probe":
       "BCI 프로브는 방사 전자기 에너지에 대한 내성을 시험하기 위해 전기 기기의 케이블에 RF 전류를 주입합니다. 2차 전류 300 mA 이상의 자동차 BCI 시험을 위해 ISO 11452-4:2005와 IEC 61000-4-6에 맞춰 설계했습니다. 시험 도체에 간단히 물릴 수 있고 직경 40 mm까지의 하니스에 대응합니다.",
     LVVL:
-      "LVVL은 CISPR-15 / EN 55015 7.2절과 부속서 B에 완전히 대응하는 교정된 2 m 대형 루프 안테나입니다. 교정 대역은 9 kHz~30 MHz입니다. 스위칭 유닛으로 각 루프를 차례로 선택하는 완전한 3축 구성이며, 루프 직경은 2 m, 최저점은 바닥에서 0.5 m입니다. 완전 차폐 하우징에 든 전용 전류 트랜스듀서가 달려 있습니다.",
+      "LVVL은 CISPR-15 / EN 55015 7.2절과 부속서 B에 완전히 대응하는 교정된 2.0 m 대형 루프 안테나입니다. 교정 대역은 9 kHz~30 MHz입니다. 스위칭 유닛으로 각 루프를 차례로 선택하는 완전한 3축 구성이며, 루프 직경은 2.0 m, 최저점은 바닥에서 0.5 m입니다. 완전 차폐 하우징에 든 전용 전류 트랜스듀서가 달려 있습니다.",
   },
 };
 
